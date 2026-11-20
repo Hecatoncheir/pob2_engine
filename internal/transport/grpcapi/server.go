@@ -26,9 +26,11 @@ type Ready struct {
 	ProtocolVersion string `json:"protocol_version"`
 	Mode            string `json:"mode"`
 	InstanceID      string `json:"instance_id"`
+	StorageMode     string `json:"storage_mode"`
+	StoragePath     string `json:"storage_path,omitempty"`
 }
 
-// Server обслуживает только loopback; состояние пока сохраняется лишь в памяти.
+// Server обслуживает loopback; способ хранения задаётся общим сервисом команд.
 type Server struct {
 	pb.UnimplementedSessionServiceServer
 	commands   application.Commands
@@ -50,7 +52,7 @@ func Start(address, token string, commands application.Commands) (*Server, error
 }
 
 func StartWithConfig(address, token string, commands application.Commands, config lifecycle.Config) (*Server, error) {
-	if err := validateAddress(address); err != nil {
+	if err := ValidateAddress(address); err != nil {
 		return nil, err
 	}
 	listener, err := net.Listen("tcp4", address)
@@ -76,7 +78,7 @@ func StartWithConfig(address, token string, commands application.Commands, confi
 	return s, nil
 }
 
-func validateAddress(address string) error {
+func ValidateAddress(address string) error {
 	host, _, err := net.SplitHostPort(address)
 	if err != nil || host != "127.0.0.1" {
 		return fmt.Errorf("нужен явный адрес 127.0.0.1:порт")
@@ -85,7 +87,17 @@ func validateAddress(address string) error {
 }
 
 func (s *Server) Ready() Ready {
-	return Ready{Address: s.listener.Addr().String(), Token: s.token, ProtocolVersion: buildinfo.ProtocolVersion, Mode: s.life.Config().Mode, InstanceID: s.instanceID}
+	mode, path := s.storageInfo()
+	return Ready{Address: s.listener.Addr().String(), Token: s.token, ProtocolVersion: buildinfo.ProtocolVersion, Mode: s.life.Config().Mode, InstanceID: s.instanceID, StorageMode: mode, StoragePath: path}
+}
+
+func (s *Server) storageInfo() (string, string) {
+	if source, ok := s.commands.(interface{ StoragePath() string }); ok {
+		if path := source.StoragePath(); path != "" {
+			return "disk", path
+		}
+	}
+	return "memory", ""
 }
 
 func (s *Server) Lifecycle() *lifecycle.Manager { return s.life }
@@ -131,8 +143,13 @@ func controlMethod(method string) bool {
 
 func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.GetServerInfoResponse, error) {
 	stats := s.life.Stats()
-	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: buildinfo.Capabilities(), State: stats.State,
-		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds())}, nil
+	storageMode, storagePath := s.storageInfo()
+	capabilities := buildinfo.Capabilities()
+	if storageMode == "disk" {
+		capabilities = append(capabilities, "session.persistence")
+	}
+	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: capabilities, State: stats.State,
+		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds()), StorageMode: storageMode, StoragePath: storagePath}, nil
 }
 
 func (s *Server) RegisterClient(_ context.Context, req *pb.RegisterClientRequest) (*pb.RegisterClientResponse, error) {

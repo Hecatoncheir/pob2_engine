@@ -33,9 +33,10 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   shutdown                  Корректно завершить сервер
 
 Подключение: --address 127.0.0.1:ПОРТ --token ТОКЕН
-Или: --profile ИМЯ [--start-server] [--runtime-dir КАТАЛОГ]
+Или: --profile ИМЯ [--start-server] [--runtime-dir КАТАЛОГ] [--data-dir КАТАЛОГ]
 Токен также читается из POB2_ENGINE_TOKEN. Справка команды: КОМАНДА --help.
-Сессии пока хранятся только в памяти; игровые расчёты ещё не реализованы.
+Сессии профиля сохраняются на диск. --ephemeral и MCP --standalone используют память.
+Игровые расчёты ещё не реализованы.
 `
 
 type UsageError struct{ Err error }
@@ -107,10 +108,12 @@ type connection struct {
 	timeout      time.Duration
 	profile      string
 	baseDir      string
+	dataDir      string
 	startServer  bool
 	kind         string
 	idleTimeout  time.Duration
 	leaseTimeout time.Duration
+	allowMemory  bool
 }
 
 func connectFlags(fs *flag.FlagSet) *connection {
@@ -120,6 +123,7 @@ func connectFlags(fs *flag.FlagSet) *connection {
 	fs.DurationVar(&c.timeout, "timeout", 5*time.Second, "таймаут подключения и каждой команды")
 	fs.StringVar(&c.profile, "profile", "", "профиль обнаружения сервера")
 	fs.StringVar(&c.baseDir, "runtime-dir", "", "базовый каталог; профиль хранится в КАТАЛОГ/pob2-engine/ИМЯ")
+	fs.StringVar(&c.dataDir, "data-dir", "", "базовый каталог данных; по умолчанию os.UserConfigDir()")
 	fs.BoolVar(&c.startServer, "start-server", false, "при отсутствии сервера профиля запустить automatic")
 	fs.DurationVar(&c.idleTimeout, "idle-timeout", lifecycle.DefaultIdleTimeout, "задержка остановки нового automatic-сервера")
 	fs.DurationVar(&c.leaseTimeout, "lease-timeout", lifecycle.DefaultLeaseTimeout, "срок аренды для нового automatic-сервера")
@@ -134,9 +138,9 @@ func (c *connection) dial(ctx context.Context) (*grpcapi.Client, error) {
 		if c.address != "" {
 			return nil, &UsageError{Err: fmt.Errorf("выберите --profile или --address")}
 		}
-		return host.Connect(ctx, host.ConnectOptions{BaseDir: c.baseDir, Profile: c.profile, StartServer: c.startServer, Kind: c.kind, IdleTimeout: c.idleTimeout, LeaseTimeout: c.leaseTimeout})
+		return host.Connect(ctx, host.ConnectOptions{BaseDir: c.baseDir, DataDir: c.dataDir, Profile: c.profile, StartServer: c.startServer, Kind: c.kind, IdleTimeout: c.idleTimeout, LeaseTimeout: c.leaseTimeout, AllowMemory: c.allowMemory})
 	}
-	if c.startServer || c.baseDir != "" {
+	if c.startServer || c.baseDir != "" || c.dataDir != "" {
 		return nil, &UsageError{Err: fmt.Errorf("для обнаружения и запуска нужен --profile")}
 	}
 	return grpcapi.DialKind(ctx, c.address, c.token, c.kind)
@@ -155,6 +159,8 @@ func (r runner) serve(ctx context.Context, args []string) error {
 	token := fs.String("token", os.Getenv("POB2_ENGINE_TOKEN"), "токен; без значения создаётся случайный")
 	profileName := fs.String("profile", "", "опубликовать сервер в профиле")
 	baseDir := fs.String("runtime-dir", "", "базовый каталог профилей")
+	dataDir := fs.String("data-dir", "", "базовый каталог сохранений; по умолчанию os.UserConfigDir()")
+	ephemeral := fs.Bool("ephemeral", false, "работать только в памяти без профиля и сохранения")
 	mode := fs.String("mode", lifecycle.Persistent, "режим сервера: persistent или automatic")
 	idleTimeout := fs.Duration("idle-timeout", lifecycle.DefaultIdleTimeout, "задержка остановки без клиентов и задач")
 	leaseTimeout := fs.Duration("lease-timeout", lifecycle.DefaultLeaseTimeout, "срок аренды клиента")
@@ -162,7 +168,13 @@ func (r runner) serve(ctx context.Context, args []string) error {
 		return err
 	}
 	config := lifecycle.Config{Mode: *mode, IdleTimeout: *idleTimeout, LeaseTimeout: *leaseTimeout}
-	server, err := startServer(*profileName, *baseDir, *address, *token, config)
+	if *ephemeral && (*profileName != "" || *baseDir != "" || *dataDir != "") {
+		return &UsageError{Err: fmt.Errorf("--ephemeral не принимает профиль и каталоги хранения")}
+	}
+	if !*ephemeral && *profileName == "" {
+		*profileName = "default"
+	}
+	server, err := startServer(ctx, *profileName, *baseDir, *dataDir, *address, *token, config)
 	if err != nil {
 		return err
 	}
@@ -182,7 +194,7 @@ func (r runner) serve(ctx context.Context, args []string) error {
 	}
 }
 
-func startServer(name, baseDir, address, token string, config lifecycle.Config) (runningServer, error) {
+func startServer(ctx context.Context, name, baseDir, dataDir, address, token string, config lifecycle.Config) (runningServer, error) {
 	if name == "" {
 		if baseDir != "" {
 			return nil, &UsageError{Err: fmt.Errorf("для --runtime-dir нужен --profile")}
@@ -193,7 +205,7 @@ func startServer(name, baseDir, address, token string, config lifecycle.Config) 
 	if err != nil {
 		return nil, err
 	}
-	return host.Start(profile, address, token, application.NewService(), config)
+	return host.StartDurable(ctx, profile, address, token, dataDir, config)
 }
 
 func (r runner) connect(ctx context.Context, args []string) error {
@@ -237,6 +249,7 @@ func (r runner) connect(ctx context.Context, args []string) error {
 func (r runner) serverCommand(ctx context.Context, command string, args []string) error {
 	fs := r.flags(command)
 	c := connectFlags(fs)
+	c.allowMemory = true
 	if err := parse(fs, args); err != nil {
 		return err
 	}
@@ -328,7 +341,7 @@ func (r runner) mcp(ctx context.Context, args []string) error {
 	}
 	var commands application.Commands
 	if *standalone {
-		if c.address != "" || c.profile != "" || c.startServer || c.baseDir != "" {
+		if c.address != "" || c.profile != "" || c.startServer || c.baseDir != "" || c.dataDir != "" {
 			return &UsageError{Err: fmt.Errorf("--standalone не принимает параметры подключения")}
 		}
 		service := application.NewService()

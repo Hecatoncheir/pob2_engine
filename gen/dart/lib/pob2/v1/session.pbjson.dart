@@ -52,6 +52,8 @@ const GetServerInfoResponse$json = {
     {'1': 'client_count', '3': 7, '4': 1, '5': 13, '10': 'clientCount'},
     {'1': 'active_tasks', '3': 8, '4': 1, '5': 13, '10': 'activeTasks'},
     {'1': 'lease_timeout_ms', '3': 9, '4': 1, '5': 4, '10': 'leaseTimeoutMs'},
+    {'1': 'storage_mode', '3': 10, '4': 1, '5': 9, '10': 'storageMode'},
+    {'1': 'storage_path', '3': 11, '4': 1, '5': 9, '10': 'storagePath'},
   ],
 };
 
@@ -62,7 +64,8 @@ final $typed_data.Uint8List getServerInfoResponseDescriptor = $convert.base64Dec
     'AygJUgxjYXBhYmlsaXRpZXMSFAoFc3RhdGUYBCABKAlSBXN0YXRlEh8KC2luc3RhbmNlX2lkGA'
     'UgASgJUgppbnN0YW5jZUlkEhIKBG1vZGUYBiABKAlSBG1vZGUSIQoMY2xpZW50X2NvdW50GAcg'
     'ASgNUgtjbGllbnRDb3VudBIhCgxhY3RpdmVfdGFza3MYCCABKA1SC2FjdGl2ZVRhc2tzEigKEG'
-    'xlYXNlX3RpbWVvdXRfbXMYCSABKARSDmxlYXNlVGltZW91dE1z');
+    'xlYXNlX3RpbWVvdXRfbXMYCSABKARSDmxlYXNlVGltZW91dE1zEiEKDHN0b3JhZ2VfbW9kZRgK'
+    'IAEoCVILc3RvcmFnZU1vZGUSIQoMc3RvcmFnZV9wYXRoGAsgASgJUgtzdG9yYWdlUGF0aA==');
 
 @$core.Deprecated('Use createSessionRequestDescriptor instead')
 const CreateSessionRequest$json = {

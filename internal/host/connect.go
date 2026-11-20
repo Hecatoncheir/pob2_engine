@@ -7,24 +7,30 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
 	"github.com/Hecatoncheir/pob2_engine/internal/discovery"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
+	"github.com/Hecatoncheir/pob2_engine/internal/storage"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type ConnectOptions struct {
-	BaseDir      string
-	Profile      string
-	StartServer  bool
-	Executable   string
-	Kind         string
-	IdleTimeout  time.Duration
-	LeaseTimeout time.Duration
+	BaseDir         string
+	DataDir         string
+	Profile         string
+	StartServer     bool
+	Executable      string
+	Kind            string
+	IdleTimeout     time.Duration
+	LeaseTimeout    time.Duration
+	AllowMemory     bool
+	expectedStorage string
 }
 
 func Connect(ctx context.Context, options ConnectOptions) (*grpcapi.Client, error) {
@@ -34,11 +40,18 @@ func Connect(ctx context.Context, options ConnectOptions) (*grpcapi.Client, erro
 	if options.Kind == "" {
 		options.Kind = "cli"
 	}
+	if options.DataDir != "" {
+		var err error
+		options.expectedStorage, err = storage.Path(options.DataDir, options.Profile)
+		if err != nil {
+			return nil, err
+		}
+	}
 	profile, err := discovery.Open(options.BaseDir, options.Profile)
 	if err != nil {
 		return nil, err
 	}
-	client, _, err := tryConnect(ctx, profile, options.Kind)
+	client, _, err := tryConnect(ctx, profile, options)
 	if err == nil || !options.StartServer {
 		return client, err
 	}
@@ -50,7 +63,7 @@ func Connect(ctx context.Context, options ConnectOptions) (*grpcapi.Client, erro
 	return ensure(ctx, profile, options)
 }
 
-func tryConnect(ctx context.Context, profile discovery.Profile, kind string) (*grpcapi.Client, bool, error) {
+func tryConnect(ctx context.Context, profile discovery.Profile, options ConnectOptions) (*grpcapi.Client, bool, error) {
 	record, err := profile.Read()
 	if err != nil {
 		return nil, false, err
@@ -70,7 +83,13 @@ func tryConnect(ctx context.Context, profile discovery.Profile, kind string) (*g
 	if info.GetState() != "ready" {
 		return nil, true, lifecycle.ErrDraining
 	}
-	client, err := grpcapi.DialKind(ctx, record.Address, record.Token, kind)
+	if !options.AllowMemory && (info.GetStorageMode() != "disk" || info.GetStoragePath() == "") {
+		return nil, true, fmt.Errorf("сервер профиля не поддерживает сохранение; завершите его и запустите новую версию")
+	}
+	if options.expectedStorage != "" && !samePath(options.expectedStorage, info.GetStoragePath()) {
+		return nil, true, fmt.Errorf("сервер профиля использует другой каталог данных: %s", info.GetStoragePath())
+	}
+	client, err := grpcapi.DialKind(ctx, record.Address, record.Token, options.Kind)
 	if err != nil && status.Code(err) == codes.Unavailable {
 		return nil, true, lifecycle.ErrDraining
 	}
@@ -81,6 +100,13 @@ func tryConnect(ctx context.Context, profile discovery.Profile, kind string) (*g
 	return client, true, err
 }
 
+func samePath(first, second string) bool {
+	if runtime.GOOS == "windows" {
+		return strings.EqualFold(filepath.Clean(first), filepath.Clean(second))
+	}
+	return filepath.Clean(first) == filepath.Clean(second)
+}
+
 func ensure(ctx context.Context, profile discovery.Profile, options ConnectOptions) (*grpcapi.Client, error) {
 	ticker := time.NewTicker(25 * time.Millisecond)
 	defer ticker.Stop()
@@ -89,7 +115,7 @@ func ensure(ctx context.Context, profile discovery.Profile, options ConnectOptio
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
-		client, alive, err := tryConnect(ctx, profile, options.Kind)
+		client, alive, err := tryConnect(ctx, profile, options)
 		if err == nil {
 			return client, nil
 		}
@@ -155,6 +181,9 @@ func launch(profile discovery.Profile, options ConnectOptions) (*child, error) {
 	args := []string{"serve", "--profile", options.Profile, "--mode", lifecycle.Automatic, "--idle-timeout", config.IdleTimeout.String(), "--lease-timeout", config.LeaseTimeout.String()}
 	if options.BaseDir != "" {
 		args = append(args, "--runtime-dir", options.BaseDir)
+	}
+	if options.DataDir != "" {
+		args = append(args, "--data-dir", options.DataDir)
 	}
 	log, err := os.OpenFile(filepath.Join(profile.Dir, "server.log"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
 	if err != nil {

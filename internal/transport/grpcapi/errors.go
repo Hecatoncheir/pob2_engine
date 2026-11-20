@@ -50,6 +50,8 @@ func rpcError(err error) error {
 		code = codes.FailedPrecondition
 	case application.ResourceExhausted:
 		code = codes.ResourceExhausted
+	case application.StorageFailure:
+		code = codes.Unavailable
 	}
 	return status.Error(code, app.Error())
 }

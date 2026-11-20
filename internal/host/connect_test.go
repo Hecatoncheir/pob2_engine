@@ -35,7 +35,7 @@ func (s *changingInstance) GetServerInfo(context.Context, *pb.GetServerInfoReque
 	if s.calls.Add(1) > 1 {
 		id = "new"
 	}
-	return &pb.GetServerInfoResponse{ProtocolVersion: "pob2.v1", InstanceId: id, State: "ready"}, nil
+	return &pb.GetServerInfoResponse{ProtocolVersion: "pob2.v1", InstanceId: id, State: "ready", StorageMode: "disk", StoragePath: "test.db"}, nil
 }
 
 func TestDiscoveryRechecksInstanceOnActualConnection(t *testing.T) {
@@ -175,5 +175,36 @@ func TestServerCleanupPreservesAnotherInstanceRecord(t *testing.T) {
 	lock.Close()
 	if err := os.Remove(profile.RecordPath()); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestProfileConnectionRejectsMemoryServerWithoutReplacingIt(t *testing.T) {
+	base := t.TempDir()
+	profile, err := discovery.Open(base, "main")
+	if err != nil {
+		t.Fatal(err)
+	}
+	commands := application.NewService()
+	if _, err := commands.Create(t.Context(), application.CreateSession{SessionID: "main", BuildName: "Старая сессия", RequestID: "create"}); err != nil {
+		t.Fatal(err)
+	}
+	server, err := host.Start(profile, "127.0.0.1:0", "", commands, lifecycle.Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), time.Second)
+	defer cancel()
+	defer server.Close(context.Background())
+	_, err = host.Connect(ctx, host.ConnectOptions{BaseDir: base, Profile: "main", StartServer: true})
+	if err == nil || !strings.Contains(err.Error(), "сохранение") {
+		t.Fatalf("сервер в памяти принят как постоянное хранилище: %v", err)
+	}
+	client, err := host.Connect(ctx, host.ConnectOptions{BaseDir: base, Profile: "main", AllowMemory: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+	if snapshot, err := client.Snapshot(ctx, "main"); err != nil || snapshot.BuildName != "Старая сессия" {
+		t.Fatal("старая сессия затронута проверкой")
 	}
 }

@@ -13,7 +13,6 @@ import (
 	"time"
 
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
-	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/discovery"
 	"github.com/Hecatoncheir/pob2_engine/internal/host"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
@@ -93,7 +92,7 @@ func stopHolder(t *testing.T, ctx context.Context, h *holder) {
 }
 
 func profileArgs(base, name string) []string {
-	return []string{"--profile", name, "--runtime-dir", base, "--timeout", "8s"}
+	return []string{"--profile", name, "--runtime-dir", base, "--data-dir", base, "--timeout", "8s"}
 }
 
 func autoArgs(base, name string) []string {
@@ -337,7 +336,7 @@ func TestLifecycleHelper(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	s, err := host.Start(profile, "127.0.0.1:0", "", application.NewService(), lifecycle.Config{Mode: lifecycle.Automatic, IdleTimeout: 300 * time.Millisecond, LeaseTimeout: 900 * time.Millisecond})
+	s, err := host.StartDurable(context.Background(), profile, "127.0.0.1:0", "", base, lifecycle.Config{Mode: lifecycle.Automatic, IdleTimeout: 300 * time.Millisecond, LeaseTimeout: 900 * time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}

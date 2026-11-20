@@ -128,6 +128,8 @@ type GetServerInfoResponse struct {
 	ClientCount     uint32                 `protobuf:"varint,7,opt,name=client_count,json=clientCount,proto3" json:"client_count,omitempty"`
 	ActiveTasks     uint32                 `protobuf:"varint,8,opt,name=active_tasks,json=activeTasks,proto3" json:"active_tasks,omitempty"`
 	LeaseTimeoutMs  uint64                 `protobuf:"varint,9,opt,name=lease_timeout_ms,json=leaseTimeoutMs,proto3" json:"lease_timeout_ms,omitempty"`
+	StorageMode     string                 `protobuf:"bytes,10,opt,name=storage_mode,json=storageMode,proto3" json:"storage_mode,omitempty"`
+	StoragePath     string                 `protobuf:"bytes,11,opt,name=storage_path,json=storagePath,proto3" json:"storage_path,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -223,6 +225,20 @@ func (x *GetServerInfoResponse) GetLeaseTimeoutMs() uint64 {
 		return x.LeaseTimeoutMs
 	}
 	return 0
+}
+
+func (x *GetServerInfoResponse) GetStorageMode() string {
+	if x != nil {
+		return x.StorageMode
+	}
+	return ""
+}
+
+func (x *GetServerInfoResponse) GetStoragePath() string {
+	if x != nil {
+		return x.StoragePath
+	}
+	return ""
 }
 
 // request_id повторяется только для точного повтора той же команды.
@@ -880,7 +896,7 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\n" +
 	"build_name\x18\x02 \x01(\tR\tbuildName\x12\x1a\n" +
 	"\brevision\x18\x03 \x01(\x04R\brevision\"\x16\n" +
-	"\x14GetServerInfoRequest\"\xbb\x02\n" +
+	"\x14GetServerInfoRequest\"\x81\x03\n" +
 	"\x15GetServerInfoResponse\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12)\n" +
 	"\x10protocol_version\x18\x02 \x01(\tR\x0fprotocolVersion\x12\"\n" +
@@ -891,7 +907,10 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\x04mode\x18\x06 \x01(\tR\x04mode\x12!\n" +
 	"\fclient_count\x18\a \x01(\rR\vclientCount\x12!\n" +
 	"\factive_tasks\x18\b \x01(\rR\vactiveTasks\x12(\n" +
-	"\x10lease_timeout_ms\x18\t \x01(\x04R\x0eleaseTimeoutMs\"s\n" +
+	"\x10lease_timeout_ms\x18\t \x01(\x04R\x0eleaseTimeoutMs\x12!\n" +
+	"\fstorage_mode\x18\n" +
+	" \x01(\tR\vstorageMode\x12!\n" +
+	"\fstorage_path\x18\v \x01(\tR\vstoragePath\"s\n" +
 	"\x14CreateSessionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +

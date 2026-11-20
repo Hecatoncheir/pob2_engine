@@ -19,16 +19,16 @@ const (
 var identifier = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$`)
 
 type CreateSession struct {
-	SessionID string
-	BuildName string
-	RequestID string
+	SessionID string `json:"session_id"`
+	BuildName string `json:"build_name"`
+	RequestID string `json:"request_id"`
 }
 
 type RenameBuild struct {
-	SessionID        string
-	BuildName        string
-	ExpectedRevision uint64
-	RequestID        string
+	SessionID        string `json:"session_id"`
+	BuildName        string `json:"build_name"`
+	ExpectedRevision uint64 `json:"expected_revision"`
+	RequestID        string `json:"request_id"`
 }
 
 // Commands — общий контракт для локального сервиса и удалённого клиента.
@@ -55,11 +55,12 @@ type session struct {
 	requests        map[string]rename
 }
 
-// Service хранит сессии в памяти; изменения одной сессии выполняются последовательно.
+// Service публикует изменения в памяти после подтверждения журнала, если он задан.
 type Service struct {
 	mu       sync.RWMutex
 	sessions map[string]*session
 	requests map[string]creation
+	journal  Journal
 }
 
 func NewService() *Service {
@@ -98,6 +99,9 @@ func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapsho
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит сессий или команд")
 	}
 	result := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: 1}
+	if err := s.persist(ctx, Change{Create: &cmd, Result: result}); err != nil {
+		return domain.Snapshot{}, err
+	}
 	s.sessions[cmd.SessionID] = &session{snapshot: result, createRequestID: cmd.RequestID, requests: make(map[string]rename)}
 	s.requests[cmd.RequestID] = creation{command: cmd, result: result}
 	return result, nil
@@ -157,8 +161,11 @@ func (s *Service) Rename(ctx context.Context, cmd RenameBuild) (domain.Snapshot,
 	if len(value.requests) >= maxRequests {
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит команд сессии")
 	}
-	value.snapshot.BuildName = cmd.BuildName
-	value.snapshot.Revision++
+	result := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: value.snapshot.Revision + 1}
+	if err := s.persist(ctx, Change{Rename: &cmd, Result: result}); err != nil {
+		return domain.Snapshot{}, err
+	}
+	value.snapshot = result
 	value.requests[cmd.RequestID] = rename{command: cmd, result: value.snapshot}
 	return value.snapshot, nil
 }

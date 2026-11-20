@@ -34,6 +34,8 @@ message GetServerInfoResponse {
   uint32 client_count = 7;
   uint32 active_tasks = 8;
   uint64 lease_timeout_ms = 9;
+  string storage_mode = 10;
+  string storage_path = 11;
 }
 
 // request_id повторяется только для точного повтора той же команды.

@@ -153,6 +153,8 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
     $core.int? clientCount,
     $core.int? activeTasks,
     $fixnum.Int64? leaseTimeoutMs,
+    $core.String? storageMode,
+    $core.String? storagePath,
   }) {
     final result = GetServerInfoResponse._();
     if (version != null) result.version = version;
@@ -164,6 +166,8 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
     if (clientCount != null) result.clientCount = clientCount;
     if (activeTasks != null) result.activeTasks = activeTasks;
     if (leaseTimeoutMs != null) result.leaseTimeoutMs = leaseTimeoutMs;
+    if (storageMode != null) result.storageMode = storageMode;
+    if (storagePath != null) result.storagePath = storagePath;
     return result;
   }
 
@@ -193,6 +197,8 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(
         9, _omitFieldNames ? '' : 'leaseTimeoutMs', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(10, _omitFieldNames ? '' : 'storageMode')
+    ..aOS(11, _omitFieldNames ? '' : 'storagePath')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -293,6 +299,24 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
   $core.bool hasLeaseTimeoutMs() => $_has(8);
   @$pb.TagNumber(9)
   void clearLeaseTimeoutMs() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get storageMode => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set storageMode($core.String value) => $_setString(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasStorageMode() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearStorageMode() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get storagePath => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set storagePath($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasStoragePath() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearStoragePath() => $_clearField(11);
 }
 
 /// request_id повторяется только для точного повтора той же команды.

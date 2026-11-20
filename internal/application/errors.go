@@ -9,6 +9,7 @@ const (
 	RevisionConflict  Code = "revision_conflict"
 	RequestConflict   Code = "request_conflict"
 	ResourceExhausted Code = "resource_exhausted"
+	StorageFailure    Code = "storage_failure"
 )
 
 // Error описывает ошибку команды без привязки к транспортному протоколу.

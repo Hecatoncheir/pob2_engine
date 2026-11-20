@@ -8,12 +8,12 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"regexp"
 	"time"
+
+	"github.com/Hecatoncheir/pob2_engine/internal/privatefs"
 )
 
 var ErrLocked = errors.New("профиль занят другим процессом")
-var profileName = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$`)
 
 type Record struct {
 	InstanceID      string `json:"instance_id"`
@@ -24,12 +24,12 @@ type Record struct {
 	PID             int    `json:"pid"`
 }
 
-type Profile struct{ Dir string }
+type Profile struct{ Dir, Name string }
 
 // Open создаёт только собственные подкаталоги; базовый каталог не меняется.
 func Open(base, name string) (Profile, error) {
-	if !profileName.MatchString(name) {
-		return Profile{}, fmt.Errorf("имя профиля: 1–64 буквы ASCII, цифры, дефис или подчёркивание")
+	if err := privatefs.ValidateProfile(name); err != nil {
+		return Profile{}, err
 	}
 	if base == "" {
 		var err error
@@ -42,28 +42,14 @@ func Open(base, name string) (Profile, error) {
 	if err != nil {
 		return Profile{}, err
 	}
-	if err := privateDir(root); err != nil {
+	if err := privatefs.EnsureDir(root); err != nil {
 		return Profile{}, err
 	}
 	dir := filepath.Join(root, name)
-	if err := privateDir(dir); err != nil {
+	if err := privatefs.EnsureDir(dir); err != nil {
 		return Profile{}, err
 	}
-	return Profile{Dir: dir}, nil
-}
-
-func privateDir(path string) error {
-	if err := os.MkdirAll(path, 0700); err != nil {
-		return err
-	}
-	info, err := os.Lstat(path)
-	if err != nil {
-		return err
-	}
-	if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
-		return fmt.Errorf("каталог профиля не должен быть ссылкой: %s", path)
-	}
-	return protectDir(path)
+	return Profile{Dir: dir, Name: name}, nil
 }
 
 func (p Profile) RecordPath() string { return filepath.Join(p.Dir, "connection.json") }

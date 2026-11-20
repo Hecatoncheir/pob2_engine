@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -21,7 +22,7 @@ import (
 var binary string
 
 func TestMain(m *testing.M) {
-	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" {
+	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" || os.Getenv("POB2_PERSISTENCE_HELPER") == "1" {
 		os.Exit(m.Run())
 	}
 	dir, err := os.MkdirTemp("", "pob2-process-test-")
@@ -50,6 +51,7 @@ func TestMain(m *testing.M) {
 }
 
 type process struct {
+	cmd   *exec.Cmd
 	ready grpcapi.Ready
 	done  chan struct{}
 	err   error
@@ -57,6 +59,17 @@ type process struct {
 
 func startServer(t *testing.T, ctx context.Context, args ...string) *process {
 	t.Helper()
+	if !slices.Contains(args, "--profile") && !slices.Contains(args, "--data-dir") && !slices.Contains(args, "--ephemeral") {
+		args = append(args, "--ephemeral")
+	}
+	if !slices.Contains(args, "--data-dir") {
+		for i, arg := range args {
+			if arg == "--runtime-dir" && i+1 < len(args) {
+				args = append(args, "--data-dir", args[i+1])
+				break
+			}
+		}
+	}
 	ctx, cancel := context.WithCancel(ctx)
 	cmd := exec.CommandContext(ctx, binary, append([]string{"serve"}, args...)...)
 	// Тест изолирован от пользовательской настройки токена.
@@ -71,7 +84,7 @@ func startServer(t *testing.T, ctx context.Context, args ...string) *process {
 		cancel()
 		t.Fatal(err)
 	}
-	p := &process{done: make(chan struct{})}
+	p := &process{cmd: cmd, done: make(chan struct{})}
 	go func() { p.err = cmd.Wait(); close(p.done) }()
 	t.Cleanup(func() { cancel(); <-p.done })
 	ready := make(chan error, 1)
@@ -225,5 +238,5 @@ func TestCLIHelpVersionAndExitCodes(t *testing.T) {
 	}
 	cli(t, t.Context(), 2, "unknown")
 	cli(t, t.Context(), 2, "serve", "--unknown")
-	cli(t, t.Context(), 1, "serve", "--listen", "0.0.0.0:0")
+	cli(t, t.Context(), 1, "serve", "--ephemeral", "--listen", "0.0.0.0:0")
 }

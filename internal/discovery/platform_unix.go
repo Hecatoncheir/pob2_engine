@@ -16,5 +16,3 @@ func lockFile(file *os.File) error {
 	}
 	return err
 }
-
-func protectDir(path string) error { return os.Chmod(path, 0700) }

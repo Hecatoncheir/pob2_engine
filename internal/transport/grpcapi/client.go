@@ -59,7 +59,7 @@ func Inspect(ctx context.Context, address, token string) (*pb.GetServerInfoRespo
 }
 
 func open(address, token string) (*Client, error) {
-	if err := validateAddress(address); err != nil {
+	if err := ValidateAddress(address); err != nil {
 		return nil, err
 	}
 	if token == "" {

@@ -2,11 +2,13 @@
 
 Самостоятельный движок расчётов Path of Exile 2 на **Go**, со встроенными **CLI** и **MCP**. Существующее приложение [PoB II на Flutter](https://github.com/Hecatoncheir/pob2_ui) будет подключаться к нему через **gRPC / Protobuf**.
 
-**Состояние на 20 ноября 2026 года: работают сервис сессий Go/CLI/gRPC/MCP, обнаружение сервера, аренды клиентов и автоматическое завершение.** Клиенты используют общие сессии, ревизии и защиту повторов команд. Сервер поддерживает постоянный и автоматический режимы, ждёт ухода клиентов и завершения задач. Расчётное ядро и подключение Flutter ещё не реализованы; сессии хранятся только в памяти.
+**Состояние на 20 ноября 2026 года: работают сервис сессий Go/CLI/gRPC/MCP, обнаружение сервера, аренды клиентов, автоматическое завершение и сохранение на диск.** Сессии профиля, ревизии и результаты повторных команд восстанавливаются после перезапуска. Успешный ответ возвращается после записи транзакции. Расчётное ядро и подключение Flutter ещё не реализованы.
 
 Рабочие команды, контракт, ограничения и порядок генерации Go/Dart API — в [руководстве сервиса сессий](docs/SESSION-API.md). Разделы ниже описывают целевую архитектуру; не все её компоненты уже реализованы.
 
 Обнаружение по профилю, автозапуск, heartbeat, защита файлов и учёт задач описаны в [руководстве жизненного цикла](docs/SERVER-LIFECYCLE.md). Сначала соберите CLI через `go build ./cmd/pob2-engine`, затем запустите `pob2-engine connect --profile main --start-server` (на Windows: `.\pob2-engine.exe`, на Linux/macOS: `./pob2-engine`).
+
+Расположение базы, `--data-dir`, восстановление и обработка ошибок описаны в [руководстве хранения](docs/SESSION-STORAGE.md). Обычный `serve` использует профиль `default`; работа только в памяти задаётся явно через `--ephemeral`.
 
 Порядок реализации и критерии готовности — в [TODO.md](TODO.md), история изменений — в [CHANGELOG.md](CHANGELOG.md).
 
@@ -128,7 +130,7 @@ MCP остаётся отдельным внешним протоколом. Д�
 
 ## Структура проекта
 
-Уже существуют `cmd/pob2-engine`, `internal/application`, `internal/domain`, `internal/buildinfo`, `internal/lifecycle`, `internal/discovery`, `internal/host`, `internal/transport/{cli,grpcapi,mcpapi}`, `internal/integration`, `api/pob2/v1`, `gen/go`, `gen/dart` и инструменты генерации в `tool/`. Остальные каталоги в схеме добавляются по мере реализации:
+Уже существуют `cmd/pob2-engine`, `internal/application`, `internal/domain`, `internal/buildinfo`, `internal/lifecycle`, `internal/discovery`, `internal/host`, `internal/storage`, `internal/privatefs`, `internal/transport/{cli,grpcapi,mcpapi}`, `internal/integration`, `api/pob2/v1`, `gen/go`, `gen/dart` и инструменты генерации в `tool/`. Остальные каталоги в схеме добавляются по мере реализации:
 
 ```text
 api/pob2/v1/              .proto-контракты

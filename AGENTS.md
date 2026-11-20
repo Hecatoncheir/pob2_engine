@@ -2,14 +2,14 @@
 
 ## Состояние и структура проекта
 
-`pob2_engine` — проект расчётного движка Path of Exile 2 на Go. Работают сессии CLI/gRPC/MCP, обнаружение и аренды клиентов; расчёты ещё не реализованы. Контракты описаны в `docs/SESSION-API.md` и `docs/SERVER-LIFECYCLE.md`.
+`pob2_engine` — проект расчётного движка Path of Exile 2 на Go. Работают сессии CLI/gRPC/MCP, обнаружение, аренды и сохранение; расчётов пока нет. Контракты: `docs/SESSION-API.md`, `docs/SERVER-LIFECYCLE.md`, `docs/SESSION-STORAGE.md`.
 
 - `README.md` — архитектура и согласованные требования.
 - `TODO.md` — этапы реализации и критерии готовности.
 - `CHANGELOG.md` — изменения и записи выпусков.
 - `.github/workflows/ci.yml`, `release.yml` — проверки и публикация по тегам.
 
-Используйте `cmd/pob2-engine/` для точки входа, `internal/application/` для команд, `internal/domain/` для моделей, `internal/transport/` для адаптеров, `internal/integration/` для процессных тестов, `api/pob2/v1/` для Protobuf и `gen/go/`, `gen/dart/` для генерируемого API. Жизненный цикл расположен в `internal/lifecycle/`, обнаружение — в `internal/discovery/`, запуск — в `internal/host/`.
+Используйте `cmd/pob2-engine/` для точки входа, `internal/application/` для команд, `internal/domain/` для моделей, `internal/transport/` для адаптеров, `internal/integration/` для процессных тестов, `api/pob2/v1/` для Protobuf и `gen/go/`, `gen/dart/` для генерируемого API. Дополнительно: `internal/lifecycle/`, `internal/discovery/`, `internal/host/`, `internal/storage/`, `internal/privatefs/`.
 
 ## Сборка, проверки и локальная разработка
 
@@ -44,3 +44,5 @@ go run ./cmd/pob2-engine --help
 ## Архитектурные ограничения
 
 Ядро не зависит от Flutter, gRPC и MCP. Все адаптеры используют общий сервис команд и явно выбранную сессию. Неподдержанные возможности возвращают явный статус; заимствования сохраняют происхождение и применимые лицензии.
+
+Подтверждайте и публикуйте изменения после commit. Повреждённые данные не сбрасывайте. Восстанавливайте результаты `request_id`.
