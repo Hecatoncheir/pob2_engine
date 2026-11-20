@@ -48,5 +48,8 @@ python tool/notices.py --archive .reference/licenses.zip
 [числовой набор](docs/DATASET.md) перечислен в
 [манифесте](internal/gamedata/files/manifest.json): закреплённые исходные пути,
 SHA-256, copyright Grinding Gear Games и преобразования. Изображения и описания
-умений не включены. Авторские минимальные XML и результаты эталонного расчёта
+умений не включены. Ограниченный перенос формул ресурсов, попаданий и округления
+PoB отмечен в `internal/calculation/compute.go`; исходные пути, ревизия,
+copyright, лицензия и SHA-256 приведены в
+[origin.json](internal/calculation/origin.json). Авторские минимальные XML и результаты эталонного расчёта
 хранятся в `testdata/reference/`; их происхождение фиксируется рядом.

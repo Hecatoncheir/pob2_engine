@@ -1,10 +1,10 @@
 {
   "exporters": {
-    "tool/export_data.lua": "7a640fc4140a0adc2393f7e205e6cf2c04ec5d5de9210daae7c0813eaec5e6b5",
-    "tool/export_data.py": "0224fea9388ff10e6f0d8ff9698721f8039ea6cbe4889ed81e8e94a7d9505257"
+    "tool/export_data.lua": "993e0393d1b8bb126c377eabdd332089fec9384c1a3dc7997239d075cfdf945f",
+    "tool/export_data.py": "514b8d9477965d57fa95de7e05d4bada0e34baebbbadb58e2818554168ffef64"
   },
   "files": {
-    "catalog.json": "22d280f5ef6b08456ad8d8bed39b85ddf5e50418136f6c9ce551f037191cea62"
+    "catalog.json": "60e70d539ec4cffafb750f07accc39f89f384a4528d700e3993ddd7abfeaa3cc"
   },
   "game_version": null,
   "id": "pob2-0.0.1-fireball-v1",
@@ -18,6 +18,7 @@
       "src/Data/Skills/act_int.lua": "5b42b006be62d02f428fa03dbcd94bc9385041e502dc0bfc0640ff1a2aa430ac",
       "src/Data/Skills/sup_int.lua": "573766c7653ba612984b8e12bc70b77aa0e46f7aa217fe836fae539c7911c5af",
       "src/Modules/CalcTools.lua": "52e0c84a9fb1058ab922ebfe670ad57ca1c6906ed5f9774fe8a919b80e23b1d9",
+      "src/Modules/Data.lua": "ae4dc4f0d2b580b459e0f6596d7f9a45a258b65a1877932f308cefd072dc5289",
       "src/TreeData/0_5/tree.json": "f737d85016b834fcf56c961fd5fd93e1add172f01600fbf6d0f4f0a95e5af848"
     },
     "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2"

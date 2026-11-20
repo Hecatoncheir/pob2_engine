@@ -137,6 +137,14 @@ def verify():
     lock = read_json(DATA / 'sources.lock.json')
     for name in ['pob', 'mcp']:
         verify_source(CACHE / name, lock[name])
+    origin_path = ROOT / 'internal/calculation/origin.json'
+    if origin_path.is_file():
+        origin = read_json(origin_path)
+        if origin['commit'] != lock['pob']['commit'] or origin['repository'] != lock['pob']['repository']:
+            raise ValueError('Неверное происхождение перенесённых алгоритмов')
+        for name, digest in origin['files'].items():
+            if sha256((CACHE / 'pob' / name).read_bytes()) != digest:
+                raise ValueError('Изменён источник алгоритма: ' + name)
     return {'pob_commit': lock['pob']['commit'], 'mcp_commit': lock['mcp']['commit'],
             'tree_version': lock['tree_version'], 'target': target(),
             'python': platform.python_version(), 'native_files': native_files()}

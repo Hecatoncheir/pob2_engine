@@ -1,0 +1,586 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "id": "gem-01",
+      "level": 100,
+      "gem_level": 1,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-02",
+      "level": 100,
+      "gem_level": 2,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-03",
+      "level": 100,
+      "gem_level": 3,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-04",
+      "level": 100,
+      "gem_level": 4,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-05",
+      "level": 100,
+      "gem_level": 5,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-06",
+      "level": 100,
+      "gem_level": 6,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-07",
+      "level": 100,
+      "gem_level": 7,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-08",
+      "level": 100,
+      "gem_level": 8,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-09",
+      "level": 100,
+      "gem_level": 9,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-10",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-11",
+      "level": 100,
+      "gem_level": 11,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-12",
+      "level": 100,
+      "gem_level": 12,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-13",
+      "level": 100,
+      "gem_level": 13,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-14",
+      "level": 100,
+      "gem_level": 14,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-15",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-16",
+      "level": 100,
+      "gem_level": 16,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-17",
+      "level": 100,
+      "gem_level": 17,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-18",
+      "level": 100,
+      "gem_level": 18,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-19",
+      "level": 100,
+      "gem_level": 19,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "gem-20",
+      "level": 100,
+      "gem_level": 20,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "character-001",
+      "level": 1,
+      "gem_level": 1
+    },
+    {
+      "id": "character-020",
+      "level": 20,
+      "gem_level": 1
+    },
+    {
+      "id": "character-050",
+      "level": 50,
+      "gem_level": 1
+    },
+    {
+      "id": "character-100",
+      "level": 100,
+      "gem_level": 1
+    },
+    {
+      "id": "support-rapid",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "supports": [
+        "Rapid Casting I"
+      ]
+    },
+    {
+      "id": "support-controlled",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "supports": [
+        "Controlled Destruction"
+      ]
+    },
+    {
+      "id": "support-combined",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "supports": [
+        "Rapid Casting I",
+        "Controlled Destruction"
+      ]
+    },
+    {
+      "id": "mod-01",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+25 to Strength"
+    },
+    {
+      "id": "mod-02",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+25 to Dexterity"
+    },
+    {
+      "id": "mod-03",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+25 to Intelligence"
+    },
+    {
+      "id": "mod-04",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+10 to all Attributes"
+    },
+    {
+      "id": "mod-05",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+50 to maximum Life"
+    },
+    {
+      "id": "mod-06",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+50 to maximum Mana"
+    },
+    {
+      "id": "mod-07",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n10% increased maximum Life"
+    },
+    {
+      "id": "mod-08",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n10% increased maximum Mana"
+    },
+    {
+      "id": "mod-09",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n30% increased Spell Damage"
+    },
+    {
+      "id": "mod-10",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n30% increased Fire Damage"
+    },
+    {
+      "id": "mod-11",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n30% increased Elemental Damage"
+    },
+    {
+      "id": "mod-12",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n30% increased Projectile Damage"
+    },
+    {
+      "id": "mod-13",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n25% more Spell Damage"
+    },
+    {
+      "id": "mod-14",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n15% increased Cast Speed"
+    },
+    {
+      "id": "mod-15",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n50% increased Critical Hit Chance"
+    },
+    {
+      "id": "mod-16",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n25% increased Critical Damage Bonus"
+    },
+    {
+      "id": "mod-17",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n20% increased Mana Regeneration Rate"
+    },
+    {
+      "id": "mod-18",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+35% to Fire Resistance"
+    },
+    {
+      "id": "mod-19",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+35% to Cold Resistance"
+    },
+    {
+      "id": "mod-20",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+35% to Lightning Resistance"
+    },
+    {
+      "id": "mod-21",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+35% to Chaos Resistance"
+    },
+    {
+      "id": "mod-22",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+20% to all Elemental Resistances"
+    },
+    {
+      "id": "passives-1",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "nodes": [
+        4739
+      ]
+    },
+    {
+      "id": "passives-2",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "nodes": [
+        4739,
+        18845
+      ]
+    },
+    {
+      "id": "passives-3",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "nodes": [
+        4739,
+        18845,
+        55807
+      ]
+    },
+    {
+      "id": "passives-4",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "nodes": [
+        4739,
+        18845,
+        55807,
+        6686
+      ]
+    },
+    {
+      "id": "passives-5",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "nodes": [
+        4739,
+        18845,
+        55807,
+        6686,
+        51184
+      ]
+    },
+    {
+      "id": "enemy-resist--25",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "config": {
+        "enemyFireResist": -25
+      }
+    },
+    {
+      "id": "enemy-resist-25",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "config": {
+        "enemyFireResist": 25
+      }
+    },
+    {
+      "id": "enemy-resist-75",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "config": {
+        "enemyFireResist": 75
+      }
+    },
+    {
+      "id": "penalty--60",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "config": {
+        "resistancePenalty": -60
+      }
+    },
+    {
+      "id": "penalty--20",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "config": {
+        "resistancePenalty": -20
+      }
+    },
+    {
+      "id": "item-mana",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "items": [
+        {
+          "slot": "Ring 1",
+          "raw": "Rarity: Rare\nReference mana\nLazuli Ring\nItem Level: 100\nImplicits: 1\n+25 to maximum Mana\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        }
+      ]
+    },
+    {
+      "id": "item-fire",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "items": [
+        {
+          "slot": "Ring 1",
+          "raw": "Rarity: Rare\nReference fire\nRuby Ring\nItem Level: 100\nImplicits: 1\n+25% to Fire Resistance\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        }
+      ]
+    },
+    {
+      "id": "item-speed",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "items": [
+        {
+          "slot": "Ring 1",
+          "raw": "Rarity: Rare\nReference speed\nPearl Ring\nItem Level: 100\nImplicits: 1\n8% increased Cast Speed\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        }
+      ]
+    },
+    {
+      "id": "item-resist",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "items": [
+        {
+          "slot": "Ring 2",
+          "raw": "Rarity: Rare\nReference resist\nPrismatic Ring\nItem Level: 100\nImplicits: 1\n+8% to all Elemental Resistances\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        }
+      ]
+    },
+    {
+      "id": "item-int",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "items": [
+        {
+          "slot": "Amulet",
+          "raw": "Rarity: Rare\nReference int\nLapis Amulet\nItem Level: 100\nImplicits: 1\n+12 to Intelligence\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        }
+      ]
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n30% increased Spell Damage\n25% increased Fire Damage\n20% more Spell Damage\n10% more Elemental Damage",
+      "id": "mixed-damage"
+    },
+    {
+      "level": 1,
+      "gem_level": 1,
+      "custom_mods": "2% increased maximum Life\n1% increased maximum Mana\n3% increased Cast Speed\n+12.5% to Fire Resistance",
+      "id": "rounding-resources"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n100% reduced Critical Hit Chance",
+      "id": "crit-floor"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n2000% increased Critical Hit Chance",
+      "id": "crit-cap"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n50% reduced Critical Damage Bonus",
+      "id": "crit-bonus-reduced"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n15% reduced Cast Speed",
+      "id": "cast-reduced"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n+500% to Fire Resistance\n-500% to Cold Resistance",
+      "id": "resist-limits"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n100% reduced Spell Damage",
+      "id": "zero-damage"
+    },
+    {
+      "level": 100,
+      "gem_level": 20,
+      "custom_mods": "",
+      "id": "gem-requirement-warning"
+    },
+    {
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n10% increased maximum Life\n12% increased maximum Mana\n25% increased Critical Damage Bonus\n+30% to all Elemental Resistances",
+      "id": "combined-build",
+      "nodes": [
+        4739,
+        18845,
+        55807,
+        6686,
+        51184
+      ],
+      "supports": [
+        "Rapid Casting I",
+        "Controlled Destruction"
+      ],
+      "items": [
+        {
+          "slot": "Ring 1",
+          "raw": "Rarity: Rare\nReference mana\nLazuli Ring\nItem Level: 100\nImplicits: 1\n+25 to maximum Mana\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        },
+        {
+          "slot": "Ring 2",
+          "raw": "Rarity: Rare\nReference resist\nPrismatic Ring\nItem Level: 100\nImplicits: 1\n+8% to all Elemental Resistances\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        },
+        {
+          "slot": "Amulet",
+          "raw": "Rarity: Rare\nReference int\nLapis Amulet\nItem Level: 100\nImplicits: 1\n+12 to Intelligence\n+50 to maximum Life\n20% increased Spell Damage\n+15 to Intelligence\n"
+        }
+      ],
+      "config": {
+        "enemyFireResist": 25,
+        "resistancePenalty": -60
+      }
+    },
+    {
+      "id": "unparsed-custom-modifier",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence\n2.5% increased Cast Speed",
+      "expected_unparsed": [
+        "2.5% increased Cast Speed"
+      ]
+    },
+    {
+      "id": "item-normal",
+      "level": 1,
+      "gem_level": 1,
+      "items": [
+        {
+          "slot": "Ring 1",
+          "raw": "Rarity: Normal\nLazuli Ring\nItem Level: 100\nImplicits: 1\n+25 to maximum Mana\n"
+        }
+      ]
+    },
+    {
+      "id": "item-magic",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence",
+      "items": [
+        {
+          "slot": "Ring 1",
+          "raw": "Rarity: Magic\nReference Magic\nLazuli Ring\nItem Level: 100\nImplicits: 1\n+25 to maximum Mana\n+50 to maximum Life\n"
+        }
+      ]
+    }
+  ]
+}

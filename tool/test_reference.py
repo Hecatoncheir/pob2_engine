@@ -27,6 +27,16 @@ class ReferenceIntegrity(unittest.TestCase):
             entry = next(f for f in sources[project]['files'] if f['path'].startswith('LICENSE'))
             self.assertEqual(sha256((ROOT / '.licenses/reference' / path).read_bytes()), entry['sha256'])
 
+    def test_matrix_inputs_match_recorded_results(self):
+        golden = read_json(DATA / 'cases.lua.json')
+        self.assertEqual(golden['recipe_sha256'], sha256((DATA / 'cases.recipe.json').read_bytes()))
+        recorded = {case['id'] for case in golden['cases']}
+        recipes = [case['id'] for case in read_json(DATA / 'cases.recipe.json')['cases']]
+        self.assertEqual(len(recipes), len(set(recipes)))
+        self.assertEqual(recorded, set(recipes))
+        for case in golden['cases']:
+            self.assertEqual(case['input_sha256'], sha256((DATA / 'cases' / (case['id'] + '.xml')).read_bytes()))
+
     def test_warnings_and_field_loss_are_not_numeric_tolerances(self):
         for actual in [{'warnings': []}, {'warnings': ['different']}, {}]:
             with self.subTest(actual=actual), self.assertRaises(ValueError):

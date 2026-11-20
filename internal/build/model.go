@@ -15,6 +15,7 @@ type Issue struct {
 }
 
 type Gem struct {
+	VariantID string `json:"variant_id"`
 	ID        string `json:"id"`
 	Name      string `json:"name"`
 	SkillID   string `json:"skill_id"`
@@ -272,7 +273,7 @@ func (m *Model) readSkills(skills *element) error {
 }
 
 func readGem(node *element) (Gem, error) {
-	gem := Gem{ID: node.attr("gemId", ""), Name: node.attr("nameSpec", ""), SkillID: node.attr("skillId", "")}
+	gem := Gem{ID: node.attr("gemId", ""), VariantID: node.attr("variantId", ""), Name: node.attr("nameSpec", ""), SkillID: node.attr("skillId", "")}
 	var err error
 	gem.Level, err = integer(node.attr("level", "1"), "Gem/level", 1, 100)
 	if err != nil {

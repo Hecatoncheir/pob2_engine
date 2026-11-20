@@ -1,6 +1,7 @@
 package build
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
@@ -15,7 +16,8 @@ var layouts = map[string]layout{
 	"TimelessData":      {"searchList searchListFallback devotionVariant1 devotionVariant2", ""},
 	"Import":            {"exportParty", ""},
 	"Items":             {"activeItemSet useSecondWeaponSet showStatDifferences", "Item ItemSet"},
-	"Item":              {"id", ""},
+	"Item":              {"id", "ModRange"},
+	"ModRange":          {"id range", ""},
 	"ItemSet":           {"id title useSecondWeaponSet", "Slot"},
 	"Slot":              {"name itemId itemPbURL", ""},
 	"Tree":              {"activeSpec", "Spec"},
@@ -117,6 +119,12 @@ func activeElement(node *element, model *Model) bool {
 
 func inspectSpecialValues(node *element, path string, model *Model) {
 	switch node.name.Local {
+	case "ModRange":
+		id, err := strconv.Atoi(node.attr("id", ""))
+		value, numberErr := strconv.ParseFloat(node.attr("range", ""), 64)
+		if err != nil || id < 1 || numberErr != nil || math.IsNaN(value) || math.IsInf(value, 0) || value < 0 || value > 1 {
+			model.issue(path, "неверные параметры диапазона свойства предмета")
+		}
 	case "Spec":
 		if node.attr("masteryEffects", "") != "" {
 			model.issue(path, "эффекты мастерства пока не поддерживаются")

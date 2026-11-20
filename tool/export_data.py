@@ -12,7 +12,7 @@ from reference_lua import encode
 OUTPUT = ROOT / 'internal/gamedata/files'
 INPUTS = ['src/Data/Gems.lua', 'src/Data/Skills/act_int.lua', 'src/Data/Skills/sup_int.lua',
           'src/Data/Bases/ring.lua', 'src/Data/Bases/amulet.lua', 'src/Data/Misc.lua',
-          'src/TreeData/0_5/tree.json', 'src/Modules/CalcTools.lua']
+          'src/TreeData/0_5/tree.json', 'src/Modules/CalcTools.lua', 'src/Modules/Data.lua']
 
 
 def export():

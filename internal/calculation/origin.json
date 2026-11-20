@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+  "copyright": "Copyright (c) 2016 David Gowor",
+  "license": ".licenses/reference/pob-LICENSE.md",
+  "files": {
+    "src/Modules/CalcSetup.lua": "a45920408c7d502abc6230727f00efd06a2de85918a32e76a28bb9757b07bc23",
+    "src/Modules/CalcPerform.lua": "b5955d4eaed31c01ea85e551a5eef46b6f006d7ebe3e8722993b69a425666b31",
+    "src/Modules/CalcDefence.lua": "7884220a9744297bc62de7d67112173d4ba28ffb35c848e9418031e6f68b1cc7",
+    "src/Modules/CalcOffence.lua": "eb76d3d8be967c5bca79062c79cf4693d182b652bb2b2418c07fa7da16f91435",
+    "src/Modules/Common.lua": "dfb852bdcfce54c6588748429a60c3bb63c07373638cb9f1079dbe7db51ad2a7"
+  },
+  "changes": "Ограниченный перенос вычислений ресурсов, попаданий Fireball и округления в типизированный Go. Явная диагностика покрытия, независимые сессии и транспортные адаптеры."
+}

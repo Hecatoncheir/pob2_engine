@@ -70,7 +70,8 @@
     "base_maximum_all_resistances_%": 75,
     "life_per_level": 12,
     "mana_per_level": 4,
-    "mana_regeneration_base": 0.04
+    "mana_regeneration_base": 0.04,
+    "resistance_floor": -200
   },
   "gems": [
     {
@@ -82,6 +83,7 @@
         }
       ],
       "family": "ControlledDestruction",
+      "game_id": "Metadata/Items/Gems/SupportGemControlledDestruction",
       "id": "Metadata/Items/Gems/SkillGemControlledDestructionSupport",
       "levels": [
         {
@@ -96,7 +98,8 @@
       ],
       "name": "Controlled Destruction",
       "skill_id": "SupportControlledDestructionPlayer",
-      "support": true
+      "support": true,
+      "variant_id": "ControlledDestructionSupport"
     },
     {
       "cast_time": 1.2,
@@ -119,6 +122,7 @@
         }
       ],
       "family": "",
+      "game_id": "Metadata/Items/Gem/SkillGemFireball",
       "id": "Metadata/Items/Gems/SkillGemFireball",
       "levels": [
         {
@@ -304,7 +308,8 @@
       ],
       "name": "Fireball",
       "skill_id": "FireballPlayer",
-      "support": false
+      "support": false,
+      "variant_id": "Fireball"
     },
     {
       "cast_time": 0,
@@ -315,6 +320,7 @@
         }
       ],
       "family": "RapidCasting",
+      "game_id": "Metadata/Items/Gems/SupportGemArcaneTempo",
       "id": "Metadata/Items/Gems/SkillGemRapidCastingSupport",
       "levels": [
         {
@@ -329,7 +335,8 @@
       ],
       "name": "Rapid Casting I",
       "skill_id": "SupportRapidCastingPlayer",
-      "support": true
+      "support": true,
+      "variant_id": "RapidCastingSupport"
     }
   ],
   "items": [

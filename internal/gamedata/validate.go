@@ -22,6 +22,9 @@ func (d *Dataset) validate() error {
 		return err
 	}
 	c := d.catalog.Constants
+	if !finite(c.ResistanceFloor) || c.ResistanceFloor < -1000 || c.ResistanceFloor > 0 {
+		return fmt.Errorf("неверная нижняя граница сопротивлений")
+	}
 	for _, v := range []float64{c.LifePerLevel, c.ManaPerLevel, c.MaxResistance, c.CritBonus, c.ManaRegen} {
 		if !finite(v) || v <= 0 {
 			return fmt.Errorf("неверная числовая константа")
@@ -48,13 +51,18 @@ func (d *Dataset) validateClasses() error {
 }
 
 func (d *Dataset) validateGems() error {
-	aliases := make(map[string]bool)
+	aliases := make(map[string]string)
+	ids := make(map[string]bool)
 	for _, g := range d.catalog.Gems {
-		for _, name := range []string{g.ID, g.SkillID, g.Name} {
-			if name == "" || aliases[name] {
+		if ids[g.ID] {
+			return fmt.Errorf("повторный камень %s", g.ID)
+		}
+		ids[g.ID] = true
+		for _, name := range []string{g.ID, g.GameID, g.VariantID, g.SkillID, g.Name} {
+			if name == "" || (aliases[name] != "" && aliases[name] != g.ID) {
 				return fmt.Errorf("неверный или повторный камень %s", g.ID)
 			}
-			aliases[name] = true
+			aliases[name] = g.ID
 		}
 		if !finite(g.CastTime) || g.CastTime < 0 || (!g.Support && g.CastTime == 0) || len(g.Levels) == 0 {
 			return fmt.Errorf("нет параметров камня %s", g.ID)

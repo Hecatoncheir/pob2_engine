@@ -19,7 +19,7 @@ local effects = { FireballPlayer = true, SupportControlledDestructionPlayer = tr
 for id, gem in pairs(data.gems) do
 	if effects[gem.grantedEffectId] and id:match("^Metadata/Items/Gems/") then
 		local effect = data.skills[gem.grantedEffectId]
-		local exported = { id = id, name = gem.name, skill_id = gem.grantedEffectId, support = effect.support == true,
+		local exported = { id = id, game_id = gem.gameId, variant_id = gem.variantId, name = gem.name, skill_id = gem.grantedEffectId, support = effect.support == true,
 			cast_time = effect.castTime or 0, family = effect.gemFamily and effect.gemFamily[1] or "",
 			levels = {}, constant_stats = effect.statSets[1].constantStats or {} }
 		local maximum = effect.support and 1 or 20
@@ -53,4 +53,5 @@ for _, key in ipairs({ "life_per_level", "mana_per_level", "base_maximum_all_res
 	result.constants[key] = assert(data.characterConstants[key])
 end
 result.constants.mana_regeneration_base = assert(data.misc.ManaRegenBase)
+result.constants.resistance_floor = assert(data.misc.ResistFloor)
 io.stdout:write(assert(json.encode(result)), "\n")

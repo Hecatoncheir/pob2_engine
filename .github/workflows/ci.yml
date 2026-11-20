@@ -101,6 +101,8 @@ jobs:
         run: python3 tool/reference_lua.py --prepare
       - name: Проверить воспроизводимость встроенных данных
         run: python3 tool/export_data.py
+      - name: Воспроизвести матрицу расчётов и диагностики
+        run: python3 tool/reference_cases.py
       - name: Сохранить отчёт и состав среды
         if: always()
         uses: actions/upload-artifact@v7.0.2

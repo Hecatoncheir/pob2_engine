@@ -43,6 +43,8 @@ type Stat struct {
 }
 
 type Gem struct {
+	GameID        string     `json:"game_id"`
+	VariantID     string     `json:"variant_id"`
 	ID            string     `json:"id"`
 	Name          string     `json:"name"`
 	SkillID       string     `json:"skill_id"`
@@ -68,11 +70,12 @@ type Node struct {
 }
 
 type Constants struct {
-	LifePerLevel  float64 `json:"life_per_level"`
-	ManaPerLevel  float64 `json:"mana_per_level"`
-	MaxResistance float64 `json:"base_maximum_all_resistances_%"`
-	CritBonus     float64 `json:"base_critical_hit_damage_bonus"`
-	ManaRegen     float64 `json:"mana_regeneration_base"`
+	ResistanceFloor float64 `json:"resistance_floor"`
+	LifePerLevel    float64 `json:"life_per_level"`
+	ManaPerLevel    float64 `json:"mana_per_level"`
+	MaxResistance   float64 `json:"base_maximum_all_resistances_%"`
+	CritBonus       float64 `json:"base_critical_hit_damage_bonus"`
+	ManaRegen       float64 `json:"mana_regeneration_base"`
 }
 
 type catalog struct {
@@ -101,8 +104,8 @@ type Manifest struct {
 
 // Dataset после загрузки не изменяется; методы возвращают независимые срезы.
 type Dataset struct {
-	id, tree, commit string
-	catalog          catalog
+	id, tree, commit, hash string
+	catalog                catalog
 }
 
 func Embedded() (*Dataset, error) {
@@ -151,7 +154,7 @@ func Load(files fs.FS) (*Dataset, error) {
 	if hex.EncodeToString(digest[:]) != manifest.Files["catalog.json"] {
 		return nil, fmt.Errorf("нарушена SHA-256 каталога")
 	}
-	dataset := &Dataset{id: manifest.ID, tree: manifest.TreeVersion, commit: manifest.PoBCommit}
+	dataset := &Dataset{id: manifest.ID, tree: manifest.TreeVersion, commit: manifest.PoBCommit, hash: manifest.Files["catalog.json"]}
 	if err := decode(data, &dataset.catalog); err != nil {
 		return nil, err
 	}
@@ -187,6 +190,7 @@ func validateManifest(m Manifest) error {
 func (d *Dataset) ID() string           { return d.id }
 func (d *Dataset) TreeVersion() string  { return d.tree }
 func (d *Dataset) PoBCommit() string    { return d.commit }
+func (d *Dataset) SHA256() string       { return d.hash }
 func (d *Dataset) Constants() Constants { return d.catalog.Constants }
 func (d *Dataset) Classes() []Class     { return slices.Clone(d.catalog.Classes) }
 func (d *Dataset) Class(id int) (Class, bool) {
@@ -199,7 +203,7 @@ func (d *Dataset) Class(id int) (Class, bool) {
 }
 func (d *Dataset) Gem(id string) (Gem, bool) {
 	for _, g := range d.catalog.Gems {
-		if g.ID == id || g.SkillID == id || g.Name == id {
+		if g.ID == id || g.SkillID == id || g.Name == id || g.GameID == id || g.VariantID == id {
 			g.Levels = slices.Clone(g.Levels)
 			g.ConstantStats = slices.Clone(g.ConstantStats)
 			return g, true
