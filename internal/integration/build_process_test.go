@@ -207,3 +207,64 @@ func TestCleanStandaloneCalculationAndStatusExitCodes(t *testing.T) {
 		})
 	}
 }
+
+func TestEveryMCPEditSurvivesCrashAndReachesGRPC(t *testing.T) {
+	ctx, cancel := context.WithTimeout(t.Context(), 30*time.Second)
+	defer cancel()
+	base := t.TempDir()
+	p := startServer(t, ctx, "--profile", "edits", "--runtime-dir", base, "--data-dir", base)
+	connection := []string{"--address", p.ready.Address, "--token", p.ready.Token}
+	cli(t, ctx, 0, append([]string{"session", "create", "--session", "main", "--name", "Правки", "--request-id", "create"}, connection...)...)
+	m := connectMCP(t, ctx, append([]string{"--attach", "main"}, connection...)...)
+	xml, err := os.ReadFile("../../testdata/reference/fireball.xml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	call(t, ctx, m, "import_build", map[string]any{"xml": string(xml), "expected_revision": 1, "request_id": "import"}, false)
+	client, err := grpcapi.Dial(ctx, p.ready.Address, p.ready.Token)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Close()
+	stream, err := client.Watch(ctx, "main", 2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cases := []struct {
+		name, field string
+		edit        map[string]any
+	}{
+		{"level", "level", map[string]any{"level": map[string]any{"level": 20}}},
+		{"gems", "groups", map[string]any{"gems": map[string]any{"group_id": 1, "enabled": true, "gems": []any{map[string]any{"id": "FireballPlayer", "level": 1, "quality": 0, "enabled": true}, map[string]any{"id": "SupportRapidCastingPlayer", "level": 1, "quality": 0, "enabled": true}}}}},
+		{"equipment", "items", map[string]any{"equipment": map[string]any{"slot": "Ring 1", "raw": "Rarity: Normal\nLazuli Ring\nImplicits: 1\n+25 to maximum Mana"}}},
+		{"passives", "nodes", map[string]any{"passives": map[string]any{"nodes": []int{4739, 18845}}}},
+		{"selection", "weapon_set", map[string]any{"selection": map[string]any{"weapon_set": 2}}},
+		{"config", "config", map[string]any{"config": map[string]any{"name": "enemyFireResist", "value": map[string]any{"type": "number", "value": "25"}}}},
+		{"remove-config", "config", map[string]any{"config": map[string]any{"name": "enemyFireResist", "value": nil}}},
+	}
+	var saved application.SnapshotView
+	for i, sample := range cases {
+		saved = structuredView(t, call(t, ctx, m, "edit_build", map[string]any{"edit": sample.edit, "expected_revision": i + 2, "request_id": sample.name}, false).StructuredContent)
+		event, err := stream.Recv()
+		if err != nil || event.GetSnapshot().GetRevision() != uint64(i+3) || !slices.Contains(event.GetChangedFields(), "build.model."+sample.field) {
+			t.Fatalf("правка %s не доставлена: %v %v", sample.name, event, err)
+		}
+	}
+	if saved.Build.Model.Level != 20 || saved.Build.Model.WeaponSet != 2 || len(saved.Build.Model.Groups[0].Gems) != 2 || saved.Build.Model.Slots["Ring 1"] == 0 {
+		t.Fatal("MCP потерял значения правки")
+	}
+	if err := m.Close(); err != nil {
+		t.Fatal(err)
+	}
+	client.Close()
+	if err := p.cmd.Process.Kill(); err != nil {
+		t.Fatal(err)
+	}
+	<-p.done
+	restarted := startServer(t, ctx, "--profile", "edits", "--runtime-dir", t.TempDir(), "--data-dir", base)
+	connection = []string{"--address", restarted.ready.Address, "--token", restarted.ready.Token}
+	recovered := buildView(t, cli(t, ctx, 0, append([]string{"session", "get", "--session", "main"}, connection...)...))
+	if !reflect.DeepEqual(recovered, saved) {
+		t.Fatal("журнал потерял одну из правок после Kill")
+	}
+}
