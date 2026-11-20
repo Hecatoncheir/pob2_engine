@@ -70,6 +70,10 @@ func (s *inputs) number(value build.ConfigValue, path string, minimum, maximum f
 }
 
 func (s *inputs) readGems() {
+	if len(s.model.Groups) > 100 {
+		s.issue("unsupported_limit", "Skills", "слишком много групп")
+		return
+	}
 	var group *build.Group
 	for i := range s.model.Groups {
 		candidate := &s.model.Groups[i]
@@ -82,6 +86,10 @@ func (s *inputs) readGems() {
 	}
 	if group == nil || !group.Enabled {
 		s.issue("missing_input", "Skills", "не выбрана включённая группа")
+		return
+	}
+	if len(group.Gems) > 12 {
+		s.issue("unsupported_limit", "Skills", "не более 12 камней в группе")
 		return
 	}
 	if group.MainSkill != 1 {
@@ -180,6 +188,10 @@ func (s *inputs) readPassives() {
 func (s *inputs) readCustomMods() {
 	value := s.model.Config["customMods"]
 	if value.Type != "string" {
+		return
+	}
+	if len(value.Value) > 65536 {
+		s.issue("unsupported_limit", "Config/customMods", "пользовательские свойства превышают 65536 байт")
 		return
 	}
 	for i, line := range strings.Split(value.Value, "\n") {

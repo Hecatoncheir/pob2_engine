@@ -6,9 +6,12 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"unicode/utf8"
 
+	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
+	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
 const (
@@ -53,20 +56,29 @@ type session struct {
 	snapshot        domain.Snapshot
 	createRequestID string
 	requests        map[string]rename
+	buildRequests   map[string]buildRequest
+	pending         map[string]*pendingCalculation
 	events          []Event
 	changed         chan struct{}
 }
 
 // Service публикует изменения в памяти после подтверждения журнала, если он задан.
 type Service struct {
-	mu       sync.RWMutex
-	sessions map[string]*session
-	requests map[string]creation
-	journal  Journal
+	mu         sync.RWMutex
+	sessions   map[string]*session
+	requests   map[string]creation
+	journal    Journal
+	dataOnce   sync.Once
+	data       *gamedata.Dataset
+	calculator *calculation.Engine
+	dataError  error
+	admission  chan struct{}
+	workers    chan struct{}
+	retained   atomic.Int64
 }
 
 func NewService() *Service {
-	return &Service{sessions: make(map[string]*session), requests: make(map[string]creation)}
+	return &Service{sessions: make(map[string]*session), requests: make(map[string]creation), admission: make(chan struct{}, 20), workers: make(chan struct{}, 4)}
 }
 
 func validate(sessionID, name, requestID string) error {
@@ -101,10 +113,16 @@ func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapsho
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит сессий или команд")
 	}
 	result := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: 1}
+	retainedBytes := int64(1024 + len(cmd.SessionID) + len(cmd.RequestID) + len(cmd.BuildName))
+	if !s.reserve(retainedBytes) {
+		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит истории в памяти")
+	}
 	if err := s.persist(ctx, Change{Create: &cmd, Result: result}); err != nil {
+		s.retained.Add(-retainedBytes)
 		return domain.Snapshot{}, err
 	}
 	s.sessions[cmd.SessionID] = &session{snapshot: result, createRequestID: cmd.RequestID, requests: make(map[string]rename),
+		buildRequests: make(map[string]buildRequest), pending: make(map[string]*pendingCalculation),
 		events: []Event{{Snapshot: result, Kind: "created", RequestID: cmd.RequestID}}, changed: make(chan struct{})}
 	s.requests[cmd.RequestID] = creation{command: cmd, result: result}
 	return result, nil
@@ -152,6 +170,12 @@ func (s *Service) Rename(ctx context.Context, cmd RenameBuild) (domain.Snapshot,
 	if cmd.RequestID == value.createRequestID {
 		return domain.Snapshot{}, failure(RequestConflict, "request_id уже использован для создания сессии")
 	}
+	if _, ok := value.buildRequests[cmd.RequestID]; ok {
+		return domain.Snapshot{}, failure(RequestConflict, "request_id уже использован другой командой")
+	}
+	if _, ok := value.pending[cmd.RequestID]; ok {
+		return domain.Snapshot{}, failure(RequestConflict, "request_id занят расчётом")
+	}
 	if previous, ok := value.requests[cmd.RequestID]; ok {
 		if previous.command != cmd {
 			return domain.Snapshot{}, failure(RequestConflict, "request_id уже использован другой правкой")
@@ -161,11 +185,18 @@ func (s *Service) Rename(ctx context.Context, cmd RenameBuild) (domain.Snapshot,
 	if cmd.ExpectedRevision != value.snapshot.Revision {
 		return domain.Snapshot{}, failure(RevisionConflict, fmt.Sprintf("ожидалась ревизия %d, текущая %d", cmd.ExpectedRevision, value.snapshot.Revision))
 	}
-	if len(value.requests) >= maxRequests {
+	if len(value.requests)+len(value.buildRequests) >= maxRequests {
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит команд сессии")
 	}
-	result := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: value.snapshot.Revision + 1}
+	result := value.snapshot
+	result.BuildName = cmd.BuildName
+	result.Revision++
+	retainedBytes := int64(1024 + len(cmd.SessionID) + len(cmd.RequestID) + len(cmd.BuildName))
+	if !s.reserve(retainedBytes) {
+		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит истории в памяти")
+	}
 	if err := s.persist(ctx, Change{Rename: &cmd, Result: result}); err != nil {
+		s.retained.Add(-retainedBytes)
 		return domain.Snapshot{}, err
 	}
 	previousName := value.snapshot.BuildName

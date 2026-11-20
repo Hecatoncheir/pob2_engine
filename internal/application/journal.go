@@ -10,9 +10,11 @@ import (
 
 // Change хранит принятую команду и её исходный результат для безопасного повтора.
 type Change struct {
-	Create *CreateSession  `json:"create,omitempty"`
-	Rename *RenameBuild    `json:"rename,omitempty"`
-	Result domain.Snapshot `json:"result"`
+	Create    *CreateSession  `json:"create,omitempty"`
+	Rename    *RenameBuild    `json:"rename,omitempty"`
+	Apply     *ApplyBuild     `json:"apply,omitempty"`
+	Calculate *CalculateBuild `json:"calculate,omitempty"`
+	Result    domain.Snapshot `json:"result"`
 }
 
 // Journal подтверждает Append только после устойчивой записи транзакции.
@@ -43,6 +45,10 @@ func (s *Service) persist(ctx context.Context, change Change) error {
 		return nil
 	}
 	err := s.journal.Append(ctx, change)
+	var commandError *Error
+	if errors.As(err, &commandError) {
+		return err
+	}
 	if err == nil || errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 		return err
 	}
@@ -50,6 +56,15 @@ func (s *Service) persist(ctx context.Context, change Change) error {
 }
 
 func (s *Service) restore(ctx context.Context, change Change) error {
+	count := 0
+	for _, present := range []bool{change.Create != nil, change.Rename != nil, change.Apply != nil, change.Calculate != nil} {
+		if present {
+			count++
+		}
+	}
+	if count != 1 {
+		return fmt.Errorf("нужна ровно одна команда в журнале")
+	}
 	var result domain.Snapshot
 	var err error
 	switch {
@@ -67,6 +82,17 @@ func (s *Service) restore(ctx context.Context, change Change) error {
 			return fmt.Errorf("повтор правки в журнале")
 		}
 		result, err = s.Rename(ctx, *change.Rename)
+	case change.Apply != nil:
+		value, exists := s.sessions[change.Apply.SessionID]
+		if !exists {
+			return fmt.Errorf("правка сборки неизвестной сессии")
+		}
+		if _, exists := value.buildRequests[change.Apply.RequestID]; exists {
+			return fmt.Errorf("повтор правки сборки в журнале")
+		}
+		result, err = s.Apply(ctx, *change.Apply)
+	case change.Calculate != nil:
+		result, err = s.restoreCalculation(ctx, *change.Calculate, change.Result)
 	default:
 		return fmt.Errorf("неизвестная команда в журнале")
 	}

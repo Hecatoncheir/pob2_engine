@@ -218,6 +218,9 @@ func (d *Document) Export() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(content)+len(xml.Header)+1 > MaxXMLSize {
+		return nil, fmt.Errorf("экспортированный XML превышает 1 МиБ")
+	}
 	return append([]byte(xml.Header), append(content, '\n')...), nil
 }
 

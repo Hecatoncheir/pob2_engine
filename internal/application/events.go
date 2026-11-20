@@ -12,6 +12,7 @@ type Event struct {
 	Kind              string
 	RequestID         string
 	PreviousBuildName string
+	ChangedFields     string
 }
 
 type Events interface {

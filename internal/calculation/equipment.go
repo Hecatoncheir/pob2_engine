@@ -51,6 +51,10 @@ func (s *inputs) readEquipment() {
 }
 
 func (s *inputs) readItem(item build.Item, kind, path string) {
+	if len(item.Raw) > 65536 {
+		s.issue("unsupported_limit", path, "текст предмета превышает 65536 байт")
+		return
+	}
 	var lines []string
 	for _, line := range strings.Split(item.Raw, "\n") {
 		if value := strings.TrimSpace(line); value != "" {
