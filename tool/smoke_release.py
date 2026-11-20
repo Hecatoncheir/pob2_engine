@@ -20,6 +20,16 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def verify_checksum(archive, checksums):
+    entries = {}
+    for line in checksums.read_text('ascii').splitlines():
+        digest, name = line.split(maxsplit=1)
+        name = name.lstrip(' *')
+        require(name not in entries, 'Повтор файла в SHA256SUMS')
+        entries[name] = digest
+    require(entries.get(archive.name) == hashlib.sha256(archive.read_bytes()).hexdigest(), 'Архив не совпал с SHA256SUMS')
+
+
 def unpack(archive, destination, tag):
     with zipfile.ZipFile(archive) as source:
         names = source.namelist()
@@ -192,8 +202,12 @@ def main():
     parser.add_argument('--archive', required=True, type=Path)
     parser.add_argument('--tag', required=True)
     parser.add_argument('--report', required=True, type=Path)
+    parser.add_argument('--checksums', type=Path, help='SHA256SUMS скачанного выпуска')
     args = parser.parse_args()
+    if args.checksums:
+        verify_checksum(args.archive, args.checksums)
     report = smoke(args.archive, args.tag)
+    report['published_checksum_verified'] = args.checksums is not None
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', 'utf-8')
     print('Релизный сценарий пройден:', report['platform'])

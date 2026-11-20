@@ -201,3 +201,41 @@ jobs:
             args+=(--prerelease)
           fi
           gh release create "$RELEASE_TAG" "${args[@]}" dist/*
+
+  verify-published:
+    name: Проверить скачанный выпуск / ${{ matrix.goos }} / ${{ matrix.goarch }}
+    needs: publish
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: windows
+            goarch: amd64
+            runner: windows-latest
+          - goos: linux
+            goarch: amd64
+            runner: ubuntu-latest
+          - goos: darwin
+            goarch: arm64
+            runner: macos-15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Скачать опубликованный архив и повторить сценарий
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          TARGET_OS: ${{ matrix.goos }}
+          TARGET_ARCH: ${{ matrix.goarch }}
+        run: |
+          archive="pob2_engine_${RELEASE_TAG}_${TARGET_OS}_${TARGET_ARCH}.zip"
+          gh release download "$RELEASE_TAG" --pattern "$archive" --pattern SHA256SUMS --dir published
+          python -X utf8 tool/smoke_release.py --archive "published/$archive" --checksums published/SHA256SUMS \
+            --tag "$RELEASE_TAG" --report "reports/published_smoke_${TARGET_OS}_${TARGET_ARCH}.json"
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: published-smoke-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: reports/*.json
+          if-no-files-found: error

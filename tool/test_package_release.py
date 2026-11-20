@@ -49,6 +49,17 @@ class PackageTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'SHA-256'):
                 smoke_release.unpack(archive, root / 'unpacked', 'v0.0.1')
 
+    def test_checks_published_archive_checksum(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive, checksums = root / 'release.zip', root / 'SHA256SUMS'
+            archive.write_bytes(b'published')
+            checksums.write_text(hashlib.sha256(b'published').hexdigest() + '  release.zip\n', 'ascii')
+            smoke_release.verify_checksum(archive, checksums)
+            archive.write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError, 'SHA256SUMS'):
+                smoke_release.verify_checksum(archive, checksums)
+
     def test_rejects_path_outside_package(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
