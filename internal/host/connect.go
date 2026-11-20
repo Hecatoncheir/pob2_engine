@@ -93,17 +93,17 @@ func ensure(ctx context.Context, profile discovery.Profile, options ConnectOptio
 		if err == nil {
 			return client, nil
 		}
-		if alive && !errors.Is(err, lifecycle.ErrDraining) {
-			return nil, err
-		}
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
-		if process == nil && !alive {
+		if process == nil {
 			var startErr error
 			process, startErr = startIfUnlocked(profile, options)
 			if startErr != nil {
 				return nil, startErr
+			}
+			if process == nil && alive && !errors.Is(err, lifecycle.ErrDraining) {
+				return nil, err
 			}
 		}
 		if process != nil {

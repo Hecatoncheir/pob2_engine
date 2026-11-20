@@ -307,6 +307,27 @@ func TestExternalMCPKeepsAutomaticServer(t *testing.T) {
 	awaitGone(t, ctx, p)
 }
 
+func TestStaleRecordWithReusedPortPreservesOtherServer(t *testing.T) {
+	ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
+	defer cancel()
+	foreign := startServer(t, ctx)
+	base := t.TempDir()
+	p := testProfile(t, base, "reused-port")
+	if err := p.Publish(discovery.Record{InstanceID: "stale", Address: foreign.ready.Address, Token: "stale-token", ProtocolVersion: "pob2.v1", Mode: lifecycle.Automatic, PID: os.Getpid()}); err != nil {
+		t.Fatal(err)
+	}
+	h := hold(t, ctx, autoArgs(base, "reused-port")...)
+	if h.info.GetInstanceId() == foreign.ready.InstanceID {
+		t.Fatal("принят посторонний сервер")
+	}
+	info, err := grpcapi.Inspect(ctx, foreign.ready.Address, foreign.ready.Token)
+	if err != nil || info.GetState() != "ready" {
+		t.Fatalf("посторонний сервер затронут: %v, %v", info, err)
+	}
+	stopHolder(t, ctx, h)
+	awaitGone(t, ctx, p)
+}
+
 func TestLifecycleHelper(t *testing.T) {
 	if os.Getenv("POB2_LIFECYCLE_HELPER") != "1" {
 		t.Skip("вспомогательный сервер отдельного процесса")
