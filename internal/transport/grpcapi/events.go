@@ -3,6 +3,7 @@ package grpcapi
 import (
 	"context"
 	"crypto/subtle"
+	"strings"
 	"time"
 
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
@@ -14,7 +15,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) authorizeStream(srv any, stream grpc.ServerStream, _ *grpc.StreamServerInfo, next grpc.StreamHandler) error {
+func (s *Server) authorizeStream(srv any, stream grpc.ServerStream, info *grpc.StreamServerInfo, next grpc.StreamHandler) error {
 	md, _ := metadata.FromIncomingContext(stream.Context())
 	tokens := md.Get("authorization")
 	if len(tokens) != 1 || subtle.ConstantTimeCompare([]byte(tokens[0]), []byte("Bearer "+s.token)) != 1 {
@@ -26,6 +27,13 @@ func (s *Server) authorizeStream(srv any, stream grpc.ServerStream, _ *grpc.Stre
 	}
 	if err := s.life.CheckLease(leases[0]); err != nil {
 		return lifecycleError(err)
+	}
+	if info.FullMethod == pb.SessionService_CalculateBuild_FullMethodName {
+		finish, err := s.life.BeginTask(leases[0])
+		if err != nil {
+			return lifecycleError(err)
+		}
+		defer finish()
 	}
 	return next(srv, stream)
 }
@@ -48,8 +56,14 @@ func (s *Server) WatchSession(req *pb.WatchSessionRequest, stream grpc.ServerStr
 		if err != nil {
 			return rpcError(err)
 		}
-		message := &pb.WatchSessionResponse{Snapshot: snapshot(event.Snapshot), Kind: event.Kind, RequestId: event.RequestID, PreviousBuildName: event.PreviousBuildName}
-		if event.Kind != "snapshot" {
+		value, err := snapshot(event.Snapshot)
+		if err != nil {
+			return rpcError(err)
+		}
+		message := &pb.WatchSessionResponse{Snapshot: value, Kind: event.Kind, RequestId: event.RequestID, PreviousBuildName: event.PreviousBuildName}
+		if event.ChangedFields != "" {
+			message.ChangedFields = strings.Split(event.ChangedFields, ",")
+		} else if event.Kind != "snapshot" {
 			message.ChangedFields = []string{"build_name"}
 		}
 		if err := stream.Send(message); err != nil {

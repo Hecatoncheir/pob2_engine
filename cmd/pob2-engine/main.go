@@ -22,6 +22,13 @@ func run() int {
 		if errors.As(err, &usage) {
 			return 2
 		}
+		var result *cli.ResultStatusError
+		if errors.As(err, &result) {
+			if result.Status == "partial" {
+				return 4
+			}
+			return 3
+		}
 		return 1
 	}
 	return 0

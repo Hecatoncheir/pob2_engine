@@ -12,7 +12,6 @@ import (
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
-	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -73,7 +72,7 @@ func StartWithConfig(address, token string, commands application.Commands, confi
 		commands: commands, listener: listener, token: token, life: life, instanceID: rand.Text(),
 		done: make(chan struct{}), stopped: make(chan struct{}), force: make(chan struct{}),
 	}
-	s.rpc = grpc.NewServer(grpc.UnaryInterceptor(s.authorize), grpc.StreamInterceptor(s.authorizeStream))
+	s.rpc = grpc.NewServer(grpc.MaxRecvMsgSize(maxMessageSize), grpc.MaxSendMsgSize(maxMessageSize), grpc.UnaryInterceptor(s.authorize), grpc.StreamInterceptor(s.authorizeStream))
 	pb.RegisterSessionServiceServer(s.rpc, s)
 	if err := life.MarkReady(); err != nil {
 		listener.Close()
@@ -160,6 +159,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	if storageMode == "disk" {
 		capabilities = append(capabilities, "session.persistence")
 	}
+	if _, ok := s.commands.(application.BuildCommands); ok {
+		capabilities = append(capabilities, "build.import", "build.edit", "build.calculate", "build.compare", "build.export", "calculation.progress")
+	}
 	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: capabilities, State: stats.State,
 		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds()), StorageMode: storageMode, StoragePath: storagePath}, nil
 }
@@ -184,16 +186,13 @@ func (s *Server) ReleaseClient(_ context.Context, req *pb.ReleaseClientRequest) 
 	return &pb.ReleaseClientResponse{}, nil
 }
 
-func snapshot(value domain.Snapshot) *pb.SessionSnapshot {
-	return &pb.SessionSnapshot{SessionId: value.SessionID, BuildName: value.BuildName, Revision: value.Revision}
-}
-
 func (s *Server) CreateSession(ctx context.Context, req *pb.CreateSessionRequest) (*pb.CreateSessionResponse, error) {
 	value, err := s.commands.Create(ctx, application.CreateSession{SessionID: req.GetSessionId(), BuildName: req.GetBuildName(), RequestID: req.GetRequestId()})
 	if err != nil {
 		return nil, rpcError(err)
 	}
-	return &pb.CreateSessionResponse{Snapshot: snapshot(value)}, nil
+	message, err := snapshot(value)
+	return &pb.CreateSessionResponse{Snapshot: message}, rpcError(err)
 }
 
 func (s *Server) GetSnapshot(ctx context.Context, req *pb.GetSnapshotRequest) (*pb.GetSnapshotResponse, error) {
@@ -201,7 +200,8 @@ func (s *Server) GetSnapshot(ctx context.Context, req *pb.GetSnapshotRequest) (*
 	if err != nil {
 		return nil, rpcError(err)
 	}
-	return &pb.GetSnapshotResponse{Snapshot: snapshot(value)}, nil
+	message, err := snapshot(value)
+	return &pb.GetSnapshotResponse{Snapshot: message}, rpcError(err)
 }
 
 func (s *Server) RenameBuild(ctx context.Context, req *pb.RenameBuildRequest) (*pb.RenameBuildResponse, error) {
@@ -209,7 +209,8 @@ func (s *Server) RenameBuild(ctx context.Context, req *pb.RenameBuildRequest) (*
 	if err != nil {
 		return nil, rpcError(err)
 	}
-	return &pb.RenameBuildResponse{Snapshot: snapshot(value)}, nil
+	message, err := snapshot(value)
+	return &pb.RenameBuildResponse{Snapshot: message}, rpcError(err)
 }
 
 func (s *Server) Shutdown(context.Context, *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {

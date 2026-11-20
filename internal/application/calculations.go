@@ -40,6 +40,9 @@ func progress(ctx context.Context, stage string) {
 	}
 }
 
+// ReportProgress передаёт состояние удалённой задачи наблюдателю того же контракта.
+func ReportProgress(ctx context.Context, stage string) { progress(ctx, stage) }
+
 func (s *Service) acquire(ctx context.Context) (func(), error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err

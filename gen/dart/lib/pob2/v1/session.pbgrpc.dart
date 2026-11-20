@@ -61,6 +61,36 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$renameBuild, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.ApplyBuildResponse> applyBuild(
+    $0.ApplyBuildRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$applyBuild, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.CalculateBuildResponse> calculateBuild(
+    $0.CalculateBuildRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createStreamingCall(
+        _$calculateBuild, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$0.CompareBuildResponse> compareBuild(
+    $0.CompareBuildRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$compareBuild, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ExportBuildResponse> exportBuild(
+    $0.ExportBuildRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$exportBuild, request, options: options);
+  }
+
   $grpc.ResponseStream<$0.WatchSessionResponse> watchSession(
     $0.WatchSessionRequest request, {
     $grpc.CallOptions? options,
@@ -129,6 +159,26 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/RenameBuild',
           ($0.RenameBuildRequest value) => value.writeToBuffer(),
           $0.RenameBuildResponse.fromBuffer);
+  static final _$applyBuild =
+      $grpc.ClientMethod<$0.ApplyBuildRequest, $0.ApplyBuildResponse>(
+          '/pob2.v1.SessionService/ApplyBuild',
+          ($0.ApplyBuildRequest value) => value.writeToBuffer(),
+          $0.ApplyBuildResponse.fromBuffer);
+  static final _$calculateBuild =
+      $grpc.ClientMethod<$0.CalculateBuildRequest, $0.CalculateBuildResponse>(
+          '/pob2.v1.SessionService/CalculateBuild',
+          ($0.CalculateBuildRequest value) => value.writeToBuffer(),
+          $0.CalculateBuildResponse.fromBuffer);
+  static final _$compareBuild =
+      $grpc.ClientMethod<$0.CompareBuildRequest, $0.CompareBuildResponse>(
+          '/pob2.v1.SessionService/CompareBuild',
+          ($0.CompareBuildRequest value) => value.writeToBuffer(),
+          $0.CompareBuildResponse.fromBuffer);
+  static final _$exportBuild =
+      $grpc.ClientMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
+          '/pob2.v1.SessionService/ExportBuild',
+          ($0.ExportBuildRequest value) => value.writeToBuffer(),
+          $0.ExportBuildResponse.fromBuffer);
   static final _$watchSession =
       $grpc.ClientMethod<$0.WatchSessionRequest, $0.WatchSessionResponse>(
           '/pob2.v1.SessionService/WatchSession',
@@ -202,6 +252,40 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.RenameBuildRequest.fromBuffer(value),
             ($0.RenameBuildResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ApplyBuildRequest, $0.ApplyBuildResponse>(
+        'ApplyBuild',
+        applyBuild_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ApplyBuildRequest.fromBuffer(value),
+        ($0.ApplyBuildResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CalculateBuildRequest,
+            $0.CalculateBuildResponse>(
+        'CalculateBuild',
+        calculateBuild_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) =>
+            $0.CalculateBuildRequest.fromBuffer(value),
+        ($0.CalculateBuildResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.CompareBuildRequest, $0.CompareBuildResponse>(
+            'CompareBuild',
+            compareBuild_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.CompareBuildRequest.fromBuffer(value),
+            ($0.CompareBuildResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
+            'ExportBuild',
+            exportBuild_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.ExportBuildRequest.fromBuffer(value),
+            ($0.ExportBuildResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.WatchSessionRequest, $0.WatchSessionResponse>(
             'WatchSession',
@@ -287,6 +371,40 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$0.RenameBuildResponse> renameBuild(
       $grpc.ServiceCall call, $0.RenameBuildRequest request);
+
+  $async.Future<$0.ApplyBuildResponse> applyBuild_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.ApplyBuildRequest> $request) async {
+    return applyBuild($call, await $request);
+  }
+
+  $async.Future<$0.ApplyBuildResponse> applyBuild(
+      $grpc.ServiceCall call, $0.ApplyBuildRequest request);
+
+  $async.Stream<$0.CalculateBuildResponse> calculateBuild_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.CalculateBuildRequest> $request) async* {
+    yield* calculateBuild($call, await $request);
+  }
+
+  $async.Stream<$0.CalculateBuildResponse> calculateBuild(
+      $grpc.ServiceCall call, $0.CalculateBuildRequest request);
+
+  $async.Future<$0.CompareBuildResponse> compareBuild_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.CompareBuildRequest> $request) async {
+    return compareBuild($call, await $request);
+  }
+
+  $async.Future<$0.CompareBuildResponse> compareBuild(
+      $grpc.ServiceCall call, $0.CompareBuildRequest request);
+
+  $async.Future<$0.ExportBuildResponse> exportBuild_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.ExportBuildRequest> $request) async {
+    return exportBuild($call, await $request);
+  }
+
+  $async.Future<$0.ExportBuildResponse> exportBuild(
+      $grpc.ServiceCall call, $0.ExportBuildRequest request);
 
   $async.Stream<$0.WatchSessionResponse> watchSession_Pre(
       $grpc.ServiceCall $call,

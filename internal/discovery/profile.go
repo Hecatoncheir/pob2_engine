@@ -55,7 +55,7 @@ func Open(base, name string) (Profile, error) {
 func (p Profile) RecordPath() string { return filepath.Join(p.Dir, "connection.json") }
 
 func (p Profile) Read() (Record, error) {
-	f, err := os.Open(p.RecordPath())
+	f, err := openRecord(p.RecordPath())
 	if err != nil {
 		return Record{}, err
 	}
@@ -88,7 +88,7 @@ func (p Profile) Publish(record Record) error {
 	if err := f.Close(); err != nil {
 		return err
 	}
-	return os.Rename(f.Name(), p.RecordPath())
+	return replaceRecord(f.Name(), p.RecordPath())
 }
 
 // RemoveOwn вызывается до освобождения server.lock, поэтому чужой файл сохраняется.

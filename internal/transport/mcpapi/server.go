@@ -7,7 +7,6 @@ import (
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
-	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -19,26 +18,29 @@ type renameInput struct {
 
 func New(commands application.Commands, sessionID string, timeout time.Duration) *mcp.Server {
 	server := mcp.NewServer(&mcp.Implementation{Name: "pob2_engine", Version: buildinfo.Version}, &mcp.ServerOptions{
-		Instructions: fmt.Sprintf("Выбрана сессия %q. Доступны снимок и переименование; расчёты и управление Flutter ещё не реализованы.", sessionID),
+		Instructions: fmt.Sprintf("Выбрана сессия %q. Все правки требуют текущую ревизию и request_id. Расчёт 0.0.1 ограничен Fireball Projectile; проверяйте status и issues. Совпадение с PoB не означает проверку в игре. Flutter пока не подключается.", sessionID),
 	})
 	openWorld, destructive := false, true
 	mcp.AddTool(server, &mcp.Tool{
 		Name: "get_snapshot", Description: "Получить снимок выбранной сессии и её ревизию",
 		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true, OpenWorldHint: &openWorld},
-	}, func(ctx context.Context, _ *mcp.CallToolRequest, _ struct{}) (*mcp.CallToolResult, domain.Snapshot, error) {
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, _ struct{}) (*mcp.CallToolResult, application.SnapshotView, error) {
 		ctx, cancel := context.WithTimeout(ctx, timeout)
 		defer cancel()
 		value, err := commands.Snapshot(ctx, sessionID)
-		return nil, value, err
+		return snapshotResult(value, err)
 	})
 	mcp.AddTool(server, &mcp.Tool{
 		Name: "rename_build", Description: "Переименовать сборку выбранной сессии с проверкой ревизии",
 		Annotations: &mcp.ToolAnnotations{IdempotentHint: true, DestructiveHint: &destructive, OpenWorldHint: &openWorld},
-	}, func(ctx context.Context, _ *mcp.CallToolRequest, input renameInput) (*mcp.CallToolResult, domain.Snapshot, error) {
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, input renameInput) (*mcp.CallToolResult, application.SnapshotView, error) {
 		ctx, cancel := context.WithTimeout(ctx, timeout)
 		defer cancel()
 		value, err := commands.Rename(ctx, application.RenameBuild{SessionID: sessionID, BuildName: input.BuildName, ExpectedRevision: input.ExpectedRevision, RequestID: input.RequestID})
-		return nil, value, err
+		return snapshotResult(value, err)
 	})
+	if full, ok := commands.(application.BuildCommands); ok {
+		addBuildTools(server, full, sessionID, timeout)
+	}
 	return server
 }

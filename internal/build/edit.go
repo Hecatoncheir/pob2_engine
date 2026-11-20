@@ -25,11 +25,11 @@ type GemInput struct {
 	Enabled bool   `json:"enabled"`
 }
 type GemsEdit struct {
-	GroupID int        `json:"group_id"`
-	Label   string     `json:"label"`
-	Enabled bool       `json:"enabled"`
-	Delete  bool       `json:"delete"`
-	Gems    []GemInput `json:"gems"`
+	GroupID int        `json:"group_id,omitempty"`
+	Label   string     `json:"label,omitempty"`
+	Enabled bool       `json:"enabled,omitempty"`
+	Delete  bool       `json:"delete,omitempty"`
+	Gems    []GemInput `json:"gems,omitempty"`
 }
 type EquipmentEdit struct {
 	Slot string `json:"slot"`
@@ -40,8 +40,8 @@ type PassivesEdit struct {
 }
 type SelectionEdit struct {
 	Sets      *ActiveSets `json:"sets,omitempty"`
-	MainGroup int         `json:"main_group"`
-	WeaponSet int         `json:"weapon_set"`
+	MainGroup int         `json:"main_group,omitempty"`
+	WeaponSet int         `json:"weapon_set,omitempty"`
 }
 
 // Edit задаёт ровно одну правку. Пустой Raw снимает предмет, nil Value удаляет условие.

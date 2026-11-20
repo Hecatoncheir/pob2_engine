@@ -33,3 +33,25 @@ func TestWindowsProfileAndRecordAllowOnlyCurrentUser(t *testing.T) {
 		}
 	}
 }
+
+func TestWindowsReaderAllowsAtomicRecordReplacement(t *testing.T) {
+	profile, err := Open(t.TempDir(), "replace")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := profile.Publish(Record{InstanceID: "old", Address: "127.0.0.1:1", Token: "old"}); err != nil {
+		t.Fatal(err)
+	}
+	reader, err := openRecord(profile.RecordPath())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer reader.Close()
+	if err := profile.Publish(Record{InstanceID: "new", Address: "127.0.0.1:2", Token: "new"}); err != nil {
+		t.Fatal(err)
+	}
+	record, err := profile.Read()
+	if err != nil || record.InstanceID != "new" {
+		t.Fatal("запись не заменена при открытом читателе")
+	}
+}

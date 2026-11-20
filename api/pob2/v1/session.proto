@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package pob2.v1;
 
+import "pob2/v1/build.proto";
+
 option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
 
 // SessionService предоставляет общий сервис сессий первого этапа.
@@ -10,6 +12,10 @@ service SessionService {
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
   rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);
+  rpc ApplyBuild(ApplyBuildRequest) returns (ApplyBuildResponse);
+  rpc CalculateBuild(CalculateBuildRequest) returns (stream CalculateBuildResponse);
+  rpc CompareBuild(CompareBuildRequest) returns (CompareBuildResponse);
+  rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);
   rpc WatchSession(WatchSessionRequest) returns (stream WatchSessionResponse);
   rpc WatchServer(WatchServerRequest) returns (stream WatchServerResponse);
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
@@ -22,6 +28,7 @@ message SessionSnapshot {
   string session_id = 1;
   string build_name = 2;
   uint64 revision = 3;
+  BuildDocument build = 4;
 }
 
 message GetServerInfoRequest {}
@@ -125,3 +132,55 @@ message ReleaseClientRequest {
 }
 
 message ReleaseClientResponse {}
+
+message ApplyBuildRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  string request_id = 3;
+  oneof input {
+    string xml = 4;
+    BuildEdit edit = 5;
+  }
+}
+
+message ApplyBuildResponse {
+  SessionSnapshot snapshot = 1;
+}
+
+message CalculateBuildRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  string request_id = 3;
+}
+
+// Промежуточные этапы могут объединяться; последний ответ всегда содержит snapshot.
+message CalculateBuildResponse {
+  string stage = 1;
+  SessionSnapshot snapshot = 2;
+}
+
+message CompareBuildRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  oneof input {
+    string xml = 3;
+    BuildEdit edit = 4;
+  }
+}
+
+message CompareBuildResponse {
+  string session_id = 1;
+  uint64 revision = 2;
+  BuildComparison comparison = 3;
+}
+
+message ExportBuildRequest {
+  string session_id = 1;
+}
+
+message ExportBuildResponse {
+  string session_id = 1;
+  uint64 revision = 2;
+  string xml = 3;
+  string input_sha256 = 4;
+}

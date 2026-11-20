@@ -66,7 +66,7 @@ func open(address, token string) (*Client, error) {
 		return nil, fmt.Errorf("нужен токен сервера")
 	}
 	c := &Client{heartbeatDone: make(chan struct{}), lost: make(chan struct{}), cancel: func() {}}
-	conn, err := grpc.NewClient("passthrough:///"+address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithUnaryInterceptor(func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoke grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+	conn, err := grpc.NewClient("passthrough:///"+address, grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMessageSize), grpc.MaxCallSendMsgSize(maxMessageSize)), grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithUnaryInterceptor(func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoke grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 		ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+token)
 		if c.leaseID != "" {
 			ctx = metadata.AppendToOutgoingContext(ctx, "pob2-lease", c.leaseID)
@@ -170,16 +170,12 @@ func (c *Client) Info(ctx context.Context) (*pb.GetServerInfoResponse, error) {
 	return c.rpc.GetServerInfo(ctx, &pb.GetServerInfoRequest{})
 }
 
-func fromSnapshot(value *pb.SessionSnapshot) domain.Snapshot {
-	return domain.Snapshot{SessionID: value.GetSessionId(), BuildName: value.GetBuildName(), Revision: value.GetRevision()}
-}
-
 func (c *Client) Create(ctx context.Context, cmd application.CreateSession) (domain.Snapshot, error) {
 	res, err := c.rpc.CreateSession(ctx, &pb.CreateSessionRequest{SessionId: cmd.SessionID, BuildName: cmd.BuildName, RequestId: cmd.RequestID})
 	if err != nil {
 		return domain.Snapshot{}, err
 	}
-	return fromSnapshot(res.GetSnapshot()), nil
+	return fromSnapshot(res.GetSnapshot())
 }
 
 func (c *Client) Snapshot(ctx context.Context, id string) (domain.Snapshot, error) {
@@ -187,7 +183,7 @@ func (c *Client) Snapshot(ctx context.Context, id string) (domain.Snapshot, erro
 	if err != nil {
 		return domain.Snapshot{}, err
 	}
-	return fromSnapshot(res.GetSnapshot()), nil
+	return fromSnapshot(res.GetSnapshot())
 }
 
 func (c *Client) Rename(ctx context.Context, cmd application.RenameBuild) (domain.Snapshot, error) {
@@ -195,7 +191,7 @@ func (c *Client) Rename(ctx context.Context, cmd application.RenameBuild) (domai
 	if err != nil {
 		return domain.Snapshot{}, err
 	}
-	return fromSnapshot(res.GetSnapshot()), nil
+	return fromSnapshot(res.GetSnapshot())
 }
 
 func (c *Client) Shutdown(ctx context.Context) error {

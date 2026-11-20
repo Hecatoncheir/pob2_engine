@@ -15,6 +15,8 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'build.pb.dart' as $1;
+
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class SessionSnapshot extends $pb.GeneratedMessage {
@@ -22,11 +24,13 @@ class SessionSnapshot extends $pb.GeneratedMessage {
     $core.String? sessionId,
     $core.String? buildName,
     $fixnum.Int64? revision,
+    $1.BuildDocument? build,
   }) {
     final result = SessionSnapshot._();
     if (sessionId != null) result.sessionId = sessionId;
     if (buildName != null) result.buildName = buildName;
     if (revision != null) result.revision = revision;
+    if (build != null) result.build = build;
     return result;
   }
 
@@ -48,6 +52,8 @@ class SessionSnapshot extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(
         3, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$1.BuildDocument>(4, _omitFieldNames ? '' : 'build',
+        subBuilder: $1.BuildDocument.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -98,6 +104,17 @@ class SessionSnapshot extends $pb.GeneratedMessage {
   $core.bool hasRevision() => $_has(2);
   @$pb.TagNumber(3)
   void clearRevision() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $1.BuildDocument get build => $_getN(3);
+  @$pb.TagNumber(4)
+  set build($1.BuildDocument value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasBuild() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearBuild() => $_clearField(4);
+  @$pb.TagNumber(4)
+  $1.BuildDocument ensureBuild() => $_ensure(3);
 }
 
 class GetServerInfoRequest extends $pb.GeneratedMessage {
@@ -1494,6 +1511,709 @@ class ReleaseClientResponse extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<ReleaseClientResponse>(
           ReleaseClientResponse.$_createMessage);
   static ReleaseClientResponse? _defaultInstance;
+}
+
+enum ApplyBuildRequest_Input { xml, edit, notSet }
+
+class ApplyBuildRequest extends $pb.GeneratedMessage {
+  factory ApplyBuildRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+    $core.String? requestId,
+    $core.String? xml,
+    $1.BuildEdit? edit,
+  }) {
+    final result = ApplyBuildRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    if (requestId != null) result.requestId = requestId;
+    if (xml != null) result.xml = xml;
+    if (edit != null) result.edit = edit;
+    return result;
+  }
+
+  ApplyBuildRequest._();
+
+  factory ApplyBuildRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ApplyBuildRequest()..mergeFromBuffer(data, registry);
+  factory ApplyBuildRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ApplyBuildRequest()..mergeFromJson(json, registry);
+
+  static const $core.Map<$core.int, ApplyBuildRequest_Input>
+      _ApplyBuildRequest_InputByTag = {
+    4: ApplyBuildRequest_Input.xml,
+    5: ApplyBuildRequest_Input.edit,
+    0: ApplyBuildRequest_Input.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ApplyBuildRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: ApplyBuildRequest.$_createMessage)
+    ..oo(0, [4, 5])
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, _omitFieldNames ? '' : 'requestId')
+    ..aOS(4, _omitFieldNames ? '' : 'xml')
+    ..aOM<$1.BuildEdit>(5, _omitFieldNames ? '' : 'edit',
+        subBuilder: $1.BuildEdit.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ApplyBuildRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ApplyBuildRequest copyWith(void Function(ApplyBuildRequest) updates) =>
+      super.copyWith((message) => updates(message as ApplyBuildRequest))
+          as ApplyBuildRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ApplyBuildRequest() / ApplyBuildRequest.new instead')
+  static ApplyBuildRequest create() => ApplyBuildRequest._();
+  static $pb.GeneratedMessage $_createMessage() => ApplyBuildRequest._();
+  @$core.override
+  ApplyBuildRequest createEmptyInstance() => ApplyBuildRequest._();
+  @$core.pragma('dart2js:noInline')
+  static ApplyBuildRequest getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApplyBuildRequest>(
+          ApplyBuildRequest.$_createMessage);
+  static ApplyBuildRequest? _defaultInstance;
+
+  @$pb.TagNumber(4)
+  @$pb.TagNumber(5)
+  ApplyBuildRequest_Input whichInput() =>
+      _ApplyBuildRequest_InputByTag[$_whichOneof(0)]!;
+  @$pb.TagNumber(4)
+  @$pb.TagNumber(5)
+  void clearInput() => $_clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get requestId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set requestId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasRequestId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRequestId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get xml => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set xml($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasXml() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearXml() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $1.BuildEdit get edit => $_getN(4);
+  @$pb.TagNumber(5)
+  set edit($1.BuildEdit value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasEdit() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearEdit() => $_clearField(5);
+  @$pb.TagNumber(5)
+  $1.BuildEdit ensureEdit() => $_ensure(4);
+}
+
+class ApplyBuildResponse extends $pb.GeneratedMessage {
+  factory ApplyBuildResponse({
+    SessionSnapshot? snapshot,
+  }) {
+    final result = ApplyBuildResponse._();
+    if (snapshot != null) result.snapshot = snapshot;
+    return result;
+  }
+
+  ApplyBuildResponse._();
+
+  factory ApplyBuildResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ApplyBuildResponse()..mergeFromBuffer(data, registry);
+  factory ApplyBuildResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ApplyBuildResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ApplyBuildResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: ApplyBuildResponse.$_createMessage)
+    ..aOM<SessionSnapshot>(1, _omitFieldNames ? '' : 'snapshot',
+        subBuilder: SessionSnapshot.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ApplyBuildResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ApplyBuildResponse copyWith(void Function(ApplyBuildResponse) updates) =>
+      super.copyWith((message) => updates(message as ApplyBuildResponse))
+          as ApplyBuildResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ApplyBuildResponse() / ApplyBuildResponse.new instead')
+  static ApplyBuildResponse create() => ApplyBuildResponse._();
+  static $pb.GeneratedMessage $_createMessage() => ApplyBuildResponse._();
+  @$core.override
+  ApplyBuildResponse createEmptyInstance() => ApplyBuildResponse._();
+  @$core.pragma('dart2js:noInline')
+  static ApplyBuildResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ApplyBuildResponse>(
+          ApplyBuildResponse.$_createMessage);
+  static ApplyBuildResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  SessionSnapshot get snapshot => $_getN(0);
+  @$pb.TagNumber(1)
+  set snapshot(SessionSnapshot value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSnapshot() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSnapshot() => $_clearField(1);
+  @$pb.TagNumber(1)
+  SessionSnapshot ensureSnapshot() => $_ensure(0);
+}
+
+class CalculateBuildRequest extends $pb.GeneratedMessage {
+  factory CalculateBuildRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+    $core.String? requestId,
+  }) {
+    final result = CalculateBuildRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    if (requestId != null) result.requestId = requestId;
+    return result;
+  }
+
+  CalculateBuildRequest._();
+
+  factory CalculateBuildRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CalculateBuildRequest()..mergeFromBuffer(data, registry);
+  factory CalculateBuildRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CalculateBuildRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CalculateBuildRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: CalculateBuildRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, _omitFieldNames ? '' : 'requestId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CalculateBuildRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CalculateBuildRequest copyWith(
+          void Function(CalculateBuildRequest) updates) =>
+      super.copyWith((message) => updates(message as CalculateBuildRequest))
+          as CalculateBuildRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use CalculateBuildRequest() / CalculateBuildRequest.new instead')
+  static CalculateBuildRequest create() => CalculateBuildRequest._();
+  static $pb.GeneratedMessage $_createMessage() => CalculateBuildRequest._();
+  @$core.override
+  CalculateBuildRequest createEmptyInstance() => CalculateBuildRequest._();
+  @$core.pragma('dart2js:noInline')
+  static CalculateBuildRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CalculateBuildRequest>(
+          CalculateBuildRequest.$_createMessage);
+  static CalculateBuildRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get requestId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set requestId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasRequestId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRequestId() => $_clearField(3);
+}
+
+/// Промежуточные этапы могут объединяться; последний ответ всегда содержит snapshot.
+class CalculateBuildResponse extends $pb.GeneratedMessage {
+  factory CalculateBuildResponse({
+    $core.String? stage,
+    SessionSnapshot? snapshot,
+  }) {
+    final result = CalculateBuildResponse._();
+    if (stage != null) result.stage = stage;
+    if (snapshot != null) result.snapshot = snapshot;
+    return result;
+  }
+
+  CalculateBuildResponse._();
+
+  factory CalculateBuildResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CalculateBuildResponse()..mergeFromBuffer(data, registry);
+  factory CalculateBuildResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CalculateBuildResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CalculateBuildResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: CalculateBuildResponse.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'stage')
+    ..aOM<SessionSnapshot>(2, _omitFieldNames ? '' : 'snapshot',
+        subBuilder: SessionSnapshot.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CalculateBuildResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CalculateBuildResponse copyWith(
+          void Function(CalculateBuildResponse) updates) =>
+      super.copyWith((message) => updates(message as CalculateBuildResponse))
+          as CalculateBuildResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use CalculateBuildResponse() / CalculateBuildResponse.new instead')
+  static CalculateBuildResponse create() => CalculateBuildResponse._();
+  static $pb.GeneratedMessage $_createMessage() => CalculateBuildResponse._();
+  @$core.override
+  CalculateBuildResponse createEmptyInstance() => CalculateBuildResponse._();
+  @$core.pragma('dart2js:noInline')
+  static CalculateBuildResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CalculateBuildResponse>(
+          CalculateBuildResponse.$_createMessage);
+  static CalculateBuildResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get stage => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set stage($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStage() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  SessionSnapshot get snapshot => $_getN(1);
+  @$pb.TagNumber(2)
+  set snapshot(SessionSnapshot value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasSnapshot() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSnapshot() => $_clearField(2);
+  @$pb.TagNumber(2)
+  SessionSnapshot ensureSnapshot() => $_ensure(1);
+}
+
+enum CompareBuildRequest_Input { xml, edit, notSet }
+
+class CompareBuildRequest extends $pb.GeneratedMessage {
+  factory CompareBuildRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+    $core.String? xml,
+    $1.BuildEdit? edit,
+  }) {
+    final result = CompareBuildRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    if (xml != null) result.xml = xml;
+    if (edit != null) result.edit = edit;
+    return result;
+  }
+
+  CompareBuildRequest._();
+
+  factory CompareBuildRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CompareBuildRequest()..mergeFromBuffer(data, registry);
+  factory CompareBuildRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CompareBuildRequest()..mergeFromJson(json, registry);
+
+  static const $core.Map<$core.int, CompareBuildRequest_Input>
+      _CompareBuildRequest_InputByTag = {
+    3: CompareBuildRequest_Input.xml,
+    4: CompareBuildRequest_Input.edit,
+    0: CompareBuildRequest_Input.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CompareBuildRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: CompareBuildRequest.$_createMessage)
+    ..oo(0, [3, 4])
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, _omitFieldNames ? '' : 'xml')
+    ..aOM<$1.BuildEdit>(4, _omitFieldNames ? '' : 'edit',
+        subBuilder: $1.BuildEdit.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CompareBuildRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CompareBuildRequest copyWith(void Function(CompareBuildRequest) updates) =>
+      super.copyWith((message) => updates(message as CompareBuildRequest))
+          as CompareBuildRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use CompareBuildRequest() / CompareBuildRequest.new instead')
+  static CompareBuildRequest create() => CompareBuildRequest._();
+  static $pb.GeneratedMessage $_createMessage() => CompareBuildRequest._();
+  @$core.override
+  CompareBuildRequest createEmptyInstance() => CompareBuildRequest._();
+  @$core.pragma('dart2js:noInline')
+  static CompareBuildRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CompareBuildRequest>(
+          CompareBuildRequest.$_createMessage);
+  static CompareBuildRequest? _defaultInstance;
+
+  @$pb.TagNumber(3)
+  @$pb.TagNumber(4)
+  CompareBuildRequest_Input whichInput() =>
+      _CompareBuildRequest_InputByTag[$_whichOneof(0)]!;
+  @$pb.TagNumber(3)
+  @$pb.TagNumber(4)
+  void clearInput() => $_clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get xml => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set xml($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasXml() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearXml() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $1.BuildEdit get edit => $_getN(3);
+  @$pb.TagNumber(4)
+  set edit($1.BuildEdit value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasEdit() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearEdit() => $_clearField(4);
+  @$pb.TagNumber(4)
+  $1.BuildEdit ensureEdit() => $_ensure(3);
+}
+
+class CompareBuildResponse extends $pb.GeneratedMessage {
+  factory CompareBuildResponse({
+    $core.String? sessionId,
+    $fixnum.Int64? revision,
+    $1.BuildComparison? comparison,
+  }) {
+    final result = CompareBuildResponse._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (revision != null) result.revision = revision;
+    if (comparison != null) result.comparison = comparison;
+    return result;
+  }
+
+  CompareBuildResponse._();
+
+  factory CompareBuildResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CompareBuildResponse()..mergeFromBuffer(data, registry);
+  factory CompareBuildResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CompareBuildResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CompareBuildResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: CompareBuildResponse.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$1.BuildComparison>(3, _omitFieldNames ? '' : 'comparison',
+        subBuilder: $1.BuildComparison.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CompareBuildResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CompareBuildResponse copyWith(void Function(CompareBuildResponse) updates) =>
+      super.copyWith((message) => updates(message as CompareBuildResponse))
+          as CompareBuildResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use CompareBuildResponse() / CompareBuildResponse.new instead')
+  static CompareBuildResponse create() => CompareBuildResponse._();
+  static $pb.GeneratedMessage $_createMessage() => CompareBuildResponse._();
+  @$core.override
+  CompareBuildResponse createEmptyInstance() => CompareBuildResponse._();
+  @$core.pragma('dart2js:noInline')
+  static CompareBuildResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CompareBuildResponse>(
+          CompareBuildResponse.$_createMessage);
+  static CompareBuildResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get revision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set revision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRevision() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $1.BuildComparison get comparison => $_getN(2);
+  @$pb.TagNumber(3)
+  set comparison($1.BuildComparison value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasComparison() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearComparison() => $_clearField(3);
+  @$pb.TagNumber(3)
+  $1.BuildComparison ensureComparison() => $_ensure(2);
+}
+
+class ExportBuildRequest extends $pb.GeneratedMessage {
+  factory ExportBuildRequest({
+    $core.String? sessionId,
+  }) {
+    final result = ExportBuildRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    return result;
+  }
+
+  ExportBuildRequest._();
+
+  factory ExportBuildRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ExportBuildRequest()..mergeFromBuffer(data, registry);
+  factory ExportBuildRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ExportBuildRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExportBuildRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: ExportBuildRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ExportBuildRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ExportBuildRequest copyWith(void Function(ExportBuildRequest) updates) =>
+      super.copyWith((message) => updates(message as ExportBuildRequest))
+          as ExportBuildRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ExportBuildRequest() / ExportBuildRequest.new instead')
+  static ExportBuildRequest create() => ExportBuildRequest._();
+  static $pb.GeneratedMessage $_createMessage() => ExportBuildRequest._();
+  @$core.override
+  ExportBuildRequest createEmptyInstance() => ExportBuildRequest._();
+  @$core.pragma('dart2js:noInline')
+  static ExportBuildRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExportBuildRequest>(
+          ExportBuildRequest.$_createMessage);
+  static ExportBuildRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+}
+
+class ExportBuildResponse extends $pb.GeneratedMessage {
+  factory ExportBuildResponse({
+    $core.String? sessionId,
+    $fixnum.Int64? revision,
+    $core.String? xml,
+    $core.String? inputSha256,
+  }) {
+    final result = ExportBuildResponse._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (revision != null) result.revision = revision;
+    if (xml != null) result.xml = xml;
+    if (inputSha256 != null) result.inputSha256 = inputSha256;
+    return result;
+  }
+
+  ExportBuildResponse._();
+
+  factory ExportBuildResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ExportBuildResponse()..mergeFromBuffer(data, registry);
+  factory ExportBuildResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ExportBuildResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExportBuildResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: ExportBuildResponse.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, _omitFieldNames ? '' : 'xml')
+    ..aOS(4, _omitFieldNames ? '' : 'inputSha256')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ExportBuildResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ExportBuildResponse copyWith(void Function(ExportBuildResponse) updates) =>
+      super.copyWith((message) => updates(message as ExportBuildResponse))
+          as ExportBuildResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use ExportBuildResponse() / ExportBuildResponse.new instead')
+  static ExportBuildResponse create() => ExportBuildResponse._();
+  static $pb.GeneratedMessage $_createMessage() => ExportBuildResponse._();
+  @$core.override
+  ExportBuildResponse createEmptyInstance() => ExportBuildResponse._();
+  @$core.pragma('dart2js:noInline')
+  static ExportBuildResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExportBuildResponse>(
+          ExportBuildResponse.$_createMessage);
+  static ExportBuildResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get revision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set revision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRevision() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get xml => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set xml($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasXml() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearXml() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get inputSha256 => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set inputSha256($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasInputSha256() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearInputSha256() => $_clearField(4);
 }
 
 const $core.bool _omitFieldNames =

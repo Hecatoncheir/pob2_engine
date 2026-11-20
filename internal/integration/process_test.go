@@ -126,8 +126,13 @@ func connectMCP(t *testing.T, ctx context.Context, args ...string) *mcp.ClientSe
 	}
 	t.Cleanup(func() { _ = session.Close() })
 	tools, err := session.ListTools(ctx, nil)
-	if err != nil || len(tools.Tools) != 2 {
+	if err != nil {
 		t.Fatalf("MCP tools/list: %v, %v", tools, err)
+	}
+	for _, name := range []string{"get_snapshot", "rename_build", "import_build", "edit_build", "calculate_build", "compare_build", "export_build"} {
+		if !slices.ContainsFunc(tools.Tools, func(tool *mcp.Tool) bool { return tool.Name == name }) {
+			t.Fatalf("нет MCP-инструмента %s", name)
+		}
 	}
 	return session
 }

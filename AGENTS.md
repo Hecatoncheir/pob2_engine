@@ -2,7 +2,7 @@
 
 ## Состояние и структура проекта
 
-`pob2_engine` — проект расчётного движка Path of Exile 2 на Go. Работают сессии CLI/gRPC/MCP, обнаружение, аренды, сохранение и подписки. Библиотека расчёта Fireball проверяется по Lua; подключение к командам ещё выполняется. Контракты: `docs/SESSION-API.md`, `docs/SERVER-LIFECYCLE.md`, `docs/SESSION-STORAGE.md`, `docs/SESSION-EVENTS.md`.
+`pob2_engine` — проект расчётного движка Path of Exile 2 на Go. Работают сессии CLI/gRPC/MCP, обнаружение, аренды, сохранение и подписки. Расчёт Fireball проверяется по Lua и доступен через CLI/MCP/gRPC; команды: `docs/CLI-BUILDS.md`. Контракты: `docs/SESSION-API.md`, `docs/SERVER-LIFECYCLE.md`, `docs/SESSION-STORAGE.md`, `docs/SESSION-EVENTS.md`.
 
 - `README.md` — архитектура и согласованные требования.
 - `TODO.md` — дорожная карта; `todo_0.0.1.md` — план выпуска.

@@ -22,13 +22,22 @@ const SessionSnapshot$json = {
     {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
     {'1': 'build_name', '3': 2, '4': 1, '5': 9, '10': 'buildName'},
     {'1': 'revision', '3': 3, '4': 1, '5': 4, '10': 'revision'},
+    {
+      '1': 'build',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.BuildDocument',
+      '10': 'build'
+    },
   ],
 };
 
 /// Descriptor for `SessionSnapshot`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List sessionSnapshotDescriptor = $convert.base64Decode(
     'Cg9TZXNzaW9uU25hcHNob3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklkEh0KCmJ1aW'
-    'xkX25hbWUYAiABKAlSCWJ1aWxkTmFtZRIaCghyZXZpc2lvbhgDIAEoBFIIcmV2aXNpb24=');
+    'xkX25hbWUYAiABKAlSCWJ1aWxkTmFtZRIaCghyZXZpc2lvbhgDIAEoBFIIcmV2aXNpb24SLAoF'
+    'YnVpbGQYBCABKAsyFi5wb2IyLnYxLkJ1aWxkRG9jdW1lbnRSBWJ1aWxk');
 
 @$core.Deprecated('Use getServerInfoRequestDescriptor instead')
 const GetServerInfoRequest$json = {
@@ -348,3 +357,191 @@ const ReleaseClientResponse$json = {
 /// Descriptor for `ReleaseClientResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List releaseClientResponseDescriptor =
     $convert.base64Decode('ChVSZWxlYXNlQ2xpZW50UmVzcG9uc2U=');
+
+@$core.Deprecated('Use applyBuildRequestDescriptor instead')
+const ApplyBuildRequest$json = {
+  '1': 'ApplyBuildRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'request_id', '3': 3, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'xml', '3': 4, '4': 1, '5': 9, '9': 0, '10': 'xml'},
+    {
+      '1': 'edit',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.BuildEdit',
+      '9': 0,
+      '10': 'edit'
+    },
+  ],
+  '8': [
+    {'1': 'input'},
+  ],
+};
+
+/// Descriptor for `ApplyBuildRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List applyBuildRequestDescriptor = $convert.base64Decode(
+    'ChFBcHBseUJ1aWxkUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSKwoRZX'
+    'hwZWN0ZWRfcmV2aXNpb24YAiABKARSEGV4cGVjdGVkUmV2aXNpb24SHQoKcmVxdWVzdF9pZBgD'
+    'IAEoCVIJcmVxdWVzdElkEhIKA3htbBgEIAEoCUgAUgN4bWwSKAoEZWRpdBgFIAEoCzISLnBvYj'
+    'IudjEuQnVpbGRFZGl0SABSBGVkaXRCBwoFaW5wdXQ=');
+
+@$core.Deprecated('Use applyBuildResponseDescriptor instead')
+const ApplyBuildResponse$json = {
+  '1': 'ApplyBuildResponse',
+  '2': [
+    {
+      '1': 'snapshot',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.SessionSnapshot',
+      '10': 'snapshot'
+    },
+  ],
+};
+
+/// Descriptor for `ApplyBuildResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List applyBuildResponseDescriptor = $convert.base64Decode(
+    'ChJBcHBseUJ1aWxkUmVzcG9uc2USNAoIc25hcHNob3QYASABKAsyGC5wb2IyLnYxLlNlc3Npb2'
+    '5TbmFwc2hvdFIIc25hcHNob3Q=');
+
+@$core.Deprecated('Use calculateBuildRequestDescriptor instead')
+const CalculateBuildRequest$json = {
+  '1': 'CalculateBuildRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'request_id', '3': 3, '4': 1, '5': 9, '10': 'requestId'},
+  ],
+};
+
+/// Descriptor for `CalculateBuildRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List calculateBuildRequestDescriptor = $convert.base64Decode(
+    'ChVDYWxjdWxhdGVCdWlsZFJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklkEi'
+    'sKEWV4cGVjdGVkX3JldmlzaW9uGAIgASgEUhBleHBlY3RlZFJldmlzaW9uEh0KCnJlcXVlc3Rf'
+    'aWQYAyABKAlSCXJlcXVlc3RJZA==');
+
+@$core.Deprecated('Use calculateBuildResponseDescriptor instead')
+const CalculateBuildResponse$json = {
+  '1': 'CalculateBuildResponse',
+  '2': [
+    {'1': 'stage', '3': 1, '4': 1, '5': 9, '10': 'stage'},
+    {
+      '1': 'snapshot',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.SessionSnapshot',
+      '10': 'snapshot'
+    },
+  ],
+};
+
+/// Descriptor for `CalculateBuildResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List calculateBuildResponseDescriptor =
+    $convert.base64Decode(
+        'ChZDYWxjdWxhdGVCdWlsZFJlc3BvbnNlEhQKBXN0YWdlGAEgASgJUgVzdGFnZRI0CghzbmFwc2'
+        'hvdBgCIAEoCzIYLnBvYjIudjEuU2Vzc2lvblNuYXBzaG90UghzbmFwc2hvdA==');
+
+@$core.Deprecated('Use compareBuildRequestDescriptor instead')
+const CompareBuildRequest$json = {
+  '1': 'CompareBuildRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'xml', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'xml'},
+    {
+      '1': 'edit',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.BuildEdit',
+      '9': 0,
+      '10': 'edit'
+    },
+  ],
+  '8': [
+    {'1': 'input'},
+  ],
+};
+
+/// Descriptor for `CompareBuildRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List compareBuildRequestDescriptor = $convert.base64Decode(
+    'ChNDb21wYXJlQnVpbGRSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIrCh'
+    'FleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbhISCgN4bWwYAyABKAlI'
+    'AFIDeG1sEigKBGVkaXQYBCABKAsyEi5wb2IyLnYxLkJ1aWxkRWRpdEgAUgRlZGl0QgcKBWlucH'
+    'V0');
+
+@$core.Deprecated('Use compareBuildResponseDescriptor instead')
+const CompareBuildResponse$json = {
+  '1': 'CompareBuildResponse',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'revision', '3': 2, '4': 1, '5': 4, '10': 'revision'},
+    {
+      '1': 'comparison',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.BuildComparison',
+      '10': 'comparison'
+    },
+  ],
+};
+
+/// Descriptor for `CompareBuildResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List compareBuildResponseDescriptor = $convert.base64Decode(
+    'ChRDb21wYXJlQnVpbGRSZXNwb25zZRIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSGg'
+    'oIcmV2aXNpb24YAiABKARSCHJldmlzaW9uEjgKCmNvbXBhcmlzb24YAyABKAsyGC5wb2IyLnYx'
+    'LkJ1aWxkQ29tcGFyaXNvblIKY29tcGFyaXNvbg==');
+
+@$core.Deprecated('Use exportBuildRequestDescriptor instead')
+const ExportBuildRequest$json = {
+  '1': 'ExportBuildRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+  ],
+};
+
+/// Descriptor for `ExportBuildRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List exportBuildRequestDescriptor =
+    $convert.base64Decode(
+        'ChJFeHBvcnRCdWlsZFJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklk');
+
+@$core.Deprecated('Use exportBuildResponseDescriptor instead')
+const ExportBuildResponse$json = {
+  '1': 'ExportBuildResponse',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'revision', '3': 2, '4': 1, '5': 4, '10': 'revision'},
+    {'1': 'xml', '3': 3, '4': 1, '5': 9, '10': 'xml'},
+    {'1': 'input_sha256', '3': 4, '4': 1, '5': 9, '10': 'inputSha256'},
+  ],
+};
+
+/// Descriptor for `ExportBuildResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List exportBuildResponseDescriptor = $convert.base64Decode(
+    'ChNFeHBvcnRCdWlsZFJlc3BvbnNlEh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIaCg'
+    'hyZXZpc2lvbhgCIAEoBFIIcmV2aXNpb24SEAoDeG1sGAMgASgJUgN4bWwSIQoMaW5wdXRfc2hh'
+    'MjU2GAQgASgJUgtpbnB1dFNoYTI1Ng==');

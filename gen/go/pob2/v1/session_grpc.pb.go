@@ -23,6 +23,10 @@ const (
 	SessionService_CreateSession_FullMethodName  = "/pob2.v1.SessionService/CreateSession"
 	SessionService_GetSnapshot_FullMethodName    = "/pob2.v1.SessionService/GetSnapshot"
 	SessionService_RenameBuild_FullMethodName    = "/pob2.v1.SessionService/RenameBuild"
+	SessionService_ApplyBuild_FullMethodName     = "/pob2.v1.SessionService/ApplyBuild"
+	SessionService_CalculateBuild_FullMethodName = "/pob2.v1.SessionService/CalculateBuild"
+	SessionService_CompareBuild_FullMethodName   = "/pob2.v1.SessionService/CompareBuild"
+	SessionService_ExportBuild_FullMethodName    = "/pob2.v1.SessionService/ExportBuild"
 	SessionService_WatchSession_FullMethodName   = "/pob2.v1.SessionService/WatchSession"
 	SessionService_WatchServer_FullMethodName    = "/pob2.v1.SessionService/WatchServer"
 	SessionService_Shutdown_FullMethodName       = "/pob2.v1.SessionService/Shutdown"
@@ -41,6 +45,10 @@ type SessionServiceClient interface {
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
 	GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*GetSnapshotResponse, error)
 	RenameBuild(ctx context.Context, in *RenameBuildRequest, opts ...grpc.CallOption) (*RenameBuildResponse, error)
+	ApplyBuild(ctx context.Context, in *ApplyBuildRequest, opts ...grpc.CallOption) (*ApplyBuildResponse, error)
+	CalculateBuild(ctx context.Context, in *CalculateBuildRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[CalculateBuildResponse], error)
+	CompareBuild(ctx context.Context, in *CompareBuildRequest, opts ...grpc.CallOption) (*CompareBuildResponse, error)
+	ExportBuild(ctx context.Context, in *ExportBuildRequest, opts ...grpc.CallOption) (*ExportBuildResponse, error)
 	WatchSession(ctx context.Context, in *WatchSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchSessionResponse], error)
 	WatchServer(ctx context.Context, in *WatchServerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServerResponse], error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
@@ -97,9 +105,58 @@ func (c *sessionServiceClient) RenameBuild(ctx context.Context, in *RenameBuildR
 	return out, nil
 }
 
+func (c *sessionServiceClient) ApplyBuild(ctx context.Context, in *ApplyBuildRequest, opts ...grpc.CallOption) (*ApplyBuildResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApplyBuildResponse)
+	err := c.cc.Invoke(ctx, SessionService_ApplyBuild_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) CalculateBuild(ctx context.Context, in *CalculateBuildRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[CalculateBuildResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[0], SessionService_CalculateBuild_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[CalculateBuildRequest, CalculateBuildResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SessionService_CalculateBuildClient = grpc.ServerStreamingClient[CalculateBuildResponse]
+
+func (c *sessionServiceClient) CompareBuild(ctx context.Context, in *CompareBuildRequest, opts ...grpc.CallOption) (*CompareBuildResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CompareBuildResponse)
+	err := c.cc.Invoke(ctx, SessionService_CompareBuild_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) ExportBuild(ctx context.Context, in *ExportBuildRequest, opts ...grpc.CallOption) (*ExportBuildResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExportBuildResponse)
+	err := c.cc.Invoke(ctx, SessionService_ExportBuild_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sessionServiceClient) WatchSession(ctx context.Context, in *WatchSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchSessionResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[0], SessionService_WatchSession_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[1], SessionService_WatchSession_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +175,7 @@ type SessionService_WatchSessionClient = grpc.ServerStreamingClient[WatchSession
 
 func (c *sessionServiceClient) WatchServer(ctx context.Context, in *WatchServerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServerResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[1], SessionService_WatchServer_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[2], SessionService_WatchServer_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -185,6 +242,10 @@ type SessionServiceServer interface {
 	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
 	GetSnapshot(context.Context, *GetSnapshotRequest) (*GetSnapshotResponse, error)
 	RenameBuild(context.Context, *RenameBuildRequest) (*RenameBuildResponse, error)
+	ApplyBuild(context.Context, *ApplyBuildRequest) (*ApplyBuildResponse, error)
+	CalculateBuild(*CalculateBuildRequest, grpc.ServerStreamingServer[CalculateBuildResponse]) error
+	CompareBuild(context.Context, *CompareBuildRequest) (*CompareBuildResponse, error)
+	ExportBuild(context.Context, *ExportBuildRequest) (*ExportBuildResponse, error)
 	WatchSession(*WatchSessionRequest, grpc.ServerStreamingServer[WatchSessionResponse]) error
 	WatchServer(*WatchServerRequest, grpc.ServerStreamingServer[WatchServerResponse]) error
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
@@ -212,6 +273,18 @@ func (UnimplementedSessionServiceServer) GetSnapshot(context.Context, *GetSnapsh
 }
 func (UnimplementedSessionServiceServer) RenameBuild(context.Context, *RenameBuildRequest) (*RenameBuildResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RenameBuild not implemented")
+}
+func (UnimplementedSessionServiceServer) ApplyBuild(context.Context, *ApplyBuildRequest) (*ApplyBuildResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApplyBuild not implemented")
+}
+func (UnimplementedSessionServiceServer) CalculateBuild(*CalculateBuildRequest, grpc.ServerStreamingServer[CalculateBuildResponse]) error {
+	return status.Error(codes.Unimplemented, "method CalculateBuild not implemented")
+}
+func (UnimplementedSessionServiceServer) CompareBuild(context.Context, *CompareBuildRequest) (*CompareBuildResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CompareBuild not implemented")
+}
+func (UnimplementedSessionServiceServer) ExportBuild(context.Context, *ExportBuildRequest) (*ExportBuildResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExportBuild not implemented")
 }
 func (UnimplementedSessionServiceServer) WatchSession(*WatchSessionRequest, grpc.ServerStreamingServer[WatchSessionResponse]) error {
 	return status.Error(codes.Unimplemented, "method WatchSession not implemented")
@@ -320,6 +393,71 @@ func _SessionService_RenameBuild_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SessionServiceServer).RenameBuild(ctx, req.(*RenameBuildRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_ApplyBuild_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyBuildRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).ApplyBuild(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_ApplyBuild_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).ApplyBuild(ctx, req.(*ApplyBuildRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_CalculateBuild_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(CalculateBuildRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SessionServiceServer).CalculateBuild(m, &grpc.GenericServerStream[CalculateBuildRequest, CalculateBuildResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SessionService_CalculateBuildServer = grpc.ServerStreamingServer[CalculateBuildResponse]
+
+func _SessionService_CompareBuild_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CompareBuildRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).CompareBuild(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_CompareBuild_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).CompareBuild(ctx, req.(*CompareBuildRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_ExportBuild_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportBuildRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).ExportBuild(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_ExportBuild_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).ExportBuild(ctx, req.(*ExportBuildRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -442,6 +580,18 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SessionService_RenameBuild_Handler,
 		},
 		{
+			MethodName: "ApplyBuild",
+			Handler:    _SessionService_ApplyBuild_Handler,
+		},
+		{
+			MethodName: "CompareBuild",
+			Handler:    _SessionService_CompareBuild_Handler,
+		},
+		{
+			MethodName: "ExportBuild",
+			Handler:    _SessionService_ExportBuild_Handler,
+		},
+		{
 			MethodName: "Shutdown",
 			Handler:    _SessionService_Shutdown_Handler,
 		},
@@ -459,6 +609,11 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "CalculateBuild",
+			Handler:       _SessionService_CalculateBuild_Handler,
+			ServerStreams: true,
+		},
 		{
 			StreamName:    "WatchSession",
 			Handler:       _SessionService_WatchSession_Handler,

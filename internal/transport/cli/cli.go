@@ -29,6 +29,9 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   connect                   Обнаружить сервер и удерживать аренду до EOF или Ctrl+C
   info                      Проверить готовность, протокол и возможности сервера
   session create|get|rename  Создать сессию, получить снимок или переименовать сборку
+  build import|edit|export|compare  Операции полной сборки выбранной сессии
+  calculate                 Рассчитать --file XML либо выбранную --session
+  storage backup|verify|restore  Резервные копии остановленного профиля
   mcp                       MCP stdio: --attach СЕССИЯ или --standalone --session СЕССИЯ
   shutdown                  Корректно завершить сервер
 
@@ -36,7 +39,7 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
 Или: --profile ИМЯ [--start-server] [--runtime-dir КАТАЛОГ] [--data-dir КАТАЛОГ]
 Токен также читается из POB2_ENGINE_TOKEN. Справка команды: КОМАНДА --help.
 Сессии профиля сохраняются на диск. --ephemeral и MCP --standalone используют память.
-Игровые расчёты ещё не реализованы.
+Покрытие 0.0.1: Fireball Projectile; проверяйте status и issues результата.
 `
 
 type UsageError struct{ Err error }
@@ -79,6 +82,12 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.session(ctx, args[1:])
 	case "mcp":
 		return r.mcp(ctx, args[1:])
+	case "build":
+		return r.build(ctx, args[1:])
+	case "calculate":
+		return r.calculate(ctx, args[1:])
+	case "storage":
+		return r.storage(ctx, args[1:])
 	default:
 		return &UsageError{Err: fmt.Errorf("неизвестная команда %q", args[0])}
 	}
@@ -100,7 +109,16 @@ func parse(fs *flag.FlagSet, args []string) error {
 	return nil
 }
 
-func (r runner) write(value any) error { return json.NewEncoder(r.out).Encode(value) }
+func (r runner) write(value any) error {
+	if snapshot, ok := value.(domain.Snapshot); ok {
+		view, err := application.ViewSnapshot(snapshot)
+		if err != nil {
+			return err
+		}
+		value = view
+	}
+	return json.NewEncoder(r.out).Encode(value)
+}
 
 type connection struct {
 	address      string

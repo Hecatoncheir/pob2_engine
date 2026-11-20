@@ -203,7 +203,11 @@ func (s *Service) Apply(ctx context.Context, cmd ApplyBuild) (domain.Snapshot, e
 	result.CalculationJSON = ""
 	result.CalculatedFromRevision = 0
 	change := Change{Apply: &cmd, Result: result}
-	if err := s.commitBuild(ctx, value, cmd.RequestID, fp, "build_changed", "build,calculation", change, int64(len(fp)+len(serialized)+1024)); err != nil {
+	fields, err := changedBuildFields(value.snapshot.BuildXML, doc)
+	if err != nil {
+		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
+	}
+	if err := s.commitBuild(ctx, value, cmd.RequestID, fp, "build_changed", fields, change, int64(len(fp)+len(serialized)+1024)); err != nil {
 		return domain.Snapshot{}, err
 	}
 	return result, nil
