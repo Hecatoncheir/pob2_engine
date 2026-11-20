@@ -12,3 +12,4 @@
 LICENSE text eol=lf
 /.licenses/** -text -diff
 testdata/performance/** text eol=lf
+testdata/releases/** text eol=lf

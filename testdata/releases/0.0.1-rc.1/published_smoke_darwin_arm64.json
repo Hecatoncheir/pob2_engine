@@ -1,0 +1,22 @@
+{
+  "version": {
+    "protocol_version": "pob2.v1",
+    "version": "v0.0.1-rc.1"
+  },
+  "steps": [
+    "standalone_without_runtime",
+    "cli_mcp_grpc_shared_calculation",
+    "immutable_compare_and_export",
+    "backup_verify_restore_exact_retry"
+  ],
+  "total_dps": 17.833333333333336,
+  "input_sha256": "84b5914057027b54d2042a5cd1a71411ce322c67616776ed6a1c8d1d27f89aa8",
+  "tag": "v0.0.1-rc.1",
+  "commit": "52d52b44ed3f3f7e258d763210f136a468a991ba",
+  "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "archive_sha256": "76815f16f59aae212baeb3f70a7a43e84d6738aefce01805a659dc76797961e3",
+  "checked_at": "2026-11-20T23:11:22.335048+00:00",
+  "run_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/44834517225",
+  "published_checksum_verified": true
+}
