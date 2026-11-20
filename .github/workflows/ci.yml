@@ -31,7 +31,9 @@ jobs:
           import os
           import re
 
-          for name in ('README.md', 'TODO.md', 'todo_0.0.1.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'docs/SESSION-API.md', 'docs/SERVER-LIFECYCLE.md', 'docs/SESSION-STORAGE.md', 'docs/SESSION-EVENTS.md', 'docs/DATASET.md', 'testdata/reference/README.md'):
+          documents = ['README.md', 'TODO.md', 'todo_0.0.1.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'testdata/reference/README.md']
+          documents.extend(str(path) for path in sorted(Path('docs').glob('*.md')))
+          for name in documents:
               text = Path(name).read_text(encoding='utf-8')
               if not text.strip() or text.count('```') % 2:
                   raise SystemExit(f'Пустой документ или незакрытый блок кода: {name}')
