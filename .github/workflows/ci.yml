@@ -31,7 +31,7 @@ jobs:
           import os
           import re
 
-          for name in ('README.md', 'TODO.md', 'CHANGELOG.md', 'AGENTS.md', 'docs/SESSION-API.md', 'docs/SERVER-LIFECYCLE.md', 'docs/SESSION-STORAGE.md', 'docs/SESSION-EVENTS.md'):
+          for name in ('README.md', 'TODO.md', 'todo_0.0.1.md', 'CHANGELOG.md', 'AGENTS.md', 'docs/SESSION-API.md', 'docs/SERVER-LIFECYCLE.md', 'docs/SESSION-STORAGE.md', 'docs/SESSION-EVENTS.md', 'testdata/reference/README.md'):
               text = Path(name).read_text(encoding='utf-8')
               if not text.strip() or text.count('```') % 2:
                   raise SystemExit(f'Пустой документ или незакрытый блок кода: {name}')
@@ -78,6 +78,8 @@ jobs:
           fi
       - name: Проверить код
         run: go vet ./...
+      - name: Проверить закреплённые источники эталона
+        run: go run ./tool/reference
       - name: Выполнить тесты
         run: go test ./...
       - name: Проверить гонки

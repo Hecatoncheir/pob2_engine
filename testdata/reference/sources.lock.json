@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "checked_at": "2026-11-20",
+  "tree_version": "0_5",
+  "mcp_embedded_pob_commit": "bb52d6b368307457eb9c54bb13f1829993d390b1",
+  "pob": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "tag": "v0.23.1",
+    "commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+    "files": [
+      {
+        "path": "src/GameVersions.lua",
+        "git_blob": "45c0503f79691b5dc8321f219dd29b9be606d01e",
+        "sha256": "982cf558ed2a9ea026a24d85117c9e84b7fcda090131e4680bd24a08bd9efd88"
+      },
+      {
+        "path": "LICENSE.md",
+        "git_blob": "954c2cf772dfc483a9268633665de538235830c2",
+        "sha256": "b61f62cf2b8e301ef2a4a3c5f7de9460fea53327edf9f260b7c746502fc6bf97"
+      }
+    ]
+  },
+  "mcp": {
+    "repository": "Hecatoncheir/pob-poe2-mcp",
+    "tag": "v0.24.1",
+    "commit": "312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a",
+    "files": [
+      {
+        "path": "pob_poe2_mcp/data/engine-lock.json",
+        "git_blob": "c979e50814ee4c4e1b4dceb7f343238b40f71975",
+        "sha256": "0a26646dec797e36bc7aef99c5fcd5ad4ab901c418129df22e3e701fb3410f39"
+      },
+      {
+        "path": "pob_poe2_mcp/cli.py",
+        "git_blob": "0b765c547b609302f632920c7a1d84ff9463833c",
+        "sha256": "b4d5d70ce142f47f038608cb9b7b3ff8cd554ae653dcfb6e0d9d95bf2056877e"
+      },
+      {
+        "path": "pyproject.toml",
+        "git_blob": "fdcb4e946deef20216d9d8269505be266098b4cc",
+        "sha256": "955f09a704640b58092b09acb4e7e75f41e2a36d70c2ac2ba02039fc38f3d97a"
+      },
+      {
+        "path": "LICENSE",
+        "git_blob": "74d46398c12f8b8dcda5caecfad21b562b3d68d2",
+        "sha256": "cbd234618b5c6396372da2182fa168bad7c26e9f1d60dc60b7a13377551b8be9"
+      }
+    ]
+  },
+  "pair_evidence": {
+    "repository": "Hecatoncheir/pob2_ui",
+    "commit": "d3417341aeec2aa1ed3b774b5710dba4d652370e",
+    "files": [
+      {
+        "path": "tool/components-lock.json",
+        "git_blob": "8b58a799e7887052cad15b9dc4fcda15e0c80d27",
+        "sha256": "51259941d0680f45c35840864bb3be59204f5551e2f1942a1f1385e37c16523c"
+      }
+    ]
+  }
+}
