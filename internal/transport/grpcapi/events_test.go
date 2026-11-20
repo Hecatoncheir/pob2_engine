@@ -7,6 +7,8 @@ import (
 
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
+	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
+	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
@@ -67,5 +69,43 @@ func TestWatchAuthorizationReplayAndShutdown(t *testing.T) {
 	}
 	if _, err := stream.Recv(); err == nil {
 		t.Fatal("подписка не закрыта при остановке")
+	}
+}
+
+func TestPersistentWatchEndsWhenLeaseExpires(t *testing.T) {
+	ctx, cancel := context.WithTimeout(t.Context(), 2*time.Second)
+	defer cancel()
+	service := application.NewService()
+	if _, err := service.Create(ctx, application.CreateSession{SessionID: "main", BuildName: "Начальная", RequestID: "create"}); err != nil {
+		t.Fatal(err)
+	}
+	s, err := grpcapi.StartWithConfig("127.0.0.1:0", "token", service, lifecycle.Config{LeaseTimeout: 100 * time.Millisecond})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer s.Close(ctx)
+	raw, err := grpc.NewClient("passthrough:///"+s.Ready().Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer raw.Close()
+	rpc := pb.NewSessionServiceClient(raw)
+	auth := metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer token")
+	lease, err := rpc.RegisterClient(auth, &pb.RegisterClientRequest{ClientId: "ui", Kind: "ui"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	watch, err := rpc.WatchSession(metadata.AppendToOutgoingContext(auth, "pob2-lease", lease.GetLeaseId()), &pb.WatchSessionRequest{SessionId: "main"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := watch.Recv(); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := watch.Recv(); status.Code(err) != codes.Canceled {
+		t.Fatalf("истечение аренды: %v", err)
+	}
+	if stats := s.Lifecycle().Stats(); stats.State != "ready" || stats.Tasks != 0 || stats.Clients != 0 {
+		t.Fatalf("подписка удерживает сервер: %+v", stats)
 	}
 }
