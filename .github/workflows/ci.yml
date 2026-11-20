@@ -57,14 +57,10 @@ jobs:
         run: git show --format= --check HEAD
 
   go:
-    name: Go / ${{ matrix.os }}
+    name: Go / Linux и сборки трёх платформ
     needs: structure
     if: needs.structure.outputs.has_go == 'true'
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-go@v7.1.0
@@ -84,10 +80,25 @@ jobs:
       - name: Выполнить тесты
         run: go test ./...
       - name: Проверить гонки
-        if: runner.os == 'Linux'
         run: go test -race ./...
-      - name: Собрать CLI
-        run: go build ./cmd/pob2-engine
+      - name: Собрать Windows x64
+        env:
+          CGO_ENABLED: '0'
+          GOOS: windows
+          GOARCH: amd64
+        run: go build -trimpath -o dist/pob2_engine_windows_amd64.exe ./cmd/pob2-engine
+      - name: Собрать Linux x64
+        env:
+          CGO_ENABLED: '0'
+          GOOS: linux
+          GOARCH: amd64
+        run: go build -trimpath -o dist/pob2_engine_linux_amd64 ./cmd/pob2-engine
+      - name: Собрать macOS arm64
+        env:
+          CGO_ENABLED: '0'
+          GOOS: darwin
+          GOARCH: arm64
+        run: go build -trimpath -o dist/pob2_engine_darwin_arm64 ./cmd/pob2-engine
 
   proto:
     name: Protobuf и генерация API
