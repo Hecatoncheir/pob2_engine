@@ -1,0 +1,462 @@
+{
+  "classes": [
+    {
+      "dexterity": 7,
+      "id": 1,
+      "intelligence": 15,
+      "name": "Witch",
+      "start_node": 54447,
+      "strength": 7
+    },
+    {
+      "dexterity": 15,
+      "id": 2,
+      "intelligence": 7,
+      "name": "Ranger",
+      "start_node": 50459,
+      "strength": 7
+    },
+    {
+      "dexterity": 7,
+      "id": 6,
+      "intelligence": 7,
+      "name": "Warrior",
+      "start_node": 47175,
+      "strength": 15
+    },
+    {
+      "dexterity": 7,
+      "id": 7,
+      "intelligence": 15,
+      "name": "Sorceress",
+      "start_node": 54447,
+      "strength": 7
+    },
+    {
+      "dexterity": 15,
+      "id": 8,
+      "intelligence": 7,
+      "name": "Huntress",
+      "start_node": 50459,
+      "strength": 7
+    },
+    {
+      "dexterity": 11,
+      "id": 9,
+      "intelligence": 7,
+      "name": "Mercenary",
+      "start_node": 50986,
+      "strength": 11
+    },
+    {
+      "dexterity": 11,
+      "id": 10,
+      "intelligence": 11,
+      "name": "Monk",
+      "start_node": 44683,
+      "strength": 7
+    },
+    {
+      "dexterity": 7,
+      "id": 11,
+      "intelligence": 11,
+      "name": "Druid",
+      "start_node": 61525,
+      "strength": 11
+    }
+  ],
+  "constants": {
+    "base_critical_hit_damage_bonus": 100,
+    "base_maximum_all_resistances_%": 75,
+    "life_per_level": 12,
+    "mana_per_level": 4,
+    "mana_regeneration_base": 0.04
+  },
+  "gems": [
+    {
+      "cast_time": 0,
+      "constant_stats": [
+        {
+          "name": "support_controlled_destruction_spell_damage_+%_final",
+          "value": 25
+        }
+      ],
+      "family": "ControlledDestruction",
+      "id": "Metadata/Items/Gems/SkillGemControlledDestructionSupport",
+      "levels": [
+        {
+          "crit_chance": 0,
+          "fire_max": 0,
+          "fire_min": 0,
+          "level": 1,
+          "mana": 0,
+          "required_intelligence": 0,
+          "required_level": 0
+        }
+      ],
+      "name": "Controlled Destruction",
+      "skill_id": "SupportControlledDestructionPlayer",
+      "support": true
+    },
+    {
+      "cast_time": 1.2,
+      "constant_stats": [
+        {
+          "name": "movement_speed_+%_final_while_performing_action",
+          "value": -70
+        },
+        {
+          "name": "movement_speed_acceleration_+%_per_second_while_performing_action",
+          "value": 160
+        },
+        {
+          "name": "movement_speed_while_performing_action_locked_duration_%",
+          "value": 50
+        },
+        {
+          "name": "projectile_maximum_range_override",
+          "value": 120
+        }
+      ],
+      "family": "",
+      "id": "Metadata/Items/Gems/SkillGemFireball",
+      "levels": [
+        {
+          "crit_chance": 7,
+          "fire_max": 12,
+          "fire_min": 8,
+          "level": 1,
+          "mana": 10,
+          "required_intelligence": 0,
+          "required_level": 0
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 16,
+          "fire_min": 11,
+          "level": 2,
+          "mana": 12,
+          "required_intelligence": 9,
+          "required_level": 3
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 22,
+          "fire_min": 15,
+          "level": 3,
+          "mana": 14,
+          "required_intelligence": 14,
+          "required_level": 6
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 29,
+          "fire_min": 19,
+          "level": 4,
+          "mana": 16,
+          "required_intelligence": 21,
+          "required_level": 10
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 36,
+          "fire_min": 24,
+          "level": 5,
+          "mana": 18,
+          "required_intelligence": 28,
+          "required_level": 14
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 44,
+          "fire_min": 30,
+          "level": 6,
+          "mana": 21,
+          "required_intelligence": 35,
+          "required_level": 18
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 53,
+          "fire_min": 36,
+          "level": 7,
+          "mana": 24,
+          "required_intelligence": 41,
+          "required_level": 22
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 64,
+          "fire_min": 42,
+          "level": 8,
+          "mana": 28,
+          "required_intelligence": 48,
+          "required_level": 26
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 75,
+          "fire_min": 50,
+          "level": 9,
+          "mana": 31,
+          "required_intelligence": 57,
+          "required_level": 31
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 88,
+          "fire_min": 59,
+          "level": 10,
+          "mana": 35,
+          "required_intelligence": 65,
+          "required_level": 36
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 102,
+          "fire_min": 68,
+          "level": 11,
+          "mana": 40,
+          "required_intelligence": 74,
+          "required_level": 41
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 118,
+          "fire_min": 79,
+          "level": 12,
+          "mana": 45,
+          "required_intelligence": 82,
+          "required_level": 46
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 136,
+          "fire_min": 91,
+          "level": 13,
+          "mana": 50,
+          "required_intelligence": 92,
+          "required_level": 52
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 156,
+          "fire_min": 104,
+          "level": 14,
+          "mana": 56,
+          "required_intelligence": 103,
+          "required_level": 58
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 178,
+          "fire_min": 119,
+          "level": 15,
+          "mana": 62,
+          "required_intelligence": 113,
+          "required_level": 64
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 203,
+          "fire_min": 135,
+          "level": 16,
+          "mana": 69,
+          "required_intelligence": 116,
+          "required_level": 66
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 231,
+          "fire_min": 154,
+          "level": 17,
+          "mana": 77,
+          "required_intelligence": 126,
+          "required_level": 72
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 262,
+          "fire_min": 174,
+          "level": 18,
+          "mana": 85,
+          "required_intelligence": 137,
+          "required_level": 78
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 297,
+          "fire_min": 198,
+          "level": 19,
+          "mana": 94,
+          "required_intelligence": 147,
+          "required_level": 84
+        },
+        {
+          "crit_chance": 7,
+          "fire_max": 336,
+          "fire_min": 224,
+          "level": 20,
+          "mana": 104,
+          "required_intelligence": 157,
+          "required_level": 90
+        }
+      ],
+      "name": "Fireball",
+      "skill_id": "FireballPlayer",
+      "support": false
+    },
+    {
+      "cast_time": 0,
+      "constant_stats": [
+        {
+          "name": "base_cast_speed_+%",
+          "value": 15
+        }
+      ],
+      "family": "RapidCasting",
+      "id": "Metadata/Items/Gems/SkillGemRapidCastingSupport",
+      "levels": [
+        {
+          "crit_chance": 0,
+          "fire_max": 0,
+          "fire_min": 0,
+          "level": 1,
+          "mana": 0,
+          "required_intelligence": 0,
+          "required_level": 0
+        }
+      ],
+      "name": "Rapid Casting I",
+      "skill_id": "SupportRapidCastingPlayer",
+      "support": true
+    }
+  ],
+  "items": [
+    {
+      "implicit": "+(10-15) to Intelligence",
+      "name": "Lapis Amulet",
+      "required_level": 8,
+      "slot_type": "Amulet"
+    },
+    {
+      "implicit": "+(20-30) to maximum Mana",
+      "name": "Lazuli Ring",
+      "required_level": 0,
+      "slot_type": "Ring"
+    },
+    {
+      "implicit": "(7-10)% increased Cast Speed",
+      "name": "Pearl Ring",
+      "required_level": 32,
+      "slot_type": "Ring"
+    },
+    {
+      "implicit": "+(7-10)% to all Elemental Resistances",
+      "name": "Prismatic Ring",
+      "required_level": 35,
+      "slot_type": "Ring"
+    },
+    {
+      "implicit": "+(20-30)% to Fire Resistance",
+      "name": "Ruby Ring",
+      "required_level": 8,
+      "slot_type": "Ring"
+    }
+  ],
+  "nodes": [
+    {
+      "id": 4739,
+      "name": "Spell Damage",
+      "neighbors": [
+        18845,
+        54447
+      ],
+      "stats": [
+        "10% increased Spell Damage"
+      ]
+    },
+    {
+      "id": 6686,
+      "name": "Mana Regeneration",
+      "neighbors": [
+        51184,
+        55807
+      ],
+      "stats": [
+        "10% increased Mana Regeneration Rate"
+      ]
+    },
+    {
+      "id": 18845,
+      "name": "Spell Damage",
+      "neighbors": [
+        4739,
+        55807
+      ],
+      "stats": [
+        "10% increased Spell Damage"
+      ]
+    },
+    {
+      "id": 44683,
+      "name": "SIX",
+      "neighbors": [],
+      "stats": []
+    },
+    {
+      "id": 47175,
+      "name": "MARAUDER",
+      "neighbors": [],
+      "stats": []
+    },
+    {
+      "id": 50459,
+      "name": "RANGER",
+      "neighbors": [],
+      "stats": []
+    },
+    {
+      "id": 50986,
+      "name": "DUELIST",
+      "neighbors": [],
+      "stats": []
+    },
+    {
+      "id": 51184,
+      "name": "Raw Power",
+      "neighbors": [
+        6686
+      ],
+      "stats": [
+        "20% increased Spell Damage",
+        "+10 to Intelligence"
+      ]
+    },
+    {
+      "id": 54447,
+      "name": "WITCH",
+      "neighbors": [
+        4739
+      ],
+      "stats": []
+    },
+    {
+      "id": 55807,
+      "name": "Mana Regeneration",
+      "neighbors": [
+        6686,
+        18845
+      ],
+      "stats": [
+        "10% increased Mana Regeneration Rate"
+      ]
+    },
+    {
+      "id": 61525,
+      "name": "TEMPLAR",
+      "neighbors": [],
+      "stats": []
+    }
+  ]
+}
