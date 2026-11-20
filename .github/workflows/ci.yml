@@ -1,0 +1,90 @@
+name: Проверить проект
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      has_go:
+        description: Есть Go-модуль и точка входа движка
+        value: ${{ jobs.structure.outputs.has_go }}
+
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    name: Документация и структура
+    runs-on: ubuntu-latest
+    outputs:
+      has_go: ${{ steps.inspect.outputs.has_go }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Проверить документацию и готовность Go-проекта
+        id: inspect
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+          import re
+
+          for name in ('README.md', 'TODO.md', 'CHANGELOG.md'):
+              text = Path(name).read_text(encoding='utf-8')
+              if not text.strip() or text.count('```') % 2:
+                  raise SystemExit(f'Пустой документ или незакрытый блок кода: {name}')
+              for target in re.findall(r'\]\(([^)]+)\)', text):
+                  if '://' in target or target.startswith('#'):
+                      continue
+                  if not Path(target.split('#', 1)[0]).is_file():
+                      raise SystemExit(f'Не найдена локальная ссылка в {name}: {target}')
+
+          module = Path('go.mod').is_file()
+          entry = Path('cmd/pob2-engine').is_dir()
+          if module != entry:
+              raise SystemExit('Нужны одновременно go.mod и cmd/pob2-engine.')
+          if not module and any(Path('.').rglob('*.go')):
+              raise SystemExit('Обнаружены Go-файлы без настроенного модуля и CLI.')
+          if module and not any(Path('cmd/pob2-engine').glob('*.go')):
+              raise SystemExit('В cmd/pob2-engine отсутствует точка входа Go.')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write(f'has_go={str(module).lower()}\n')
+          print('Go-проверки включены.' if module else 'Этап документации: Go-программа ещё не добавлена.')
+          PY
+      - name: Проверить пробелы в последнем коммите
+        run: git show --format= --check HEAD
+
+  go:
+    name: Go / ${{ matrix.os }}
+    needs: structure
+    if: needs.structure.outputs.has_go == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.1.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Проверить форматирование
+        shell: bash
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            printf '%s\n' "$unformatted"
+            exit 1
+          fi
+      - name: Проверить код
+        run: go vet ./...
+      - name: Выполнить тесты
+        run: go test ./...
+      - name: Проверить гонки
+        if: runner.os == 'Linux'
+        run: go test -race ./...
+      - name: Собрать CLI
+        run: go build ./cmd/pob2-engine
