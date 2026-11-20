@@ -31,7 +31,7 @@ jobs:
           import os
           import re
 
-          documents = ['README.md', 'TODO.md', 'todo_0.0.1.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'testdata/reference/README.md']
+          documents = ['README.md', 'TODO.md', 'todo_0.0.1.md', 'todo_0.0.2.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'testdata/reference/README.md']
           documents.extend(str(path) for path in sorted(Path('docs').glob('*.md')))
           for name in documents:
               text = Path(name).read_text(encoding='utf-8')
