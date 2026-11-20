@@ -25,7 +25,7 @@ go build ./cmd/pob2-engine
 go run ./cmd/pob2-engine --help
 ```
 
-Это форматирование, анализ, тесты, сборка и справка. CI выполняет тесты и `go test -race ./...` на Linux, собирая три платформы. Работают `serve`, `connect`, `info`, `session`, `mcp`, `shutdown`. При изменении `.proto` нужны Buf 1.73.0 и Dart 3.14.0: выполните `go run ./tool/generate`, затем `go run ./tool/generate -check`. Версии плагинов закреплены; Dart-зависимости сохраняйте в lock-файлах.
+Это форматирование, анализ, тесты, сборка и справка. CI выполняет тесты и `go test -race ./...` на Linux. Сборки платформ — по тегам `v*`. Работают `serve`, `connect`, `info`, `session`, `mcp`, `shutdown`. При изменении `.proto` нужны Buf 1.73.0 и Dart 3.14.0: выполните `go run ./tool/generate`, затем `go run ./tool/generate -check`. Версии плагинов закреплены; Dart-зависимости сохраняйте в lock-файлах.
 
 ## Стиль кода и именование
 
