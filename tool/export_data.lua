@@ -15,11 +15,27 @@ for _, class in ipairs(tree.classes) do
 	result.classes[#result.classes + 1] = { id = class.integerId, name = class.name,
 		strength = class.base_str, dexterity = class.base_dex, intelligence = class.base_int, start_node = start }
 end
-local effects = { FireballPlayer = true, SupportControlledDestructionPlayer = true, SupportRapidCastingPlayer = true }
+local effects = { FireballPlayer = "Fire", FrostboltPlayer = "Cold", SparkPlayer = "Lightning",
+	SupportControlledDestructionPlayer = true, SupportRapidCastingPlayer = true }
 for id, gem in pairs(data.gems) do
 	if effects[gem.grantedEffectId] and id:match("^Metadata/Items/Gems/") then
 		local effect = data.skills[gem.grantedEffectId]
+		local set = effect.statSets[1]
+		local damageType = effect.support and "" or effects[gem.grantedEffectId]
+		local minimumName = "spell_minimum_base_" .. damageType:lower() .. "_damage"
+		local maximumName = "spell_maximum_base_" .. damageType:lower() .. "_damage"
+		local indices = {}
+		for index, name in ipairs(set.stats or {}) do
+			assert(not indices[name], "Повторное свойство: " .. name)
+			if not effect.support and (name:match("^spell_minimum_base_") or name:match("^spell_maximum_base_")) then
+				assert(name == minimumName or name == maximumName, "Неожиданная стихия урона: " .. name)
+			end
+			indices[name] = index
+		end
+		local minimum = not effect.support and assert(indices[minimumName])
+		local maximumIndex = not effect.support and assert(indices[maximumName])
 		local exported = { id = id, game_id = gem.gameId, variant_id = gem.variantId, name = gem.name, skill_id = gem.grantedEffectId, support = effect.support == true,
+			damage_type = damageType, mode = effect.support and "" or assert(set.label),
 			cast_time = effect.castTime or 0, family = effect.gemFamily and effect.gemFamily[1] or "",
 			levels = {}, constant_stats = effect.statSets[1].constantStats or {} }
 		local maximum = effect.support and 1 or 20
@@ -28,7 +44,7 @@ for id, gem in pairs(data.gems) do
 			local stats = effect.statSets[1].levels[level] or effect.statSets[1].levels[1]
 			exported.levels[#exported.levels + 1] = { level = level, required_level = values.levelRequirement or 0,
 				required_intelligence = calcLib.getGemStatRequirement(values.levelRequirement or 0, gem.reqInt or 0, effect.support),
-				fire_min = effect.support and 0 or stats[1], fire_max = effect.support and 0 or stats[2],
+				damage_min = effect.support and 0 or assert(stats[minimum]), damage_max = effect.support and 0 or assert(stats[maximumIndex]),
 				crit_chance = values.critChance or 0, mana = values.cost and values.cost.Mana or 0 }
 		end
 		result.gems[#result.gems + 1] = exported

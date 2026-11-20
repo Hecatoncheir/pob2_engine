@@ -25,6 +25,7 @@ var flatNames = map[string][]string{
 }
 var percentNames = map[string]string{
 	"Spell Damage": "SpellDamage", "Fire Damage": "FireDamage", "Elemental Damage": "ElementalDamage", "Projectile Damage": "ProjectileDamage",
+	"Cold Damage": "ColdDamage", "Lightning Damage": "LightningDamage",
 	"Damage": "Damage", "Cast Speed": "CastSpeed", "Critical Hit Chance": "CritChance", "Critical Hit Chance for Spells": "CritChance",
 	"Critical Damage Bonus": "CritBonus", "maximum Life": "Life", "maximum Mana": "Mana", "Mana Regeneration Rate": "ManaRegen",
 }

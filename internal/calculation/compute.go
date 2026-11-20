@@ -32,19 +32,23 @@ func (s *inputs) compute() map[string]float64 {
 	}
 	effect := 1 + chance/100*(multiplier-1)
 	speed := round(math.Max(0, 1+total(mods, "INC", "CastSpeed")/100), 2) / s.castTime
-	names := []string{"Damage", "SpellDamage", "FireDamage", "ElementalDamage", "ProjectileDamage"}
+	names := []string{"Damage", "SpellDamage", s.skill.DamageType + "Damage", "ElementalDamage", "ProjectileDamage"}
 	damageScale := math.Max(0, 1+total(mods, "INC", names...)/100) * total(mods, "MORE", names...)
-	minimum, maximum := round(s.gem.FireMin*damageScale, 0), round(s.gem.FireMax*damageScale, 0)
+	minimum, maximum := round(s.gem.DamageMin*damageScale, 0), round(s.gem.DamageMax*damageScale, 0)
 	storedAverage := (minimum + maximum) / 2
-	enemyMultiplier := 1 - s.enemyResist/100
+	enemyMultiplier := 1 - s.enemyResists[s.skill.DamageType]/100
 	hitAverage := storedAverage * enemyMultiplier
 	averageHit := hitAverage * effect
 	stats := map[string]float64{
 		"Str": str, "Dex": dex, "Int": intelligence, "Life": life, "Mana": mana, "ManaRegen": regen,
 		"ManaCost": s.gem.Mana, "ManaPerSecondCost": s.gem.Mana * speed, "CastRate": speed, "Speed": speed,
 		"CritChance": chance, "CritMultiplier": multiplier, "CritEffect": effect, "AverageHit": averageHit, "TotalDPS": averageHit * speed,
-		"FireMinBase": s.gem.FireMin, "FireMaxBase": s.gem.FireMax, "FireHitAverage": hitAverage, "FireCritAverage": hitAverage * multiplier,
-		"FireStoredHitMin": minimum, "FireStoredHitMax": maximum, "FireStoredHitAvg": storedAverage, "FireStoredCombinedAvg": storedAverage * effect,
+	}
+	for name, value := range map[string]float64{
+		"MinBase": s.gem.DamageMin, "MaxBase": s.gem.DamageMax, "HitAverage": hitAverage, "CritAverage": hitAverage * multiplier,
+		"StoredHitMin": minimum, "StoredHitMax": maximum, "StoredHitAvg": storedAverage, "StoredCombinedAvg": storedAverage * effect,
+	} {
+		stats[s.skill.DamageType+name] = value
 	}
 	for _, name := range []string{"FireResist", "ColdResist", "LightningResist", "ChaosResist"} {
 		base := s.penalty
@@ -54,7 +58,7 @@ func (s *inputs) compute() map[string]float64 {
 		stats[name] = math.Max(c.ResistanceFloor, math.Min(c.MaxResistance, math.Trunc(base+total(mods, "BASE", name))))
 	}
 	if intelligence < float64(s.gem.RequiredIntelligence) || s.model.Level < s.gem.RequiredLevel {
-		s.issue("requirements_not_met", "Skills/Fireball", "не выполнены требования Fireball к уровню или Intelligence")
+		s.issue("requirements_not_met", "Skills/"+s.skill.Name, fmt.Sprintf("не выполнены требования %s к уровню или Intelligence", s.skill.Name))
 	}
 	for _, item := range s.items {
 		if s.model.Level < item.RequiredLevel {

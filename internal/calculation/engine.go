@@ -48,8 +48,8 @@ func (e *Engine) Calculate(ctx context.Context, doc *build.Document) (Result, er
 		return Result{}, err
 	}
 	result := Result{Status: "complete", DataID: e.data.ID(), DataSHA256: e.data.SHA256(), PoBCommit: e.data.PoBCommit(), InputSHA256: digest,
-		Skill: "Fireball", Mode: "Projectile hits", Issues: append([]build.Issue{}, model.Issues...), Modifiers: []Modifier{}}
-	state := inputs{engine: e, model: model, result: &result}
+		Issues: append([]build.Issue{}, model.Issues...), Modifiers: []Modifier{}}
+	state := inputs{engine: e, model: model, result: &result, enemyResists: make(map[string]float64)}
 	state.readCharacter()
 	state.readConfig()
 	state.readGems()
@@ -79,15 +79,17 @@ func (e *Engine) Calculate(ctx context.Context, doc *build.Document) (Result, er
 }
 
 type inputs struct {
-	engine               *Engine
-	model                build.Model
-	result               *Result
-	class                gamedata.Class
-	gem                  gamedata.GemLevel
-	castTime             float64
-	cannotCrit           bool
-	penalty, enemyResist float64
-	items                []gamedata.Item
+	engine       *Engine
+	model        build.Model
+	result       *Result
+	class        gamedata.Class
+	gem          gamedata.GemLevel
+	skill        gamedata.Gem
+	castTime     float64
+	cannotCrit   bool
+	penalty      float64
+	enemyResists map[string]float64
+	items        []gamedata.Item
 }
 
 func (s *inputs) issue(code, path, message string) {

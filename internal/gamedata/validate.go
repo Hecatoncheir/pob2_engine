@@ -70,6 +70,9 @@ func (d *Dataset) validateGems() error {
 		if g.Support && g.Family == "" {
 			return fmt.Errorf("нет семейства поддержки %s", g.ID)
 		}
+		if err := validateGemMode(g); err != nil {
+			return err
+		}
 		if err := validateLevels(g); err != nil {
 			return err
 		}
@@ -84,17 +87,30 @@ func (d *Dataset) validateGems() error {
 	return nil
 }
 
+func validateGemMode(g Gem) error {
+	if g.Support {
+		if g.DamageType != "" || g.Mode != "" {
+			return fmt.Errorf("поддержка содержит параметры активного умения %s", g.ID)
+		}
+		return nil
+	}
+	if !slices.Contains([]string{"Fire", "Cold", "Lightning"}, g.DamageType) || !slices.Contains([]string{"Projectile", "Base"}, g.Mode) {
+		return fmt.Errorf("неизвестная стихия или режим камня %s", g.ID)
+	}
+	return nil
+}
+
 func validateLevels(g Gem) error {
 	for i, l := range g.Levels {
 		if l.Level != i+1 || l.RequiredLevel < 0 || l.RequiredLevel > 100 || l.RequiredIntelligence < 0 {
 			return fmt.Errorf("неверный уровень камня %s", g.ID)
 		}
-		for _, value := range []float64{l.FireMin, l.FireMax, l.CritChance, l.Mana} {
+		for _, value := range []float64{l.DamageMin, l.DamageMax, l.CritChance, l.Mana} {
 			if !finite(value) || value < 0 {
 				return fmt.Errorf("неверное число камня %s", g.ID)
 			}
 		}
-		if l.FireMax < l.FireMin || l.CritChance > 100 {
+		if l.DamageMax < l.DamageMin || l.CritChance > 100 || g.Support && (l.DamageMin != 0 || l.DamageMax != 0) {
 			return fmt.Errorf("параметр вне диапазона: %s", g.ID)
 		}
 	}

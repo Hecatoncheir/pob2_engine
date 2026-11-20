@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
+	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
 var questFlags = []string{
@@ -50,8 +51,9 @@ func (s *inputs) readConfig() {
 			}
 		case "resistancePenalty":
 			s.penalty = s.number(value, path, -100, 0)
-		case "enemyFireResist":
-			s.enemyResist = s.number(value, path, -100, 75)
+		case "enemyFireResist", "enemyColdResist", "enemyLightningResist":
+			element := strings.TrimSuffix(strings.TrimPrefix(name, "enemy"), "Resist")
+			s.enemyResists[element] = s.number(value, path, -100, 75)
 		case "enemyLevel":
 			s.number(value, path, 1, 100)
 		default:
@@ -98,47 +100,70 @@ func (s *inputs) readGems() {
 	activeCount := 0
 	families := make(map[string]bool)
 	for index, gem := range group.Gems {
-		if !gem.Enabled {
-			continue
-		}
 		path := fmt.Sprintf("Skills/%d/Gem/%d", group.ID, index+1)
-		selected, ok := s.engine.data.Gem(gem.SkillID)
-		if !ok {
-			s.issue("unsupported_gem", path, "неизвестный камень")
-			continue
-		}
-		id := strings.Replace(gem.ID, "Metadata/Items/Gem/", "Metadata/Items/Gems/", 1)
-		if (id != "" && id != selected.ID && gem.ID != selected.GameID) || (gem.Name != "" && gem.Name != selected.Name) ||
-			(gem.VariantID != "" && gem.VariantID != selected.VariantID) {
-			s.issue("unsupported_gem", path, "идентификаторы камня противоречат друг другу")
-		}
-		if gem.Quality != 0 || gem.Corrupted || gem.StatSet != 1 || gem.Level > len(selected.Levels) {
-			s.issue("unsupported_gem", path, "неподдерживаемый уровень, качество или режим камня")
-			continue
-		}
-		if !selected.Support {
-			activeCount++
-			s.gem, s.castTime = selected.Levels[gem.Level-1], selected.CastTime
-			continue
-		}
-		if families[selected.Family] {
-			s.issue("unsupported_support", path, "поддержка этого семейства уже используется")
-		}
-		families[selected.Family] = true
-		for _, stat := range selected.ConstantStats {
-			switch stat.Name {
-			case "base_cast_speed_+%":
-				s.result.Modifiers = append(s.result.Modifiers, Modifier{"CastSpeed", "INC", stat.Value, path})
-			case "support_controlled_destruction_spell_damage_+%_final":
-				s.result.Modifiers = append(s.result.Modifiers, Modifier{"Damage", "MORE", stat.Value, path})
-				s.cannotCrit = true
-			default:
-				s.issue("unsupported_support", path, "неизвестное свойство поддержки")
-			}
-		}
+		activeCount += s.readGem(gem, path, families)
 	}
 	if activeCount != 1 {
-		s.issue("missing_input", "Skills", "нужно одно активное умение Fireball")
+		s.issue("missing_input", "Skills", "нужно одно поддерживаемое активное умение")
+	}
+}
+
+func (s *inputs) readGem(gem build.Gem, path string, families map[string]bool) int {
+	if !gem.Enabled {
+		return 0
+	}
+	selected, ok := s.engine.data.Gem(gem.SkillID)
+	if !ok {
+		s.issue("unsupported_gem", path, "неизвестный камень")
+		return 0
+	}
+	id := strings.Replace(gem.ID, "Metadata/Items/Gem/", "Metadata/Items/Gems/", 1)
+	if (id != "" && id != selected.ID && gem.ID != selected.GameID) || (gem.Name != "" && gem.Name != selected.Name) ||
+		(gem.VariantID != "" && gem.VariantID != selected.VariantID) {
+		s.issue("unsupported_gem", path, "идентификаторы камня противоречат друг другу")
+	}
+	if gem.Quality != 0 || gem.Corrupted || gem.StatSet != 1 || gem.Level > len(selected.Levels) {
+		s.issue("unsupported_gem", path, "неподдерживаемый уровень, качество или режим камня")
+		return 0
+	}
+	if selected.Support {
+		s.readSupport(selected, path, families)
+		return 0
+	}
+	return s.readActiveGem(selected, gem.Level, path)
+}
+
+func (s *inputs) readActiveGem(gem gamedata.Gem, level int, path string) int {
+	profiles := map[string][2]string{
+		"FireballPlayer":  {"Fire", "Projectile"},
+		"FrostboltPlayer": {"Cold", "Projectile"},
+		"SparkPlayer":     {"Lightning", "Base"},
+	}
+	profile, ok := profiles[gem.SkillID]
+	if !ok || gem.DamageType != profile[0] || gem.Mode != profile[1] {
+		s.issue("unsupported_skill", path, "неподдерживаемое умение или его режим")
+		return 0
+	}
+	s.skill, s.gem, s.castTime = gem, gem.Levels[level-1], gem.CastTime
+	s.result.Skill, s.result.Mode = gem.Name, gem.Mode+" hits"
+	return 1
+}
+
+func (s *inputs) readSupport(gem gamedata.Gem, path string, families map[string]bool) {
+	if families[gem.Family] {
+		s.issue("unsupported_support", path, "поддержка этого семейства уже используется")
+	}
+	families[gem.Family] = true
+	for _, stat := range gem.ConstantStats {
+		switch stat.Name {
+		case "base_cast_speed_+%":
+			s.result.Modifiers = append(s.result.Modifiers, Modifier{"CastSpeed", "INC", stat.Value, path})
+		case "support_controlled_destruction_spell_damage_+%_final":
+			s.result.Modifiers = append(s.result.Modifiers, Modifier{"Damage", "MORE", stat.Value, path})
+			s.cannotCrit = true
+		default:
+			s.issue("unsupported_support", path, "неизвестное свойство поддержки")
+		}
 	}
 }
 

@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "release": "v0.0.1",
+  "commit": "d5bb6a2a48fcb6f9b888eb334781fdd6948dc589",
+  "archive_sha256": "f55e472216a99607abe600feff25eefb1fa1f16180b59cea015a230b8456b262",
+  "files": {
+    "sessions.db": "5bcfff70961066b7b92887ac328d259d73b4bba8a2717a9eb150709e200e2abe",
+    "snapshot.json": "9ee7a1547ee97813d55f856901019e994001b6b8c8da3715a045d38f97fe842e"
+  }
+}

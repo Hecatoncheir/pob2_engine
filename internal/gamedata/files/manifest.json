@@ -1,13 +1,13 @@
 {
   "exporters": {
-    "tool/export_data.lua": "993e0393d1b8bb126c377eabdd332089fec9384c1a3dc7997239d075cfdf945f",
-    "tool/export_data.py": "514b8d9477965d57fa95de7e05d4bada0e34baebbbadb58e2818554168ffef64"
+    "tool/export_data.lua": "9d180b0df4447213c3b7be351774b769b146409f5e374eba65a579e1ee3a9355",
+    "tool/export_data.py": "b8493cd70f9f17d13954afbca576234e0285464c77a8261eb868b917971f3082"
   },
   "files": {
-    "catalog.json": "60e70d539ec4cffafb750f07accc39f89f384a4528d700e3993ddd7abfeaa3cc"
+    "catalog.json": "643f9ae31bd18297788fc8746fa621da23f999061404d3007c21c67b2855ca18"
   },
   "game_version": null,
-  "id": "pob2-0.0.1-fireball-v1",
+  "id": "pob2-0.0.2-spell-hits-v1",
   "origin": {
     "commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
     "files": {
@@ -30,6 +30,6 @@
     "game_data_copyright": "Skill, gem and item data (c) Grinding Gear Games",
     "upstream_notice": ".licenses/reference/pob-LICENSE.md"
   },
-  "schema": 1,
+  "schema": 2,
   "tree_version": "0_5"
 }

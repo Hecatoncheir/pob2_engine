@@ -37,6 +37,23 @@ class ReferenceIntegrity(unittest.TestCase):
         for case in golden['cases']:
             self.assertEqual(case['input_sha256'], sha256((DATA / 'cases' / (case['id'] + '.xml')).read_bytes()))
 
+    def test_spell_matrix_inputs_and_provenance(self):
+        directory = DATA / '0.0.2'
+        golden = read_json(directory / 'spells.lua.json')
+        recipe = read_json(directory / 'spells.recipe.json')
+        self.assertEqual(golden['recipe_sha256'], sha256((directory / 'spells.recipe.json').read_bytes()))
+        sources = read_json(DATA / 'sources.lock.json')
+        self.assertEqual(golden['pob_commit'], sources['pob']['commit'])
+        self.assertEqual(golden['mcp_commit'], sources['mcp']['commit'])
+        recipes = {case['id']: case for case in recipe['cases']}
+        self.assertEqual(len(recipe['cases']), len(recipes))
+        self.assertEqual({case['id'] for case in golden['cases']}, set(recipes))
+        self.assertEqual(len(golden['cases']), 84)
+        for case in golden['cases']:
+            self.assertEqual(case['input_sha256'], sha256((directory / 'cases' / (case['id'] + '.xml')).read_bytes()))
+            self.assertEqual(case['skill'], recipes[case['id']]['skill'])
+            self.assertEqual(case['element'], recipes[case['id']]['element'])
+
     def test_warnings_and_field_loss_are_not_numeric_tolerances(self):
         for actual in [{'warnings': []}, {'warnings': ['different']}, {}]:
             with self.subTest(actual=actual), self.assertRaises(ValueError):

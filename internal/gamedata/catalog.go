@@ -31,8 +31,8 @@ type GemLevel struct {
 	Level                int     `json:"level"`
 	RequiredLevel        int     `json:"required_level"`
 	RequiredIntelligence int     `json:"required_intelligence"`
-	FireMin              float64 `json:"fire_min"`
-	FireMax              float64 `json:"fire_max"`
+	DamageMin            float64 `json:"damage_min"`
+	DamageMax            float64 `json:"damage_max"`
 	CritChance           float64 `json:"crit_chance"`
 	Mana                 float64 `json:"mana"`
 }
@@ -49,6 +49,8 @@ type Gem struct {
 	Name          string     `json:"name"`
 	SkillID       string     `json:"skill_id"`
 	Support       bool       `json:"support"`
+	DamageType    string     `json:"damage_type"`
+	Mode          string     `json:"mode"`
 	CastTime      float64    `json:"cast_time"`
 	Family        string     `json:"family"`
 	Levels        []GemLevel `json:"levels"`
@@ -165,7 +167,7 @@ func Load(files fs.FS) (*Dataset, error) {
 }
 
 func validateManifest(m Manifest) error {
-	if m.Schema != 1 || m.ID == "" || m.TreeVersion != "0_5" || !commitPattern.MatchString(m.PoBCommit) {
+	if m.Schema != 2 || m.ID == "" || m.TreeVersion != "0_5" || !commitPattern.MatchString(m.PoBCommit) {
 		return fmt.Errorf("несовместимый манифест набора")
 	}
 	if m.Origin.Commit != m.PoBCommit || m.Origin.Repository == "" || len(m.Origin.Files) == 0 || len(m.Rights) == 0 {

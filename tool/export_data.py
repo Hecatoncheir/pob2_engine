@@ -40,7 +40,7 @@ def export():
         node['neighbors'] = sorted(set(node['neighbors']))
     catalog = encode(data)
     sources = read_json(ROOT / 'testdata/reference/sources.lock.json')
-    manifest = {'schema': 1, 'id': 'pob2-0.0.1-fireball-v1', 'game_version': None,
+    manifest = {'schema': 2, 'id': 'pob2-0.0.2-spell-hits-v1', 'game_version': None,
                 'tree_version': state['tree_version'], 'pob_commit': state['pob_commit'],
                 'files': {'catalog.json': sha256(catalog)},
                 'exporters': {name: sha256((ROOT / name).read_bytes()) for name in ['tool/export_data.lua', 'tool/export_data.py']},

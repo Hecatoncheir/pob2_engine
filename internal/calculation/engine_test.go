@@ -3,6 +3,8 @@ package calculation
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"math"
@@ -43,76 +45,136 @@ func testDocument(t testing.TB) *build.Document {
 }
 
 func TestLuaMatrix(t *testing.T) {
-	data, err := os.ReadFile("../../testdata/reference/cases.lua.json")
+	testLuaMatrix(t, "../../testdata/reference", "cases.lua.json", 77)
+}
+
+func TestSpellLuaMatrix(t *testing.T) {
+	testLuaMatrix(t, "../../testdata/reference/0.0.2", "spells.lua.json", 84)
+}
+
+type luaReport struct {
+	Stats      map[string]float64 `json:"stats"`
+	Warnings   []string           `json:"warnings"`
+	CustomMods []struct {
+		Unparsed []json.RawMessage `json:"unparsed"`
+	} `json:"custom_mods"`
+}
+
+type luaCase struct {
+	ID          string    `json:"id"`
+	Skill       string    `json:"skill"`
+	InputSHA256 string    `json:"input_sha256"`
+	Report      luaReport `json:"report"`
+}
+
+func testLuaMatrix(t *testing.T, directory, name string, count int) {
+	t.Helper()
+	data, err := os.ReadFile(filepath.Join(directory, name))
 	if err != nil {
 		t.Fatal(err)
 	}
 	var golden struct {
-		Cases []struct {
-			ID     string `json:"id"`
-			Report struct {
-				Stats      map[string]float64 `json:"stats"`
-				Warnings   []string           `json:"warnings"`
-				CustomMods []struct {
-					Unparsed []json.RawMessage `json:"unparsed"`
-				} `json:"custom_mods"`
-			} `json:"report"`
-		} `json:"cases"`
+		PoBCommit string    `json:"pob_commit"`
+		Cases     []luaCase `json:"cases"`
 	}
 	if err := json.Unmarshal(data, &golden); err != nil {
 		t.Fatal(err)
 	}
 	engine := testEngine(t)
-	for _, caseData := range golden.Cases {
-		t.Run(caseData.ID, func(t *testing.T) {
-			data, err := os.ReadFile(filepath.Join("../../testdata/reference/cases", caseData.ID+".xml"))
-			if err != nil {
-				t.Fatal(err)
-			}
-			doc, err := build.Parse(data)
-			if err != nil {
-				t.Fatal(err)
-			}
-			actual, err := engine.Calculate(context.Background(), doc)
-			if err != nil {
-				t.Fatal(err)
-			}
-			unparsed := 0
-			for _, block := range caseData.Report.CustomMods {
-				unparsed += len(block.Unparsed)
-			}
-			if unparsed > 0 {
-				if actual.Status != "unsupported" || actual.Stats != nil {
-					t.Fatal("Go скрыл неразобранное свойство Lua")
-				}
-				return
-			}
-			expectedStatus := "complete"
-			if len(caseData.Report.Warnings) > 0 {
-				expectedStatus = "partial"
-			}
-			if actual.Status != expectedStatus {
-				t.Fatalf("неполный расчёт: %+v", actual.Issues)
-			}
-			for name, want := range caseData.Report.Stats {
-				got, ok := actual.Stats[name]
-				if !ok || math.Abs(got-want) > math.Max(1e-9, math.Abs(want)*1e-10) {
-					t.Errorf("%s: Go %.15g, Lua %.15g", name, got, want)
-				}
-			}
-			for _, warning := range caseData.Report.Warnings {
-				if !strings.Contains(warning, "Intelligence requirement of Fireball") {
-					t.Fatalf("новая причина предупреждения Lua: %s", warning)
-				}
-				found := false
-				for _, issue := range actual.Issues {
-					found = found || issue.Code == "requirements_not_met"
-				}
-				if !found {
-					t.Fatal("Go потерял предупреждение о требованиях камня")
-				}
-			}
+	if len(golden.Cases) != count || golden.PoBCommit != engine.data.PoBCommit() {
+		t.Fatal("изменён состав матрицы либо происхождение данных")
+	}
+	for _, sample := range golden.Cases {
+		t.Run(sample.ID, func(t *testing.T) {
+			actual := calculateLuaCase(t, engine, directory, sample)
+			checkLuaResult(t, actual, sample)
 		})
+	}
+}
+
+func calculateLuaCase(t *testing.T, engine *Engine, directory string, sample luaCase) Result {
+	t.Helper()
+	data, err := os.ReadFile(filepath.Join(directory, "cases", sample.ID+".xml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(data)
+	if hex.EncodeToString(digest[:]) != sample.InputSHA256 {
+		t.Fatal("XML не соответствует сумме эталона")
+	}
+	doc, err := build.Parse(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	actual, err := engine.Calculate(t.Context(), doc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return actual
+}
+
+func checkLuaResult(t *testing.T, actual Result, sample luaCase) {
+	t.Helper()
+	skill, mode := sample.Skill, "Projectile hits"
+	if skill == "" {
+		skill = "Fireball"
+	}
+	if skill == "Spark" {
+		mode = "Base hits"
+	}
+	if actual.Skill != skill || actual.Mode != mode {
+		t.Fatalf("подменено умение или режим: %s / %s", actual.Skill, actual.Mode)
+	}
+	unparsed := 0
+	for _, block := range sample.Report.CustomMods {
+		unparsed += len(block.Unparsed)
+	}
+	if unparsed > 0 {
+		checkUnparsedResult(t, actual, unparsed)
+		return
+	}
+	expectedStatus := "complete"
+	if len(sample.Report.Warnings) > 0 {
+		expectedStatus = "partial"
+	}
+	if actual.Status != expectedStatus {
+		t.Fatalf("неполный расчёт: %+v", actual.Issues)
+	}
+	for name, want := range sample.Report.Stats {
+		got, ok := actual.Stats[name]
+		if !ok || math.Abs(got-want) > math.Max(1e-9, math.Abs(want)*1e-10) {
+			t.Errorf("%s: Go %.15g, Lua %.15g", name, got, want)
+		}
+	}
+	checkLuaWarnings(t, actual, sample.Report.Warnings, skill)
+}
+
+func checkUnparsedResult(t *testing.T, actual Result, count int) {
+	t.Helper()
+	if actual.Status != "unsupported" || actual.Stats != nil || len(actual.Issues) != count {
+		t.Fatal("Go скрыл неразобранное свойство Lua")
+	}
+	for _, issue := range actual.Issues {
+		if issue.Code != "unsupported_modifier" || !strings.HasPrefix(issue.Path, "Config/customMods/") {
+			t.Fatalf("неподдержанный результат вызван другой причиной: %+v", issue)
+		}
+	}
+}
+
+func checkLuaWarnings(t *testing.T, actual Result, warnings []string, skill string) {
+	t.Helper()
+	if len(actual.Issues) != len(warnings) {
+		t.Fatalf("не совпало число предупреждений: %+v", actual.Issues)
+	}
+	for _, warning := range warnings {
+		if !strings.Contains(warning, "Intelligence requirement of "+skill) {
+			t.Fatalf("новая причина предупреждения Lua: %s", warning)
+		}
+	}
+	for _, issue := range actual.Issues {
+		if issue.Code != "requirements_not_met" || issue.Path != "Skills/"+skill {
+			t.Fatalf("Go подменил предупреждение о требованиях: %+v", issue)
+		}
 	}
 }
 

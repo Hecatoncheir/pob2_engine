@@ -1,0 +1,759 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "id": "frostbolt-gem-01",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 1,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-02",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 2,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-03",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 3,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-04",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 4,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-05",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 5,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-06",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 6,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-07",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 7,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-08",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 8,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-09",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 9,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-10",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-11",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 11,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-12",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 12,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-13",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 13,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-14",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 14,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-15",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-16",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 16,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-17",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 17,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-18",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 18,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-19",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 19,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "frostbolt-gem-20",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 20,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 1,
+      "gem_level": 1,
+      "custom_mods": "",
+      "id": "frostbolt-minimal"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-support-rapid",
+      "supports": [
+        "Rapid Casting I"
+      ]
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-support-controlled",
+      "supports": [
+        "Controlled Destruction"
+      ]
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-support-combined",
+      "supports": [
+        "Rapid Casting I",
+        "Controlled Destruction"
+      ]
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% increased Cold Damage",
+      "id": "frostbolt-mod-01"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% increased Spell Damage",
+      "id": "frostbolt-mod-02"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n25% increased Projectile Damage",
+      "id": "frostbolt-mod-03"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n20% more Elemental Damage",
+      "id": "frostbolt-mod-04"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n25% less Damage",
+      "id": "frostbolt-mod-05"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% increased Fire Damage",
+      "id": "frostbolt-mod-06"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n37% increased Cast Speed",
+      "id": "frostbolt-mod-07"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n80% increased Critical Hit Chance",
+      "id": "frostbolt-mod-08"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n25% increased Critical Damage Bonus",
+      "id": "frostbolt-mod-09"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-resist--100",
+      "config": {
+        "enemyColdResist": -100
+      }
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-resist--25",
+      "config": {
+        "enemyColdResist": -25
+      }
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-resist-0",
+      "config": {
+        "enemyColdResist": 0
+      }
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-resist-25",
+      "config": {
+        "enemyColdResist": 25
+      }
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "frostbolt-resist-75",
+      "config": {
+        "enemyColdResist": 75
+      }
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 1,
+      "gem_level": 10,
+      "custom_mods": "",
+      "id": "frostbolt-requirements"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n2.5% increased Cast Speed",
+      "id": "frostbolt-unparsed",
+      "expected_unparsed": [
+        "2.5% increased Cast Speed"
+      ]
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% less Damage",
+      "id": "frostbolt-zero-damage"
+    },
+    {
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n43% increased Cold Damage\n31% increased Spell Damage\n17% more Projectile Damage\n26% increased Cast Speed",
+      "id": "frostbolt-combined",
+      "supports": [
+        "Rapid Casting I"
+      ],
+      "nodes": [
+        4739,
+        18845,
+        55807,
+        6686,
+        51184
+      ],
+      "config": {
+        "enemyColdResist": 25
+      }
+    },
+    {
+      "id": "spark-gem-01",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 1,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-02",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 2,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-03",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 3,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-04",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 4,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-05",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 5,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-06",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 6,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-07",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 7,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-08",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 8,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-09",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 9,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-10",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-11",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 11,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-12",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 12,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-13",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 13,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-14",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 14,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-15",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 15,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-16",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 16,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-17",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 17,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-18",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 18,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-19",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 19,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "id": "spark-gem-20",
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 20,
+      "custom_mods": "+200 to Intelligence"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 1,
+      "gem_level": 1,
+      "custom_mods": "",
+      "id": "spark-minimal"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-support-rapid",
+      "supports": [
+        "Rapid Casting I"
+      ]
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-support-controlled",
+      "supports": [
+        "Controlled Destruction"
+      ]
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-support-combined",
+      "supports": [
+        "Rapid Casting I",
+        "Controlled Destruction"
+      ]
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% increased Lightning Damage",
+      "id": "spark-mod-01"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% increased Spell Damage",
+      "id": "spark-mod-02"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n25% increased Projectile Damage",
+      "id": "spark-mod-03"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n20% more Elemental Damage",
+      "id": "spark-mod-04"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n25% less Damage",
+      "id": "spark-mod-05"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% increased Fire Damage",
+      "id": "spark-mod-06"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n37% increased Cast Speed",
+      "id": "spark-mod-07"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n80% increased Critical Hit Chance",
+      "id": "spark-mod-08"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n25% increased Critical Damage Bonus",
+      "id": "spark-mod-09"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-resist--100",
+      "config": {
+        "enemyLightningResist": -100
+      }
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-resist--25",
+      "config": {
+        "enemyLightningResist": -25
+      }
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-resist-0",
+      "config": {
+        "enemyLightningResist": 0
+      }
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-resist-25",
+      "config": {
+        "enemyLightningResist": 25
+      }
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence",
+      "id": "spark-resist-75",
+      "config": {
+        "enemyLightningResist": 75
+      }
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 1,
+      "gem_level": 10,
+      "custom_mods": "",
+      "id": "spark-requirements"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n2.5% increased Cast Speed",
+      "id": "spark-unparsed",
+      "expected_unparsed": [
+        "2.5% increased Cast Speed"
+      ]
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n100% less Damage",
+      "id": "spark-zero-damage"
+    },
+    {
+      "skill": "Spark",
+      "element": "Lightning",
+      "level": 100,
+      "gem_level": 10,
+      "custom_mods": "+200 to Intelligence\n43% increased Lightning Damage\n31% increased Spell Damage\n17% more Projectile Damage\n26% increased Cast Speed",
+      "id": "spark-combined",
+      "supports": [
+        "Rapid Casting I"
+      ],
+      "nodes": [
+        4739,
+        18845,
+        55807,
+        6686,
+        51184
+      ],
+      "config": {
+        "enemyLightningResist": 25
+      }
+    }
+  ]
+}

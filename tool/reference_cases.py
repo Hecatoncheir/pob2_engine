@@ -19,8 +19,8 @@ FIXTURES = DATA / 'cases'
 
 
 def make_build(api, case, gems):
-    api.call('createBuild', {'classId': 7, 'level': case['level'], 'name': case['id']})
-    group = [{'id': gems['Fireball'], 'level': case['gem_level'], 'quality': 0}]
+    api.call('createBuild', {'classId': case.get('class_id', 7), 'level': case['level'], 'name': case['id']})
+    group = [{'id': gems[case.get('skill', 'Fireball')], 'level': case['gem_level'], 'quality': 0}]
     group += [{'id': gems[name], 'level': 1} for name in case.get('supports', [])]
     api.call('addSkillGroup', {'gems': group})
     defaults = api.call('getBuildReport')['config']
@@ -38,8 +38,8 @@ def make_build(api, case, gems):
     return '\n'.join(line.rstrip() for line in xml.splitlines()) + '\n'
 
 
-def select_report(report):
-    return {'stats': {name: report['stats'][name] for name in STATS},
+def select_report(report, stats=STATS):
+    return {'stats': {name: report['stats'][name] for name in stats},
             'warnings': report['warnings'], 'groups': report['groups'], 'items': report['items'],
             'custom_mods': report['customMods'],
             'allocated_nodes': report['allocatedNodes'], 'config': report['config'],
