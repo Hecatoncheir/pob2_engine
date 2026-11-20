@@ -1,0 +1,12 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Hecatoncheir/pob2_engine/internal/calculation
+cpu: Intel(R) Xeon(R) 6975P-C
+BenchmarkCalculate-4           	    3948	    138424 ns/op	  104150 B/op	     941 allocs/op
+BenchmarkCalculate-4           	    4394	    135064 ns/op	  104149 B/op	     941 allocs/op
+BenchmarkCalculate-4           	    4452	    135337 ns/op	  104149 B/op	     941 allocs/op
+BenchmarkCalculateParallel-4   	    8500	     64056 ns/op	  104191 B/op	     941 allocs/op
+BenchmarkCalculateParallel-4   	    8256	     64904 ns/op	  104192 B/op	     941 allocs/op
+BenchmarkCalculateParallel-4   	    8239	     64973 ns/op	  104192 B/op	     941 allocs/op
+PASS
+ok  	github.com/Hecatoncheir/pob2_engine/internal/calculation	3.392s

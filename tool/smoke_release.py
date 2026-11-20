@@ -127,8 +127,8 @@ class Scenario:
                 process.wait(timeout=10)
 
     def execute(self, package_root, tag):
-        version = self.run('--version', raw=True).strip()
-        require(tag in version, 'Версия бинарника не соответствует тегу')
+        version = self.run('--version')
+        require(version['version'] == tag and version['protocol_version'] == 'pob2.v1', 'Версия бинарника не соответствует тегу')
         fixture = package_root / 'testdata/reference/fireball.xml'
         direct = self.run('calculate', '--file', fixture)
         require(direct['status'] == 'complete' and math.isclose(direct['stats']['TotalDPS'], 8.9166666666667, abs_tol=1e-9),
@@ -183,8 +183,8 @@ def smoke(archive, tag):
         return dict(result, tag=tag, commit=manifest['commit'], platform=platform.platform(), machine=platform.machine(),
                     archive_sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
                     checked_at=datetime.now(timezone.utc).isoformat(),
-                    run_url=os.environ.get('GITHUB_SERVER_URL', '') + '/' + os.environ.get('GITHUB_REPOSITORY', '')
-                            + '/actions/runs/' + os.environ.get('GITHUB_RUN_ID', ''))
+                    run_url=(os.environ['GITHUB_SERVER_URL'] + '/' + os.environ['GITHUB_REPOSITORY']
+                             + '/actions/runs/' + os.environ['GITHUB_RUN_ID']) if os.environ.get('GITHUB_RUN_ID') else None)
 
 
 def main():
