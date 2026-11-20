@@ -224,6 +224,20 @@ func (m *Manager) Release(id string) {
 	m.updateIdle(time.Now())
 }
 
+// CheckLease проверяет подписчика, не создавая задачу и не продлевая аренду.
+func (m *Manager) CheckLease(id string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.maintain(time.Now())
+	if m.state != "ready" {
+		return ErrDraining
+	}
+	if _, ok := m.clients[id]; !ok {
+		return ErrLeaseExpired
+	}
+	return nil
+}
+
 // BeginTask удерживает сервер до вызова finish, в том числе после ухода клиента.
 // Пустой leaseID предназначен для внутренних задач и старых однократных RPC.
 func (m *Manager) BeginTask(leaseID string) (finish func(), err error) {

@@ -71,7 +71,7 @@ func StartWithConfig(address, token string, commands application.Commands, confi
 		commands: commands, listener: listener, token: token, life: life, instanceID: rand.Text(),
 		done: make(chan struct{}), stopped: make(chan struct{}), force: make(chan struct{}),
 	}
-	s.rpc = grpc.NewServer(grpc.UnaryInterceptor(s.authorize))
+	s.rpc = grpc.NewServer(grpc.UnaryInterceptor(s.authorize), grpc.StreamInterceptor(s.authorizeStream))
 	pb.RegisterSessionServiceServer(s.rpc, s)
 	go func() { s.serveErr = s.rpc.Serve(listener); close(s.done) }()
 	go func() { <-life.Draining(); s.beginStop() }()
@@ -145,6 +145,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	stats := s.life.Stats()
 	storageMode, storagePath := s.storageInfo()
 	capabilities := buildinfo.Capabilities()
+	if _, ok := s.commands.(application.Events); ok {
+		capabilities = append(capabilities, "session.events")
+	}
 	if storageMode == "disk" {
 		capabilities = append(capabilities, "session.persistence")
 	}

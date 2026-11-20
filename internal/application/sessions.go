@@ -53,6 +53,8 @@ type session struct {
 	snapshot        domain.Snapshot
 	createRequestID string
 	requests        map[string]rename
+	events          []Event
+	changed         chan struct{}
 }
 
 // Service публикует изменения в памяти после подтверждения журнала, если он задан.
@@ -102,7 +104,8 @@ func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapsho
 	if err := s.persist(ctx, Change{Create: &cmd, Result: result}); err != nil {
 		return domain.Snapshot{}, err
 	}
-	s.sessions[cmd.SessionID] = &session{snapshot: result, createRequestID: cmd.RequestID, requests: make(map[string]rename)}
+	s.sessions[cmd.SessionID] = &session{snapshot: result, createRequestID: cmd.RequestID, requests: make(map[string]rename),
+		events: []Event{{Snapshot: result, Kind: "created", RequestID: cmd.RequestID}}, changed: make(chan struct{})}
 	s.requests[cmd.RequestID] = creation{command: cmd, result: result}
 	return result, nil
 }
@@ -165,7 +168,11 @@ func (s *Service) Rename(ctx context.Context, cmd RenameBuild) (domain.Snapshot,
 	if err := s.persist(ctx, Change{Rename: &cmd, Result: result}); err != nil {
 		return domain.Snapshot{}, err
 	}
+	previousName := value.snapshot.BuildName
 	value.snapshot = result
 	value.requests[cmd.RequestID] = rename{command: cmd, result: value.snapshot}
+	value.events = append(value.events, Event{Snapshot: result, Kind: "renamed", RequestID: cmd.RequestID, PreviousBuildName: previousName})
+	close(value.changed)
+	value.changed = make(chan struct{})
 	return value.snapshot, nil
 }

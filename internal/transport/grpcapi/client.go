@@ -72,6 +72,9 @@ func open(address, token string) (*Client, error) {
 			ctx = metadata.AppendToOutgoingContext(ctx, "pob2-lease", c.leaseID)
 		}
 		return invoke(ctx, method, req, reply, cc, opts...)
+	}), grpc.WithStreamInterceptor(func(ctx context.Context, desc *grpc.StreamDesc, cc *grpc.ClientConn, method string, next grpc.Streamer, opts ...grpc.CallOption) (grpc.ClientStream, error) {
+		ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+token, "pob2-lease", c.leaseID)
+		return next(ctx, desc, cc, method, opts...)
 	}))
 	if err != nil {
 		return nil, err
@@ -112,6 +115,11 @@ func (c *Client) initialize(ctx context.Context, kind string) error {
 
 func (c *Client) Done() <-chan struct{} { return c.lost }
 func (c *Client) InstanceID() string    { return c.instanceID }
+func (c *Client) LeaseID() string       { return c.leaseID }
+
+func (c *Client) Watch(ctx context.Context, id string, after uint64) (grpc.ServerStreamingClient[pb.WatchSessionResponse], error) {
+	return c.rpc.WatchSession(ctx, &pb.WatchSessionRequest{SessionId: id, AfterRevision: after})
+}
 
 func (c *Client) heartbeat(ctx context.Context, ttl time.Duration) {
 	defer close(c.heartbeatDone)

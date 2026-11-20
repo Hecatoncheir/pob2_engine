@@ -179,6 +179,52 @@ final $typed_data.Uint8List renameBuildResponseDescriptor = $convert.base64Decod
     'ChNSZW5hbWVCdWlsZFJlc3BvbnNlEjQKCHNuYXBzaG90GAEgASgLMhgucG9iMi52MS5TZXNzaW'
     '9uU25hcHNob3RSCHNuYXBzaG90');
 
+@$core.Deprecated('Use watchSessionRequestDescriptor instead')
+const WatchSessionRequest$json = {
+  '1': 'WatchSessionRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'after_revision', '3': 2, '4': 1, '5': 4, '10': 'afterRevision'},
+  ],
+};
+
+/// Descriptor for `WatchSessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchSessionRequestDescriptor = $convert.base64Decode(
+    'ChNXYXRjaFNlc3Npb25SZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIlCg'
+    '5hZnRlcl9yZXZpc2lvbhgCIAEoBFINYWZ0ZXJSZXZpc2lvbg==');
+
+@$core.Deprecated('Use watchSessionResponseDescriptor instead')
+const WatchSessionResponse$json = {
+  '1': 'WatchSessionResponse',
+  '2': [
+    {
+      '1': 'snapshot',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.SessionSnapshot',
+      '10': 'snapshot'
+    },
+    {'1': 'kind', '3': 2, '4': 1, '5': 9, '10': 'kind'},
+    {'1': 'request_id', '3': 3, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'changed_fields', '3': 4, '4': 3, '5': 9, '10': 'changedFields'},
+    {
+      '1': 'previous_build_name',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '10': 'previousBuildName'
+    },
+  ],
+};
+
+/// Descriptor for `WatchSessionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchSessionResponseDescriptor = $convert.base64Decode(
+    'ChRXYXRjaFNlc3Npb25SZXNwb25zZRI0CghzbmFwc2hvdBgBIAEoCzIYLnBvYjIudjEuU2Vzc2'
+    'lvblNuYXBzaG90UghzbmFwc2hvdBISCgRraW5kGAIgASgJUgRraW5kEh0KCnJlcXVlc3RfaWQY'
+    'AyABKAlSCXJlcXVlc3RJZBIlCg5jaGFuZ2VkX2ZpZWxkcxgEIAMoCVINY2hhbmdlZEZpZWxkcx'
+    'IuChNwcmV2aW91c19idWlsZF9uYW1lGAUgASgJUhFwcmV2aW91c0J1aWxkTmFtZQ==');
+
 @$core.Deprecated('Use shutdownRequestDescriptor instead')
 const ShutdownRequest$json = {
   '1': 'ShutdownRequest',

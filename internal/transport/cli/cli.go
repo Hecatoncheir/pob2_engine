@@ -212,6 +212,7 @@ func (r runner) connect(ctx context.Context, args []string) error {
 	fs := r.flags("connect")
 	c := connectFlags(fs)
 	fs.StringVar(&c.kind, "kind", "cli", "тип клиента: cli, mcp или ui")
+	connectionJSON := fs.Bool("connection-json", false, "вывести адрес, токен и аренду для дочернего клиента; не сохранять вывод в журнал")
 	if err := parse(fs, args); err != nil {
 		return err
 	}
@@ -229,7 +230,14 @@ func (r runner) connect(ctx context.Context, args []string) error {
 	if err != nil {
 		return err
 	}
-	if err := r.write(info); err != nil {
+	var output any = info
+	if *connectionJSON {
+		output, err = c.credentials(client)
+		if err != nil {
+			return err
+		}
+	}
+	if err := r.write(output); err != nil {
 		return err
 	}
 	cancel()
@@ -244,6 +252,26 @@ func (r runner) connect(ctx context.Context, args []string) error {
 	case <-client.Done():
 		return fmt.Errorf("аренда сервера утрачена")
 	}
+}
+
+// credentials передаётся только через явно запрошенный приватный канал stdout.
+func (c *connection) credentials(client *grpcapi.Client) (any, error) {
+	address, token := c.address, c.token
+	if c.profile != "" {
+		profile, err := discovery.Open(c.baseDir, c.profile)
+		if err != nil {
+			return nil, err
+		}
+		record, err := profile.Read()
+		if err != nil {
+			return nil, err
+		}
+		if record.InstanceID != client.InstanceID() {
+			return nil, fmt.Errorf("экземпляр сервера изменился при подключении")
+		}
+		address, token = record.Address, record.Token
+	}
+	return map[string]string{"address": address, "token": token, "lease_id": client.LeaseID(), "instance_id": client.InstanceID(), "protocol_version": buildinfo.ProtocolVersion}, nil
 }
 
 func (r runner) serverCommand(ctx context.Context, command string, args []string) error {

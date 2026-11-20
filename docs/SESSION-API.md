@@ -41,6 +41,7 @@ $env:POB2_ENGINE_TOKEN = 'ТОКЕН'
 | `CreateSession` | Сессия с явным `session_id`, названием и ревизией `1` |
 | `GetSnapshot` | Копия текущего состояния |
 | `RenameBuild` | Правка при совпадении `expected_revision`, затем увеличение ревизии |
+| `WatchSession` | Начальный снимок или правки после заданной ревизии, затем новые события; см. [руководство](SESSION-EVENTS.md) |
 | `Shutdown` | Переход в `draining` и завершение сервера |
 | `RegisterClient`, `Heartbeat`, `ReleaseClient` | Регистрация, подтверждение активности и освобождение аренды клиента |
 

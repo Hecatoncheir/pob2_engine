@@ -739,6 +739,182 @@ class RenameBuildResponse extends $pb.GeneratedMessage {
   SessionSnapshot ensureSnapshot() => $_ensure(0);
 }
 
+/// Ноль запрашивает начальный снимок; иначе возвращаются все последующие правки.
+class WatchSessionRequest extends $pb.GeneratedMessage {
+  factory WatchSessionRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? afterRevision,
+  }) {
+    final result = WatchSessionRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (afterRevision != null) result.afterRevision = afterRevision;
+    return result;
+  }
+
+  WatchSessionRequest._();
+
+  factory WatchSessionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchSessionRequest()..mergeFromBuffer(data, registry);
+  factory WatchSessionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchSessionRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'WatchSessionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: WatchSessionRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'afterRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchSessionRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchSessionRequest copyWith(void Function(WatchSessionRequest) updates) =>
+      super.copyWith((message) => updates(message as WatchSessionRequest))
+          as WatchSessionRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use WatchSessionRequest() / WatchSessionRequest.new instead')
+  static WatchSessionRequest create() => WatchSessionRequest._();
+  static $pb.GeneratedMessage $_createMessage() => WatchSessionRequest._();
+  @$core.override
+  WatchSessionRequest createEmptyInstance() => WatchSessionRequest._();
+  @$core.pragma('dart2js:noInline')
+  static WatchSessionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchSessionRequest>(
+          WatchSessionRequest.$_createMessage);
+  static WatchSessionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get afterRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set afterRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasAfterRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAfterRevision() => $_clearField(2);
+}
+
+class WatchSessionResponse extends $pb.GeneratedMessage {
+  factory WatchSessionResponse({
+    SessionSnapshot? snapshot,
+    $core.String? kind,
+    $core.String? requestId,
+    $core.Iterable<$core.String>? changedFields,
+    $core.String? previousBuildName,
+  }) {
+    final result = WatchSessionResponse._();
+    if (snapshot != null) result.snapshot = snapshot;
+    if (kind != null) result.kind = kind;
+    if (requestId != null) result.requestId = requestId;
+    if (changedFields != null) result.changedFields.addAll(changedFields);
+    if (previousBuildName != null) result.previousBuildName = previousBuildName;
+    return result;
+  }
+
+  WatchSessionResponse._();
+
+  factory WatchSessionResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchSessionResponse()..mergeFromBuffer(data, registry);
+  factory WatchSessionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchSessionResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'WatchSessionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: WatchSessionResponse.$_createMessage)
+    ..aOM<SessionSnapshot>(1, _omitFieldNames ? '' : 'snapshot',
+        subBuilder: SessionSnapshot.$_createMessage)
+    ..aOS(2, _omitFieldNames ? '' : 'kind')
+    ..aOS(3, _omitFieldNames ? '' : 'requestId')
+    ..pPS(4, _omitFieldNames ? '' : 'changedFields')
+    ..aOS(5, _omitFieldNames ? '' : 'previousBuildName')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchSessionResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchSessionResponse copyWith(void Function(WatchSessionResponse) updates) =>
+      super.copyWith((message) => updates(message as WatchSessionResponse))
+          as WatchSessionResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use WatchSessionResponse() / WatchSessionResponse.new instead')
+  static WatchSessionResponse create() => WatchSessionResponse._();
+  static $pb.GeneratedMessage $_createMessage() => WatchSessionResponse._();
+  @$core.override
+  WatchSessionResponse createEmptyInstance() => WatchSessionResponse._();
+  @$core.pragma('dart2js:noInline')
+  static WatchSessionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchSessionResponse>(
+          WatchSessionResponse.$_createMessage);
+  static WatchSessionResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  SessionSnapshot get snapshot => $_getN(0);
+  @$pb.TagNumber(1)
+  set snapshot(SessionSnapshot value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSnapshot() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSnapshot() => $_clearField(1);
+  @$pb.TagNumber(1)
+  SessionSnapshot ensureSnapshot() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get kind => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set kind($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasKind() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearKind() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get requestId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set requestId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasRequestId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRequestId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$core.String> get changedFields => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.String get previousBuildName => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set previousBuildName($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasPreviousBuildName() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPreviousBuildName() => $_clearField(5);
+}
+
 class ShutdownRequest extends $pb.GeneratedMessage {
   factory ShutdownRequest() => ShutdownRequest._();
 

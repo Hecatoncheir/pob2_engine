@@ -10,6 +10,7 @@ service SessionService {
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
   rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);
+  rpc WatchSession(WatchSessionRequest) returns (stream WatchSessionResponse);
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
   rpc RegisterClient(RegisterClientRequest) returns (RegisterClientResponse);
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
@@ -67,6 +68,20 @@ message RenameBuildRequest {
 
 message RenameBuildResponse {
   SessionSnapshot snapshot = 1;
+}
+
+// Ноль запрашивает начальный снимок; иначе возвращаются все последующие правки.
+message WatchSessionRequest {
+  string session_id = 1;
+  uint64 after_revision = 2;
+}
+
+message WatchSessionResponse {
+  SessionSnapshot snapshot = 1;
+  string kind = 2;
+  string request_id = 3;
+  repeated string changed_fields = 4;
+  string previous_build_name = 5;
 }
 
 message ShutdownRequest {}

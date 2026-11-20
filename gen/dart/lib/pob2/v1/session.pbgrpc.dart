@@ -61,6 +61,15 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$renameBuild, request, options: options);
   }
 
+  $grpc.ResponseStream<$0.WatchSessionResponse> watchSession(
+    $0.WatchSessionRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createStreamingCall(
+        _$watchSession, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
   $grpc.ResponseFuture<$0.ShutdownResponse> shutdown(
     $0.ShutdownRequest request, {
     $grpc.CallOptions? options,
@@ -111,6 +120,11 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/RenameBuild',
           ($0.RenameBuildRequest value) => value.writeToBuffer(),
           $0.RenameBuildResponse.fromBuffer);
+  static final _$watchSession =
+      $grpc.ClientMethod<$0.WatchSessionRequest, $0.WatchSessionResponse>(
+          '/pob2.v1.SessionService/WatchSession',
+          ($0.WatchSessionRequest value) => value.writeToBuffer(),
+          $0.WatchSessionResponse.fromBuffer);
   static final _$shutdown =
       $grpc.ClientMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
           '/pob2.v1.SessionService/Shutdown',
@@ -174,6 +188,15 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.RenameBuildRequest.fromBuffer(value),
             ($0.RenameBuildResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.WatchSessionRequest, $0.WatchSessionResponse>(
+            'WatchSession',
+            watchSession_Pre,
+            false,
+            true,
+            ($core.List<$core.int> value) =>
+                $0.WatchSessionRequest.fromBuffer(value),
+            ($0.WatchSessionResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
         'Shutdown',
         shutdown_Pre,
@@ -241,6 +264,15 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$0.RenameBuildResponse> renameBuild(
       $grpc.ServiceCall call, $0.RenameBuildRequest request);
+
+  $async.Stream<$0.WatchSessionResponse> watchSession_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.WatchSessionRequest> $request) async* {
+    yield* watchSession($call, await $request);
+  }
+
+  $async.Stream<$0.WatchSessionResponse> watchSession(
+      $grpc.ServiceCall call, $0.WatchSessionRequest request);
 
   $async.Future<$0.ShutdownResponse> shutdown_Pre($grpc.ServiceCall $call,
       $async.Future<$0.ShutdownRequest> $request) async {
