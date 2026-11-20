@@ -956,6 +956,160 @@ class ShutdownRequest extends $pb.GeneratedMessage {
   static ShutdownRequest? _defaultInstance;
 }
 
+/// Поток не продлевает аренду и не считается вычислительной задачей.
+class WatchServerRequest extends $pb.GeneratedMessage {
+  factory WatchServerRequest() => WatchServerRequest._();
+
+  WatchServerRequest._();
+
+  factory WatchServerRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchServerRequest()..mergeFromBuffer(data, registry);
+  factory WatchServerRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchServerRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'WatchServerRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: WatchServerRequest.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchServerRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchServerRequest copyWith(void Function(WatchServerRequest) updates) =>
+      super.copyWith((message) => updates(message as WatchServerRequest))
+          as WatchServerRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use WatchServerRequest() / WatchServerRequest.new instead')
+  static WatchServerRequest create() => WatchServerRequest._();
+  static $pb.GeneratedMessage $_createMessage() => WatchServerRequest._();
+  @$core.override
+  WatchServerRequest createEmptyInstance() => WatchServerRequest._();
+  @$core.pragma('dart2js:noInline')
+  static WatchServerRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchServerRequest>(
+          WatchServerRequest.$_createMessage);
+  static WatchServerRequest? _defaultInstance;
+}
+
+/// Сначала текущая фаза, затем переход в draining и штатный конец потока.
+/// sequence относится только к instance_id; событие stopped по сети не обещается.
+class WatchServerResponse extends $pb.GeneratedMessage {
+  factory WatchServerResponse({
+    $core.String? instanceId,
+    $fixnum.Int64? sequence,
+    $core.String? state,
+    $core.String? reason,
+    $fixnum.Int64? shutdownTimeoutMs,
+  }) {
+    final result = WatchServerResponse._();
+    if (instanceId != null) result.instanceId = instanceId;
+    if (sequence != null) result.sequence = sequence;
+    if (state != null) result.state = state;
+    if (reason != null) result.reason = reason;
+    if (shutdownTimeoutMs != null) result.shutdownTimeoutMs = shutdownTimeoutMs;
+    return result;
+  }
+
+  WatchServerResponse._();
+
+  factory WatchServerResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchServerResponse()..mergeFromBuffer(data, registry);
+  factory WatchServerResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchServerResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'WatchServerResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: WatchServerResponse.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'instanceId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'sequence', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, _omitFieldNames ? '' : 'state')
+    ..aOS(4, _omitFieldNames ? '' : 'reason')
+    ..a<$fixnum.Int64>(
+        5, _omitFieldNames ? '' : 'shutdownTimeoutMs', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchServerResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchServerResponse copyWith(void Function(WatchServerResponse) updates) =>
+      super.copyWith((message) => updates(message as WatchServerResponse))
+          as WatchServerResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use WatchServerResponse() / WatchServerResponse.new instead')
+  static WatchServerResponse create() => WatchServerResponse._();
+  static $pb.GeneratedMessage $_createMessage() => WatchServerResponse._();
+  @$core.override
+  WatchServerResponse createEmptyInstance() => WatchServerResponse._();
+  @$core.pragma('dart2js:noInline')
+  static WatchServerResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchServerResponse>(
+          WatchServerResponse.$_createMessage);
+  static WatchServerResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get instanceId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set instanceId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasInstanceId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearInstanceId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get sequence => $_getI64(1);
+  @$pb.TagNumber(2)
+  set sequence($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasSequence() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSequence() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get state => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set state($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasState() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearState() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get reason => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set reason($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasReason() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearReason() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $fixnum.Int64 get shutdownTimeoutMs => $_getI64(4);
+  @$pb.TagNumber(5)
+  set shutdownTimeoutMs($fixnum.Int64 value) => $_setInt64(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasShutdownTimeoutMs() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearShutdownTimeoutMs() => $_clearField(5);
+}
+
 class ShutdownResponse extends $pb.GeneratedMessage {
   factory ShutdownResponse() => ShutdownResponse._();
 

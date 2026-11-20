@@ -81,21 +81,48 @@ type Manager struct {
 	closed    chan struct{}
 	done      chan struct{}
 	closeOnce sync.Once
+	events    []Event
+	changed   chan struct{}
 }
 
 func New(config Config) (*Manager, error) {
+	m, err := NewStarting(config)
+	if err != nil {
+		return nil, err
+	}
+	_ = m.MarkReady()
+	return m, nil
+}
+
+// NewStarting запрещает клиентов и задачи до явного подтверждения готовности.
+func NewStarting(config Config) (*Manager, error) {
 	config, err := config.Normalize()
 	if err != nil {
 		return nil, err
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	m := &Manager{
-		config: config, state: "ready", clients: make(map[string]client),
-		idleSince: time.Now(), draining: make(chan struct{}), tasksDone: make(chan struct{}),
+		config: config, state: "starting", clients: make(map[string]client),
+		draining: make(chan struct{}), tasksDone: make(chan struct{}),
 		context: ctx, cancel: cancel, closed: make(chan struct{}), done: make(chan struct{}),
+		events: []Event{{Sequence: 1, State: "starting"}}, changed: make(chan struct{}),
 	}
 	go m.monitor()
 	return m, nil
+}
+
+func (m *Manager) MarkReady() error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.state == "ready" {
+		return nil
+	}
+	if m.state != "starting" {
+		return ErrDraining
+	}
+	m.transition("ready", "")
+	m.idleSince = time.Now()
+	return nil
 }
 
 func (m *Manager) Config() Config             { return m.config }
@@ -128,7 +155,7 @@ func (m *Manager) maintain(now time.Time) {
 	}
 	m.updateIdle(now)
 	if m.state == "ready" && m.config.Mode == Automatic && !m.idleSince.IsZero() && now.Sub(m.idleSince) >= m.config.IdleTimeout {
-		m.drain()
+		m.drain("idle_timeout")
 	}
 }
 
@@ -142,11 +169,11 @@ func (m *Manager) updateIdle(now time.Time) {
 	}
 }
 
-func (m *Manager) drain() {
-	if m.state != "ready" {
+func (m *Manager) drain(reason string) {
+	if m.state != "ready" && m.state != "starting" {
 		return
 	}
-	m.state = "draining"
+	m.transition("draining", reason)
 	close(m.draining)
 	if m.tasks == 0 {
 		m.tasksOnce.Do(func() { close(m.tasksDone) })
@@ -156,7 +183,7 @@ func (m *Manager) drain() {
 func (m *Manager) Drain() {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.drain()
+	m.drain("shutdown")
 }
 
 func (m *Manager) Stats() Stats {
@@ -271,8 +298,8 @@ func (m *Manager) finishTask() {
 func (m *Manager) Close() {
 	m.closeOnce.Do(func() {
 		m.mu.Lock()
-		m.drain()
-		m.state = "stopped"
+		m.drain("shutdown")
+		m.transition("stopped", m.events[len(m.events)-1].Reason)
 		m.mu.Unlock()
 		m.cancel()
 		close(m.closed)

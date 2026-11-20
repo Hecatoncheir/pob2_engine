@@ -121,6 +121,10 @@ func (c *Client) Watch(ctx context.Context, id string, after uint64) (grpc.Serve
 	return c.rpc.WatchSession(ctx, &pb.WatchSessionRequest{SessionId: id, AfterRevision: after})
 }
 
+func (c *Client) WatchServer(ctx context.Context) (grpc.ServerStreamingClient[pb.WatchServerResponse], error) {
+	return c.rpc.WatchServer(ctx, &pb.WatchServerRequest{})
+}
+
 func (c *Client) heartbeat(ctx context.Context, ttl time.Duration) {
 	defer close(c.heartbeatDone)
 	timer := time.NewTicker(ttl / 3)

@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
+	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -41,7 +42,7 @@ func (s *Server) WatchSession(req *pb.WatchSessionRequest, stream grpc.ServerStr
 		return rpcError(err)
 	}
 	md, _ := metadata.FromIncomingContext(ctx)
-	go s.watchLease(ctx, cancel, md.Get("pob2-lease")[0])
+	go s.watchLease(ctx, cancel, md.Get("pob2-lease")[0], true)
 	for {
 		event, err := sub.Next(ctx)
 		if err != nil {
@@ -57,7 +58,28 @@ func (s *Server) WatchSession(req *pb.WatchSessionRequest, stream grpc.ServerStr
 	}
 }
 
-func (s *Server) watchLease(ctx context.Context, cancel context.CancelFunc, leaseID string) {
+func (s *Server) WatchServer(_ *pb.WatchServerRequest, stream grpc.ServerStreamingServer[pb.WatchServerResponse]) error {
+	ctx, cancel := context.WithCancel(stream.Context())
+	defer cancel()
+	md, _ := metadata.FromIncomingContext(ctx)
+	go s.watchLease(ctx, cancel, md.Get("pob2-lease")[0], false)
+	sub := s.life.Watch()
+	for {
+		event, err := sub.Next(ctx)
+		if err != nil {
+			return rpcError(err)
+		}
+		if err := stream.Send(&pb.WatchServerResponse{InstanceId: s.instanceID, Sequence: event.Sequence, State: event.State, Reason: event.Reason, ShutdownTimeoutMs: uint64(gracefulStopTimeout.Milliseconds())}); err != nil {
+			return err
+		}
+		if event.State == "draining" || event.State == "stopped" {
+			return nil
+		}
+	}
+}
+
+func (s *Server) watchLease(ctx context.Context, cancel context.CancelFunc, leaseID string, stopOnDrain bool) {
+	// Поток сервера отправляет последнюю фазу сам; поток сессии отменяется сразу.
 	ticker := time.NewTicker(min(s.life.Config().LeaseTimeout/4, 100*time.Millisecond))
 	defer ticker.Stop()
 	for {
@@ -65,11 +87,15 @@ func (s *Server) watchLease(ctx context.Context, cancel context.CancelFunc, leas
 		case <-ctx.Done():
 			return
 		case <-s.life.Draining():
-			cancel()
+			if stopOnDrain {
+				cancel()
+			}
 			return
 		case <-ticker.C:
-			if s.life.CheckLease(leaseID) != nil {
-				cancel()
+			if err := s.life.CheckLease(leaseID); err != nil {
+				if err != lifecycle.ErrDraining || stopOnDrain {
+					cancel()
+				}
 				return
 			}
 		}

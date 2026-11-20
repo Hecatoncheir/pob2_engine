@@ -149,11 +149,12 @@ func (c *connection) dial(ctx context.Context) (*grpcapi.Client, error) {
 type runningServer interface {
 	Ready() grpcapi.Ready
 	Done() <-chan struct{}
+	Draining() <-chan struct{}
 	Err() error
 	Close(context.Context) error
 }
 
-func (r runner) serve(ctx context.Context, args []string) error {
+func (r runner) serve(ctx context.Context, args []string) (resultErr error) {
 	fs := r.flags("serve")
 	address := fs.String("listen", "127.0.0.1:0", "локальный адрес; порт 0 выбирается автоматически")
 	token := fs.String("token", os.Getenv("POB2_ENGINE_TOKEN"), "токен; без значения создаётся случайный")
@@ -181,13 +182,17 @@ func (r runner) serve(ctx context.Context, args []string) error {
 	defer func() {
 		stopCtx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 		defer cancel()
-		_ = server.Close(stopCtx)
+		if closeErr := server.Close(stopCtx); closeErr != nil && !errors.Is(resultErr, closeErr) {
+			resultErr = errors.Join(resultErr, closeErr)
+		}
 	}()
 	if err := r.write(server.Ready()); err != nil {
 		return err
 	}
 	select {
 	case <-ctx.Done():
+		return nil
+	case <-server.Draining():
 		return nil
 	case <-server.Done():
 		return server.Err()

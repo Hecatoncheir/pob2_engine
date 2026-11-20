@@ -20,6 +20,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const gracefulStopTimeout = 5 * time.Second
+
 type Ready struct {
 	Address         string `json:"address"`
 	Token           string `json:"token"`
@@ -62,7 +64,7 @@ func StartWithConfig(address, token string, commands application.Commands, confi
 	if token == "" {
 		token = rand.Text()
 	}
-	life, err := lifecycle.New(config)
+	life, err := lifecycle.NewStarting(config)
 	if err != nil {
 		listener.Close()
 		return nil, err
@@ -73,6 +75,11 @@ func StartWithConfig(address, token string, commands application.Commands, confi
 	}
 	s.rpc = grpc.NewServer(grpc.UnaryInterceptor(s.authorize), grpc.StreamInterceptor(s.authorizeStream))
 	pb.RegisterSessionServiceServer(s.rpc, s)
+	if err := life.MarkReady(); err != nil {
+		listener.Close()
+		life.Close()
+		return nil, err
+	}
 	go func() { s.serveErr = s.rpc.Serve(listener); close(s.done) }()
 	go func() { <-life.Draining(); s.beginStop() }()
 	return s, nil
@@ -102,7 +109,8 @@ func (s *Server) storageInfo() (string, string) {
 
 func (s *Server) Lifecycle() *lifecycle.Manager { return s.life }
 
-func (s *Server) Done() <-chan struct{} { return s.done }
+func (s *Server) Done() <-chan struct{}     { return s.done }
+func (s *Server) Draining() <-chan struct{} { return s.life.Draining() }
 
 func (s *Server) Err() error { <-s.done; return s.serveErr }
 
@@ -145,6 +153,7 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	stats := s.life.Stats()
 	storageMode, storagePath := s.storageInfo()
 	capabilities := buildinfo.Capabilities()
+	capabilities = append(capabilities, "server.events")
 	if _, ok := s.commands.(application.Events); ok {
 		capabilities = append(capabilities, "session.events")
 	}
@@ -220,7 +229,7 @@ func (s *Server) beginStop() {
 }
 
 func (s *Server) waitForStop() {
-	timer := time.NewTimer(5 * time.Second)
+	timer := time.NewTimer(gracefulStopTimeout)
 	defer timer.Stop()
 	graceful := make(chan struct{})
 	go func() { s.rpc.GracefulStop(); close(graceful) }()

@@ -24,6 +24,7 @@ const (
 	SessionService_GetSnapshot_FullMethodName    = "/pob2.v1.SessionService/GetSnapshot"
 	SessionService_RenameBuild_FullMethodName    = "/pob2.v1.SessionService/RenameBuild"
 	SessionService_WatchSession_FullMethodName   = "/pob2.v1.SessionService/WatchSession"
+	SessionService_WatchServer_FullMethodName    = "/pob2.v1.SessionService/WatchServer"
 	SessionService_Shutdown_FullMethodName       = "/pob2.v1.SessionService/Shutdown"
 	SessionService_RegisterClient_FullMethodName = "/pob2.v1.SessionService/RegisterClient"
 	SessionService_Heartbeat_FullMethodName      = "/pob2.v1.SessionService/Heartbeat"
@@ -41,6 +42,7 @@ type SessionServiceClient interface {
 	GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*GetSnapshotResponse, error)
 	RenameBuild(ctx context.Context, in *RenameBuildRequest, opts ...grpc.CallOption) (*RenameBuildResponse, error)
 	WatchSession(ctx context.Context, in *WatchSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchSessionResponse], error)
+	WatchServer(ctx context.Context, in *WatchServerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServerResponse], error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
 	RegisterClient(ctx context.Context, in *RegisterClientRequest, opts ...grpc.CallOption) (*RegisterClientResponse, error)
 	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
@@ -114,6 +116,25 @@ func (c *sessionServiceClient) WatchSession(ctx context.Context, in *WatchSessio
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type SessionService_WatchSessionClient = grpc.ServerStreamingClient[WatchSessionResponse]
 
+func (c *sessionServiceClient) WatchServer(ctx context.Context, in *WatchServerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServerResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[1], SessionService_WatchServer_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[WatchServerRequest, WatchServerResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SessionService_WatchServerClient = grpc.ServerStreamingClient[WatchServerResponse]
+
 func (c *sessionServiceClient) Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ShutdownResponse)
@@ -165,6 +186,7 @@ type SessionServiceServer interface {
 	GetSnapshot(context.Context, *GetSnapshotRequest) (*GetSnapshotResponse, error)
 	RenameBuild(context.Context, *RenameBuildRequest) (*RenameBuildResponse, error)
 	WatchSession(*WatchSessionRequest, grpc.ServerStreamingServer[WatchSessionResponse]) error
+	WatchServer(*WatchServerRequest, grpc.ServerStreamingServer[WatchServerResponse]) error
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
 	RegisterClient(context.Context, *RegisterClientRequest) (*RegisterClientResponse, error)
 	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
@@ -193,6 +215,9 @@ func (UnimplementedSessionServiceServer) RenameBuild(context.Context, *RenameBui
 }
 func (UnimplementedSessionServiceServer) WatchSession(*WatchSessionRequest, grpc.ServerStreamingServer[WatchSessionResponse]) error {
 	return status.Error(codes.Unimplemented, "method WatchSession not implemented")
+}
+func (UnimplementedSessionServiceServer) WatchServer(*WatchServerRequest, grpc.ServerStreamingServer[WatchServerResponse]) error {
+	return status.Error(codes.Unimplemented, "method WatchServer not implemented")
 }
 func (UnimplementedSessionServiceServer) Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Shutdown not implemented")
@@ -310,6 +335,17 @@ func _SessionService_WatchSession_Handler(srv interface{}, stream grpc.ServerStr
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type SessionService_WatchSessionServer = grpc.ServerStreamingServer[WatchSessionResponse]
 
+func _SessionService_WatchServer_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchServerRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SessionServiceServer).WatchServer(m, &grpc.GenericServerStream[WatchServerRequest, WatchServerResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SessionService_WatchServerServer = grpc.ServerStreamingServer[WatchServerResponse]
+
 func _SessionService_Shutdown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShutdownRequest)
 	if err := dec(in); err != nil {
@@ -426,6 +462,11 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "WatchSession",
 			Handler:       _SessionService_WatchSession_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "WatchServer",
+			Handler:       _SessionService_WatchServer_Handler,
 			ServerStreams: true,
 		},
 	},

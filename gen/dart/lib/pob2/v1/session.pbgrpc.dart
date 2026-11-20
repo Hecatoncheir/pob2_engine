@@ -70,6 +70,15 @@ class SessionServiceClient extends $grpc.Client {
         options: options);
   }
 
+  $grpc.ResponseStream<$0.WatchServerResponse> watchServer(
+    $0.WatchServerRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createStreamingCall(
+        _$watchServer, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
   $grpc.ResponseFuture<$0.ShutdownResponse> shutdown(
     $0.ShutdownRequest request, {
     $grpc.CallOptions? options,
@@ -125,6 +134,11 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/WatchSession',
           ($0.WatchSessionRequest value) => value.writeToBuffer(),
           $0.WatchSessionResponse.fromBuffer);
+  static final _$watchServer =
+      $grpc.ClientMethod<$0.WatchServerRequest, $0.WatchServerResponse>(
+          '/pob2.v1.SessionService/WatchServer',
+          ($0.WatchServerRequest value) => value.writeToBuffer(),
+          $0.WatchServerResponse.fromBuffer);
   static final _$shutdown =
       $grpc.ClientMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
           '/pob2.v1.SessionService/Shutdown',
@@ -197,6 +211,15 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.WatchSessionRequest.fromBuffer(value),
             ($0.WatchSessionResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.WatchServerRequest, $0.WatchServerResponse>(
+            'WatchServer',
+            watchServer_Pre,
+            false,
+            true,
+            ($core.List<$core.int> value) =>
+                $0.WatchServerRequest.fromBuffer(value),
+            ($0.WatchServerResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
         'Shutdown',
         shutdown_Pre,
@@ -273,6 +296,14 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Stream<$0.WatchSessionResponse> watchSession(
       $grpc.ServiceCall call, $0.WatchSessionRequest request);
+
+  $async.Stream<$0.WatchServerResponse> watchServer_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.WatchServerRequest> $request) async* {
+    yield* watchServer($call, await $request);
+  }
+
+  $async.Stream<$0.WatchServerResponse> watchServer(
+      $grpc.ServiceCall call, $0.WatchServerRequest request);
 
   $async.Future<$0.ShutdownResponse> shutdown_Pre($grpc.ServiceCall $call,
       $async.Future<$0.ShutdownRequest> $request) async {

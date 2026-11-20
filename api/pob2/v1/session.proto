@@ -11,6 +11,7 @@ service SessionService {
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
   rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);
   rpc WatchSession(WatchSessionRequest) returns (stream WatchSessionResponse);
+  rpc WatchServer(WatchServerRequest) returns (stream WatchServerResponse);
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
   rpc RegisterClient(RegisterClientRequest) returns (RegisterClientResponse);
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
@@ -85,6 +86,19 @@ message WatchSessionResponse {
 }
 
 message ShutdownRequest {}
+
+// Поток не продлевает аренду и не считается вычислительной задачей.
+message WatchServerRequest {}
+
+// Сначала текущая фаза, затем переход в draining и штатный конец потока.
+// sequence относится только к instance_id; событие stopped по сети не обещается.
+message WatchServerResponse {
+  string instance_id = 1;
+  uint64 sequence = 2;
+  string state = 3;
+  string reason = 4;
+  uint64 shutdown_timeout_ms = 5;
+}
 
 message ShutdownResponse {}
 

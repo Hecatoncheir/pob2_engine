@@ -94,19 +94,32 @@ func start(profile discovery.Profile, address, token string, config lifecycle.Co
 	return s, nil
 }
 
-func (s *Server) Ready() grpcapi.Ready  { return s.API.Ready() }
-func (s *Server) Done() <-chan struct{} { return s.done }
-func (s *Server) Err() error            { <-s.done; return s.err }
+func (s *Server) Ready() grpcapi.Ready      { return s.API.Ready() }
+func (s *Server) Done() <-chan struct{}     { return s.done }
+func (s *Server) Draining() <-chan struct{} { return s.API.Draining() }
+func (s *Server) Err() error                { <-s.done; return s.err }
 
 func (s *Server) Close(ctx context.Context) error {
-	s.once.Do(func() {
-		apiErr := s.API.Close(ctx)
-		var storeErr error
-		if s.store != nil {
-			storeErr = s.store.Close()
-		}
-		s.err = errors.Join(apiErr, storeErr, s.profile.RemoveOwn(s.Ready().InstanceID), s.lock.Close())
-		close(s.done)
-	})
-	return s.err
+	s.once.Do(func() { go s.closeResources() })
+	select {
+	case <-s.done:
+		return s.err
+	case <-ctx.Done():
+		_ = s.API.Close(ctx)
+		return ctx.Err()
+	}
+}
+
+// Блокировка профиля остаётся у владельца до фактического закрытия базы.
+// Истёкший контекст Close не делает зависшую очистку успешно завершённой.
+func (s *Server) closeResources() {
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	defer cancel()
+	apiErr := s.API.Close(ctx)
+	var storeErr error
+	if s.store != nil {
+		storeErr = s.store.Close()
+	}
+	s.err = errors.Join(apiErr, storeErr, s.profile.RemoveOwn(s.Ready().InstanceID), s.lock.Close())
+	close(s.done)
 }

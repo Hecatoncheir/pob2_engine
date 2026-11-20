@@ -234,6 +234,40 @@ const ShutdownRequest$json = {
 final $typed_data.Uint8List shutdownRequestDescriptor =
     $convert.base64Decode('Cg9TaHV0ZG93blJlcXVlc3Q=');
 
+@$core.Deprecated('Use watchServerRequestDescriptor instead')
+const WatchServerRequest$json = {
+  '1': 'WatchServerRequest',
+};
+
+/// Descriptor for `WatchServerRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchServerRequestDescriptor =
+    $convert.base64Decode('ChJXYXRjaFNlcnZlclJlcXVlc3Q=');
+
+@$core.Deprecated('Use watchServerResponseDescriptor instead')
+const WatchServerResponse$json = {
+  '1': 'WatchServerResponse',
+  '2': [
+    {'1': 'instance_id', '3': 1, '4': 1, '5': 9, '10': 'instanceId'},
+    {'1': 'sequence', '3': 2, '4': 1, '5': 4, '10': 'sequence'},
+    {'1': 'state', '3': 3, '4': 1, '5': 9, '10': 'state'},
+    {'1': 'reason', '3': 4, '4': 1, '5': 9, '10': 'reason'},
+    {
+      '1': 'shutdown_timeout_ms',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '10': 'shutdownTimeoutMs'
+    },
+  ],
+};
+
+/// Descriptor for `WatchServerResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchServerResponseDescriptor = $convert.base64Decode(
+    'ChNXYXRjaFNlcnZlclJlc3BvbnNlEh8KC2luc3RhbmNlX2lkGAEgASgJUgppbnN0YW5jZUlkEh'
+    'oKCHNlcXVlbmNlGAIgASgEUghzZXF1ZW5jZRIUCgVzdGF0ZRgDIAEoCVIFc3RhdGUSFgoGcmVh'
+    'c29uGAQgASgJUgZyZWFzb24SLgoTc2h1dGRvd25fdGltZW91dF9tcxgFIAEoBFIRc2h1dGRvd2'
+    '5UaW1lb3V0TXM=');
+
 @$core.Deprecated('Use shutdownResponseDescriptor instead')
 const ShutdownResponse$json = {
   '1': 'ShutdownResponse',
