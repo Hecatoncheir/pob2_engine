@@ -31,14 +31,14 @@ jobs:
           import os
           import re
 
-          for name in ('README.md', 'TODO.md', 'CHANGELOG.md'):
+          for name in ('README.md', 'TODO.md', 'CHANGELOG.md', 'AGENTS.md', 'docs/SESSION-API.md'):
               text = Path(name).read_text(encoding='utf-8')
               if not text.strip() or text.count('```') % 2:
                   raise SystemExit(f'Пустой документ или незакрытый блок кода: {name}')
               for target in re.findall(r'\]\(([^)]+)\)', text):
                   if '://' in target or target.startswith('#'):
                       continue
-                  if not Path(target.split('#', 1)[0]).is_file():
+                  if not (Path(name).parent / target.split('#', 1)[0]).is_file():
                       raise SystemExit(f'Не найдена локальная ссылка в {name}: {target}')
 
           module = Path('go.mod').is_file()
@@ -88,3 +88,38 @@ jobs:
         run: go test -race ./...
       - name: Собрать CLI
         run: go build ./cmd/pob2-engine
+
+  proto:
+    name: Protobuf и генерация API
+    needs: structure
+    if: needs.structure.outputs.has_go == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7.1.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.14.0
+      - name: Установить закреплённый Buf
+        run: go install github.com/bufbuild/buf/cmd/buf@v1.73.0
+      - name: Проверить контракт
+        run: |
+          buf format --diff --exit-code
+          buf lint
+          if git cat-file -e origin/main:api/pob2/v1/session.proto 2>/dev/null; then
+            buf breaking --against '.git#ref=origin/main'
+          else
+            echo 'В main ещё нет базового Protobuf-контракта для сравнения.'
+          fi
+      - name: Проверить воспроизводимость Go- и Dart-API
+        run: go run ./tool/generate -check
+      - name: Проверить сгенерированный Dart API
+        working-directory: gen/dart
+        run: |
+          dart pub get --enforce-lockfile
+          dart analyze

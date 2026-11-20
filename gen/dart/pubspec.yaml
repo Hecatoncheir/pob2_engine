@@ -1,0 +1,10 @@
+name: pob2_engine_api
+description: Сгенерированный gRPC API сервиса сессий pob2_engine.
+version: 0.0.0
+publish_to: none
+environment:
+  sdk: '>=3.14.0 <4.0.0'
+dependencies:
+  fixnum: 1.1.1
+  grpc: 5.2.0
+  protobuf: 6.1.0

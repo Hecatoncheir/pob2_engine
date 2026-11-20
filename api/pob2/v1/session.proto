@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package pob2.v1;
+
+option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
+
+// SessionService предоставляет общий сервис сессий первого этапа.
+service SessionService {
+  rpc GetServerInfo(GetServerInfoRequest) returns (GetServerInfoResponse);
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
+  rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);
+  rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
+}
+
+message SessionSnapshot {
+  string session_id = 1;
+  string build_name = 2;
+  uint64 revision = 3;
+}
+
+message GetServerInfoRequest {}
+
+message GetServerInfoResponse {
+  string version = 1;
+  string protocol_version = 2;
+  repeated string capabilities = 3;
+  string state = 4;
+}
+
+// request_id повторяется только для точного повтора той же команды.
+message CreateSessionRequest {
+  string session_id = 1;
+  string build_name = 2;
+  string request_id = 3;
+}
+
+message CreateSessionResponse {
+  SessionSnapshot snapshot = 1;
+}
+
+message GetSnapshotRequest {
+  string session_id = 1;
+}
+
+message GetSnapshotResponse {
+  SessionSnapshot snapshot = 1;
+}
+
+// Точный повтор возвращает исходный результат даже после последующих правок.
+message RenameBuildRequest {
+  string session_id = 1;
+  string build_name = 2;
+  uint64 expected_revision = 3;
+  string request_id = 4;
+}
+
+message RenameBuildResponse {
+  SessionSnapshot snapshot = 1;
+}
+
+message ShutdownRequest {}
+
+message ShutdownResponse {}

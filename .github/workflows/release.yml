@@ -98,7 +98,7 @@ jobs:
           EXTENSION: ${{ matrix.extension }}
         run: |
           mkdir -p dist
-          go build -trimpath -ldflags='-s -w' \
+          go build -trimpath -ldflags="-s -w -X github.com/Hecatoncheir/pob2_engine/internal/buildinfo.Version=${RELEASE_TAG}" \
             -o "dist/pob2_engine_${RELEASE_TAG}_${GOOS}_${GOARCH}${EXTENSION}" \
             ./cmd/pob2-engine
       - uses: actions/upload-artifact@v7.0.2
