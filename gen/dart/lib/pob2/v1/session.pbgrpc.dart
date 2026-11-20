@@ -68,6 +68,27 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$shutdown, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.RegisterClientResponse> registerClient(
+    $0.RegisterClientRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$registerClient, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.HeartbeatResponse> heartbeat(
+    $0.HeartbeatRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$heartbeat, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ReleaseClientResponse> releaseClient(
+    $0.ReleaseClientRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$releaseClient, request, options: options);
+  }
+
   // method descriptors
 
   static final _$getServerInfo =
@@ -95,6 +116,21 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/Shutdown',
           ($0.ShutdownRequest value) => value.writeToBuffer(),
           $0.ShutdownResponse.fromBuffer);
+  static final _$registerClient =
+      $grpc.ClientMethod<$0.RegisterClientRequest, $0.RegisterClientResponse>(
+          '/pob2.v1.SessionService/RegisterClient',
+          ($0.RegisterClientRequest value) => value.writeToBuffer(),
+          $0.RegisterClientResponse.fromBuffer);
+  static final _$heartbeat =
+      $grpc.ClientMethod<$0.HeartbeatRequest, $0.HeartbeatResponse>(
+          '/pob2.v1.SessionService/Heartbeat',
+          ($0.HeartbeatRequest value) => value.writeToBuffer(),
+          $0.HeartbeatResponse.fromBuffer);
+  static final _$releaseClient =
+      $grpc.ClientMethod<$0.ReleaseClientRequest, $0.ReleaseClientResponse>(
+          '/pob2.v1.SessionService/ReleaseClient',
+          ($0.ReleaseClientRequest value) => value.writeToBuffer(),
+          $0.ReleaseClientResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('pob2.v1.SessionService')
@@ -145,6 +181,31 @@ abstract class SessionServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.ShutdownRequest.fromBuffer(value),
         ($0.ShutdownResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RegisterClientRequest,
+            $0.RegisterClientResponse>(
+        'RegisterClient',
+        registerClient_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.RegisterClientRequest.fromBuffer(value),
+        ($0.RegisterClientResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.HeartbeatRequest, $0.HeartbeatResponse>(
+        'Heartbeat',
+        heartbeat_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.HeartbeatRequest.fromBuffer(value),
+        ($0.HeartbeatResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.ReleaseClientRequest, $0.ReleaseClientResponse>(
+            'ReleaseClient',
+            releaseClient_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.ReleaseClientRequest.fromBuffer(value),
+            ($0.ReleaseClientResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.GetServerInfoResponse> getServerInfo_Pre(
@@ -188,4 +249,30 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$0.ShutdownResponse> shutdown(
       $grpc.ServiceCall call, $0.ShutdownRequest request);
+
+  $async.Future<$0.RegisterClientResponse> registerClient_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.RegisterClientRequest> $request) async {
+    return registerClient($call, await $request);
+  }
+
+  $async.Future<$0.RegisterClientResponse> registerClient(
+      $grpc.ServiceCall call, $0.RegisterClientRequest request);
+
+  $async.Future<$0.HeartbeatResponse> heartbeat_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.HeartbeatRequest> $request) async {
+    return heartbeat($call, await $request);
+  }
+
+  $async.Future<$0.HeartbeatResponse> heartbeat(
+      $grpc.ServiceCall call, $0.HeartbeatRequest request);
+
+  $async.Future<$0.ReleaseClientResponse> releaseClient_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.ReleaseClientRequest> $request) async {
+    return releaseClient($call, await $request);
+  }
+
+  $async.Future<$0.ReleaseClientResponse> releaseClient(
+      $grpc.ServiceCall call, $0.ReleaseClientRequest request);
 }

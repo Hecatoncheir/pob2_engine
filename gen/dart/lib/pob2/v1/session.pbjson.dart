@@ -47,6 +47,11 @@ const GetServerInfoResponse$json = {
     {'1': 'protocol_version', '3': 2, '4': 1, '5': 9, '10': 'protocolVersion'},
     {'1': 'capabilities', '3': 3, '4': 3, '5': 9, '10': 'capabilities'},
     {'1': 'state', '3': 4, '4': 1, '5': 9, '10': 'state'},
+    {'1': 'instance_id', '3': 5, '4': 1, '5': 9, '10': 'instanceId'},
+    {'1': 'mode', '3': 6, '4': 1, '5': 9, '10': 'mode'},
+    {'1': 'client_count', '3': 7, '4': 1, '5': 13, '10': 'clientCount'},
+    {'1': 'active_tasks', '3': 8, '4': 1, '5': 13, '10': 'activeTasks'},
+    {'1': 'lease_timeout_ms', '3': 9, '4': 1, '5': 4, '10': 'leaseTimeoutMs'},
   ],
 };
 
@@ -54,7 +59,10 @@ const GetServerInfoResponse$json = {
 final $typed_data.Uint8List getServerInfoResponseDescriptor = $convert.base64Decode(
     'ChVHZXRTZXJ2ZXJJbmZvUmVzcG9uc2USGAoHdmVyc2lvbhgBIAEoCVIHdmVyc2lvbhIpChBwcm'
     '90b2NvbF92ZXJzaW9uGAIgASgJUg9wcm90b2NvbFZlcnNpb24SIgoMY2FwYWJpbGl0aWVzGAMg'
-    'AygJUgxjYXBhYmlsaXRpZXMSFAoFc3RhdGUYBCABKAlSBXN0YXRl');
+    'AygJUgxjYXBhYmlsaXRpZXMSFAoFc3RhdGUYBCABKAlSBXN0YXRlEh8KC2luc3RhbmNlX2lkGA'
+    'UgASgJUgppbnN0YW5jZUlkEhIKBG1vZGUYBiABKAlSBG1vZGUSIQoMY2xpZW50X2NvdW50GAcg'
+    'ASgNUgtjbGllbnRDb3VudBIhCgxhY3RpdmVfdGFza3MYCCABKA1SC2FjdGl2ZVRhc2tzEigKEG'
+    'xlYXNlX3RpbWVvdXRfbXMYCSABKARSDmxlYXNlVGltZW91dE1z');
 
 @$core.Deprecated('Use createSessionRequestDescriptor instead')
 const CreateSessionRequest$json = {
@@ -185,3 +193,75 @@ const ShutdownResponse$json = {
 /// Descriptor for `ShutdownResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List shutdownResponseDescriptor =
     $convert.base64Decode('ChBTaHV0ZG93blJlc3BvbnNl');
+
+@$core.Deprecated('Use registerClientRequestDescriptor instead')
+const RegisterClientRequest$json = {
+  '1': 'RegisterClientRequest',
+  '2': [
+    {'1': 'client_id', '3': 1, '4': 1, '5': 9, '10': 'clientId'},
+    {'1': 'kind', '3': 2, '4': 1, '5': 9, '10': 'kind'},
+  ],
+};
+
+/// Descriptor for `RegisterClientRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List registerClientRequestDescriptor = $convert.base64Decode(
+    'ChVSZWdpc3RlckNsaWVudFJlcXVlc3QSGwoJY2xpZW50X2lkGAEgASgJUghjbGllbnRJZBISCg'
+    'RraW5kGAIgASgJUgRraW5k');
+
+@$core.Deprecated('Use registerClientResponseDescriptor instead')
+const RegisterClientResponse$json = {
+  '1': 'RegisterClientResponse',
+  '2': [
+    {'1': 'lease_id', '3': 1, '4': 1, '5': 9, '10': 'leaseId'},
+    {'1': 'lease_timeout_ms', '3': 2, '4': 1, '5': 4, '10': 'leaseTimeoutMs'},
+  ],
+};
+
+/// Descriptor for `RegisterClientResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List registerClientResponseDescriptor =
+    $convert.base64Decode(
+        'ChZSZWdpc3RlckNsaWVudFJlc3BvbnNlEhkKCGxlYXNlX2lkGAEgASgJUgdsZWFzZUlkEigKEG'
+        'xlYXNlX3RpbWVvdXRfbXMYAiABKARSDmxlYXNlVGltZW91dE1z');
+
+@$core.Deprecated('Use heartbeatRequestDescriptor instead')
+const HeartbeatRequest$json = {
+  '1': 'HeartbeatRequest',
+  '2': [
+    {'1': 'lease_id', '3': 1, '4': 1, '5': 9, '10': 'leaseId'},
+  ],
+};
+
+/// Descriptor for `HeartbeatRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List heartbeatRequestDescriptor = $convert.base64Decode(
+    'ChBIZWFydGJlYXRSZXF1ZXN0EhkKCGxlYXNlX2lkGAEgASgJUgdsZWFzZUlk');
+
+@$core.Deprecated('Use heartbeatResponseDescriptor instead')
+const HeartbeatResponse$json = {
+  '1': 'HeartbeatResponse',
+};
+
+/// Descriptor for `HeartbeatResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List heartbeatResponseDescriptor =
+    $convert.base64Decode('ChFIZWFydGJlYXRSZXNwb25zZQ==');
+
+@$core.Deprecated('Use releaseClientRequestDescriptor instead')
+const ReleaseClientRequest$json = {
+  '1': 'ReleaseClientRequest',
+  '2': [
+    {'1': 'lease_id', '3': 1, '4': 1, '5': 9, '10': 'leaseId'},
+  ],
+};
+
+/// Descriptor for `ReleaseClientRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List releaseClientRequestDescriptor =
+    $convert.base64Decode(
+        'ChRSZWxlYXNlQ2xpZW50UmVxdWVzdBIZCghsZWFzZV9pZBgBIAEoCVIHbGVhc2VJZA==');
+
+@$core.Deprecated('Use releaseClientResponseDescriptor instead')
+const ReleaseClientResponse$json = {
+  '1': 'ReleaseClientResponse',
+};
+
+/// Descriptor for `ReleaseClientResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List releaseClientResponseDescriptor =
+    $convert.base64Decode('ChVSZWxlYXNlQ2xpZW50UmVzcG9uc2U=');

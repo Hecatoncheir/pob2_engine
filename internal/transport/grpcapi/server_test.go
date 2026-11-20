@@ -10,6 +10,7 @@ import (
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
+	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -35,6 +36,82 @@ func start(t *testing.T, commands application.Commands) (*grpcapi.Server, *grpca
 	}
 	t.Cleanup(func() { _ = c.Close() })
 	return s, c
+}
+
+func TestRegisteredClientsAndPassiveProbe(t *testing.T) {
+	s, first := start(t, application.NewService())
+	ctx, cancel := context.WithTimeout(t.Context(), 2*time.Second)
+	defer cancel()
+	second, err := grpcapi.DialKind(ctx, s.Ready().Address, s.Ready().Token, "mcp")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer second.Close()
+	info, err := grpcapi.Inspect(ctx, s.Ready().Address, s.Ready().Token)
+	if err != nil || info.GetClientCount() != 2 || info.GetActiveTasks() != 0 {
+		t.Fatalf("учёт клиентов: %v, %v", info, err)
+	}
+	first.Close()
+	info, err = second.Info(ctx)
+	if err != nil || info.GetClientCount() != 1 {
+		t.Fatalf("освобождение аренды: %v, %v", info, err)
+	}
+}
+
+type delayed struct {
+	application.Commands
+	started chan struct{}
+	finish  chan struct{}
+}
+
+func (d delayed) Snapshot(context.Context, string) (domain.Snapshot, error) {
+	close(d.started)
+	<-d.finish
+	return domain.Snapshot{SessionID: "main"}, nil
+}
+
+func TestAutomaticServerWaitsForActiveRPC(t *testing.T) {
+	d := delayed{Commands: application.NewService(), started: make(chan struct{}), finish: make(chan struct{})}
+	s, err := grpcapi.StartWithConfig("127.0.0.1:0", "token", d, lifecycle.Config{Mode: lifecycle.Automatic, IdleTimeout: 100 * time.Millisecond, LeaseTimeout: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		_ = s.Close(ctx)
+	}()
+	ctx, cancel := context.WithTimeout(t.Context(), 3*time.Second)
+	defer cancel()
+	c, err := grpcapi.Dial(ctx, s.Ready().Address, s.Ready().Token)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer c.Close()
+	result := make(chan error, 1)
+	go func() { _, err := c.Snapshot(ctx, "main"); result <- err }()
+	select {
+	case <-d.started:
+	case <-ctx.Done():
+		t.Fatal("задача не началась")
+	}
+	c.Close()
+	select {
+	case <-s.Done():
+		t.Fatal("сервер завершился до задачи")
+	case <-time.After(200 * time.Millisecond):
+	}
+	stats := s.Lifecycle().Stats()
+	if stats.Clients != 0 || stats.Tasks != 1 {
+		t.Fatalf("учёт задачи: %+v", stats)
+	}
+	close(d.finish)
+	select {
+	case <-s.Done():
+	case <-ctx.Done():
+		t.Fatal("сервер не завершился после задачи")
+	}
+	<-result
 }
 
 func TestAuthorizationAndErrors(t *testing.T) {
@@ -120,5 +197,38 @@ func TestShutdownDeadlineCancelsActiveRPC(t *testing.T) {
 		}
 	case <-time.After(time.Second):
 		t.Fatal("RPC не отменён")
+	}
+}
+
+func TestShutdownDeadlineDoesNotWaitForUncooperativeHandler(t *testing.T) {
+	d := delayed{Commands: application.NewService(), started: make(chan struct{}), finish: make(chan struct{})}
+	s, c := start(t, d)
+	defer close(d.finish)
+	result := make(chan error, 1)
+	go func() { _, err := c.Snapshot(t.Context(), "main"); result <- err }()
+	select {
+	case <-d.started:
+	case <-time.After(time.Second):
+		t.Fatal("RPC не начался")
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 50*time.Millisecond)
+	defer cancel()
+	done := make(chan error, 1)
+	go func() { done <- s.Close(ctx) }()
+	select {
+	case err := <-done:
+		if !errors.Is(err, context.DeadlineExceeded) {
+			t.Fatalf("ошибка остановки: %v", err)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("остановка зависла на обработчике")
+	}
+	select {
+	case err := <-result:
+		if err == nil {
+			t.Fatal("прерванный RPC вернул успех")
+		}
+	case <-time.After(time.Second):
+		t.Fatal("клиент не получил прерывание")
 	}
 }

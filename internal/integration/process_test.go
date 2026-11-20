@@ -21,6 +21,9 @@ import (
 var binary string
 
 func TestMain(m *testing.M) {
+	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" {
+		os.Exit(m.Run())
+	}
 	dir, err := os.MkdirTemp("", "pob2-process-test-")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -52,10 +55,10 @@ type process struct {
 	err   error
 }
 
-func startServer(t *testing.T, ctx context.Context) *process {
+func startServer(t *testing.T, ctx context.Context, args ...string) *process {
 	t.Helper()
 	ctx, cancel := context.WithCancel(ctx)
-	cmd := exec.CommandContext(ctx, binary, "serve")
+	cmd := exec.CommandContext(ctx, binary, append([]string{"serve"}, args...)...)
 	// Тест изолирован от пользовательской настройки токена.
 	cmd.Env = append(os.Environ(), "POB2_ENGINE_TOKEN=")
 	cmd.Stderr = os.Stderr

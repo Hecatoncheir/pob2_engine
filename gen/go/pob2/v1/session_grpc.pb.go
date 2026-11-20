@@ -19,11 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SessionService_GetServerInfo_FullMethodName = "/pob2.v1.SessionService/GetServerInfo"
-	SessionService_CreateSession_FullMethodName = "/pob2.v1.SessionService/CreateSession"
-	SessionService_GetSnapshot_FullMethodName   = "/pob2.v1.SessionService/GetSnapshot"
-	SessionService_RenameBuild_FullMethodName   = "/pob2.v1.SessionService/RenameBuild"
-	SessionService_Shutdown_FullMethodName      = "/pob2.v1.SessionService/Shutdown"
+	SessionService_GetServerInfo_FullMethodName  = "/pob2.v1.SessionService/GetServerInfo"
+	SessionService_CreateSession_FullMethodName  = "/pob2.v1.SessionService/CreateSession"
+	SessionService_GetSnapshot_FullMethodName    = "/pob2.v1.SessionService/GetSnapshot"
+	SessionService_RenameBuild_FullMethodName    = "/pob2.v1.SessionService/RenameBuild"
+	SessionService_Shutdown_FullMethodName       = "/pob2.v1.SessionService/Shutdown"
+	SessionService_RegisterClient_FullMethodName = "/pob2.v1.SessionService/RegisterClient"
+	SessionService_Heartbeat_FullMethodName      = "/pob2.v1.SessionService/Heartbeat"
+	SessionService_ReleaseClient_FullMethodName  = "/pob2.v1.SessionService/ReleaseClient"
 )
 
 // SessionServiceClient is the client API for SessionService service.
@@ -37,6 +40,9 @@ type SessionServiceClient interface {
 	GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*GetSnapshotResponse, error)
 	RenameBuild(ctx context.Context, in *RenameBuildRequest, opts ...grpc.CallOption) (*RenameBuildResponse, error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
+	RegisterClient(ctx context.Context, in *RegisterClientRequest, opts ...grpc.CallOption) (*RegisterClientResponse, error)
+	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
+	ReleaseClient(ctx context.Context, in *ReleaseClientRequest, opts ...grpc.CallOption) (*ReleaseClientResponse, error)
 }
 
 type sessionServiceClient struct {
@@ -97,6 +103,36 @@ func (c *sessionServiceClient) Shutdown(ctx context.Context, in *ShutdownRequest
 	return out, nil
 }
 
+func (c *sessionServiceClient) RegisterClient(ctx context.Context, in *RegisterClientRequest, opts ...grpc.CallOption) (*RegisterClientResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterClientResponse)
+	err := c.cc.Invoke(ctx, SessionService_RegisterClient_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HeartbeatResponse)
+	err := c.cc.Invoke(ctx, SessionService_Heartbeat_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) ReleaseClient(ctx context.Context, in *ReleaseClientRequest, opts ...grpc.CallOption) (*ReleaseClientResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReleaseClientResponse)
+	err := c.cc.Invoke(ctx, SessionService_ReleaseClient_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SessionServiceServer is the server API for SessionService service.
 // All implementations must embed UnimplementedSessionServiceServer
 // for forward compatibility.
@@ -108,6 +144,9 @@ type SessionServiceServer interface {
 	GetSnapshot(context.Context, *GetSnapshotRequest) (*GetSnapshotResponse, error)
 	RenameBuild(context.Context, *RenameBuildRequest) (*RenameBuildResponse, error)
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
+	RegisterClient(context.Context, *RegisterClientRequest) (*RegisterClientResponse, error)
+	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
+	ReleaseClient(context.Context, *ReleaseClientRequest) (*ReleaseClientResponse, error)
 	mustEmbedUnimplementedSessionServiceServer()
 }
 
@@ -132,6 +171,15 @@ func (UnimplementedSessionServiceServer) RenameBuild(context.Context, *RenameBui
 }
 func (UnimplementedSessionServiceServer) Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Shutdown not implemented")
+}
+func (UnimplementedSessionServiceServer) RegisterClient(context.Context, *RegisterClientRequest) (*RegisterClientResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RegisterClient not implemented")
+}
+func (UnimplementedSessionServiceServer) Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Heartbeat not implemented")
+}
+func (UnimplementedSessionServiceServer) ReleaseClient(context.Context, *ReleaseClientRequest) (*ReleaseClientResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReleaseClient not implemented")
 }
 func (UnimplementedSessionServiceServer) mustEmbedUnimplementedSessionServiceServer() {}
 func (UnimplementedSessionServiceServer) testEmbeddedByValue()                        {}
@@ -244,6 +292,60 @@ func _SessionService_Shutdown_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SessionService_RegisterClient_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterClientRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).RegisterClient(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_RegisterClient_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).RegisterClient(ctx, req.(*RegisterClientRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HeartbeatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).Heartbeat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_Heartbeat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).Heartbeat(ctx, req.(*HeartbeatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_ReleaseClient_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReleaseClientRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).ReleaseClient(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_ReleaseClient_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).ReleaseClient(ctx, req.(*ReleaseClientRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SessionService_ServiceDesc is the grpc.ServiceDesc for SessionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -270,6 +372,18 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Shutdown",
 			Handler:    _SessionService_Shutdown_Handler,
+		},
+		{
+			MethodName: "RegisterClient",
+			Handler:    _SessionService_RegisterClient_Handler,
+		},
+		{
+			MethodName: "Heartbeat",
+			Handler:    _SessionService_Heartbeat_Handler,
+		},
+		{
+			MethodName: "ReleaseClient",
+			Handler:    _SessionService_ReleaseClient_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

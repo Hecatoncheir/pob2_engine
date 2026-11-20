@@ -123,6 +123,11 @@ type GetServerInfoResponse struct {
 	ProtocolVersion string                 `protobuf:"bytes,2,opt,name=protocol_version,json=protocolVersion,proto3" json:"protocol_version,omitempty"`
 	Capabilities    []string               `protobuf:"bytes,3,rep,name=capabilities,proto3" json:"capabilities,omitempty"`
 	State           string                 `protobuf:"bytes,4,opt,name=state,proto3" json:"state,omitempty"`
+	InstanceId      string                 `protobuf:"bytes,5,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	Mode            string                 `protobuf:"bytes,6,opt,name=mode,proto3" json:"mode,omitempty"`
+	ClientCount     uint32                 `protobuf:"varint,7,opt,name=client_count,json=clientCount,proto3" json:"client_count,omitempty"`
+	ActiveTasks     uint32                 `protobuf:"varint,8,opt,name=active_tasks,json=activeTasks,proto3" json:"active_tasks,omitempty"`
+	LeaseTimeoutMs  uint64                 `protobuf:"varint,9,opt,name=lease_timeout_ms,json=leaseTimeoutMs,proto3" json:"lease_timeout_ms,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -183,6 +188,41 @@ func (x *GetServerInfoResponse) GetState() string {
 		return x.State
 	}
 	return ""
+}
+
+func (x *GetServerInfoResponse) GetInstanceId() string {
+	if x != nil {
+		return x.InstanceId
+	}
+	return ""
+}
+
+func (x *GetServerInfoResponse) GetMode() string {
+	if x != nil {
+		return x.Mode
+	}
+	return ""
+}
+
+func (x *GetServerInfoResponse) GetClientCount() uint32 {
+	if x != nil {
+		return x.ClientCount
+	}
+	return 0
+}
+
+func (x *GetServerInfoResponse) GetActiveTasks() uint32 {
+	if x != nil {
+		return x.ActiveTasks
+	}
+	return 0
+}
+
+func (x *GetServerInfoResponse) GetLeaseTimeoutMs() uint64 {
+	if x != nil {
+		return x.LeaseTimeoutMs
+	}
+	return 0
 }
 
 // request_id повторяется только для точного повтора той же команды.
@@ -563,6 +603,272 @@ func (*ShutdownResponse) Descriptor() ([]byte, []int) {
 	return file_pob2_v1_session_proto_rawDescGZIP(), []int{10}
 }
 
+// client_id обозначает приложение, а не TCP-соединение или отдельный RPC.
+type RegisterClientRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	Kind          string                 `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterClientRequest) Reset() {
+	*x = RegisterClientRequest{}
+	mi := &file_pob2_v1_session_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterClientRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterClientRequest) ProtoMessage() {}
+
+func (x *RegisterClientRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterClientRequest.ProtoReflect.Descriptor instead.
+func (*RegisterClientRequest) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *RegisterClientRequest) GetClientId() string {
+	if x != nil {
+		return x.ClientId
+	}
+	return ""
+}
+
+func (x *RegisterClientRequest) GetKind() string {
+	if x != nil {
+		return x.Kind
+	}
+	return ""
+}
+
+type RegisterClientResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	LeaseId        string                 `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	LeaseTimeoutMs uint64                 `protobuf:"varint,2,opt,name=lease_timeout_ms,json=leaseTimeoutMs,proto3" json:"lease_timeout_ms,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *RegisterClientResponse) Reset() {
+	*x = RegisterClientResponse{}
+	mi := &file_pob2_v1_session_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterClientResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterClientResponse) ProtoMessage() {}
+
+func (x *RegisterClientResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterClientResponse.ProtoReflect.Descriptor instead.
+func (*RegisterClientResponse) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *RegisterClientResponse) GetLeaseId() string {
+	if x != nil {
+		return x.LeaseId
+	}
+	return ""
+}
+
+func (x *RegisterClientResponse) GetLeaseTimeoutMs() uint64 {
+	if x != nil {
+		return x.LeaseTimeoutMs
+	}
+	return 0
+}
+
+type HeartbeatRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LeaseId       string                 `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HeartbeatRequest) Reset() {
+	*x = HeartbeatRequest{}
+	mi := &file_pob2_v1_session_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HeartbeatRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HeartbeatRequest) ProtoMessage() {}
+
+func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HeartbeatRequest.ProtoReflect.Descriptor instead.
+func (*HeartbeatRequest) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *HeartbeatRequest) GetLeaseId() string {
+	if x != nil {
+		return x.LeaseId
+	}
+	return ""
+}
+
+type HeartbeatResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HeartbeatResponse) Reset() {
+	*x = HeartbeatResponse{}
+	mi := &file_pob2_v1_session_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HeartbeatResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HeartbeatResponse) ProtoMessage() {}
+
+func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HeartbeatResponse.ProtoReflect.Descriptor instead.
+func (*HeartbeatResponse) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{14}
+}
+
+// Освобождение уже отсутствующей аренды безопасно.
+type ReleaseClientRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LeaseId       string                 `protobuf:"bytes,1,opt,name=lease_id,json=leaseId,proto3" json:"lease_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReleaseClientRequest) Reset() {
+	*x = ReleaseClientRequest{}
+	mi := &file_pob2_v1_session_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReleaseClientRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReleaseClientRequest) ProtoMessage() {}
+
+func (x *ReleaseClientRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReleaseClientRequest.ProtoReflect.Descriptor instead.
+func (*ReleaseClientRequest) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ReleaseClientRequest) GetLeaseId() string {
+	if x != nil {
+		return x.LeaseId
+	}
+	return ""
+}
+
+type ReleaseClientResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReleaseClientResponse) Reset() {
+	*x = ReleaseClientResponse{}
+	mi := &file_pob2_v1_session_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReleaseClientResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReleaseClientResponse) ProtoMessage() {}
+
+func (x *ReleaseClientResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReleaseClientResponse.ProtoReflect.Descriptor instead.
+func (*ReleaseClientResponse) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{16}
+}
+
 var File_pob2_v1_session_proto protoreflect.FileDescriptor
 
 const file_pob2_v1_session_proto_rawDesc = "" +
@@ -574,12 +880,18 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\n" +
 	"build_name\x18\x02 \x01(\tR\tbuildName\x12\x1a\n" +
 	"\brevision\x18\x03 \x01(\x04R\brevision\"\x16\n" +
-	"\x14GetServerInfoRequest\"\x96\x01\n" +
+	"\x14GetServerInfoRequest\"\xbb\x02\n" +
 	"\x15GetServerInfoResponse\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12)\n" +
 	"\x10protocol_version\x18\x02 \x01(\tR\x0fprotocolVersion\x12\"\n" +
 	"\fcapabilities\x18\x03 \x03(\tR\fcapabilities\x12\x14\n" +
-	"\x05state\x18\x04 \x01(\tR\x05state\"s\n" +
+	"\x05state\x18\x04 \x01(\tR\x05state\x12\x1f\n" +
+	"\vinstance_id\x18\x05 \x01(\tR\n" +
+	"instanceId\x12\x12\n" +
+	"\x04mode\x18\x06 \x01(\tR\x04mode\x12!\n" +
+	"\fclient_count\x18\a \x01(\rR\vclientCount\x12!\n" +
+	"\factive_tasks\x18\b \x01(\rR\vactiveTasks\x12(\n" +
+	"\x10lease_timeout_ms\x18\t \x01(\x04R\x0eleaseTimeoutMs\"s\n" +
 	"\x14CreateSessionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
@@ -605,13 +917,28 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\x13RenameBuildResponse\x124\n" +
 	"\bsnapshot\x18\x01 \x01(\v2\x18.pob2.v1.SessionSnapshotR\bsnapshot\"\x11\n" +
 	"\x0fShutdownRequest\"\x12\n" +
-	"\x10ShutdownResponse2\x85\x03\n" +
+	"\x10ShutdownResponse\"H\n" +
+	"\x15RegisterClientRequest\x12\x1b\n" +
+	"\tclient_id\x18\x01 \x01(\tR\bclientId\x12\x12\n" +
+	"\x04kind\x18\x02 \x01(\tR\x04kind\"]\n" +
+	"\x16RegisterClientResponse\x12\x19\n" +
+	"\blease_id\x18\x01 \x01(\tR\aleaseId\x12(\n" +
+	"\x10lease_timeout_ms\x18\x02 \x01(\x04R\x0eleaseTimeoutMs\"-\n" +
+	"\x10HeartbeatRequest\x12\x19\n" +
+	"\blease_id\x18\x01 \x01(\tR\aleaseId\"\x13\n" +
+	"\x11HeartbeatResponse\"1\n" +
+	"\x14ReleaseClientRequest\x12\x19\n" +
+	"\blease_id\x18\x01 \x01(\tR\aleaseId\"\x17\n" +
+	"\x15ReleaseClientResponse2\xec\x04\n" +
 	"\x0eSessionService\x12N\n" +
 	"\rGetServerInfo\x12\x1d.pob2.v1.GetServerInfoRequest\x1a\x1e.pob2.v1.GetServerInfoResponse\x12N\n" +
 	"\rCreateSession\x12\x1d.pob2.v1.CreateSessionRequest\x1a\x1e.pob2.v1.CreateSessionResponse\x12H\n" +
 	"\vGetSnapshot\x12\x1b.pob2.v1.GetSnapshotRequest\x1a\x1c.pob2.v1.GetSnapshotResponse\x12H\n" +
 	"\vRenameBuild\x12\x1b.pob2.v1.RenameBuildRequest\x1a\x1c.pob2.v1.RenameBuildResponse\x12?\n" +
-	"\bShutdown\x12\x18.pob2.v1.ShutdownRequest\x1a\x19.pob2.v1.ShutdownResponseB;Z9github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1b\x06proto3"
+	"\bShutdown\x12\x18.pob2.v1.ShutdownRequest\x1a\x19.pob2.v1.ShutdownResponse\x12Q\n" +
+	"\x0eRegisterClient\x12\x1e.pob2.v1.RegisterClientRequest\x1a\x1f.pob2.v1.RegisterClientResponse\x12B\n" +
+	"\tHeartbeat\x12\x19.pob2.v1.HeartbeatRequest\x1a\x1a.pob2.v1.HeartbeatResponse\x12N\n" +
+	"\rReleaseClient\x12\x1d.pob2.v1.ReleaseClientRequest\x1a\x1e.pob2.v1.ReleaseClientResponseB;Z9github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1b\x06proto3"
 
 var (
 	file_pob2_v1_session_proto_rawDescOnce sync.Once
@@ -625,19 +952,25 @@ func file_pob2_v1_session_proto_rawDescGZIP() []byte {
 	return file_pob2_v1_session_proto_rawDescData
 }
 
-var file_pob2_v1_session_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_pob2_v1_session_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_pob2_v1_session_proto_goTypes = []any{
-	(*SessionSnapshot)(nil),       // 0: pob2.v1.SessionSnapshot
-	(*GetServerInfoRequest)(nil),  // 1: pob2.v1.GetServerInfoRequest
-	(*GetServerInfoResponse)(nil), // 2: pob2.v1.GetServerInfoResponse
-	(*CreateSessionRequest)(nil),  // 3: pob2.v1.CreateSessionRequest
-	(*CreateSessionResponse)(nil), // 4: pob2.v1.CreateSessionResponse
-	(*GetSnapshotRequest)(nil),    // 5: pob2.v1.GetSnapshotRequest
-	(*GetSnapshotResponse)(nil),   // 6: pob2.v1.GetSnapshotResponse
-	(*RenameBuildRequest)(nil),    // 7: pob2.v1.RenameBuildRequest
-	(*RenameBuildResponse)(nil),   // 8: pob2.v1.RenameBuildResponse
-	(*ShutdownRequest)(nil),       // 9: pob2.v1.ShutdownRequest
-	(*ShutdownResponse)(nil),      // 10: pob2.v1.ShutdownResponse
+	(*SessionSnapshot)(nil),        // 0: pob2.v1.SessionSnapshot
+	(*GetServerInfoRequest)(nil),   // 1: pob2.v1.GetServerInfoRequest
+	(*GetServerInfoResponse)(nil),  // 2: pob2.v1.GetServerInfoResponse
+	(*CreateSessionRequest)(nil),   // 3: pob2.v1.CreateSessionRequest
+	(*CreateSessionResponse)(nil),  // 4: pob2.v1.CreateSessionResponse
+	(*GetSnapshotRequest)(nil),     // 5: pob2.v1.GetSnapshotRequest
+	(*GetSnapshotResponse)(nil),    // 6: pob2.v1.GetSnapshotResponse
+	(*RenameBuildRequest)(nil),     // 7: pob2.v1.RenameBuildRequest
+	(*RenameBuildResponse)(nil),    // 8: pob2.v1.RenameBuildResponse
+	(*ShutdownRequest)(nil),        // 9: pob2.v1.ShutdownRequest
+	(*ShutdownResponse)(nil),       // 10: pob2.v1.ShutdownResponse
+	(*RegisterClientRequest)(nil),  // 11: pob2.v1.RegisterClientRequest
+	(*RegisterClientResponse)(nil), // 12: pob2.v1.RegisterClientResponse
+	(*HeartbeatRequest)(nil),       // 13: pob2.v1.HeartbeatRequest
+	(*HeartbeatResponse)(nil),      // 14: pob2.v1.HeartbeatResponse
+	(*ReleaseClientRequest)(nil),   // 15: pob2.v1.ReleaseClientRequest
+	(*ReleaseClientResponse)(nil),  // 16: pob2.v1.ReleaseClientResponse
 }
 var file_pob2_v1_session_proto_depIdxs = []int32{
 	0,  // 0: pob2.v1.CreateSessionResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
@@ -648,13 +981,19 @@ var file_pob2_v1_session_proto_depIdxs = []int32{
 	5,  // 5: pob2.v1.SessionService.GetSnapshot:input_type -> pob2.v1.GetSnapshotRequest
 	7,  // 6: pob2.v1.SessionService.RenameBuild:input_type -> pob2.v1.RenameBuildRequest
 	9,  // 7: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
-	2,  // 8: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
-	4,  // 9: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
-	6,  // 10: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
-	8,  // 11: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
-	10, // 12: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
+	11, // 8: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
+	13, // 9: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
+	15, // 10: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
+	2,  // 11: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
+	4,  // 12: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
+	6,  // 13: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
+	8,  // 14: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
+	10, // 15: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
+	12, // 16: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
+	14, // 17: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
+	16, // 18: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
+	11, // [11:19] is the sub-list for method output_type
+	3,  // [3:11] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
 	3,  // [3:3] is the sub-list for extension extendee
 	0,  // [0:3] is the sub-list for field type_name
@@ -671,7 +1010,7 @@ func file_pob2_v1_session_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pob2_v1_session_proto_rawDesc), len(file_pob2_v1_session_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -5,9 +5,25 @@ import (
 	"errors"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
+	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+func lifecycleError(err error) error {
+	code := codes.InvalidArgument
+	switch {
+	case errors.Is(err, lifecycle.ErrDraining):
+		code = codes.Unavailable
+	case errors.Is(err, lifecycle.ErrLeaseExpired):
+		code = codes.FailedPrecondition
+	case errors.Is(err, lifecycle.ErrClientConflict):
+		code = codes.AlreadyExists
+	case errors.Is(err, lifecycle.ErrClientLimit):
+		code = codes.ResourceExhausted
+	}
+	return status.Error(code, err.Error())
+}
 
 func rpcError(err error) error {
 	if err == nil {

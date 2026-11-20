@@ -11,6 +11,9 @@ service SessionService {
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
   rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
+  rpc RegisterClient(RegisterClientRequest) returns (RegisterClientResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc ReleaseClient(ReleaseClientRequest) returns (ReleaseClientResponse);
 }
 
 message SessionSnapshot {
@@ -26,6 +29,11 @@ message GetServerInfoResponse {
   string protocol_version = 2;
   repeated string capabilities = 3;
   string state = 4;
+  string instance_id = 5;
+  string mode = 6;
+  uint32 client_count = 7;
+  uint32 active_tasks = 8;
+  uint64 lease_timeout_ms = 9;
 }
 
 // request_id повторяется только для точного повтора той же команды.
@@ -62,3 +70,27 @@ message RenameBuildResponse {
 message ShutdownRequest {}
 
 message ShutdownResponse {}
+
+// client_id обозначает приложение, а не TCP-соединение или отдельный RPC.
+message RegisterClientRequest {
+  string client_id = 1;
+  string kind = 2;
+}
+
+message RegisterClientResponse {
+  string lease_id = 1;
+  uint64 lease_timeout_ms = 2;
+}
+
+message HeartbeatRequest {
+  string lease_id = 1;
+}
+
+message HeartbeatResponse {}
+
+// Освобождение уже отсутствующей аренды безопасно.
+message ReleaseClientRequest {
+  string lease_id = 1;
+}
+
+message ReleaseClientResponse {}

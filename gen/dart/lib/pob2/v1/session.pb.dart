@@ -148,12 +148,22 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
     $core.String? protocolVersion,
     $core.Iterable<$core.String>? capabilities,
     $core.String? state,
+    $core.String? instanceId,
+    $core.String? mode,
+    $core.int? clientCount,
+    $core.int? activeTasks,
+    $fixnum.Int64? leaseTimeoutMs,
   }) {
     final result = GetServerInfoResponse._();
     if (version != null) result.version = version;
     if (protocolVersion != null) result.protocolVersion = protocolVersion;
     if (capabilities != null) result.capabilities.addAll(capabilities);
     if (state != null) result.state = state;
+    if (instanceId != null) result.instanceId = instanceId;
+    if (mode != null) result.mode = mode;
+    if (clientCount != null) result.clientCount = clientCount;
+    if (activeTasks != null) result.activeTasks = activeTasks;
+    if (leaseTimeoutMs != null) result.leaseTimeoutMs = leaseTimeoutMs;
     return result;
   }
 
@@ -174,6 +184,15 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'protocolVersion')
     ..pPS(3, _omitFieldNames ? '' : 'capabilities')
     ..aOS(4, _omitFieldNames ? '' : 'state')
+    ..aOS(5, _omitFieldNames ? '' : 'instanceId')
+    ..aOS(6, _omitFieldNames ? '' : 'mode')
+    ..aI(7, _omitFieldNames ? '' : 'clientCount',
+        fieldType: $pb.PbFieldType.OU3)
+    ..aI(8, _omitFieldNames ? '' : 'activeTasks',
+        fieldType: $pb.PbFieldType.OU3)
+    ..a<$fixnum.Int64>(
+        9, _omitFieldNames ? '' : 'leaseTimeoutMs', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -229,6 +248,51 @@ class GetServerInfoResponse extends $pb.GeneratedMessage {
   $core.bool hasState() => $_has(3);
   @$pb.TagNumber(4)
   void clearState() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get instanceId => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set instanceId($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasInstanceId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearInstanceId() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get mode => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set mode($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasMode() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearMode() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.int get clientCount => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set clientCount($core.int value) => $_setUnsignedInt32(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasClientCount() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearClientCount() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.int get activeTasks => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set activeTasks($core.int value) => $_setUnsignedInt32(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasActiveTasks() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearActiveTasks() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $fixnum.Int64 get leaseTimeoutMs => $_getI64(8);
+  @$pb.TagNumber(9)
+  set leaseTimeoutMs($fixnum.Int64 value) => $_setInt64(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasLeaseTimeoutMs() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearLeaseTimeoutMs() => $_clearField(9);
 }
 
 /// request_id повторяется только для точного повтора той же команды.
@@ -731,6 +795,351 @@ class ShutdownResponse extends $pb.GeneratedMessage {
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ShutdownResponse>(
           ShutdownResponse.$_createMessage);
   static ShutdownResponse? _defaultInstance;
+}
+
+/// client_id обозначает приложение, а не TCP-соединение или отдельный RPC.
+class RegisterClientRequest extends $pb.GeneratedMessage {
+  factory RegisterClientRequest({
+    $core.String? clientId,
+    $core.String? kind,
+  }) {
+    final result = RegisterClientRequest._();
+    if (clientId != null) result.clientId = clientId;
+    if (kind != null) result.kind = kind;
+    return result;
+  }
+
+  RegisterClientRequest._();
+
+  factory RegisterClientRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      RegisterClientRequest()..mergeFromBuffer(data, registry);
+  factory RegisterClientRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      RegisterClientRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RegisterClientRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: RegisterClientRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'clientId')
+    ..aOS(2, _omitFieldNames ? '' : 'kind')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterClientRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterClientRequest copyWith(
+          void Function(RegisterClientRequest) updates) =>
+      super.copyWith((message) => updates(message as RegisterClientRequest))
+          as RegisterClientRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use RegisterClientRequest() / RegisterClientRequest.new instead')
+  static RegisterClientRequest create() => RegisterClientRequest._();
+  static $pb.GeneratedMessage $_createMessage() => RegisterClientRequest._();
+  @$core.override
+  RegisterClientRequest createEmptyInstance() => RegisterClientRequest._();
+  @$core.pragma('dart2js:noInline')
+  static RegisterClientRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RegisterClientRequest>(
+          RegisterClientRequest.$_createMessage);
+  static RegisterClientRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get clientId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set clientId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasClientId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClientId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get kind => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set kind($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasKind() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearKind() => $_clearField(2);
+}
+
+class RegisterClientResponse extends $pb.GeneratedMessage {
+  factory RegisterClientResponse({
+    $core.String? leaseId,
+    $fixnum.Int64? leaseTimeoutMs,
+  }) {
+    final result = RegisterClientResponse._();
+    if (leaseId != null) result.leaseId = leaseId;
+    if (leaseTimeoutMs != null) result.leaseTimeoutMs = leaseTimeoutMs;
+    return result;
+  }
+
+  RegisterClientResponse._();
+
+  factory RegisterClientResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      RegisterClientResponse()..mergeFromBuffer(data, registry);
+  factory RegisterClientResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      RegisterClientResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RegisterClientResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: RegisterClientResponse.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'leaseId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'leaseTimeoutMs', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterClientResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RegisterClientResponse copyWith(
+          void Function(RegisterClientResponse) updates) =>
+      super.copyWith((message) => updates(message as RegisterClientResponse))
+          as RegisterClientResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use RegisterClientResponse() / RegisterClientResponse.new instead')
+  static RegisterClientResponse create() => RegisterClientResponse._();
+  static $pb.GeneratedMessage $_createMessage() => RegisterClientResponse._();
+  @$core.override
+  RegisterClientResponse createEmptyInstance() => RegisterClientResponse._();
+  @$core.pragma('dart2js:noInline')
+  static RegisterClientResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RegisterClientResponse>(
+          RegisterClientResponse.$_createMessage);
+  static RegisterClientResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get leaseId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set leaseId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLeaseId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLeaseId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get leaseTimeoutMs => $_getI64(1);
+  @$pb.TagNumber(2)
+  set leaseTimeoutMs($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLeaseTimeoutMs() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLeaseTimeoutMs() => $_clearField(2);
+}
+
+class HeartbeatRequest extends $pb.GeneratedMessage {
+  factory HeartbeatRequest({
+    $core.String? leaseId,
+  }) {
+    final result = HeartbeatRequest._();
+    if (leaseId != null) result.leaseId = leaseId;
+    return result;
+  }
+
+  HeartbeatRequest._();
+
+  factory HeartbeatRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      HeartbeatRequest()..mergeFromBuffer(data, registry);
+  factory HeartbeatRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      HeartbeatRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'HeartbeatRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: HeartbeatRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'leaseId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HeartbeatRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HeartbeatRequest copyWith(void Function(HeartbeatRequest) updates) =>
+      super.copyWith((message) => updates(message as HeartbeatRequest))
+          as HeartbeatRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use HeartbeatRequest() / HeartbeatRequest.new instead')
+  static HeartbeatRequest create() => HeartbeatRequest._();
+  static $pb.GeneratedMessage $_createMessage() => HeartbeatRequest._();
+  @$core.override
+  HeartbeatRequest createEmptyInstance() => HeartbeatRequest._();
+  @$core.pragma('dart2js:noInline')
+  static HeartbeatRequest getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HeartbeatRequest>(
+          HeartbeatRequest.$_createMessage);
+  static HeartbeatRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get leaseId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set leaseId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLeaseId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLeaseId() => $_clearField(1);
+}
+
+class HeartbeatResponse extends $pb.GeneratedMessage {
+  factory HeartbeatResponse() => HeartbeatResponse._();
+
+  HeartbeatResponse._();
+
+  factory HeartbeatResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      HeartbeatResponse()..mergeFromBuffer(data, registry);
+  factory HeartbeatResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      HeartbeatResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'HeartbeatResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: HeartbeatResponse.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HeartbeatResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HeartbeatResponse copyWith(void Function(HeartbeatResponse) updates) =>
+      super.copyWith((message) => updates(message as HeartbeatResponse))
+          as HeartbeatResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use HeartbeatResponse() / HeartbeatResponse.new instead')
+  static HeartbeatResponse create() => HeartbeatResponse._();
+  static $pb.GeneratedMessage $_createMessage() => HeartbeatResponse._();
+  @$core.override
+  HeartbeatResponse createEmptyInstance() => HeartbeatResponse._();
+  @$core.pragma('dart2js:noInline')
+  static HeartbeatResponse getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HeartbeatResponse>(
+          HeartbeatResponse.$_createMessage);
+  static HeartbeatResponse? _defaultInstance;
+}
+
+/// Освобождение уже отсутствующей аренды безопасно.
+class ReleaseClientRequest extends $pb.GeneratedMessage {
+  factory ReleaseClientRequest({
+    $core.String? leaseId,
+  }) {
+    final result = ReleaseClientRequest._();
+    if (leaseId != null) result.leaseId = leaseId;
+    return result;
+  }
+
+  ReleaseClientRequest._();
+
+  factory ReleaseClientRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ReleaseClientRequest()..mergeFromBuffer(data, registry);
+  factory ReleaseClientRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ReleaseClientRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ReleaseClientRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: ReleaseClientRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'leaseId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReleaseClientRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReleaseClientRequest copyWith(void Function(ReleaseClientRequest) updates) =>
+      super.copyWith((message) => updates(message as ReleaseClientRequest))
+          as ReleaseClientRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ReleaseClientRequest() / ReleaseClientRequest.new instead')
+  static ReleaseClientRequest create() => ReleaseClientRequest._();
+  static $pb.GeneratedMessage $_createMessage() => ReleaseClientRequest._();
+  @$core.override
+  ReleaseClientRequest createEmptyInstance() => ReleaseClientRequest._();
+  @$core.pragma('dart2js:noInline')
+  static ReleaseClientRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ReleaseClientRequest>(
+          ReleaseClientRequest.$_createMessage);
+  static ReleaseClientRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get leaseId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set leaseId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLeaseId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLeaseId() => $_clearField(1);
+}
+
+class ReleaseClientResponse extends $pb.GeneratedMessage {
+  factory ReleaseClientResponse() => ReleaseClientResponse._();
+
+  ReleaseClientResponse._();
+
+  factory ReleaseClientResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ReleaseClientResponse()..mergeFromBuffer(data, registry);
+  factory ReleaseClientResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ReleaseClientResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ReleaseClientResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: ReleaseClientResponse.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReleaseClientResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReleaseClientResponse copyWith(
+          void Function(ReleaseClientResponse) updates) =>
+      super.copyWith((message) => updates(message as ReleaseClientResponse))
+          as ReleaseClientResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ReleaseClientResponse() / ReleaseClientResponse.new instead')
+  static ReleaseClientResponse create() => ReleaseClientResponse._();
+  static $pb.GeneratedMessage $_createMessage() => ReleaseClientResponse._();
+  @$core.override
+  ReleaseClientResponse createEmptyInstance() => ReleaseClientResponse._();
+  @$core.pragma('dart2js:noInline')
+  static ReleaseClientResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ReleaseClientResponse>(
+          ReleaseClientResponse.$_createMessage);
+  static ReleaseClientResponse? _defaultInstance;
 }
 
 const $core.bool _omitFieldNames =

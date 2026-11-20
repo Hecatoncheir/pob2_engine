@@ -2,9 +2,11 @@
 
 Самостоятельный движок расчётов Path of Exile 2 на **Go**, со встроенными **CLI** и **MCP**. Существующее приложение [PoB II на Flutter](https://github.com/Hecatoncheir/pob2_ui) будет подключаться к нему через **gRPC / Protobuf**.
 
-**Состояние на 20 ноября 2026 года: работает первый сервис сессий на Go с CLI, gRPC и MCP stdio.** Два клиента могут создать сессию, получить снимок и переименовать сборку с проверкой ревизии и повторов команд. Расчётное ядро и подключение Flutter ещё не реализованы. Сессии хранятся только в памяти; сервер пока работает в постоянном режиме.
+**Состояние на 20 ноября 2026 года: работают сервис сессий Go/CLI/gRPC/MCP, обнаружение сервера, аренды клиентов и автоматическое завершение.** Клиенты используют общие сессии, ревизии и защиту повторов команд. Сервер поддерживает постоянный и автоматический режимы, ждёт ухода клиентов и завершения задач. Расчётное ядро и подключение Flutter ещё не реализованы; сессии хранятся только в памяти.
 
 Рабочие команды, контракт, ограничения и порядок генерации Go/Dart API — в [руководстве сервиса сессий](docs/SESSION-API.md). Разделы ниже описывают целевую архитектуру; не все её компоненты уже реализованы.
+
+Обнаружение по профилю, автозапуск, heartbeat, защита файлов и учёт задач описаны в [руководстве жизненного цикла](docs/SERVER-LIFECYCLE.md). Сначала соберите CLI через `go build ./cmd/pob2-engine`, затем запустите `pob2-engine connect --profile main --start-server` (на Windows: `.\pob2-engine.exe`, на Linux/macOS: `./pob2-engine`).
 
 Порядок реализации и критерии готовности — в [TODO.md](TODO.md), история изменений — в [CHANGELOG.md](CHANGELOG.md).
 
@@ -126,7 +128,7 @@ MCP остаётся отдельным внешним протоколом. Д�
 
 ## Структура проекта
 
-Уже существуют `cmd/pob2-engine`, `internal/application`, `internal/domain`, `internal/buildinfo`, `internal/transport/{cli,grpcapi,mcpapi}`, `internal/integration`, `api/pob2/v1`, `gen/go`, `gen/dart` и инструменты генерации в `tool/`. Остальные каталоги в схеме добавляются по мере реализации:
+Уже существуют `cmd/pob2-engine`, `internal/application`, `internal/domain`, `internal/buildinfo`, `internal/lifecycle`, `internal/discovery`, `internal/host`, `internal/transport/{cli,grpcapi,mcpapi}`, `internal/integration`, `api/pob2/v1`, `gen/go`, `gen/dart` и инструменты генерации в `tool/`. Остальные каталоги в схеме добавляются по мере реализации:
 
 ```text
 api/pob2/v1/              .proto-контракты
@@ -167,7 +169,7 @@ go run ./cmd/pob2-engine --help
 go run ./cmd/pob2-engine serve
 ```
 
-`serve` выводит JSON с адресом и токеном подключения. `info`, `session create|get|rename`, `mcp --attach` и `shutdown` подключаются по явному адресу; `mcp --standalone` создаёт независимую сессию. Подробные примеры — в [руководстве](docs/SESSION-API.md). Для изменения `.proto` дополнительно нужны Buf 1.73.0 и Dart 3.14.0; обычная сборка Go использует сохранённый сгенерированный API.
+`serve` выводит JSON с адресом и токеном подключения. `info`, `session create|get|rename`, `mcp --attach`, `connect` и `shutdown` подключаются по адресу или через `--profile`. `connect --start-server` запускает отсутствующий сервер и удерживает аренду; `mcp --standalone` создаёт независимую сессию. Подробные примеры — в [руководстве](docs/SESSION-API.md). Для изменения `.proto` дополнительно нужны Buf 1.73.0 и Dart 3.14.0; обычная сборка Go использует сохранённый сгенерированный API.
 
 ## CI и выпуск по тегу
 

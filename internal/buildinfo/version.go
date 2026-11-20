@@ -6,5 +6,5 @@ var Version = "dev"
 const ProtocolVersion = "pob2.v1"
 
 func Capabilities() []string {
-	return []string{"session.create", "session.snapshot", "build.rename"}
+	return []string{"session.create", "session.snapshot", "build.rename", "client.leases", "server.automatic"}
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
+	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -24,24 +25,31 @@ type Ready struct {
 	Token           string `json:"token"`
 	ProtocolVersion string `json:"protocol_version"`
 	Mode            string `json:"mode"`
+	InstanceID      string `json:"instance_id"`
 }
 
 // Server обслуживает только loopback; состояние пока сохраняется лишь в памяти.
 type Server struct {
 	pb.UnimplementedSessionServiceServer
-	commands application.Commands
-	rpc      *grpc.Server
-	listener net.Listener
-	token    string
-	mu       sync.RWMutex
-	state    string
-	stopOnce sync.Once
-	done     chan struct{}
-	stopped  chan struct{}
-	serveErr error
+	commands   application.Commands
+	rpc        *grpc.Server
+	listener   net.Listener
+	token      string
+	life       *lifecycle.Manager
+	instanceID string
+	stopOnce   sync.Once
+	forceOnce  sync.Once
+	force      chan struct{}
+	done       chan struct{}
+	stopped    chan struct{}
+	serveErr   error
 }
 
 func Start(address, token string, commands application.Commands) (*Server, error) {
+	return StartWithConfig(address, token, commands, lifecycle.Config{})
+}
+
+func StartWithConfig(address, token string, commands application.Commands, config lifecycle.Config) (*Server, error) {
 	if err := validateAddress(address); err != nil {
 		return nil, err
 	}
@@ -52,10 +60,19 @@ func Start(address, token string, commands application.Commands) (*Server, error
 	if token == "" {
 		token = rand.Text()
 	}
-	s := &Server{commands: commands, listener: listener, token: token, state: "ready", done: make(chan struct{}), stopped: make(chan struct{})}
+	life, err := lifecycle.New(config)
+	if err != nil {
+		listener.Close()
+		return nil, err
+	}
+	s := &Server{
+		commands: commands, listener: listener, token: token, life: life, instanceID: rand.Text(),
+		done: make(chan struct{}), stopped: make(chan struct{}), force: make(chan struct{}),
+	}
 	s.rpc = grpc.NewServer(grpc.UnaryInterceptor(s.authorize))
 	pb.RegisterSessionServiceServer(s.rpc, s)
 	go func() { s.serveErr = s.rpc.Serve(listener); close(s.done) }()
+	go func() { <-life.Draining(); s.beginStop() }()
 	return s, nil
 }
 
@@ -68,8 +85,10 @@ func validateAddress(address string) error {
 }
 
 func (s *Server) Ready() Ready {
-	return Ready{Address: s.listener.Addr().String(), Token: s.token, ProtocolVersion: buildinfo.ProtocolVersion, Mode: "persistent"}
+	return Ready{Address: s.listener.Addr().String(), Token: s.token, ProtocolVersion: buildinfo.ProtocolVersion, Mode: s.life.Config().Mode, InstanceID: s.instanceID}
 }
+
+func (s *Server) Lifecycle() *lifecycle.Manager { return s.life }
 
 func (s *Server) Done() <-chan struct{} { return s.done }
 
@@ -81,19 +100,59 @@ func (s *Server) authorize(ctx context.Context, req any, info *grpc.UnaryServerI
 	if len(values) != 1 || subtle.ConstantTimeCompare([]byte(values[0]), []byte("Bearer "+s.token)) != 1 {
 		return nil, status.Error(codes.Unauthenticated, "неверный токен")
 	}
-	s.mu.RLock()
-	ready := s.state == "ready"
-	s.mu.RUnlock()
-	if !ready && info.FullMethod != pb.SessionService_Shutdown_FullMethodName {
-		return nil, status.Error(codes.Unavailable, "сервер завершает работу")
+	if controlMethod(info.FullMethod) {
+		return next(ctx, req)
 	}
+	leases := md.Get("pob2-lease")
+	if len(leases) > 1 {
+		return nil, status.Error(codes.InvalidArgument, "передано несколько аренд")
+	}
+	leaseID := ""
+	if len(leases) == 1 {
+		leaseID = leases[0]
+	}
+	finish, err := s.life.BeginTask(leaseID)
+	if err != nil {
+		return nil, lifecycleError(err)
+	}
+	defer finish()
 	return next(ctx, req)
 }
 
+func controlMethod(method string) bool {
+	switch method {
+	case pb.SessionService_GetServerInfo_FullMethodName, pb.SessionService_RegisterClient_FullMethodName,
+		pb.SessionService_Heartbeat_FullMethodName, pb.SessionService_ReleaseClient_FullMethodName, pb.SessionService_Shutdown_FullMethodName:
+		return true
+	default:
+		return false
+	}
+}
+
 func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.GetServerInfoResponse, error) {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: buildinfo.Capabilities(), State: s.state}, nil
+	stats := s.life.Stats()
+	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: buildinfo.Capabilities(), State: stats.State,
+		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds())}, nil
+}
+
+func (s *Server) RegisterClient(_ context.Context, req *pb.RegisterClientRequest) (*pb.RegisterClientResponse, error) {
+	lease, err := s.life.Register(req.GetClientId(), req.GetKind())
+	if err != nil {
+		return nil, lifecycleError(err)
+	}
+	return &pb.RegisterClientResponse{LeaseId: lease.ID, LeaseTimeoutMs: uint64(lease.Timeout.Milliseconds())}, nil
+}
+
+func (s *Server) Heartbeat(_ context.Context, req *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
+	if err := s.life.Heartbeat(req.GetLeaseId()); err != nil {
+		return nil, lifecycleError(err)
+	}
+	return &pb.HeartbeatResponse{}, nil
+}
+
+func (s *Server) ReleaseClient(_ context.Context, req *pb.ReleaseClientRequest) (*pb.ReleaseClientResponse, error) {
+	s.life.Release(req.GetLeaseId())
+	return &pb.ReleaseClientResponse{}, nil
 }
 
 func snapshot(value domain.Snapshot) *pb.SessionSnapshot {
@@ -131,16 +190,36 @@ func (s *Server) Shutdown(context.Context, *pb.ShutdownRequest) (*pb.ShutdownRes
 
 func (s *Server) beginStop() {
 	s.stopOnce.Do(func() {
-		s.mu.Lock()
-		s.state = "draining"
-		s.mu.Unlock()
+		s.life.Drain()
 		go func() {
-			timer := time.AfterFunc(5*time.Second, s.rpc.Stop)
-			defer timer.Stop()
-			s.rpc.GracefulStop()
+			s.waitForStop()
+			s.life.Close()
 			close(s.stopped)
 		}()
 	})
+}
+
+func (s *Server) waitForStop() {
+	timer := time.NewTimer(5 * time.Second)
+	defer timer.Stop()
+	graceful := make(chan struct{})
+	go func() { s.rpc.GracefulStop(); close(graceful) }()
+	var rpcDone <-chan struct{} = graceful
+	tasksDone := s.life.TasksDone()
+	for rpcDone != nil || tasksDone != nil {
+		select {
+		case <-rpcDone:
+			rpcDone = nil
+		case <-tasksDone:
+			tasksDone = nil
+		case <-timer.C:
+			s.rpc.Stop()
+			return
+		case <-s.force:
+			s.rpc.Stop()
+			return
+		}
+	}
 }
 
 // Close ограничивает ожидание штатного завершения контекстом вызывающего кода.
@@ -150,7 +229,7 @@ func (s *Server) Close(ctx context.Context) error {
 	case <-s.stopped:
 		return s.Err()
 	case <-ctx.Done():
-		s.rpc.Stop()
+		s.forceOnce.Do(func() { close(s.force) })
 		<-s.stopped
 		return ctx.Err()
 	}
