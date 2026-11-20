@@ -101,19 +101,60 @@ jobs:
           go build -trimpath -ldflags="-s -w -X github.com/Hecatoncheir/pob2_engine/internal/buildinfo.Version=${RELEASE_TAG}" \
             -o "dist/pob2_engine_${RELEASE_TAG}_${GOOS}_${GOARCH}${EXTENSION}" \
             ./cmd/pob2-engine
+          python3 tool/package_release.py \
+            --binary "dist/pob2_engine_${RELEASE_TAG}_${GOOS}_${GOARCH}${EXTENSION}" \
+            --tag "$RELEASE_TAG" --os "$GOOS" --arch "$GOARCH" --commit "$GITHUB_SHA" --output dist
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: native-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: dist/*
+          path: dist/pob2_engine_${{ github.ref_name }}_${{ matrix.goos }}_${{ matrix.goarch }}.zip
+          if-no-files-found: error
+
+  smoke:
+    name: Проверить выпуск / ${{ matrix.goos }} / ${{ matrix.goarch }}
+    needs: [build, version]
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: windows
+            goarch: amd64
+            runner: windows-latest
+          - goos: linux
+            goarch: amd64
+            runner: ubuntu-latest
+          - goos: darwin
+            goarch: arm64
+            runner: macos-15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: native-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: dist
+      - name: Проверить архив и полный сценарий без среды разработки
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          TARGET_OS: ${{ matrix.goos }}
+          TARGET_ARCH: ${{ matrix.goarch }}
+        run: |
+          python -X utf8 tool/smoke_release.py --archive "dist/pob2_engine_${RELEASE_TAG}_${TARGET_OS}_${TARGET_ARCH}.zip" \
+            --tag "$RELEASE_TAG" --report "reports/smoke_${TARGET_OS}_${TARGET_ARCH}.json"
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: smoke-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: reports/*.json
           if-no-files-found: error
 
   publish:
     name: Опубликовать выпуск
-    needs: [validate, version, build]
+    needs: [validate, version, build, smoke]
     if: >-
       always() && needs.validate.result == 'success' &&
       needs.version.result == 'success' &&
-      (needs.build.result == 'success' || needs.build.result == 'skipped')
+      needs.build.result == 'success' && needs.smoke.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -127,6 +168,11 @@ jobs:
         if: needs.validate.outputs.has_go == 'true'
         with:
           pattern: native-*
+          merge-multiple: true
+          path: dist
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          pattern: smoke-*
           merge-multiple: true
           path: dist
       - name: Подготовить исходники и контрольные суммы

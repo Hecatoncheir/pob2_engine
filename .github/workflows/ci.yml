@@ -88,6 +88,20 @@ jobs:
         run: go test ./...
       - name: Проверить гонки
         run: go test -race ./...
+      - name: Измерить расчёт и сохранить состав среды
+        shell: bash
+        run: |
+          mkdir -p .reference/performance
+          go version > .reference/performance/go.txt
+          go env -json GOOS GOARCH GOVERSION > .reference/performance/environment.json
+          lscpu > .reference/performance/cpu.txt
+          go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculate' -benchmem -benchtime=500ms -count=3 | tee .reference/performance/benchmark.txt
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: calculation-performance-linux
+          path: .reference/performance/
+          include-hidden-files: true
+          if-no-files-found: error
 
   lua:
     name: Эталон Lua / Linux
