@@ -42,6 +42,7 @@ jobs:
                       raise SystemExit(f'Не найдена локальная ссылка в {name}: {target}')
 
           module = Path('go.mod').is_file()
+          Path('gen/dart/pubspec.yaml').read_text(encoding='ascii')
           entry = Path('cmd/pob2-engine').is_dir()
           if module != entry:
               raise SystemExit('Нужны одновременно go.mod и cmd/pob2-engine.')

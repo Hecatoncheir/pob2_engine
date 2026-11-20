@@ -1,5 +1,5 @@
 name: pob2_engine_api
-description: Сгенерированный gRPC API сервиса сессий pob2_engine.
+description: gRPC/Protobuf API pob2_engine (pob2.v1).
 version: 0.0.0
 publish_to: none
 environment:
