@@ -1,4 +1,6 @@
 /pob2-engine
 /pob2-engine.exe
 /dist/
+/.reference/
+**/__pycache__/
 **/.dart_tool/

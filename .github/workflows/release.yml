@@ -139,7 +139,7 @@ jobs:
           git archive --format=zip --prefix="pob2_engine-${RELEASE_TAG}/" \
             --output="dist/pob2_engine_${RELEASE_TAG}_source.zip" HEAD
           git rev-parse HEAD > dist/COMMIT.txt
-          cp .licenses/bbolt.LICENSE dist/LICENSE-bbolt.txt
+          python3 tool/notices.py --archive "dist/pob2_engine_${RELEASE_TAG}_licenses.zip"
           cd dist
           sha256sum * > SHA256SUMS
           sha256sum --check SHA256SUMS

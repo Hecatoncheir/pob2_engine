@@ -1,0 +1,11 @@
+{
+  "mcp_commit": "312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a",
+  "native_files": {
+    "lua-utf8.dll": "8f49400e2c84716c3caf27c5b1d60133b7f598748fa9cdd31f0732a0642af96d",
+    "lua51.dll": "2e4e58e4cc6f6cb01d119ff3715253108041f6c59f9a6a464a62b2f70623bca6"
+  },
+  "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+  "python": "3.13.15",
+  "target": "windows-x86_64",
+  "tree_version": "0_5"
+}

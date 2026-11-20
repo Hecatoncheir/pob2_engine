@@ -31,7 +31,7 @@ jobs:
           import os
           import re
 
-          for name in ('README.md', 'TODO.md', 'todo_0.0.1.md', 'CHANGELOG.md', 'AGENTS.md', 'docs/SESSION-API.md', 'docs/SERVER-LIFECYCLE.md', 'docs/SESSION-STORAGE.md', 'docs/SESSION-EVENTS.md', 'testdata/reference/README.md'):
+          for name in ('README.md', 'TODO.md', 'todo_0.0.1.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'docs/SESSION-API.md', 'docs/SERVER-LIFECYCLE.md', 'docs/SESSION-STORAGE.md', 'docs/SESSION-EVENTS.md', 'testdata/reference/README.md'):
               text = Path(name).read_text(encoding='utf-8')
               if not text.strip() or text.count('```') % 2:
                   raise SystemExit(f'Пустой документ или незакрытый блок кода: {name}')
@@ -80,10 +80,31 @@ jobs:
         run: go vet ./...
       - name: Проверить закреплённые источники эталона
         run: go run ./tool/reference
+      - name: Проверить лицензии поставляемых зависимостей
+        run: python3 tool/notices.py
       - name: Выполнить тесты
         run: go test ./...
       - name: Проверить гонки
         run: go test -race ./...
+
+  lua:
+    name: Эталон Lua / Linux
+    needs: structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Проверить целостность эталонов и отказы инструментов
+        run: python3 -m unittest discover -s tool -p 'test_*.py'
+      - name: Подготовить изолированную среду и воспроизвести расчёт
+        run: python3 tool/reference_lua.py --prepare
+      - name: Сохранить отчёт и состав среды
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: lua-reference-linux
+          path: .reference/last-run/
+          include-hidden-files: true
+          if-no-files-found: warn
 
   proto:
     name: Protobuf и генерация API

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "release": "v0.24.1",
+  "assets": {
+    "linux-x86_64": {
+      "name": "pob-poe2-mcp-native-linux-x64.zip",
+      "sha256": "e7dbdb4319c417df4ea5365b3a3d254aacf8cec8deabb7a0f809f61e08a5c1a0"
+    },
+    "darwin-arm64": {
+      "name": "pob-poe2-mcp-native-macos-arm64.zip",
+      "sha256": "0eebe81f5221aeab6ba0f2e89e1393b8a97a9cd042c41a1fc42c1f64963dff3e"
+    }
+  }
+}

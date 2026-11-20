@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding2>
+	<Build ascendClassName="None" className="Sorceress" level="1" viewMode="TREE" targetVersion="0_1" characterLevelAutoMode="false" mainSocketGroup="1">
+		<PlayerStat value="10.7" stat="AverageHit"/>
+		<PlayerStat value="10.7" stat="AverageBurstDamage"/>
+		<PlayerStat value="0.83333333333333" stat="Speed"/>
+		<PlayerStat value="7" stat="PreEffectiveCritChance"/>
+		<PlayerStat value="7" stat="CritChance"/>
+		<PlayerStat value="2" stat="CritMultiplier"/>
+		<PlayerStat value="100" stat="HitChance"/>
+		<PlayerStat value="8.9166666666667" stat="TotalDPS"/>
+		<PlayerStat value="0" stat="TotalDot"/>
+		<PlayerStat value="8.9166666666667" stat="WithBleedDPS"/>
+		<PlayerStat value="1.0755555555556" stat="IgniteDPS"/>
+		<PlayerStat value="9.9922222222222" stat="WithIgniteDPS"/>
+		<PlayerStat value="8.9166666666667" stat="WithPoisonDPS"/>
+		<PlayerStat value="1.0755555555556" stat="TotalDotDPS"/>
+		<PlayerStat value="0" stat="CullingDPS"/>
+		<PlayerStat value="0" stat="ReservationDPS"/>
+		<PlayerStat value="9.9922222222222" stat="CombinedDPS"/>
+		<PlayerStat value="10" stat="ManaCost"/>
+		<PlayerStat value="0" stat="ManaPercentCost"/>
+		<PlayerStat value="8.3333333333333" stat="ManaPerSecondCost"/>
+		<PlayerStat value="0" stat="ManaPercentPerSecondCost"/>
+		<PlayerStat value="0" stat="LifeCost"/>
+		<PlayerStat value="0" stat="LifePercentCost"/>
+		<PlayerStat value="0" stat="LifePerSecondCost"/>
+		<PlayerStat value="0" stat="LifePercentPerSecondCost"/>
+		<PlayerStat value="0" stat="ESCost"/>
+		<PlayerStat value="0" stat="ESPerSecondCost"/>
+		<PlayerStat value="0" stat="ESPercentPerSecondCost"/>
+		<PlayerStat value="0" stat="RageCost"/>
+		<PlayerStat value="0" stat="SoulCost"/>
+		<PlayerStat value="7" stat="Str"/>
+		<PlayerStat value="7" stat="Dex"/>
+		<PlayerStat value="15" stat="Int"/>
+		<PlayerStat value="0" stat="Devotion"/>
+		<PlayerStat value="0" stat="Tribute"/>
+		<PlayerStat value="43.589377683795" stat="TotalEHP"/>
+		<PlayerStat value="42" stat="PhysicalMaximumHitTaken"/>
+		<PlayerStat value="42" stat="LightningMaximumHitTaken"/>
+		<PlayerStat value="42" stat="FireMaximumHitTaken"/>
+		<PlayerStat value="42" stat="ColdMaximumHitTaken"/>
+		<PlayerStat value="42" stat="ChaosMaximumHitTaken"/>
+		<PlayerStat value="0" stat="Darkness"/>
+		<PlayerStat value="0" stat="ReservedDarkness"/>
+		<PlayerStat value="42" stat="Life"/>
+		<PlayerStat value="0" stat="Spec:LifeInc"/>
+		<PlayerStat value="42" stat="LifeUnreserved"/>
+		<PlayerStat value="42" stat="LifeRecoverable"/>
+		<PlayerStat value="100" stat="LifeUnreservedPercent"/>
+		<PlayerStat value="0" stat="LifeRegenRecovery"/>
+		<PlayerStat value="0" stat="LifeLeechGainRate"/>
+		<PlayerStat value="64" stat="Mana"/>
+		<PlayerStat value="0" stat="Spec:ManaInc"/>
+		<PlayerStat value="64" stat="ManaUnreserved"/>
+		<PlayerStat value="100" stat="ManaUnreservedPercent"/>
+		<PlayerStat value="2.6" stat="ManaRegenRecovery"/>
+		<PlayerStat value="0" stat="ManaLeechGainRate"/>
+		<PlayerStat value="1" stat="Spirit"/>
+		<PlayerStat value="1" stat="SpiritUnreserved"/>
+		<PlayerStat value="100" stat="SpiritUnreservedPercent"/>
+		<PlayerStat value="0" stat="EnergyShield"/>
+		<PlayerStat value="0" stat="EnergyShieldRecoveryCap"/>
+		<PlayerStat value="0" stat="Spec:EnergyShieldInc"/>
+		<PlayerStat value="0" stat="EnergyShieldRegenRecovery"/>
+		<PlayerStat value="0" stat="EnergyShieldLeechGainRate"/>
+		<PlayerStat value="0" stat="RageRegenRecovery"/>
+		<PlayerStat value="7" stat="Evasion"/>
+		<PlayerStat value="0" stat="Spec:EvasionInc"/>
+		<PlayerStat value="5" stat="EvadeChance"/>
+		<PlayerStat value="5" stat="MeleeEvadeChance"/>
+		<PlayerStat value="5" stat="ProjectileEvadeChance"/>
+		<PlayerStat value="5" stat="SpellEvadeChance"/>
+		<PlayerStat value="5" stat="SpellProjectileEvadeChance"/>
+		<PlayerStat value="0" stat="DeflectionRating"/>
+		<PlayerStat value="0" stat="DeflectChance"/>
+		<PlayerStat value="0" stat="Armour"/>
+		<PlayerStat value="0" stat="Spec:ArmourInc"/>
+		<PlayerStat value="0" stat="PhysicalDamageReduction"/>
+		<PlayerStat value="0" stat="EffectiveBlockChance"/>
+		<PlayerStat value="0" stat="EffectiveSpellBlockChance"/>
+		<PlayerStat value="0" stat="AttackDodgeChance"/>
+		<PlayerStat value="0" stat="SpellDodgeChance"/>
+		<PlayerStat value="0" stat="EffectiveSpellSuppressionChance"/>
+		<PlayerStat value="0" stat="FireResist"/>
+		<PlayerStat value="0" stat="FireResistOverCap"/>
+		<PlayerStat value="0" stat="ColdResist"/>
+		<PlayerStat value="0" stat="ColdResistOverCap"/>
+		<PlayerStat value="0" stat="LightningResist"/>
+		<PlayerStat value="0" stat="LightningResistOverCap"/>
+		<PlayerStat value="0" stat="ChaosResist"/>
+		<PlayerStat value="0" stat="ChaosResistOverCap"/>
+		<PlayerStat value="1" stat="EffectiveMovementSpeedMod"/>
+		<PlayerStat value="0.3" stat="MovementSpeedWhileUsingSkill"/>
+		<PlayerStat value="4" stat="PresenceRadiusMetres"/>
+		<PlayerStat value="9.9922222222222" stat="FullDPS"/>
+		<PlayerStat value="1.0755555555556" stat="FullDotDPS"/>
+		<FullDPSSkill value="8.9166666666667" stat="Fireball" source="" skillPart=""/>
+		<FullDPSSkill value="1.0755555555556" stat="Best Ignite DPS" source="Fireball" skillPart=""/>
+		<PlayerStat value="0" stat="PowerCharges"/>
+		<PlayerStat value="3" stat="PowerChargesMax"/>
+		<PlayerStat value="0" stat="FrenzyCharges"/>
+		<PlayerStat value="3" stat="FrenzyChargesMax"/>
+		<PlayerStat value="0" stat="EnduranceCharges"/>
+		<PlayerStat value="3" stat="EnduranceChargesMax"/>
+		<Buffs curseList="" combatList="" buffList=""/>
+		<TimelessData searchList="" searchListFallback="" devotionVariant1="1" devotionVariant2="1"/>
+	</Build>
+	<Items showStatDifferences="true" useSecondWeaponSet="nil" activeItemSet="1">
+		<ItemSet id="1" title="Default" useSecondWeaponSet="nil">
+			<Slot name="Weapon 1 Swap" itemPbURL="" itemId="0"/>
+			<Slot name="Weapon 2 Swap" itemPbURL="" itemId="0"/>
+			<Slot name="Arm 2" itemPbURL="" itemId="0"/>
+			<Slot name="Arm 1" itemPbURL="" itemId="0"/>
+			<Slot name="Leg 2" itemPbURL="" itemId="0"/>
+			<Slot name="Leg 1" itemPbURL="" itemId="0"/>
+			<Slot name="Belt" itemPbURL="" itemId="0"/>
+			<Slot name="Flask 2" itemPbURL="" itemId="0"/>
+			<Slot name="Flask 1" itemPbURL="" itemId="0"/>
+			<Slot name="Charm 3" itemPbURL="" itemId="0"/>
+			<Slot name="Charm 2" itemPbURL="" itemId="0"/>
+			<Slot name="Charm 1" itemPbURL="" itemId="0"/>
+			<Slot name="Ring 1" itemPbURL="" itemId="0"/>
+			<Slot name="Amulet" itemPbURL="" itemId="0"/>
+			<Slot name="Boots" itemPbURL="" itemId="0"/>
+			<Slot name="Gloves" itemPbURL="" itemId="0"/>
+			<Slot name="Body Armour" itemPbURL="" itemId="0"/>
+			<Slot name="Ring 2" itemPbURL="" itemId="0"/>
+			<Slot name="Ring 3" itemPbURL="" itemId="0"/>
+			<Slot name="Weapon 1" itemPbURL="" itemId="0"/>
+			<Slot name="Helmet" itemPbURL="" itemId="0"/>
+			<Slot name="Weapon 2" itemPbURL="" itemId="0"/>
+		</ItemSet>
+	</Items>
+	<Calcs>
+		<Input name="misc_buffMode" string="EFFECTIVE"/>
+		<Input name="skill_number" number="1"/>
+		<Section subsection="ViewSkillDetails" id="SkillSelect" collapsed="false"/>
+		<Section subsection="SkillHitDamage" id="HitDamage" collapsed="false"/>
+		<Section subsection="EmpoweredStats" id="Warcries" collapsed="false"/>
+		<Section subsection="SkillDamageoverTime" id="Dot" collapsed="false"/>
+		<Section subsection="AttackCastRate" id="Speed" collapsed="false"/>
+		<Section subsection="Crits" id="Crit" collapsed="false"/>
+		<Section subsection="Impale" id="Impale" collapsed="false"/>
+		<Section subsection="SkilltypespecificStats" id="SkillTypeStats" collapsed="false"/>
+		<Section subsection="Accuracy" id="HitChance" collapsed="false"/>
+		<Section subsection="Bleed" id="Bleed" collapsed="false"/>
+		<Section subsection="Poison" id="Poison" collapsed="false"/>
+		<Section subsection="Ignite" id="Ignite" collapsed="false"/>
+		<Section subsection="Decay" id="Decay" collapsed="false"/>
+		<Section subsection="LeechGainonHit" id="LeechGain" collapsed="false"/>
+		<Section subsection="NonDamagingAilments" id="EleAilments" collapsed="false"/>
+		<Section subsection="OtherEffects" id="MiscEffects" collapsed="false"/>
+		<Section subsection="Attributes" id="Attributes" collapsed="false"/>
+		<Section subsection="Life" id="Life" collapsed="false"/>
+		<Section subsection="Mana" id="Mana" collapsed="false"/>
+		<Section subsection="Spirit" id="Spirit" collapsed="false"/>
+		<Section subsection="EnergyShield" id="EnergyShield" collapsed="false"/>
+		<Section subsection="Resists" id="Resist" collapsed="false"/>
+		<Section subsection="Armour" id="Armour" collapsed="false"/>
+		<Section subsection="Evasion" id="Evasion" collapsed="false"/>
+		<Section subsection="DamageAvoidance" id="DamageAvoidance" collapsed="false"/>
+		<Section subsection="Block" id="DamageAvoidance" collapsed="false"/>
+		<Section subsection="Dodge" id="DamageAvoidance" collapsed="false"/>
+		<Section subsection="Deflection" id="DamageAvoidance" collapsed="false"/>
+		<Section subsection="Flasks" id="Flasks" collapsed="false"/>
+		<Section subsection="UtilityFlasks" id="Flasks" collapsed="true"/>
+		<Section subsection="LifeFlasks" id="Flasks" collapsed="true"/>
+		<Section subsection="ManaFlasks" id="Flasks" collapsed="true"/>
+		<Section subsection="Charms" id="Flasks" collapsed="true"/>
+		<Section subsection="Rage" id="Rage" collapsed="true"/>
+		<Section subsection="Charges" id="Charges" collapsed="true"/>
+		<Section subsection="Endurance" id="Charges" collapsed="true"/>
+		<Section subsection="Frenzy" id="Charges" collapsed="true"/>
+		<Section subsection="Power" id="Charges" collapsed="true"/>
+		<Section subsection="OtherDefences" id="MiscDefences" collapsed="false"/>
+		<Section subsection="StunDuration" id="MiscDefences" collapsed="false"/>
+		<Section subsection="OtherAvoidance" id="MiscDefences" collapsed="true"/>
+		<Section subsection="OtherAilmentDefences" id="MiscDefences" collapsed="true"/>
+		<Section subsection="DamageTaken" id="DamageTaken" collapsed="false"/>
+		<Section subsection="DamagingHits" id="DamageTaken" collapsed="false"/>
+		<Section subsection="EffectiveHealthPool" id="DamageTaken" collapsed="false"/>
+		<Section subsection="MaximumHitTaken" id="DamageTaken" collapsed="false"/>
+		<Section subsection="RecoupandHitTakenOverTime" id="DamageTaken" collapsed="true"/>
+		<Section subsection="DotsandBuildDegens" id="DamageTaken" collapsed="false"/>
+		<Section subsection="EnemyDegens" id="DamageTaken" collapsed="true"/>
+	</Calcs>
+	<Notes>
+
+	</Notes>
+	<Config activeConfigSet="1">
+		<ConfigSet id="1">
+			<Input name="questInterlude 2Khari CrossingMolten Shrine" boolean="false"/>
+			<Input name="resistancePenalty" number="0"/>
+			<Input name="questAct 1ClearfellBeira" boolean="false"/>
+			<Input name="questInterlude 3Kriar VillageLythara" boolean="false"/>
+			<Input name="questAct 1FreythornKing In The Mists" boolean="false"/>
+			<Input name="enemyIsBoss" string="None"/>
+			<Input name="questAct 2Spires of DesharSisters of Garukhan Shrine" boolean="false"/>
+			<Input name="questAct 3Azak BogIgnagduk" boolean="false"/>
+			<Input name="questAct 1Ogham ManorCandlemass" boolean="false"/>
+			<Input name="questAct 3Jiquani&apos;s MachinariumBlackjaw" boolean="false"/>
+			<Input name="questAct 4Eye of HinekoraSilent Hall" boolean="false"/>
+			<Placeholder name="enemySpeed" number="700"/>
+			<Placeholder name="enemyCritChance" number="5"/>
+			<Placeholder name="enemyCritDamage" number="30"/>
+			<Placeholder name="multiplierWitheredStackCountSelf" number="15"/>
+			<Placeholder name="enemyLevel" number="1"/>
+			<Placeholder name="enemyPhysicalDamage" number="3"/>
+			<Placeholder name="enemyLightningDamage" number="3"/>
+			<Placeholder name="multiplierStunnedRecently" number="1"/>
+			<Placeholder name="enemyFireDamage" number="3"/>
+			<Placeholder name="enemyChaosDamage" number="1"/>
+			<Placeholder name="enemyArmour" number="3"/>
+			<Placeholder name="enemyEvasion" number="24"/>
+			<Placeholder name="conditionCorruptingCryStages" number="10"/>
+			<Placeholder name="multiplierWarcryUsedRecently" number="1"/>
+			<Placeholder name="ScorchStacks" number="1"/>
+			<Placeholder name="enemyDamageRollRange" number="70"/>
+			<Placeholder name="demonFormStacks" number="10"/>
+			<Placeholder name="sigilOfPowerStages" number="1"/>
+			<Placeholder name="multiplierDifferentGrenadeFired" number="1"/>
+			<Placeholder name="multiplierDifferentAmmoFired" number="1"/>
+			<Placeholder name="multiplierCurrentEnergyShield" number="100"/>
+			<Placeholder name="ChillStacks" number="1"/>
+			<Placeholder name="enemyDistance" number="20"/>
+			<Placeholder name="enemyCriticalWeaknessStacks" number="20"/>
+			<Placeholder name="ShockStacks" number="1"/>
+			<Placeholder name="enemyColdDamage" number="3"/>
+		</ConfigSet>
+	</Config>
+	<TreeView searchStr="" zoomLevel="3" zoomX="0" zoomY="0" showStatDifferences="true"/>
+	<Import exportParty="false"/>
+	<Tree activeSpec="1">
+		<Spec masteryEffects="" secondaryAscendClassId="nil" classInternalId="7" classId="7" ascendancyInternalId="" nodes="54447" ascendClassId="0" treeVersion="0_5">
+			<URL>
+				https://www.pathofexile.com/passive-skill-tree/AAAABgcAAAAA
+			</URL>
+			<Sockets/>
+			<Overrides>
+				<AttributeOverride strNodes="" dexNodes="" intNodes=""/>
+			</Overrides>
+		</Spec>
+	</Tree>
+	<Skills defaultGemLevel="normalMaximum" sortGemsByDPSField="CombinedDPS" sortGemsByDPS="true" activeSkillSet="1" showSupportGemTypes="ALL" showLegacyGems="false" defaultGemQuality="nil">
+		<SkillSet id="1">
+			<Skill mainActiveSkillCalcs="1" includeInFullDPS="true" mainActiveSkill="1" enabled="true" label="">
+				<Gem quality="0" corruptLevel="0" corrupted="false" level="1" gemId="Metadata/Items/Gem/SkillGemFireball" enabled="true" enableGlobal1="true" enableGlobal2="false" statSetIndex="nil" statSetIndexCalcs="nil" count="1" nameSpec="Fireball" skillId="FireballPlayer" variantId="Fireball"/>
+			</Skill>
+		</SkillSet>
+	</Skills>
+	<Party append="false" destination="All" ShowAdvanceTools="false"/>
+</PathOfBuilding2>

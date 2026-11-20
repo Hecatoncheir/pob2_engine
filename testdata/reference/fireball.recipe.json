@@ -1,0 +1,12 @@
+{
+  "class": "Sorceress",
+  "level": 1,
+  "gem": "Metadata/Items/Gems/SkillGemFireball",
+  "gem_level": 1,
+  "gem_quality": 0,
+  "config": {
+    "enemyIsBoss": "None",
+    "enemyLevel": 1,
+    "resistancePenalty": 0
+  }
+}
