@@ -93,9 +93,23 @@ jobs:
         run: |
           mkdir -p .reference/performance
           go version > .reference/performance/go.txt
-          go env -json GOOS GOARCH GOVERSION > .reference/performance/environment.json
+          go env -json GOOS GOARCH GOVERSION GOAMD64 CGO_ENABLED GOEXPERIMENT GOTOOLCHAIN > .reference/performance/environment.json
           lscpu > .reference/performance/cpu.txt
-          go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculate' -benchmem -benchtime=500ms -count=3 | tee .reference/performance/benchmark.txt
+          git rev-parse HEAD > .reference/performance/commit.txt
+          date -u +%Y-%m-%dT%H:%M:%SZ > .reference/performance/measured-at.txt
+          uname -a > .reference/performance/kernel.txt
+          cat /etc/os-release > .reference/performance/os-release.txt
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          options = {name: os.environ.get(name) for name in ('GOMAXPROCS', 'GOGC', 'GOMEMLIMIT')}
+          Path('.reference/performance/runtime.json').write_text(json.dumps(options, indent=2) + '\n', encoding='utf-8')
+          PY
+          sha256sum testdata/reference/fireball.xml testdata/reference/0.0.2/cases/frostbolt-minimal.xml testdata/reference/0.0.2/cases/spark-minimal.xml internal/gamedata/files/catalog.json internal/gamedata/files/manifest.json > .reference/performance/inputs.sha256
+          go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculate(Parallel)?$' -benchmem -benchtime=500ms -count=3 | tee .reference/performance/benchmark.txt
+          go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculateSpells$' -benchmem -benchtime=500ms -count=5 | tee .reference/performance/spells.txt
+          go test ./internal/application -run '^$' -bench '^BenchmarkPreviewSupport$' -benchmem -benchtime=500ms -count=5 | tee .reference/performance/support-preview.txt
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: calculation-performance-linux

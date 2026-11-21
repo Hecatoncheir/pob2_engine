@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "stage": "0.0.2/7.3",
+  "date_moscow": "2026-11-21",
+  "base_commit": "cd91cdde4201c32ad463a3de543cd76dbedcc305",
+  "scope": "Новые и изменённые функции измерений этапа 7.3, включая тесты Go",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 8,
+  "maximum_cognitive": 4,
+  "functions": [
+    {
+      "file": "internal/application/benchmark_test.go",
+      "function": "BenchmarkPreviewSupport",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/benchmark_test.go",
+      "function": "benchmarkSpellSupports",
+      "line": 21,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/benchmark_test.go",
+      "function": "benchmarkPreviewSession",
+      "line": 30,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/benchmark_test.go",
+      "function": "benchmarkSupportPreview",
+      "line": 47,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/benchmark_test.go",
+      "function": "checkBenchmarkPreview",
+      "line": 66,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/calculation/benchmark_test.go",
+      "function": "BenchmarkCalculateSpells",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/calculation/benchmark_test.go",
+      "function": "benchmarkSpellCalculation",
+      "line": 26,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/calculation/benchmark_test.go",
+      "function": "checkBenchmarkCalculation",
+      "line": 42,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    }
+  ]
+}
