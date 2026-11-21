@@ -1,7 +1,9 @@
 # Работа с полной сборкой
 
-Выпуск `0.0.1` использует [объявленное покрытие Fireball](COVERAGE-0.0.1.md).
-Расчёт выполняет Go; Python, Lua, Flutter и сеть при обычном использовании
+Руководство относится к разработке `0.0.2`: [три умения и ограничения](COVERAGE-0.0.2.md),
+[готовые примеры](EXAMPLES-0.0.2.md). Выпущенный `0.0.1` использует
+[покрытие Fireball](COVERAGE-0.0.1.md).
+Расчёт выполняет Go; Python, Lua, Flutter и доступ в интернет при обычном использовании
 движка не требуются. Ниже `pob2-engine` — путь к собранному бинарнику;
 на Windows используйте `.\pob2-engine.exe`.
 
@@ -54,7 +56,7 @@ pob2-engine calculate --profile main --session build-1 --revision 4 --request-id
 
 ```json
 {"level":{"level":20}}
-{"passives":{"nodes":[4739,18845]}}
+{"passives":{"nodes":[54447,4739,18845]}}
 {"equipment":{"slot":"Ring 1","raw":"Rarity: Normal\nLazuli Ring\nImplicits: 1\n+25 to maximum Mana"}}
 {"gems":{"group_id":1,"label":"Fireball","enabled":true,"delete":false,"gems":[{"id":"FireballPlayer","level":1,"quality":0,"enabled":true},{"id":"SupportRapidCastingPlayer","level":1,"quality":0,"enabled":true}]}}
 {"selection":{"weapon_set":2}}
@@ -63,6 +65,7 @@ pob2-engine calculate --profile main --session build-1 --revision 4 --request-id
 Каждая строка примера — отдельный JSON-документ. Пустой `equipment.raw`
 снимает предмет, `config.value: null` удаляет условие, `gems.delete: true`
 удаляет группу. Иные ограничения и гарантии — в [BUILD-COMMANDS.md](BUILD-COMMANDS.md).
+Пример пассивов относится к Sorceress уровня не ниже 3 и включает старт класса.
 
 ## Резервные копии
 
@@ -84,13 +87,17 @@ pob2-engine storage restore --profile recovered --file backup.db
 MCP подключается к существующей сессии:
 `pob2-engine mcp --profile main --attach build-1`. Доступны `get_snapshot`,
 `rename_build`, `import_build`, `edit_build`, `calculate_build`,
-`compare_build`, `export_build`. Аргументы правки совпадают с JSON выше;
+`compare_build`, `export_build`, `get_catalog`, `preview_support`. Аргументы правки совпадают с JSON выше;
 внешние поля — `expected_revision`, `request_id`. Импорт получает `xml`.
 `compare_build` принимает `xml` либо `edit` и только `expected_revision`.
+У каталога есть `kind/query/offset/limit`; предпросмотр получает
+`support_id/expected_revision`. [Матрица прежних инструментов](MCP-MATRIX.md)
+отделяет ограниченные аналоги от ещё не перенесённых функций.
 
 gRPC предоставляет типизированные модели и те же операции в
 [session.proto](../api/pob2/v1/session.proto) и
-[build.proto](../api/pob2/v1/build.proto). `CalculateBuild` передаёт этапы,
+[build.proto](../api/pob2/v1/build.proto),
+[catalog.proto](../api/pob2/v1/catalog.proto). `CalculateBuild` передаёт этапы,
 затем итоговый снимок; последняя версия прогресса может заменять предыдущую.
 Для потока нужна аренда клиента. Правки и результат доступны через
 [WatchSession](SESSION-EVENTS.md) после commit. Flutter здесь не используется.
