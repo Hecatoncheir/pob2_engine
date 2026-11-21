@@ -1,0 +1,36 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Hecatoncheir/pob2_engine/internal/application
+cpu: AMD EPYC 9V74 80-Core Processor                
+BenchmarkPreviewSupport/Fireball/RapidCasting-4         	     471	   1262528 ns/op	  871158 B/op	   11137 allocs/op
+BenchmarkPreviewSupport/Fireball/RapidCasting-4         	     480	   1254741 ns/op	  871154 B/op	   11137 allocs/op
+BenchmarkPreviewSupport/Fireball/RapidCasting-4         	     475	   1259297 ns/op	  871142 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Fireball/RapidCasting-4         	     466	   1257735 ns/op	  871146 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Fireball/RapidCasting-4         	     471	   1255967 ns/op	  871145 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Fireball/ControlledDestruction-4         	     440	   1304482 ns/op	  871156 B/op	   11137 allocs/op
+BenchmarkPreviewSupport/Fireball/ControlledDestruction-4         	     471	   1255815 ns/op	  871143 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Fireball/ControlledDestruction-4         	     476	   1262615 ns/op	  871147 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Fireball/ControlledDestruction-4         	     476	   1265928 ns/op	  871149 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Fireball/ControlledDestruction-4         	     472	   1261235 ns/op	  871145 B/op	   11136 allocs/op
+BenchmarkPreviewSupport/Frostbolt/RapidCasting-4                 	     478	   1253940 ns/op	  866371 B/op	   11048 allocs/op
+BenchmarkPreviewSupport/Frostbolt/RapidCasting-4                 	     483	   1240555 ns/op	  866364 B/op	   11048 allocs/op
+BenchmarkPreviewSupport/Frostbolt/RapidCasting-4                 	     483	   1247271 ns/op	  866364 B/op	   11047 allocs/op
+BenchmarkPreviewSupport/Frostbolt/RapidCasting-4                 	     477	   1252747 ns/op	  866363 B/op	   11047 allocs/op
+BenchmarkPreviewSupport/Frostbolt/RapidCasting-4                 	     412	   1290899 ns/op	  866364 B/op	   11047 allocs/op
+BenchmarkPreviewSupport/Frostbolt/ControlledDestruction-4        	     478	   1243466 ns/op	  866371 B/op	   11048 allocs/op
+BenchmarkPreviewSupport/Frostbolt/ControlledDestruction-4        	     474	   1251096 ns/op	  866368 B/op	   11048 allocs/op
+BenchmarkPreviewSupport/Frostbolt/ControlledDestruction-4        	     478	   1254275 ns/op	  866369 B/op	   11048 allocs/op
+BenchmarkPreviewSupport/Frostbolt/ControlledDestruction-4        	     484	   1240572 ns/op	  866361 B/op	   11047 allocs/op
+BenchmarkPreviewSupport/Frostbolt/ControlledDestruction-4        	     478	   1261076 ns/op	  866367 B/op	   11048 allocs/op
+BenchmarkPreviewSupport/Spark/RapidCasting-4                     	     475	   1251649 ns/op	  866665 B/op	   11043 allocs/op
+BenchmarkPreviewSupport/Spark/RapidCasting-4                     	     475	   1250638 ns/op	  866673 B/op	   11044 allocs/op
+BenchmarkPreviewSupport/Spark/RapidCasting-4                     	     471	   1266543 ns/op	  866666 B/op	   11043 allocs/op
+BenchmarkPreviewSupport/Spark/RapidCasting-4                     	     477	   1249887 ns/op	  866667 B/op	   11044 allocs/op
+BenchmarkPreviewSupport/Spark/RapidCasting-4                     	     477	   1243436 ns/op	  866658 B/op	   11043 allocs/op
+BenchmarkPreviewSupport/Spark/ControlledDestruction-4            	     476	   1240509 ns/op	  866666 B/op	   11043 allocs/op
+BenchmarkPreviewSupport/Spark/ControlledDestruction-4            	     474	   1248620 ns/op	  866663 B/op	   11043 allocs/op
+BenchmarkPreviewSupport/Spark/ControlledDestruction-4            	     481	   1246013 ns/op	  866665 B/op	   11044 allocs/op
+BenchmarkPreviewSupport/Spark/ControlledDestruction-4            	     480	   1250237 ns/op	  866662 B/op	   11043 allocs/op
+BenchmarkPreviewSupport/Spark/ControlledDestruction-4            	     480	   1250000 ns/op	  866664 B/op	   11043 allocs/op
+PASS
+ok  	github.com/Hecatoncheir/pob2_engine/internal/application	17.903s

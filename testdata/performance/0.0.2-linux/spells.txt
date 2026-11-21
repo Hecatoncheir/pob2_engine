@@ -1,0 +1,21 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Hecatoncheir/pob2_engine/internal/calculation
+cpu: AMD EPYC 9V74 80-Core Processor                
+BenchmarkCalculateSpells/Fireball-4         	    3801	    141807 ns/op	  104457 B/op	     953 allocs/op
+BenchmarkCalculateSpells/Fireball-4         	    4206	    139816 ns/op	  104454 B/op	     953 allocs/op
+BenchmarkCalculateSpells/Fireball-4         	    4035	    141352 ns/op	  104455 B/op	     953 allocs/op
+BenchmarkCalculateSpells/Fireball-4         	    4371	    148869 ns/op	  104455 B/op	     953 allocs/op
+BenchmarkCalculateSpells/Fireball-4         	    4063	    141208 ns/op	  104455 B/op	     953 allocs/op
+BenchmarkCalculateSpells/Frostbolt-4        	    4263	    138622 ns/op	  103863 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Frostbolt-4        	    4292	    138924 ns/op	  103863 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Frostbolt-4        	    4044	    147892 ns/op	  103864 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Frostbolt-4        	    4348	    139741 ns/op	  103863 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Frostbolt-4        	    4372	    139611 ns/op	  103863 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Spark-4            	    4090	    139101 ns/op	  103991 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Spark-4            	    4334	    139759 ns/op	  103991 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Spark-4            	    4346	    139765 ns/op	  103992 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Spark-4            	    4173	    141112 ns/op	  103991 B/op	     946 allocs/op
+BenchmarkCalculateSpells/Spark-4            	    4465	    138758 ns/op	  103991 B/op	     946 allocs/op
+PASS
+ok  	github.com/Hecatoncheir/pob2_engine/internal/calculation	8.932s

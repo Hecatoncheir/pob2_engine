@@ -1,0 +1,12 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Hecatoncheir/pob2_engine/internal/calculation
+cpu: AMD EPYC 9V74 80-Core Processor                
+BenchmarkCalculate-4           	    4021	    147871 ns/op	  104455 B/op	     953 allocs/op
+BenchmarkCalculate-4           	    4341	    139304 ns/op	  104453 B/op	     953 allocs/op
+BenchmarkCalculate-4           	    4186	    137693 ns/op	  104453 B/op	     953 allocs/op
+BenchmarkCalculateParallel-4   	    7653	     79038 ns/op	  104508 B/op	     953 allocs/op
+BenchmarkCalculateParallel-4   	    8000	     72105 ns/op	  104505 B/op	     953 allocs/op
+BenchmarkCalculateParallel-4   	    7995	     71576 ns/op	  104505 B/op	     953 allocs/op
+PASS
+ok  	github.com/Hecatoncheir/pob2_engine/internal/calculation	4.044s

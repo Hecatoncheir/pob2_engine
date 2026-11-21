@@ -25,3 +25,6 @@ go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculate' -benchmem 
 [Go](0.0.1-linux/go.txt), [среда](0.0.1-linux/environment.json),
 [CPU](0.0.1-linux/cpu.txt). Каждый новый CI сохраняет отдельный артефакт
 `calculation-performance-linux`; приведённые значения не заменяются автоматически.
+
+Для следующего выпуска отдельно закреплены [измерения 0.0.2](0.0.2-linux/README.md):
+три умения и шесть предпросмотров, с собственными входами и составом среды.

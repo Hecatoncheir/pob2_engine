@@ -1,0 +1,545 @@
+{
+  "schema": 1,
+  "source_commit": "edafd1703e54a5cc3bb95a7faff8a661a5694367",
+  "run_id": 44868204700,
+  "workflow_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/44868204700",
+  "measured_at_utc": "2026-11-21T04:54:56Z",
+  "go": {
+    "CGO_ENABLED": "1",
+    "GOAMD64": "v1",
+    "GOARCH": "amd64",
+    "GOEXPERIMENT": "",
+    "GOOS": "linux",
+    "GOTOOLCHAIN": "local",
+    "GOVERSION": "go1.27.4"
+  },
+  "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+  "logical_cpus": 4,
+  "gomaxprocs": 4,
+  "runtime_environment": {
+    "GOMAXPROCS": null,
+    "GOGC": null,
+    "GOMEMLIMIT": null
+  },
+  "benchtime": "500ms",
+  "repetitions": 5,
+  "race": false,
+  "input_sha256": {
+    "testdata/reference/fireball.xml": "dac90073a3b630e3f7afcc2d3cb05b7a7bca055fe8c8a329282144719d219998",
+    "testdata/reference/0.0.2/cases/frostbolt-minimal.xml": "08e2c9e782a31932f2a53ba36456b1edd6af4e26a9c8f2e639d5dd9c68da50e9",
+    "testdata/reference/0.0.2/cases/spark-minimal.xml": "b946b020d6cda6133b1e03d3335d2070878d11cea65f9667648a71a81a766c6d",
+    "internal/gamedata/files/catalog.json": "643f9ae31bd18297788fc8746fa621da23f999061404d3007c21c67b2855ca18",
+    "internal/gamedata/files/manifest.json": "690b8310d1e813c28799f2fb3a220550ff934f4f38b18742034e38edec3b1364"
+  },
+  "raw_sha256": {
+    "benchmark.txt": "70d380d43550b54ba2a04baff157e4e4062445d1f549c654c734c4f1b7d043fc",
+    "commit.txt": "f66f18ecd934e3af17822022634c8192ac050296f44a0a6cea1224da7d67e6e9",
+    "cpu.txt": "e2df535c811efa12c233d27957938e328c559882432955ed0a31588554b3338b",
+    "environment.json": "641e684178c1400c98dd872e791186a998cba22973a053690a13473e48128573",
+    "go.txt": "a29205bd83967c2f70e6768fae009600038d6056499fa289de9d5f9b79beaef4",
+    "inputs.sha256": "c62b43407174ff9759707e812d38cc4f8c0a68d7049bd407c627850f61c31919",
+    "kernel.txt": "09a22b031195953b6d8fdd24b2f9e1f13b860b6341c2b9705d93356af7cac58f",
+    "measured-at.txt": "b161b7e302f630db8657a20f925ae5d6441daa1017aeb2cb4dcaf3d114c494e7",
+    "os-release.txt": "cf72627ff81aef345d0a9f3807eb80f1035e0f80fe2932d12d94efc02fd68104",
+    "runtime.json": "47eda884d08f00d81d8e635646e2809ce7cc54904d1e7bb2c5f01e16f9b4c486",
+    "spells.txt": "ced877380590561cdde4a49dbd082fd455898e60fdf7bc76aa01a3044a0e23de",
+    "support-preview.txt": "45f74d1b6fd76b14125a605ca5bd8adea668b051d22d235d75a94c4936aa8936"
+  },
+  "results": [
+    {
+      "name": "BenchmarkCalculateSpells/Fireball",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 3801,
+          "ns_per_op": 141807.0,
+          "bytes_per_op": 104457.0,
+          "allocations_per_op": 953.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4206,
+          "ns_per_op": 139816.0,
+          "bytes_per_op": 104454.0,
+          "allocations_per_op": 953.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4035,
+          "ns_per_op": 141352.0,
+          "bytes_per_op": 104455.0,
+          "allocations_per_op": 953.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4371,
+          "ns_per_op": 148869.0,
+          "bytes_per_op": 104455.0,
+          "allocations_per_op": 953.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4063,
+          "ns_per_op": 141208.0,
+          "bytes_per_op": 104455.0,
+          "allocations_per_op": 953.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 139816.0,
+        "median": 141352.0,
+        "max": 148869.0
+      },
+      "bytes_per_op": {
+        "min": 104454.0,
+        "median": 104455.0,
+        "max": 104457.0
+      },
+      "allocations_per_op": {
+        "min": 953.0,
+        "median": 953.0,
+        "max": 953.0
+      }
+    },
+    {
+      "name": "BenchmarkCalculateSpells/Frostbolt",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 4263,
+          "ns_per_op": 138622.0,
+          "bytes_per_op": 103863.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4292,
+          "ns_per_op": 138924.0,
+          "bytes_per_op": 103863.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4044,
+          "ns_per_op": 147892.0,
+          "bytes_per_op": 103864.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4348,
+          "ns_per_op": 139741.0,
+          "bytes_per_op": 103863.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4372,
+          "ns_per_op": 139611.0,
+          "bytes_per_op": 103863.0,
+          "allocations_per_op": 946.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 138622.0,
+        "median": 139611.0,
+        "max": 147892.0
+      },
+      "bytes_per_op": {
+        "min": 103863.0,
+        "median": 103863.0,
+        "max": 103864.0
+      },
+      "allocations_per_op": {
+        "min": 946.0,
+        "median": 946.0,
+        "max": 946.0
+      }
+    },
+    {
+      "name": "BenchmarkCalculateSpells/Spark",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 4090,
+          "ns_per_op": 139101.0,
+          "bytes_per_op": 103991.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4334,
+          "ns_per_op": 139759.0,
+          "bytes_per_op": 103991.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4346,
+          "ns_per_op": 139765.0,
+          "bytes_per_op": 103992.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4173,
+          "ns_per_op": 141112.0,
+          "bytes_per_op": 103991.0,
+          "allocations_per_op": 946.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 4465,
+          "ns_per_op": 138758.0,
+          "bytes_per_op": 103991.0,
+          "allocations_per_op": 946.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 138758.0,
+        "median": 139759.0,
+        "max": 141112.0
+      },
+      "bytes_per_op": {
+        "min": 103991.0,
+        "median": 103991.0,
+        "max": 103992.0
+      },
+      "allocations_per_op": {
+        "min": 946.0,
+        "median": 946.0,
+        "max": 946.0
+      }
+    },
+    {
+      "name": "BenchmarkPreviewSupport/Fireball/ControlledDestruction",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 440,
+          "ns_per_op": 1304482.0,
+          "bytes_per_op": 871156.0,
+          "allocations_per_op": 11137.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 471,
+          "ns_per_op": 1255815.0,
+          "bytes_per_op": 871143.0,
+          "allocations_per_op": 11136.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 476,
+          "ns_per_op": 1262615.0,
+          "bytes_per_op": 871147.0,
+          "allocations_per_op": 11136.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 476,
+          "ns_per_op": 1265928.0,
+          "bytes_per_op": 871149.0,
+          "allocations_per_op": 11136.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 472,
+          "ns_per_op": 1261235.0,
+          "bytes_per_op": 871145.0,
+          "allocations_per_op": 11136.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 1255815.0,
+        "median": 1262615.0,
+        "max": 1304482.0
+      },
+      "bytes_per_op": {
+        "min": 871143.0,
+        "median": 871147.0,
+        "max": 871156.0
+      },
+      "allocations_per_op": {
+        "min": 11136.0,
+        "median": 11136.0,
+        "max": 11137.0
+      }
+    },
+    {
+      "name": "BenchmarkPreviewSupport/Fireball/RapidCasting",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 471,
+          "ns_per_op": 1262528.0,
+          "bytes_per_op": 871158.0,
+          "allocations_per_op": 11137.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 480,
+          "ns_per_op": 1254741.0,
+          "bytes_per_op": 871154.0,
+          "allocations_per_op": 11137.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 475,
+          "ns_per_op": 1259297.0,
+          "bytes_per_op": 871142.0,
+          "allocations_per_op": 11136.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 466,
+          "ns_per_op": 1257735.0,
+          "bytes_per_op": 871146.0,
+          "allocations_per_op": 11136.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 471,
+          "ns_per_op": 1255967.0,
+          "bytes_per_op": 871145.0,
+          "allocations_per_op": 11136.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 1254741.0,
+        "median": 1257735.0,
+        "max": 1262528.0
+      },
+      "bytes_per_op": {
+        "min": 871142.0,
+        "median": 871146.0,
+        "max": 871158.0
+      },
+      "allocations_per_op": {
+        "min": 11136.0,
+        "median": 11136.0,
+        "max": 11137.0
+      }
+    },
+    {
+      "name": "BenchmarkPreviewSupport/Frostbolt/ControlledDestruction",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 478,
+          "ns_per_op": 1243466.0,
+          "bytes_per_op": 866371.0,
+          "allocations_per_op": 11048.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 474,
+          "ns_per_op": 1251096.0,
+          "bytes_per_op": 866368.0,
+          "allocations_per_op": 11048.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 478,
+          "ns_per_op": 1254275.0,
+          "bytes_per_op": 866369.0,
+          "allocations_per_op": 11048.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 484,
+          "ns_per_op": 1240572.0,
+          "bytes_per_op": 866361.0,
+          "allocations_per_op": 11047.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 478,
+          "ns_per_op": 1261076.0,
+          "bytes_per_op": 866367.0,
+          "allocations_per_op": 11048.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 1240572.0,
+        "median": 1251096.0,
+        "max": 1261076.0
+      },
+      "bytes_per_op": {
+        "min": 866361.0,
+        "median": 866368.0,
+        "max": 866371.0
+      },
+      "allocations_per_op": {
+        "min": 11047.0,
+        "median": 11048.0,
+        "max": 11048.0
+      }
+    },
+    {
+      "name": "BenchmarkPreviewSupport/Frostbolt/RapidCasting",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 478,
+          "ns_per_op": 1253940.0,
+          "bytes_per_op": 866371.0,
+          "allocations_per_op": 11048.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 483,
+          "ns_per_op": 1240555.0,
+          "bytes_per_op": 866364.0,
+          "allocations_per_op": 11048.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 483,
+          "ns_per_op": 1247271.0,
+          "bytes_per_op": 866364.0,
+          "allocations_per_op": 11047.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 477,
+          "ns_per_op": 1252747.0,
+          "bytes_per_op": 866363.0,
+          "allocations_per_op": 11047.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 412,
+          "ns_per_op": 1290899.0,
+          "bytes_per_op": 866364.0,
+          "allocations_per_op": 11047.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 1240555.0,
+        "median": 1252747.0,
+        "max": 1290899.0
+      },
+      "bytes_per_op": {
+        "min": 866363.0,
+        "median": 866364.0,
+        "max": 866371.0
+      },
+      "allocations_per_op": {
+        "min": 11047.0,
+        "median": 11047.0,
+        "max": 11048.0
+      }
+    },
+    {
+      "name": "BenchmarkPreviewSupport/Spark/ControlledDestruction",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 476,
+          "ns_per_op": 1240509.0,
+          "bytes_per_op": 866666.0,
+          "allocations_per_op": 11043.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 474,
+          "ns_per_op": 1248620.0,
+          "bytes_per_op": 866663.0,
+          "allocations_per_op": 11043.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 481,
+          "ns_per_op": 1246013.0,
+          "bytes_per_op": 866665.0,
+          "allocations_per_op": 11044.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 480,
+          "ns_per_op": 1250237.0,
+          "bytes_per_op": 866662.0,
+          "allocations_per_op": 11043.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 480,
+          "ns_per_op": 1250000.0,
+          "bytes_per_op": 866664.0,
+          "allocations_per_op": 11043.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 1240509.0,
+        "median": 1248620.0,
+        "max": 1250237.0
+      },
+      "bytes_per_op": {
+        "min": 866662.0,
+        "median": 866664.0,
+        "max": 866666.0
+      },
+      "allocations_per_op": {
+        "min": 11043.0,
+        "median": 11043.0,
+        "max": 11044.0
+      }
+    },
+    {
+      "name": "BenchmarkPreviewSupport/Spark/RapidCasting",
+      "samples": [
+        {
+          "gomaxprocs": 4,
+          "operations": 475,
+          "ns_per_op": 1251649.0,
+          "bytes_per_op": 866665.0,
+          "allocations_per_op": 11043.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 475,
+          "ns_per_op": 1250638.0,
+          "bytes_per_op": 866673.0,
+          "allocations_per_op": 11044.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 471,
+          "ns_per_op": 1266543.0,
+          "bytes_per_op": 866666.0,
+          "allocations_per_op": 11043.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 477,
+          "ns_per_op": 1249887.0,
+          "bytes_per_op": 866667.0,
+          "allocations_per_op": 11044.0
+        },
+        {
+          "gomaxprocs": 4,
+          "operations": 477,
+          "ns_per_op": 1243436.0,
+          "bytes_per_op": 866658.0,
+          "allocations_per_op": 11043.0
+        }
+      ],
+      "ns_per_op": {
+        "min": 1243436.0,
+        "median": 1250638.0,
+        "max": 1266543.0
+      },
+      "bytes_per_op": {
+        "min": 866658.0,
+        "median": 866666.0,
+        "max": 866673.0
+      },
+      "allocations_per_op": {
+        "min": 11043.0,
+        "median": 11043.0,
+        "max": 11044.0
+      }
+    }
+  ]
+}

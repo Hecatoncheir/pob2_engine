@@ -12,6 +12,10 @@
 LICENSE text eol=lf
 /.licenses/** -text -diff
 testdata/performance/** text eol=lf
+# В исходном выводе Go строка CPU может оканчиваться пробелами; сохраняем SHA-256.
+testdata/performance/0.0.2-linux/benchmark.txt whitespace=-blank-at-eol
+testdata/performance/0.0.2-linux/spells.txt whitespace=-blank-at-eol
+testdata/performance/0.0.2-linux/support-preview.txt whitespace=-blank-at-eol
 testdata/releases/** text eol=lf
 testdata/compat/** -text
 testdata/compat/**/*.db -diff

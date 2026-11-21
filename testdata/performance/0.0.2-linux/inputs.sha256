@@ -1,0 +1,5 @@
+dac90073a3b630e3f7afcc2d3cb05b7a7bca055fe8c8a329282144719d219998  testdata/reference/fireball.xml
+08e2c9e782a31932f2a53ba36456b1edd6af4e26a9c8f2e639d5dd9c68da50e9  testdata/reference/0.0.2/cases/frostbolt-minimal.xml
+b946b020d6cda6133b1e03d3335d2070878d11cea65f9667648a71a81a766c6d  testdata/reference/0.0.2/cases/spark-minimal.xml
+643f9ae31bd18297788fc8746fa621da23f999061404d3007c21c67b2855ca18  internal/gamedata/files/catalog.json
+690b8310d1e813c28799f2fb3a220550ff934f4f38b18742034e38edec3b1364  internal/gamedata/files/manifest.json
