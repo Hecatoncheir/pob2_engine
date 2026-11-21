@@ -22,7 +22,7 @@ import (
 var binary string
 
 func TestMain(m *testing.M) {
-	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" || os.Getenv("POB2_PERSISTENCE_HELPER") == "1" {
+	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" || os.Getenv("POB2_PERSISTENCE_HELPER") == "1" || os.Getenv("POB2_RECOVERY_HELPER") == "1" {
 		os.Exit(m.Run())
 	}
 	dir, err := os.MkdirTemp("", "pob2-process-test-")

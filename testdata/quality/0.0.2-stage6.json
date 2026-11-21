@@ -1,0 +1,389 @@
+{
+  "schema": 1,
+  "stage": "0.0.2/6.2",
+  "date_moscow": "2026-11-21",
+  "base_commit": "d271a2aee6f28b5889edef36c6771372644185c8",
+  "scope": "Новые и изменённые функции этапа 6.2, включая тесты Go",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 46,
+  "maximum_cognitive": 8,
+  "functions": [
+    {
+      "file": "internal/integration/process_test.go",
+      "function": "TestMain",
+      "line": 24,
+      "cognitive_before": 6,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "TestThreeSpellCancellationAtCommitBoundary",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "checkCanceledRecovery",
+      "line": 30,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "TestThreeSpellCrashAtCommitBoundary",
+      "line": 70,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "checkCommitBoundary",
+      "line": 78,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "beginCalculation",
+      "line": 107,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "expectInterrupted",
+      "line": 131,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "waitIdle",
+      "line": 143,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "assertNoEvents",
+      "line": 151,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "expectCalculationEvent",
+      "line": 165,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/recovery_boundary_test.go",
+      "function": "verifyRecords",
+      "line": 177,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "recoveryPhase",
+      "line": 27,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "Append",
+      "line": 41,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "pauseCommitted",
+      "line": 57,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "gatePath",
+      "line": 66,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "pause",
+      "line": 70,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "wait",
+      "line": 85,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "TestRecoveryServerHelper",
+      "line": 103,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "closeRecoveryServer",
+      "line": 135,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "newGatedRecoveryScenario",
+      "line": 141,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "startRecoveryProcess",
+      "line": 151,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "waitGate",
+      "line": 186,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/recovery_gate_test.go",
+      "function": "gateResult",
+      "line": 194,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "recoverySpells",
+      "line": 30,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "newRecoveryScenario",
+      "line": 53,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "start",
+      "line": 62,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "connect",
+      "line": 68,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "attach",
+      "line": 79,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "spellDamageEdit",
+      "line": 84,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "snapshot",
+      "line": 88,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "importSpell",
+      "line": 97,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "acceptSpell",
+      "line": 111,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "expectEvent",
+      "line": 140,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "checkEventSnapshot",
+      "line": 156,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "checkRecoveredCalculation",
+      "line": 177,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "checkEventCalculation",
+      "line": 191,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "assertAdapters",
+      "line": 205,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "rejectConflicts",
+      "line": 218,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "TestThreeSpellSessionsSurviveCrashAndBackupRestore",
+      "line": 235,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "kill",
+      "line": 256,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "stop",
+      "line": 269,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "restoreBackup",
+      "line": 283,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "verifySessions",
+      "line": 297,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "verifySession",
+      "line": 304,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "verifyHistory",
+      "line": 329,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/session_recovery_test.go",
+      "function": "replayEdit",
+      "line": 347,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    }
+  ]
+}
