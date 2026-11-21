@@ -162,6 +162,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	if _, ok := s.commands.(application.BuildCommands); ok {
 		capabilities = append(capabilities, "build.import", "build.edit", "build.calculate", "build.compare", "build.export", "calculation.progress")
 	}
+	if _, ok := s.commands.(application.CatalogCommands); ok {
+		capabilities = append(capabilities, "catalog.search", "build.preview_support")
+	}
 	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: capabilities, State: stats.State,
 		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds()), StorageMode: storageMode, StoragePath: storagePath}, nil
 }

@@ -31,6 +31,8 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   session create|get|rename  Создать сессию, получить снимок или переименовать сборку
   build import|edit|export|compare  Операции полной сборки выбранной сессии
   calculate                 Рассчитать --file XML либо выбранную --session
+  catalog                   Поиск данных текущего набора: --kind gems|classes|items|passives
+  preview-support           Сравнить поддержку в --session без записи
   storage backup|verify|restore  Резервные копии остановленного профиля
   mcp                       MCP stdio: --attach СЕССИЯ или --standalone --session СЕССИЯ
   shutdown                  Корректно завершить сервер
@@ -87,6 +89,10 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.build(ctx, args[1:])
 	case "calculate":
 		return r.calculate(ctx, args[1:])
+	case "catalog":
+		return r.catalog(ctx, args[1:])
+	case "preview-support":
+		return r.previewSupport(ctx, args[1:])
 	case "storage":
 		return r.storage(ctx, args[1:])
 	default:

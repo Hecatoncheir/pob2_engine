@@ -16,6 +16,7 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'catalog.pb.dart' as $1;
 import 'session.pb.dart' as $0;
 
 export 'session.pb.dart';
@@ -82,6 +83,20 @@ class SessionServiceClient extends $grpc.Client {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$compareBuild, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.GetCatalogResponse> getCatalog(
+    $1.GetCatalogRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getCatalog, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.PreviewSupportResponse> previewSupport(
+    $1.PreviewSupportRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$previewSupport, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.ExportBuildResponse> exportBuild(
@@ -174,6 +189,16 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/CompareBuild',
           ($0.CompareBuildRequest value) => value.writeToBuffer(),
           $0.CompareBuildResponse.fromBuffer);
+  static final _$getCatalog =
+      $grpc.ClientMethod<$1.GetCatalogRequest, $1.GetCatalogResponse>(
+          '/pob2.v1.SessionService/GetCatalog',
+          ($1.GetCatalogRequest value) => value.writeToBuffer(),
+          $1.GetCatalogResponse.fromBuffer);
+  static final _$previewSupport =
+      $grpc.ClientMethod<$1.PreviewSupportRequest, $1.PreviewSupportResponse>(
+          '/pob2.v1.SessionService/PreviewSupport',
+          ($1.PreviewSupportRequest value) => value.writeToBuffer(),
+          $1.PreviewSupportResponse.fromBuffer);
   static final _$exportBuild =
       $grpc.ClientMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
           '/pob2.v1.SessionService/ExportBuild',
@@ -277,6 +302,22 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.CompareBuildRequest.fromBuffer(value),
             ($0.CompareBuildResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.GetCatalogRequest, $1.GetCatalogResponse>(
+        'GetCatalog',
+        getCatalog_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.GetCatalogRequest.fromBuffer(value),
+        ($1.GetCatalogResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.PreviewSupportRequest,
+            $1.PreviewSupportResponse>(
+        'PreviewSupport',
+        previewSupport_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $1.PreviewSupportRequest.fromBuffer(value),
+        ($1.PreviewSupportResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
             'ExportBuild',
@@ -397,6 +438,23 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$0.CompareBuildResponse> compareBuild(
       $grpc.ServiceCall call, $0.CompareBuildRequest request);
+
+  $async.Future<$1.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
+      $async.Future<$1.GetCatalogRequest> $request) async {
+    return getCatalog($call, await $request);
+  }
+
+  $async.Future<$1.GetCatalogResponse> getCatalog(
+      $grpc.ServiceCall call, $1.GetCatalogRequest request);
+
+  $async.Future<$1.PreviewSupportResponse> previewSupport_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$1.PreviewSupportRequest> $request) async {
+    return previewSupport($call, await $request);
+  }
+
+  $async.Future<$1.PreviewSupportResponse> previewSupport(
+      $grpc.ServiceCall call, $1.PreviewSupportRequest request);
 
   $async.Future<$0.ExportBuildResponse> exportBuild_Pre($grpc.ServiceCall $call,
       $async.Future<$0.ExportBuildRequest> $request) async {

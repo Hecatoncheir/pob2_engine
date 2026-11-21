@@ -42,21 +42,21 @@ func addBuildTools(server *mcp.Server, commands application.BuildCommands, sessi
 	openWorld, destructive := false, true
 	write := &mcp.ToolAnnotations{IdempotentHint: true, DestructiveHint: &destructive, OpenWorldHint: &openWorld}
 	read := &mcp.ToolAnnotations{ReadOnlyHint: true, OpenWorldHint: &openWorld}
-	mcp.AddTool(server, &mcp.Tool{Name: "import_build", Description: "Импортировать XML в выбранную сессию с сохранением неизвестного содержимого", Annotations: write},
+	mcp.AddTool(server, &mcp.Tool{Name: "import_build", Description: "Импортировать XML в выбранную сессию с сохранением неизвестного содержимого", Annotations: write, OutputSchema: calculationOutputSchema[application.SnapshotView]()},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input importInput) (*mcp.CallToolResult, application.SnapshotView, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()
 			value, err := commands.Apply(ctx, application.ApplyBuild{SessionID: session, ExpectedRevision: input.ExpectedRevision, RequestID: input.RequestID, XML: input.XML})
 			return snapshotResult(value, err)
 		})
-	mcp.AddTool(server, &mcp.Tool{Name: "edit_build", Description: "Изменить уровень, условие, камни, экипировку, пассивы или выбранные наборы; вернуть изменённую сборку", Annotations: write},
+	mcp.AddTool(server, &mcp.Tool{Name: "edit_build", Description: "Изменить уровень, условие, камни, экипировку, пассивы или выбранные наборы; вернуть изменённую сборку", Annotations: write, OutputSchema: calculationOutputSchema[application.SnapshotView]()},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input editInput) (*mcp.CallToolResult, application.SnapshotView, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()
 			value, err := commands.Apply(ctx, application.ApplyBuild{SessionID: session, ExpectedRevision: input.ExpectedRevision, RequestID: input.RequestID, Edit: &input.Edit})
 			return snapshotResult(value, err)
 		})
-	mcp.AddTool(server, &mcp.Tool{Name: "calculate_build", Description: "Рассчитать и сохранить результат текущей сборки. Обязательно проверить build.calculation.status и issues", Annotations: write},
+	mcp.AddTool(server, &mcp.Tool{Name: "calculate_build", Description: "Рассчитать и сохранить результат текущей сборки. Обязательно проверить build.calculation.status и issues", Annotations: write, OutputSchema: calculationOutputSchema[application.SnapshotView]()},
 		func(ctx context.Context, req *mcp.CallToolRequest, input calculateInput) (*mcp.CallToolResult, application.SnapshotView, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()
@@ -68,7 +68,7 @@ func addBuildTools(server *mcp.Server, commands application.BuildCommands, sessi
 			value, err := commands.Calculate(ctx, application.CalculateBuild{SessionID: session, ExpectedRevision: input.ExpectedRevision, RequestID: input.RequestID})
 			return snapshotResult(value, err)
 		})
-	mcp.AddTool(server, &mcp.Tool{Name: "compare_build", Description: "Сравнить текущую сборку с XML или одной правкой без изменения сессии; проверить статусы обоих вариантов", Annotations: read},
+	mcp.AddTool(server, &mcp.Tool{Name: "compare_build", Description: "Сравнить текущую сборку с XML или одной правкой без изменения сессии; проверить статусы обоих вариантов", Annotations: read, OutputSchema: calculationOutputSchema[application.BuildComparison]()},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input compareInput) (*mcp.CallToolResult, application.BuildComparison, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()

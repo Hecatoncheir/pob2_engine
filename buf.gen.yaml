@@ -6,6 +6,6 @@ plugins:
   - local: [go, run, google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.6.2]
     out: gen/go
     opt: paths=source_relative
-  - local: [dart, run, tool/proto/bin/protoc_gen_dart.dart]
+  - local: [dart, --packages=tool/proto/.dart_tool/package_config.json, tool/proto/bin/protoc_gen_dart.dart]
     out: gen/dart/lib
     opt: grpc

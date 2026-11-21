@@ -4,6 +4,12 @@
 
 ## Запуск и подключение
 
+В разработке `0.0.2` добавлены RPC `GetCatalog`, `PreviewSupport` и MCP-инструменты
+`get_catalog`, `preview_support`. CLI использует `catalog`, `preview-support`.
+[Параметры и ограничения](CATALOG.md): поиск текущего набора и сравнение полной
+группы без записи в сессию. Дополнения Protobuf совместимы с прежними клиентами;
+наличие возможностей объявляется как `catalog.search`, `build.preview_support`.
+
 Нужен Go 1.27.4. Из корня репозитория:
 
 ```powershell

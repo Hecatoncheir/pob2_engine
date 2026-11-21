@@ -23,7 +23,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	openWorld, destructive := false, true
 	mcp.AddTool(server, &mcp.Tool{
 		Name: "get_snapshot", Description: "Получить снимок выбранной сессии и её ревизию",
-		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true, OpenWorldHint: &openWorld},
+		OutputSchema: calculationOutputSchema[application.SnapshotView](),
+		Annotations:  &mcp.ToolAnnotations{ReadOnlyHint: true, OpenWorldHint: &openWorld},
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, _ struct{}) (*mcp.CallToolResult, application.SnapshotView, error) {
 		ctx, cancel := context.WithTimeout(ctx, timeout)
 		defer cancel()
@@ -32,7 +33,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	})
 	mcp.AddTool(server, &mcp.Tool{
 		Name: "rename_build", Description: "Переименовать сборку выбранной сессии с проверкой ревизии",
-		Annotations: &mcp.ToolAnnotations{IdempotentHint: true, DestructiveHint: &destructive, OpenWorldHint: &openWorld},
+		OutputSchema: calculationOutputSchema[application.SnapshotView](),
+		Annotations:  &mcp.ToolAnnotations{IdempotentHint: true, DestructiveHint: &destructive, OpenWorldHint: &openWorld},
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, input renameInput) (*mcp.CallToolResult, application.SnapshotView, error) {
 		ctx, cancel := context.WithTimeout(ctx, timeout)
 		defer cancel()
@@ -41,6 +43,9 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	})
 	if full, ok := commands.(application.BuildCommands); ok {
 		addBuildTools(server, full, sessionID, timeout)
+	}
+	if catalog, ok := commands.(application.CatalogCommands); ok {
+		addCatalogTools(server, catalog, sessionID, timeout)
 	}
 	return server
 }

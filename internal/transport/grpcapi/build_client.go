@@ -7,7 +7,6 @@ import (
 
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
-	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 )
 
@@ -80,17 +79,9 @@ func (c *Client) Compare(ctx context.Context, cmd application.CompareBuild) (app
 	if err != nil {
 		return application.BuildComparison{}, err
 	}
-	before, err := localResult(value.GetComparison().GetBefore())
+	comparison, err := localComparison(value.GetComparison())
 	if err != nil {
 		return application.BuildComparison{}, err
 	}
-	after, err := localResult(value.GetComparison().GetAfter())
-	if err != nil {
-		return application.BuildComparison{}, err
-	}
-	result := application.BuildComparison{SessionID: value.GetSessionId(), Revision: value.GetRevision(), Comparison: calculation.Comparison{Before: before, After: after, Deltas: []calculation.Delta{}}}
-	for _, delta := range value.GetComparison().GetDeltas() {
-		result.Comparison.Deltas = append(result.Comparison.Deltas, calculation.Delta{Stat: delta.GetStat(), Before: delta.GetBefore(), After: delta.GetAfter(), Difference: delta.GetDifference()})
-	}
-	return result, nil
+	return application.BuildComparison{SessionID: value.GetSessionId(), Revision: value.GetRevision(), Comparison: comparison}, nil
 }

@@ -64,11 +64,7 @@ func (s *Server) CompareBuild(ctx context.Context, req *pb.CompareBuildRequest) 
 	if err != nil {
 		return nil, rpcError(err)
 	}
-	comparison := &pb.BuildComparison{Before: wireResult(value.Comparison.Before), After: wireResult(value.Comparison.After)}
-	for _, delta := range value.Comparison.Deltas {
-		comparison.Deltas = append(comparison.Deltas, &pb.StatDelta{Stat: delta.Stat, Before: delta.Before, After: delta.After, Difference: delta.Difference})
-	}
-	return &pb.CompareBuildResponse{SessionId: value.SessionID, Revision: value.Revision, Comparison: comparison}, nil
+	return &pb.CompareBuildResponse{SessionId: value.SessionID, Revision: value.Revision, Comparison: wireComparison(value.Comparison)}, nil
 }
 
 type calculationAnswer struct {

@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package pob2.v1;
+
+import "pob2/v1/build.proto";
+
+option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
+
+// Только текущий расчётный набор; наличие записи не означает поддержку всех механик.
+message CatalogEntry {
+  string kind = 1;
+  string id = 2;
+  string name = 3;
+  repeated string aliases = 4;
+  repeated int32 levels = 5;
+  repeated int32 qualities = 6;
+  repeated string modes = 7;
+  bool support = 8;
+  string family = 9;
+  repeated string slots = 10;
+  repeated int32 class_ids = 11;
+  repeated string coverage = 12;
+}
+
+// kind: gems/classes/items/passives. Поиск по ID, имени и псевдонимам без учёта регистра.
+message GetCatalogRequest {
+  string kind = 1;
+  string query = 2;
+  int32 offset = 3;
+  int32 limit = 4;
+}
+
+message GetCatalogResponse {
+  string data_id = 1;
+  string data_sha256 = 2;
+  string pob_commit = 3;
+  string tree_version = 4;
+  string kind = 5;
+  string query = 6;
+  int32 offset = 7;
+  int32 limit = 8;
+  int32 total = 9;
+  repeated CatalogEntry entries = 10;
+}
+
+// Добавляет уровень 1/качество 0 в копию выбранной группы; сессию не меняет.
+message PreviewSupportRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  string support_id = 3;
+}
+
+message PreviewSupportResponse {
+  string session_id = 1;
+  uint64 revision = 2;
+  int32 group_id = 3;
+  CatalogEntry support = 4;
+  bool compatible = 5;
+  string status = 6;
+  BuildComparison comparison = 7;
+}

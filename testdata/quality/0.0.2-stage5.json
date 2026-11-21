@@ -1,0 +1,613 @@
+{
+  "schema": 1,
+  "stage": "0.0.2/5",
+  "date_moscow": "2026-11-21",
+  "base_commit": "77c847d0c78fb8604510b3c9c73f170ced674ceb",
+  "scope": "Новые и изменённые функции этапа 5, включая тесты Go",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 74,
+  "maximum_cognitive": 9,
+  "functions": [
+    {
+      "file": "internal/application/catalog.go",
+      "function": "Catalog",
+      "line": 54,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "validateCatalogQuery",
+      "line": 75,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "matchesCatalog",
+      "line": 89,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "emptyEntry",
+      "line": 99,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "gemEntry",
+      "line": 103,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "catalogEntries",
+      "line": 120,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "gemEntries",
+      "line": 134,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "classEntries",
+      "line": 142,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "itemEntries",
+      "line": 153,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "passiveEntries",
+      "line": 161,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "itemEntry",
+      "line": 169,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "passiveEntry",
+      "line": 179,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/catalog_test.go",
+      "function": "catalogPage",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog_test.go",
+      "function": "TestCatalogCoverageAndPagination",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/catalog_test.go",
+      "function": "checkCatalogPages",
+      "line": 39,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/application/catalog_test.go",
+      "function": "TestCatalogDoesNotPromiseSorceressPassivesForOtherClasses",
+      "line": 57,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/catalog_test.go",
+      "function": "TestCatalogRejectsUnboundedAndInvalidQueries",
+      "line": 73,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "PreviewSupport",
+      "line": 29,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "supportSnapshot",
+      "line": 55,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "comparisonStatus",
+      "line": 76,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "preview",
+      "line": 15,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "importPreviewXML",
+      "line": 24,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewDoesNotWriteOrPublish",
+      "line": 32,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 12
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "assertNoPreviewEvent",
+      "line": 58,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewUsesFullGroupAndRejectsFamilyRepeat",
+      "line": 67,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 11
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewPreservesUnsupportedXML",
+      "line": 93,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewRejectsWrongGemAndCancelledRequest",
+      "line": 108,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewSharesCalculationQueue",
+      "line": 122,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestQueuedSupportPreviewKeepsOriginalSnapshot",
+      "line": 149,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewKeepsRequirementWarnings",
+      "line": 177,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "TestSupportPreviewForThreeSpells",
+      "line": 193,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/support_test.go",
+      "function": "checkSpellPreview",
+      "line": 206,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/build/support.go",
+      "function": "WithSupport",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/build/support.go",
+      "function": "supportElement",
+      "line": 51,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/calculation/support_test.go",
+      "function": "TestSupportPreviewMatchesRecordedLua",
+      "line": 12,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/calculation/support_test.go",
+      "function": "checkPreviewLuaMatrix",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/calculation/support_test.go",
+      "function": "previewSupportIDs",
+      "line": 46,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/calculation/support_test.go",
+      "function": "previewBase",
+      "line": 59,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/calculation/support_test.go",
+      "function": "checkPreviewLuaCase",
+      "line": 72,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/gamedata/lists.go",
+      "function": "Gems",
+      "line": 5,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/gamedata/lists.go",
+      "function": "Items",
+      "line": 14,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/gamedata/lists.go",
+      "function": "Nodes",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "decodeCatalogJSON",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "structuredCatalogJSON",
+      "line": 29,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "TestCatalogAndSupportPreviewAcrossProcesses",
+      "line": 38,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "checkCatalogTools",
+      "line": 58,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "checkCatalogAdapters",
+      "line": 75,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "checkSupportGroups",
+      "line": 90,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "installPreviewSupport",
+      "line": 107,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "checkPreviewAdapters",
+      "line": 120,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "previewCLI",
+      "line": 142,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "checkCatalogAdapterErrors",
+      "line": 162,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/catalog_process_test.go",
+      "function": "checkPreviewDiagnosticCases",
+      "line": 178,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/cli/catalog.go",
+      "function": "catalog",
+      "line": 10,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/cli/catalog.go",
+      "function": "previewSupport",
+      "line": 35,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/transport/cli/cli.go",
+      "function": "run",
+      "line": 68,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 14
+    },
+    {
+      "file": "internal/transport/grpcapi/build_client.go",
+      "function": "Compare",
+      "line": 64,
+      "cognitive_before": 8,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/transport/grpcapi/build_server.go",
+      "function": "CompareBuild",
+      "line": 54,
+      "cognitive_before": 4,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "catalogCommands",
+      "line": 13,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "GetCatalog",
+      "line": 21,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "Catalog",
+      "line": 38,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "PreviewSupport",
+      "line": 55,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "PreviewSupport",
+      "line": 68,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "wireCatalogEntry",
+      "line": 81,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "localCatalogEntry",
+      "line": 86,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "wireInts",
+      "line": 91,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "localInts",
+      "line": 99,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "wireComparison",
+      "line": 107,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "localComparison",
+      "line": 115,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/grpcapi/server.go",
+      "function": "GetServerInfo",
+      "line": 151,
+      "cognitive_before": 3,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/transport/mcpapi/builds.go",
+      "function": "addBuildTools",
+      "line": 41,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/mcpapi/catalog.go",
+      "function": "addCatalogTools",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/mcpapi/schema.go",
+      "function": "calculationOutputSchema",
+      "line": 10,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/mcpapi/server.go",
+      "function": "New",
+      "line": 19,
+      "cognitive_before": 1,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    }
+  ]
+}

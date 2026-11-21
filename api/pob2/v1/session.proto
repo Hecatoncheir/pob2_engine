@@ -3,6 +3,7 @@ syntax = "proto3";
 package pob2.v1;
 
 import "pob2/v1/build.proto";
+import "pob2/v1/catalog.proto";
 
 option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
 
@@ -15,6 +16,8 @@ service SessionService {
   rpc ApplyBuild(ApplyBuildRequest) returns (ApplyBuildResponse);
   rpc CalculateBuild(CalculateBuildRequest) returns (stream CalculateBuildResponse);
   rpc CompareBuild(CompareBuildRequest) returns (CompareBuildResponse);
+  rpc GetCatalog(GetCatalogRequest) returns (GetCatalogResponse);
+  rpc PreviewSupport(PreviewSupportRequest) returns (PreviewSupportResponse);
   rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);
   rpc WatchSession(WatchSessionRequest) returns (stream WatchSessionResponse);
   rpc WatchServer(WatchServerRequest) returns (stream WatchServerResponse);

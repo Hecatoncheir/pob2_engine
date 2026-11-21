@@ -1674,7 +1674,7 @@ var File_pob2_v1_session_proto protoreflect.FileDescriptor
 
 const file_pob2_v1_session_proto_rawDesc = "" +
 	"\n" +
-	"\x15pob2/v1/session.proto\x12\apob2.v1\x1a\x13pob2/v1/build.proto\"\x99\x01\n" +
+	"\x15pob2/v1/session.proto\x12\apob2.v1\x1a\x13pob2/v1/build.proto\x1a\x15pob2/v1/catalog.proto\"\x99\x01\n" +
 	"\x0fSessionSnapshot\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
@@ -1796,7 +1796,7 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x04R\brevision\x12\x10\n" +
 	"\x03xml\x18\x03 \x01(\tR\x03xml\x12!\n" +
-	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xba\b\n" +
+	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xd4\t\n" +
 	"\x0eSessionService\x12N\n" +
 	"\rGetServerInfo\x12\x1d.pob2.v1.GetServerInfoRequest\x1a\x1e.pob2.v1.GetServerInfoResponse\x12N\n" +
 	"\rCreateSession\x12\x1d.pob2.v1.CreateSessionRequest\x1a\x1e.pob2.v1.CreateSessionResponse\x12H\n" +
@@ -1805,7 +1805,10 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\n" +
 	"ApplyBuild\x12\x1a.pob2.v1.ApplyBuildRequest\x1a\x1b.pob2.v1.ApplyBuildResponse\x12S\n" +
 	"\x0eCalculateBuild\x12\x1e.pob2.v1.CalculateBuildRequest\x1a\x1f.pob2.v1.CalculateBuildResponse0\x01\x12K\n" +
-	"\fCompareBuild\x12\x1c.pob2.v1.CompareBuildRequest\x1a\x1d.pob2.v1.CompareBuildResponse\x12H\n" +
+	"\fCompareBuild\x12\x1c.pob2.v1.CompareBuildRequest\x1a\x1d.pob2.v1.CompareBuildResponse\x12E\n" +
+	"\n" +
+	"GetCatalog\x12\x1a.pob2.v1.GetCatalogRequest\x1a\x1b.pob2.v1.GetCatalogResponse\x12Q\n" +
+	"\x0ePreviewSupport\x12\x1e.pob2.v1.PreviewSupportRequest\x1a\x1f.pob2.v1.PreviewSupportResponse\x12H\n" +
 	"\vExportBuild\x12\x1b.pob2.v1.ExportBuildRequest\x1a\x1c.pob2.v1.ExportBuildResponse\x12M\n" +
 	"\fWatchSession\x12\x1c.pob2.v1.WatchSessionRequest\x1a\x1d.pob2.v1.WatchSessionResponse0\x01\x12J\n" +
 	"\vWatchServer\x12\x1b.pob2.v1.WatchServerRequest\x1a\x1c.pob2.v1.WatchServerResponse0\x01\x12?\n" +
@@ -1860,6 +1863,10 @@ var file_pob2_v1_session_proto_goTypes = []any{
 	(*BuildDocument)(nil),          // 29: pob2.v1.BuildDocument
 	(*BuildEdit)(nil),              // 30: pob2.v1.BuildEdit
 	(*BuildComparison)(nil),        // 31: pob2.v1.BuildComparison
+	(*GetCatalogRequest)(nil),      // 32: pob2.v1.GetCatalogRequest
+	(*PreviewSupportRequest)(nil),  // 33: pob2.v1.PreviewSupportRequest
+	(*GetCatalogResponse)(nil),     // 34: pob2.v1.GetCatalogResponse
+	(*PreviewSupportResponse)(nil), // 35: pob2.v1.PreviewSupportResponse
 }
 var file_pob2_v1_session_proto_depIdxs = []int32{
 	29, // 0: pob2.v1.SessionSnapshot.build:type_name -> pob2.v1.BuildDocument
@@ -1879,29 +1886,33 @@ var file_pob2_v1_session_proto_depIdxs = []int32{
 	21, // 14: pob2.v1.SessionService.ApplyBuild:input_type -> pob2.v1.ApplyBuildRequest
 	23, // 15: pob2.v1.SessionService.CalculateBuild:input_type -> pob2.v1.CalculateBuildRequest
 	25, // 16: pob2.v1.SessionService.CompareBuild:input_type -> pob2.v1.CompareBuildRequest
-	27, // 17: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
-	9,  // 18: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
-	12, // 19: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
-	11, // 20: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
-	15, // 21: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
-	17, // 22: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
-	19, // 23: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
-	2,  // 24: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
-	4,  // 25: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
-	6,  // 26: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
-	8,  // 27: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
-	22, // 28: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
-	24, // 29: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
-	26, // 30: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
-	28, // 31: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
-	10, // 32: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
-	13, // 33: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
-	14, // 34: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
-	16, // 35: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
-	18, // 36: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
-	20, // 37: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
-	24, // [24:38] is the sub-list for method output_type
-	10, // [10:24] is the sub-list for method input_type
+	32, // 17: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
+	33, // 18: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
+	27, // 19: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
+	9,  // 20: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
+	12, // 21: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
+	11, // 22: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
+	15, // 23: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
+	17, // 24: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
+	19, // 25: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
+	2,  // 26: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
+	4,  // 27: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
+	6,  // 28: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
+	8,  // 29: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
+	22, // 30: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
+	24, // 31: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
+	26, // 32: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
+	34, // 33: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
+	35, // 34: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
+	28, // 35: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
+	10, // 36: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
+	13, // 37: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
+	14, // 38: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
+	16, // 39: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
+	18, // 40: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
+	20, // 41: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
+	26, // [26:42] is the sub-list for method output_type
+	10, // [10:26] is the sub-list for method input_type
 	10, // [10:10] is the sub-list for extension type_name
 	10, // [10:10] is the sub-list for extension extendee
 	0,  // [0:10] is the sub-list for field type_name
@@ -1913,6 +1924,7 @@ func file_pob2_v1_session_proto_init() {
 		return
 	}
 	file_pob2_v1_build_proto_init()
+	file_pob2_v1_catalog_proto_init()
 	file_pob2_v1_session_proto_msgTypes[21].OneofWrappers = []any{
 		(*ApplyBuildRequest_Xml)(nil),
 		(*ApplyBuildRequest_Edit)(nil),
