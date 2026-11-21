@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "tag": "v0.0.2-rc.1",
+  "commit": "b2322bd55165092b5d956d87299a1e3ccaa813ca",
+  "workflow_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/44870675650",
+  "assets_checked": 10,
+  "api_asset_digests_verified": true,
+  "platforms": [
+    {
+      "goos": "windows",
+      "goarch": "amd64",
+      "archive": "pob2_engine_v0.0.2-rc.1_windows_amd64.zip",
+      "sha256": "4d524d5467e5d1c65691f3e51bcfd7b8dd09853d0c0c4b49358644eeb6fe47be",
+      "platform": "Windows-2025Server-10.0.26100-SP0",
+      "machine": "AMD64",
+      "before_report": "smoke_windows_amd64.json",
+      "published_report": "published_smoke_windows_amd64.json"
+    },
+    {
+      "goos": "linux",
+      "goarch": "amd64",
+      "archive": "pob2_engine_v0.0.2-rc.1_linux_amd64.zip",
+      "sha256": "8eadea7ba01c2bf1b8bae48060d7f809a82ea94779833f9d8701a1bde63bff06",
+      "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+      "machine": "x86_64",
+      "before_report": "smoke_linux_amd64.json",
+      "published_report": "published_smoke_linux_amd64.json"
+    },
+    {
+      "goos": "darwin",
+      "goarch": "arm64",
+      "archive": "pob2_engine_v0.0.2-rc.1_darwin_arm64.zip",
+      "sha256": "46f7f378fc08ee9b47c34a8799539576715476a57dd01e113f03dec21ed16935",
+      "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "before_report": "smoke_darwin_arm64.json",
+      "published_report": "published_smoke_darwin_arm64.json"
+    }
+  ],
+  "evidence_sha256": {
+    "SHA256SUMS": "e159bbf34ffc041413760483af7c35ec193ebb175867fd46572556bf3d6be4f3",
+    "COMMIT.txt": "bbb35ee979cd243c2cfdf51d0b9e47fec6b7e0b95d4b368202a8ca9ebfc9944b",
+    "release.json": "350a0da6560e4664c4d6fdc8bb0a502fbde4e0db5c31c81f111d70bff747eea6",
+    "smoke_windows_amd64.json": "8621b7e937640169a12e5ff26853d305cbb6c3b475322a1d8469a12a26b701f2",
+    "published_smoke_windows_amd64.json": "1c2170f5af6d8fb122a6b59c98bb8b1a70dcdd10e33fc6ce8c05e65f2855fbe0",
+    "smoke_linux_amd64.json": "ed9ae69f6c7f3e016a819583865cbbe921c9140415c581aaa6322b2f471bb3a5",
+    "published_smoke_linux_amd64.json": "c418e9fea22f2132f4c155bfcb4faed1141de29143e5a81f58f39e11a4448cd0",
+    "smoke_darwin_arm64.json": "76258e24c6ffd16133adddabf2fcd4c21cfc8c422df721d8f211233ab40988ea",
+    "published_smoke_darwin_arm64.json": "c305dad94c067be9936ca337fe3aac7a1d29b5b768ef12b0d92b3c9294bb7b60"
+  }
+}
