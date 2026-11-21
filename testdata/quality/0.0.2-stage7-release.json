@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "stage": "0.0.2/7.4",
+  "date_moscow": "2026-11-21",
+  "base_commit": "f29d2db42f2ab587f3022e76f2135d8e2b2537d4",
+  "scope": "Новые и изменённые функции приёмки архивов этапа 7.4, включая тесты Python",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 25,
+  "maximum_cognitive": 8,
+  "functions": [
+    {
+      "file": "tool/package_release.py",
+      "function": "initial_documents",
+      "line": 24,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "tool/package_release.py",
+      "function": "documentation_links",
+      "line": 34,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "tool/package_release.py",
+      "function": "documentation",
+      "line": 48,
+      "cognitive_before": 22,
+      "cognitive_after": 7,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "unpack",
+      "line": 42,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "mcp_result",
+      "line": 79,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "initialize_mcp",
+      "line": 87,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_calculation",
+      "line": 97,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "verify_compatibility_fixture",
+      "line": 102,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_updated_snapshot",
+      "line": 111,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "mcp_edit",
+      "line": 165,
+      "cognitive_before": 3,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "execute",
+      "line": 190,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "standalone_spells",
+      "line": 205,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "calculate",
+      "line": 216,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "snapshot",
+      "line": 219,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "session_spell",
+      "line": 222,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "preview_support",
+      "line": 239,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "compare_export",
+      "line": 254,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "restore_sessions",
+      "line": 267,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "upgrade_session",
+      "line": 282,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_upgrade_retries",
+      "line": 303,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "verify_upgrade_journal",
+      "line": 308,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "main",
+      "line": 336,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/test_package_release.py",
+      "function": "test_packages_three_spells_and_published_001_session",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/test_package_release.py",
+      "function": "test_rejects_commit_text_that_disagrees_with_manifest",
+      "line": 63,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/test_package_release.py",
+      "function": "test_upgrade_gate_rejects_changed_inputs_stats_and_unchanged_dataset",
+      "line": 100,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    }
+  ]
+}

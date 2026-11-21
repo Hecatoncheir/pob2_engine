@@ -11,26 +11,45 @@ from notices import archive as license_archive
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = {('windows', 'amd64'), ('linux', 'amd64'), ('darwin', 'arm64')}
+SMOKE_INPUTS = (
+    'testdata/reference/fireball.xml',
+    'testdata/reference/0.0.2/cases/frostbolt-minimal.xml',
+    'testdata/reference/0.0.2/cases/spark-minimal.xml',
+    'testdata/compat/0.0.1/manifest.json',
+    'testdata/compat/0.0.1/snapshot.json',
+    'testdata/compat/0.0.1/sessions.db',
+)
 
 
-def documentation():
+def initial_documents():
     selected = {p.resolve() for p in ROOT.glob('*.md')}
     selected.update(p.resolve() for p in (ROOT / 'docs').glob('*.md'))
     selected.update(p.resolve() for p in (ROOT / '.licenses').rglob('*') if p.is_file())
     selected.update(p.resolve() for p in (ROOT / 'internal/gamedata/files').glob('*.json'))
     selected.add((ROOT / 'internal/calculation/origin.json').resolve())
-    selected.add((ROOT / 'testdata/reference/fireball.xml').resolve())
+    selected.update((ROOT / name).resolve() for name in SMOKE_INPUTS)
+    return selected
+
+
+def documentation_links(path):
+    if path.suffix != '.md':
+        return []
+    links = []
+    for target in re.findall(r'\]\(([^)]+)\)', path.read_text('utf-8')):
+        if '://' in target or target.startswith('#'):
+            continue
+        linked = (path.parent / target.split('#', 1)[0]).resolve()
+        if not linked.is_relative_to(ROOT) or not linked.is_file():
+            raise ValueError('Неверная ссылка документации: ' + target)
+        links.append(linked)
+    return links
+
+
+def documentation():
+    selected = initial_documents()
     pending = list(selected)
     while pending:
-        path = pending.pop()
-        if path.suffix != '.md':
-            continue
-        for target in re.findall(r'\]\(([^)]+)\)', path.read_text('utf-8')):
-            if '://' in target or target.startswith('#'):
-                continue
-            linked = (path.parent / target.split('#', 1)[0]).resolve()
-            if not linked.is_relative_to(ROOT) or not linked.is_file():
-                raise ValueError('Неверная ссылка документации: ' + target)
+        for linked in documentation_links(pending.pop()):
             if linked not in selected:
                 selected.add(linked)
                 pending.append(linked)
