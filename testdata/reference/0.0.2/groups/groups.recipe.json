@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "start_node": 61525,
+      "level": 1,
+      "gem_level": 1,
+      "id": "druid-group-1",
+      "skill": "Fireball",
+      "element": "Fire",
+      "main_group": 1,
+      "skill_set": 1,
+      "config_set": 1
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "start_node": 61525,
+      "level": 1,
+      "gem_level": 1,
+      "id": "druid-group-2",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "main_group": 2,
+      "skill_set": 1,
+      "config_set": 1
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "start_node": 61525,
+      "level": 1,
+      "gem_level": 1,
+      "id": "druid-group-3",
+      "skill": "Spark",
+      "element": "Lightning",
+      "main_group": 3,
+      "skill_set": 1,
+      "config_set": 1
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "start_node": 61525,
+      "level": 1,
+      "gem_level": 1,
+      "id": "druid-skill-set-2",
+      "skill": "Spark",
+      "element": "Lightning",
+      "main_group": 1,
+      "skill_set": 2,
+      "config_set": 2
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "start_node": 61525,
+      "level": 1,
+      "gem_level": 1,
+      "id": "druid-config-set-2",
+      "skill": "Frostbolt",
+      "element": "Cold",
+      "main_group": 2,
+      "skill_set": 1,
+      "config_set": 2
+    }
+  ]
+}

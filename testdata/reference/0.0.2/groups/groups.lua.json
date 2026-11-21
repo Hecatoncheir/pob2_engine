@@ -1,0 +1,738 @@
+{
+  "cases": [
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "element": "Fire",
+      "id": "druid-group-1",
+      "input_sha256": "8bb064570b6dc700c3296e08a7e16171d92d3ede1325c1041d2adddaae97755a",
+      "report": {
+        "allocated_nodes": [
+          61525
+        ],
+        "config": {
+          "ChanceToIgnoreEnemyPhysicalDamageReductionMode": "AVERAGE",
+          "ConcPathBypassCD": true,
+          "FlickerStrikeBypassCD": true,
+          "GamblesprintMovementSpeed": 20,
+          "SecondsSinceInevitableCrit": 10,
+          "VigilantStrikeBypassCD": true,
+          "companionInPresence": true,
+          "conditionChampionIntimidate": true,
+          "doomBlastSource": "vixen",
+          "elementalConfluxElement": 1,
+          "enemyIsBoss": "None",
+          "enemySizePreset": "Medium",
+          "inDemonForm": true,
+          "multiplierCurrentManaPercentage": 100,
+          "presetBossSkills": "None",
+          "purpleFlameStacks": 10,
+          "questAct 1ClearfellBeira": false,
+          "questAct 1FreythornKing In The Mists": false,
+          "questAct 1Ogham ManorCandlemass": false,
+          "questAct 2Spires of DesharSisters of Garukhan Shrine": false,
+          "questAct 2Valley of the TitansMedallion": "None",
+          "questAct 3Azak BogIgnagduk": false,
+          "questAct 3Jiquani's MachinariumBlackjaw": false,
+          "questAct 3Venom CryptsVenom Draught": "None",
+          "questAct 4Abandoned PrisonGoddess of Justice": "None",
+          "questAct 4Eye of HinekoraSilent Hall": false,
+          "questAct 4Eye of HinekoraTribal Medicine": "None",
+          "questAct 4Halls Of The DeadNgamahu's Test": "None",
+          "questAct 4Halls Of The DeadTasalio's Test": "None",
+          "questAct 4Halls Of The DeadTawhoa's Test": "None",
+          "questInterlude 2Khari CrossingMolten Shrine": false,
+          "questInterlude 2QimahSeven Pillars": "None",
+          "questInterlude 3Kriar VillageLythara": false,
+          "raiseSpectreEnableBuffs": true,
+          "raiseSpectreEnableCurses": true,
+          "repeatMode": "AVERAGE",
+          "resistancePenalty": 0,
+          "resourceGainMode": "AVERAGE",
+          "summonCompanionEnableBuffs": true,
+          "summonCompanionEnableCurses": true,
+          "summonElementalRelicEnableAngerAura": true,
+          "summonElementalRelicEnableHatredAura": true,
+          "summonElementalRelicEnableWrathAura": true,
+          "targetBrandedEnemy": true,
+          "touchedDebuffsCount": 10
+        },
+        "custom_mods": [],
+        "groups": [
+          {
+            "customLabel": "",
+            "enabled": true,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFireball",
+                "level": 1,
+                "name": "Fireball",
+                "quality": 0,
+                "skillId": "FireballPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 1,
+            "label": "Fireball"
+          },
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFrostBolt",
+                "level": 1,
+                "name": "Frostbolt",
+                "quality": 0,
+                "skillId": "FrostboltPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 2,
+            "label": "Frostbolt"
+          },
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemSpark",
+                "level": 1,
+                "name": "Spark",
+                "quality": 0,
+                "skillId": "SparkPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 3,
+            "label": "Spark"
+          }
+        ],
+        "items": [],
+        "slots": [],
+        "stats": {
+          "AverageHit": 10.7,
+          "CastRate": 0.83333333333333,
+          "ChaosResist": 0,
+          "ColdResist": 0,
+          "CritChance": 7,
+          "CritEffect": 1.07,
+          "CritMultiplier": 2,
+          "Dex": 7,
+          "FireCritAverage": 20,
+          "FireHitAverage": 10,
+          "FireMaxBase": 12,
+          "FireMinBase": 8,
+          "FireResist": 0,
+          "FireStoredCombinedAvg": 10.7,
+          "FireStoredHitAvg": 10,
+          "FireStoredHitMax": 12,
+          "FireStoredHitMin": 8,
+          "Int": 11,
+          "Life": 50,
+          "LightningResist": 0,
+          "Mana": 56,
+          "ManaCost": 10,
+          "ManaPerSecondCost": 8.3333333333333,
+          "ManaRegen": 2.2,
+          "Speed": 0.83333333333333,
+          "Str": 11,
+          "TotalDPS": 8.9166666666667
+        },
+        "warnings": []
+      },
+      "skill": "Fireball",
+      "start_node": 61525
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "element": "Cold",
+      "id": "druid-group-2",
+      "input_sha256": "3aec8e390cee31f2523ea6de404ae9de7979ab0f06672815358cc2e362cae814",
+      "report": {
+        "allocated_nodes": [
+          61525
+        ],
+        "config": {
+          "ChanceToIgnoreEnemyPhysicalDamageReductionMode": "AVERAGE",
+          "ConcPathBypassCD": true,
+          "FlickerStrikeBypassCD": true,
+          "GamblesprintMovementSpeed": 20,
+          "SecondsSinceInevitableCrit": 10,
+          "VigilantStrikeBypassCD": true,
+          "companionInPresence": true,
+          "conditionChampionIntimidate": true,
+          "doomBlastSource": "vixen",
+          "elementalConfluxElement": 1,
+          "enemyIsBoss": "None",
+          "enemySizePreset": "Medium",
+          "inDemonForm": true,
+          "multiplierCurrentManaPercentage": 100,
+          "presetBossSkills": "None",
+          "purpleFlameStacks": 10,
+          "questAct 1ClearfellBeira": false,
+          "questAct 1FreythornKing In The Mists": false,
+          "questAct 1Ogham ManorCandlemass": false,
+          "questAct 2Spires of DesharSisters of Garukhan Shrine": false,
+          "questAct 2Valley of the TitansMedallion": "None",
+          "questAct 3Azak BogIgnagduk": false,
+          "questAct 3Jiquani's MachinariumBlackjaw": false,
+          "questAct 3Venom CryptsVenom Draught": "None",
+          "questAct 4Abandoned PrisonGoddess of Justice": "None",
+          "questAct 4Eye of HinekoraSilent Hall": false,
+          "questAct 4Eye of HinekoraTribal Medicine": "None",
+          "questAct 4Halls Of The DeadNgamahu's Test": "None",
+          "questAct 4Halls Of The DeadTasalio's Test": "None",
+          "questAct 4Halls Of The DeadTawhoa's Test": "None",
+          "questInterlude 2Khari CrossingMolten Shrine": false,
+          "questInterlude 2QimahSeven Pillars": "None",
+          "questInterlude 3Kriar VillageLythara": false,
+          "raiseSpectreEnableBuffs": true,
+          "raiseSpectreEnableCurses": true,
+          "repeatMode": "AVERAGE",
+          "resistancePenalty": 0,
+          "resourceGainMode": "AVERAGE",
+          "summonCompanionEnableBuffs": true,
+          "summonCompanionEnableCurses": true,
+          "summonElementalRelicEnableAngerAura": true,
+          "summonElementalRelicEnableHatredAura": true,
+          "summonElementalRelicEnableWrathAura": true,
+          "targetBrandedEnemy": true,
+          "touchedDebuffsCount": 10
+        },
+        "custom_mods": [],
+        "groups": [
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFireball",
+                "level": 1,
+                "name": "Fireball",
+                "quality": 0,
+                "skillId": "FireballPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 1,
+            "label": "Fireball"
+          },
+          {
+            "customLabel": "",
+            "enabled": true,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFrostBolt",
+                "level": 1,
+                "name": "Frostbolt",
+                "quality": 0,
+                "skillId": "FrostboltPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 2,
+            "label": "Frostbolt"
+          },
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemSpark",
+                "level": 1,
+                "name": "Spark",
+                "quality": 0,
+                "skillId": "SparkPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 3,
+            "label": "Spark"
+          }
+        ],
+        "items": [],
+        "slots": [],
+        "stats": {
+          "AverageHit": 7.28,
+          "CastRate": 1.25,
+          "ChaosResist": 0,
+          "ColdCritAverage": 13,
+          "ColdHitAverage": 6.5,
+          "ColdMaxBase": 8,
+          "ColdMinBase": 5,
+          "ColdResist": 0,
+          "ColdStoredCombinedAvg": 7.28,
+          "ColdStoredHitAvg": 6.5,
+          "ColdStoredHitMax": 8,
+          "ColdStoredHitMin": 5,
+          "CritChance": 12,
+          "CritEffect": 1.12,
+          "CritMultiplier": 2,
+          "Dex": 7,
+          "FireResist": 0,
+          "Int": 11,
+          "Life": 50,
+          "LightningResist": 0,
+          "Mana": 56,
+          "ManaCost": 5,
+          "ManaPerSecondCost": 6.25,
+          "ManaRegen": 2.2,
+          "Speed": 1.25,
+          "Str": 11,
+          "TotalDPS": 9.1
+        },
+        "warnings": []
+      },
+      "skill": "Frostbolt",
+      "start_node": 61525
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "element": "Lightning",
+      "id": "druid-group-3",
+      "input_sha256": "8ee6e58fd7757e78f923128d1a812103643cb16dd9c69d8b752d51014ae40f70",
+      "report": {
+        "allocated_nodes": [
+          61525
+        ],
+        "config": {
+          "ChanceToIgnoreEnemyPhysicalDamageReductionMode": "AVERAGE",
+          "ConcPathBypassCD": true,
+          "FlickerStrikeBypassCD": true,
+          "GamblesprintMovementSpeed": 20,
+          "SecondsSinceInevitableCrit": 10,
+          "VigilantStrikeBypassCD": true,
+          "companionInPresence": true,
+          "conditionChampionIntimidate": true,
+          "doomBlastSource": "vixen",
+          "elementalConfluxElement": 1,
+          "enemyIsBoss": "None",
+          "enemySizePreset": "Medium",
+          "inDemonForm": true,
+          "multiplierCurrentManaPercentage": 100,
+          "presetBossSkills": "None",
+          "purpleFlameStacks": 10,
+          "questAct 1ClearfellBeira": false,
+          "questAct 1FreythornKing In The Mists": false,
+          "questAct 1Ogham ManorCandlemass": false,
+          "questAct 2Spires of DesharSisters of Garukhan Shrine": false,
+          "questAct 2Valley of the TitansMedallion": "None",
+          "questAct 3Azak BogIgnagduk": false,
+          "questAct 3Jiquani's MachinariumBlackjaw": false,
+          "questAct 3Venom CryptsVenom Draught": "None",
+          "questAct 4Abandoned PrisonGoddess of Justice": "None",
+          "questAct 4Eye of HinekoraSilent Hall": false,
+          "questAct 4Eye of HinekoraTribal Medicine": "None",
+          "questAct 4Halls Of The DeadNgamahu's Test": "None",
+          "questAct 4Halls Of The DeadTasalio's Test": "None",
+          "questAct 4Halls Of The DeadTawhoa's Test": "None",
+          "questInterlude 2Khari CrossingMolten Shrine": false,
+          "questInterlude 2QimahSeven Pillars": "None",
+          "questInterlude 3Kriar VillageLythara": false,
+          "raiseSpectreEnableBuffs": true,
+          "raiseSpectreEnableCurses": true,
+          "repeatMode": "AVERAGE",
+          "resistancePenalty": 0,
+          "resourceGainMode": "AVERAGE",
+          "summonCompanionEnableBuffs": true,
+          "summonCompanionEnableCurses": true,
+          "summonElementalRelicEnableAngerAura": true,
+          "summonElementalRelicEnableHatredAura": true,
+          "summonElementalRelicEnableWrathAura": true,
+          "targetBrandedEnemy": true,
+          "touchedDebuffsCount": 10
+        },
+        "custom_mods": [],
+        "groups": [
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFireball",
+                "level": 1,
+                "name": "Fireball",
+                "quality": 0,
+                "skillId": "FireballPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 1,
+            "label": "Fireball"
+          },
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFrostBolt",
+                "level": 1,
+                "name": "Frostbolt",
+                "quality": 0,
+                "skillId": "FrostboltPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 2,
+            "label": "Frostbolt"
+          },
+          {
+            "customLabel": "",
+            "enabled": true,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemSpark",
+                "level": 1,
+                "name": "Spark",
+                "quality": 0,
+                "skillId": "SparkPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 3,
+            "label": "Spark"
+          }
+        ],
+        "items": [],
+        "slots": [],
+        "stats": {
+          "AverageHit": 5.995,
+          "CastRate": 1.4285714285714,
+          "ChaosResist": 0,
+          "ColdResist": 0,
+          "CritChance": 9,
+          "CritEffect": 1.09,
+          "CritMultiplier": 2,
+          "Dex": 7,
+          "FireResist": 0,
+          "Int": 11,
+          "Life": 50,
+          "LightningCritAverage": 11,
+          "LightningHitAverage": 5.5,
+          "LightningMaxBase": 10,
+          "LightningMinBase": 1,
+          "LightningResist": 0,
+          "LightningStoredCombinedAvg": 5.995,
+          "LightningStoredHitAvg": 5.5,
+          "LightningStoredHitMax": 10,
+          "LightningStoredHitMin": 1,
+          "Mana": 56,
+          "ManaCost": 5,
+          "ManaPerSecondCost": 7.1428571428571,
+          "ManaRegen": 2.2,
+          "Speed": 1.4285714285714,
+          "Str": 11,
+          "TotalDPS": 8.5642857142857
+        },
+        "warnings": []
+      },
+      "skill": "Spark",
+      "start_node": 61525
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "element": "Lightning",
+      "id": "druid-skill-set-2",
+      "input_sha256": "c07b559ce4cbb05da1a938c746742988aa334c114fcd7e754eb95c221887d8e4",
+      "report": {
+        "allocated_nodes": [
+          61525
+        ],
+        "config": {
+          "ChanceToIgnoreEnemyPhysicalDamageReductionMode": "AVERAGE",
+          "ConcPathBypassCD": true,
+          "FlickerStrikeBypassCD": true,
+          "GamblesprintMovementSpeed": 20,
+          "SecondsSinceInevitableCrit": 10,
+          "VigilantStrikeBypassCD": true,
+          "companionInPresence": true,
+          "conditionChampionIntimidate": true,
+          "customMods": "100% increased Spell Damage",
+          "doomBlastSource": "vixen",
+          "elementalConfluxElement": 1,
+          "enemyIsBoss": "None",
+          "enemySizePreset": "Medium",
+          "inDemonForm": true,
+          "multiplierCurrentManaPercentage": 100,
+          "presetBossSkills": "None",
+          "purpleFlameStacks": 10,
+          "questAct 1ClearfellBeira": false,
+          "questAct 1FreythornKing In The Mists": false,
+          "questAct 1Ogham ManorCandlemass": false,
+          "questAct 2Spires of DesharSisters of Garukhan Shrine": false,
+          "questAct 2Valley of the TitansMedallion": "None",
+          "questAct 3Azak BogIgnagduk": false,
+          "questAct 3Jiquani's MachinariumBlackjaw": false,
+          "questAct 3Venom CryptsVenom Draught": "None",
+          "questAct 4Abandoned PrisonGoddess of Justice": "None",
+          "questAct 4Eye of HinekoraSilent Hall": false,
+          "questAct 4Eye of HinekoraTribal Medicine": "None",
+          "questAct 4Halls Of The DeadNgamahu's Test": "None",
+          "questAct 4Halls Of The DeadTasalio's Test": "None",
+          "questAct 4Halls Of The DeadTawhoa's Test": "None",
+          "questInterlude 2Khari CrossingMolten Shrine": false,
+          "questInterlude 2QimahSeven Pillars": "None",
+          "questInterlude 3Kriar VillageLythara": false,
+          "raiseSpectreEnableBuffs": true,
+          "raiseSpectreEnableCurses": true,
+          "repeatMode": "AVERAGE",
+          "resistancePenalty": 0,
+          "resourceGainMode": "AVERAGE",
+          "summonCompanionEnableBuffs": true,
+          "summonCompanionEnableCurses": true,
+          "summonElementalRelicEnableAngerAura": true,
+          "summonElementalRelicEnableHatredAura": true,
+          "summonElementalRelicEnableWrathAura": true,
+          "targetBrandedEnemy": true,
+          "touchedDebuffsCount": 10
+        },
+        "custom_mods": [
+          {
+            "enabled": true,
+            "text": "100% increased Spell Damage",
+            "title": "input.customMods",
+            "unparsed": []
+          }
+        ],
+        "groups": [
+          {
+            "customLabel": "",
+            "enabled": true,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemSpark",
+                "level": 1,
+                "name": "Spark",
+                "quality": 0,
+                "skillId": "SparkPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 1,
+            "label": "Spark"
+          }
+        ],
+        "items": [],
+        "slots": [],
+        "stats": {
+          "AverageHit": 11.99,
+          "CastRate": 1.4285714285714,
+          "ChaosResist": 0,
+          "ColdResist": 0,
+          "CritChance": 9,
+          "CritEffect": 1.09,
+          "CritMultiplier": 2,
+          "Dex": 7,
+          "FireResist": 0,
+          "Int": 11,
+          "Life": 50,
+          "LightningCritAverage": 22,
+          "LightningHitAverage": 11,
+          "LightningMaxBase": 10,
+          "LightningMinBase": 1,
+          "LightningResist": 0,
+          "LightningStoredCombinedAvg": 11.99,
+          "LightningStoredHitAvg": 11,
+          "LightningStoredHitMax": 20,
+          "LightningStoredHitMin": 2,
+          "Mana": 56,
+          "ManaCost": 5,
+          "ManaPerSecondCost": 7.1428571428571,
+          "ManaRegen": 2.2,
+          "Speed": 1.4285714285714,
+          "Str": 11,
+          "TotalDPS": 17.128571428571
+        },
+        "warnings": []
+      },
+      "skill": "Spark",
+      "start_node": 61525
+    },
+    {
+      "class_id": 11,
+      "class_name": "Druid",
+      "element": "Cold",
+      "id": "druid-config-set-2",
+      "input_sha256": "42fae7f32811b2564a26118e526eb7300840f0f2e0c958e5f8129c4ea3eec3ff",
+      "report": {
+        "allocated_nodes": [
+          61525
+        ],
+        "config": {
+          "ChanceToIgnoreEnemyPhysicalDamageReductionMode": "AVERAGE",
+          "ConcPathBypassCD": true,
+          "FlickerStrikeBypassCD": true,
+          "GamblesprintMovementSpeed": 20,
+          "SecondsSinceInevitableCrit": 10,
+          "VigilantStrikeBypassCD": true,
+          "companionInPresence": true,
+          "conditionChampionIntimidate": true,
+          "customMods": "100% increased Spell Damage",
+          "doomBlastSource": "vixen",
+          "elementalConfluxElement": 1,
+          "enemyIsBoss": "None",
+          "enemySizePreset": "Medium",
+          "inDemonForm": true,
+          "multiplierCurrentManaPercentage": 100,
+          "presetBossSkills": "None",
+          "purpleFlameStacks": 10,
+          "questAct 1ClearfellBeira": false,
+          "questAct 1FreythornKing In The Mists": false,
+          "questAct 1Ogham ManorCandlemass": false,
+          "questAct 2Spires of DesharSisters of Garukhan Shrine": false,
+          "questAct 2Valley of the TitansMedallion": "None",
+          "questAct 3Azak BogIgnagduk": false,
+          "questAct 3Jiquani's MachinariumBlackjaw": false,
+          "questAct 3Venom CryptsVenom Draught": "None",
+          "questAct 4Abandoned PrisonGoddess of Justice": "None",
+          "questAct 4Eye of HinekoraSilent Hall": false,
+          "questAct 4Eye of HinekoraTribal Medicine": "None",
+          "questAct 4Halls Of The DeadNgamahu's Test": "None",
+          "questAct 4Halls Of The DeadTasalio's Test": "None",
+          "questAct 4Halls Of The DeadTawhoa's Test": "None",
+          "questInterlude 2Khari CrossingMolten Shrine": false,
+          "questInterlude 2QimahSeven Pillars": "None",
+          "questInterlude 3Kriar VillageLythara": false,
+          "raiseSpectreEnableBuffs": true,
+          "raiseSpectreEnableCurses": true,
+          "repeatMode": "AVERAGE",
+          "resistancePenalty": 0,
+          "resourceGainMode": "AVERAGE",
+          "summonCompanionEnableBuffs": true,
+          "summonCompanionEnableCurses": true,
+          "summonElementalRelicEnableAngerAura": true,
+          "summonElementalRelicEnableHatredAura": true,
+          "summonElementalRelicEnableWrathAura": true,
+          "targetBrandedEnemy": true,
+          "touchedDebuffsCount": 10
+        },
+        "custom_mods": [
+          {
+            "enabled": true,
+            "text": "100% increased Spell Damage",
+            "title": "input.customMods",
+            "unparsed": []
+          }
+        ],
+        "groups": [
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFireball",
+                "level": 1,
+                "name": "Fireball",
+                "quality": 0,
+                "skillId": "FireballPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 1,
+            "label": "Fireball"
+          },
+          {
+            "customLabel": "",
+            "enabled": true,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemFrostBolt",
+                "level": 1,
+                "name": "Frostbolt",
+                "quality": 0,
+                "skillId": "FrostboltPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 2,
+            "label": "Frostbolt"
+          },
+          {
+            "customLabel": "",
+            "enabled": false,
+            "gems": [
+              {
+                "enabled": true,
+                "id": "Metadata/Items/Gems/SkillGemSpark",
+                "level": 1,
+                "name": "Spark",
+                "quality": 0,
+                "skillId": "SparkPlayer",
+                "sourceIndex": 1,
+                "support": false
+              }
+            ],
+            "id": 3,
+            "label": "Spark"
+          }
+        ],
+        "items": [],
+        "slots": [],
+        "stats": {
+          "AverageHit": 14.56,
+          "CastRate": 1.25,
+          "ChaosResist": 0,
+          "ColdCritAverage": 26,
+          "ColdHitAverage": 13,
+          "ColdMaxBase": 8,
+          "ColdMinBase": 5,
+          "ColdResist": 0,
+          "ColdStoredCombinedAvg": 14.56,
+          "ColdStoredHitAvg": 13,
+          "ColdStoredHitMax": 16,
+          "ColdStoredHitMin": 10,
+          "CritChance": 12,
+          "CritEffect": 1.12,
+          "CritMultiplier": 2,
+          "Dex": 7,
+          "FireResist": 0,
+          "Int": 11,
+          "Life": 50,
+          "LightningResist": 0,
+          "Mana": 56,
+          "ManaCost": 5,
+          "ManaPerSecondCost": 6.25,
+          "ManaRegen": 2.2,
+          "Speed": 1.25,
+          "Str": 11,
+          "TotalDPS": 18.2
+        },
+        "warnings": []
+      },
+      "skill": "Frostbolt",
+      "start_node": 61525
+    }
+  ],
+  "mcp_commit": "312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a",
+  "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+  "recipe_sha256": "3c585ec536351edd5e6fa5844ceb58f0eea0392b0ca1a59283f5ba5448d60760",
+  "schema": 1
+}

@@ -180,15 +180,30 @@ func (s *inputs) readPassives() {
 		s.issue("unsupported_passives", "Tree", "недостаточно очков без наград заданий")
 	}
 	for _, id := range s.model.Nodes {
-		node, ok := s.engine.data.Node(id)
-		if !ok {
-			s.issue("unsupported_passive", fmt.Sprintf("Tree/%d", id), "неподдерживаемый пассив")
-			continue
-		}
-		for _, line := range node.Stats {
-			s.addLine(line, fmt.Sprintf("Tree/%d", id))
-		}
+		s.readPassive(id)
 	}
+	if !s.connectedPassives(allocated) {
+		s.issue("unsupported_passives", "Tree", "выделенные пассивы не связаны со стартом класса")
+	}
+}
+
+func (s *inputs) readPassive(id int) {
+	path := fmt.Sprintf("Tree/%d", id)
+	if s.class.ID != 7 && id != s.class.StartNode {
+		s.issue("unsupported_passive", path, "для этого класса поддерживается только стартовый узел")
+		return
+	}
+	node, ok := s.engine.data.Node(id)
+	if !ok {
+		s.issue("unsupported_passive", path, "неподдерживаемый пассив")
+		return
+	}
+	for _, line := range node.Stats {
+		s.addLine(line, path)
+	}
+}
+
+func (s *inputs) connectedPassives(allocated map[int]bool) bool {
 	visited := map[int]bool{}
 	queue := []int{s.class.StartNode}
 	for len(queue) > 0 {
@@ -205,9 +220,7 @@ func (s *inputs) readPassives() {
 			}
 		}
 	}
-	if len(visited) != len(allocated) {
-		s.issue("unsupported_passives", "Tree", "выделенные пассивы не связаны со стартом класса")
-	}
+	return len(visited) == len(allocated)
 }
 
 func (s *inputs) readCustomMods() {

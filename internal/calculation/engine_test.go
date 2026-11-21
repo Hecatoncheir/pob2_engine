@@ -52,6 +52,14 @@ func TestSpellLuaMatrix(t *testing.T) {
 	testLuaMatrix(t, "../../testdata/reference/0.0.2", "spells.lua.json", 84)
 }
 
+func TestClassLuaMatrix(t *testing.T) {
+	testLuaMatrix(t, "../../testdata/reference/0.0.2/classes", "classes.lua.json", 168)
+}
+
+func TestGroupLuaMatrix(t *testing.T) {
+	testLuaMatrix(t, "../../testdata/reference/0.0.2/groups", "groups.lua.json", 5)
+}
+
 type luaReport struct {
 	Stats      map[string]float64 `json:"stats"`
 	Warnings   []string           `json:"warnings"`
@@ -63,6 +71,9 @@ type luaReport struct {
 type luaCase struct {
 	ID          string    `json:"id"`
 	Skill       string    `json:"skill"`
+	ClassID     int       `json:"class_id"`
+	ClassName   string    `json:"class_name"`
+	StartNode   int       `json:"start_node"`
 	InputSHA256 string    `json:"input_sha256"`
 	Report      luaReport `json:"report"`
 }
@@ -106,11 +117,22 @@ func calculateLuaCase(t *testing.T, engine *Engine, directory string, sample lua
 	if err != nil {
 		t.Fatal(err)
 	}
+	if sample.ClassID != 0 {
+		checkClassInput(t, doc, sample)
+	}
 	actual, err := engine.Calculate(t.Context(), doc)
 	if err != nil {
 		t.Fatal(err)
 	}
 	return actual
+}
+
+func checkClassInput(t *testing.T, doc *build.Document, sample luaCase) {
+	t.Helper()
+	model, err := doc.Model()
+	if err != nil || model.ClassID != sample.ClassID || model.Class != sample.ClassName || len(model.Nodes) != 1 || model.Nodes[0] != sample.StartNode {
+		t.Fatalf("эталон использует другой класс или старт: %+v %v", model, err)
+	}
 }
 
 func checkLuaResult(t *testing.T, actual Result, sample luaCase) {

@@ -178,26 +178,50 @@ func (m *Model) readTree(tree *element) error {
 	if err != nil {
 		return err
 	}
+	if err := m.checkClassIdentity(node); err != nil {
+		return err
+	}
 	m.AscendancyID, err = integer(node.attr("ascendClassId", "0"), "Spec/ascendClassId", 0, 100)
 	if err != nil {
 		return err
 	}
+	m.Nodes, err = readPassiveNodes(node.attr("nodes", ""))
+	return err
+}
+
+func readPassiveNodes(raw string) ([]int, error) {
 	seen := make(map[int]bool)
-	for _, value := range strings.Split(node.attr("nodes", ""), ",") {
+	var nodes []int
+	for _, value := range strings.Split(raw, ",") {
 		if strings.TrimSpace(value) == "" {
 			continue
 		}
 		id, err := integer(strings.TrimSpace(value), "Spec/nodes", 1, 1000000)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		if seen[id] {
-			return fmt.Errorf("повтор пассива %d", id)
+			return nil, fmt.Errorf("повтор пассива %d", id)
 		}
 		seen[id] = true
-		m.Nodes = append(m.Nodes, id)
+		nodes = append(nodes, id)
 	}
-	sort.Ints(m.Nodes)
+	sort.Ints(nodes)
+	return nodes, nil
+}
+
+func (m *Model) checkClassIdentity(spec *element) error {
+	value := spec.attr("classInternalId", "")
+	if value == "" {
+		return nil
+	}
+	id, err := integer(value, "Spec/classInternalId", 1, 100)
+	if err != nil {
+		return err
+	}
+	if id != m.ClassID {
+		m.issue("Tree/Spec/classInternalId", "идентификаторы класса противоречат друг другу")
+	}
 	return nil
 }
 

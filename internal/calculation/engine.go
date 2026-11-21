@@ -113,8 +113,8 @@ func (s *inputs) readCharacter() {
 		s.issue("unsupported_version", "Build", "неподдерживаемая версия XML или дерева")
 	}
 	class, ok := s.engine.data.Class(s.model.ClassID)
-	if !ok || class.Name != s.model.Class || class.ID != 7 {
-		s.issue("unsupported_class", "Build/className", "первый набор поддерживает Sorceress")
+	if !ok || class.Name != s.model.Class {
+		s.issue("unsupported_class", "Build/className", "неизвестный класс или несовпадение его имени и ID")
 	}
 	s.class = class
 	if s.model.AscendancyID != 0 || s.model.Ascendancy != "None" {

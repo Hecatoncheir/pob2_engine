@@ -18,7 +18,7 @@ type renameInput struct {
 
 func New(commands application.Commands, sessionID string, timeout time.Duration) *mcp.Server {
 	server := mcp.NewServer(&mcp.Implementation{Name: "pob2_engine", Version: buildinfo.Version}, &mcp.ServerOptions{
-		Instructions: fmt.Sprintf("Выбрана сессия %q. Все правки требуют текущую ревизию и request_id. Расчёт 0.0.1 ограничен Fireball Projectile; проверяйте status и issues. Совпадение с PoB не означает проверку в игре. Flutter пока не подключается.", sessionID),
+		Instructions: fmt.Sprintf("Выбрана сессия %q. Все правки требуют текущую ревизию и request_id. Поддерживаются попадания Fireball/Frostbolt/Spark и восемь базовых классов без возвышений, ограниченные предметы и пассивы; проверяйте status и issues. Совпадение с PoB не означает проверку в игре. Flutter пока не подключается.", sessionID),
 	})
 	openWorld, destructive := false, true
 	mcp.AddTool(server, &mcp.Tool{

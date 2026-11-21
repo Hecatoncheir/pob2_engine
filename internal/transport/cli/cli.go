@@ -39,7 +39,8 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
 Или: --profile ИМЯ [--start-server] [--runtime-dir КАТАЛОГ] [--data-dir КАТАЛОГ]
 Токен также читается из POB2_ENGINE_TOKEN. Справка команды: КОМАНДА --help.
 Сессии профиля сохраняются на диск. --ephemeral и MCP --standalone используют память.
-Покрытие 0.0.1: Fireball Projectile; проверяйте status и issues результата.
+Покрытие: попадания Fireball/Frostbolt/Spark, восемь базовых классов без возвышений.
+Проверяйте status и issues; поддерживается ограниченный набор предметов и пассивов.
 `
 
 type UsageError struct{ Err error }

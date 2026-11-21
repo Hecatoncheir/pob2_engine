@@ -34,3 +34,7 @@ go test ./internal/calculation -run 'TestSpellLuaMatrix|TestComparingDifferentSp
 взрывов, повторных попаданий, Chill/Shock/Infusion. Ограничения и ещё
 не реализованные части — в [таблице покрытия](../../../docs/COVERAGE-0.0.2.md).
 Совпадение с PoB не означает проверку в игре.
+
+Этап 4 добавляет отдельные [168 случаев восьми классов](classes/README.md)
+и [5 случаев выбора групп и наборов](groups/README.md).
+Прежние 77 и 84 случая сохранены без перезаписи.

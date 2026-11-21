@@ -66,17 +66,8 @@ func (n *element) remove(target *element) {
 }
 
 func (d *Document) Edited(edit Edit, data *gamedata.Dataset) (*Document, error) {
-	if data == nil {
-		return nil, fmt.Errorf("нет набора данных для правки")
-	}
-	operations := 0
-	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil} {
-		if present {
-			operations++
-		}
-	}
-	if operations != 1 {
-		return nil, fmt.Errorf("нужна ровно одна правка сборки")
+	if err := validateEdit(edit, data); err != nil {
+		return nil, err
 	}
 	xml, err := d.Export()
 	if err != nil {
@@ -89,23 +80,53 @@ func (d *Document) Edited(edit Edit, data *gamedata.Dataset) (*Document, error) 
 	if err := copy.applyEdit(edit, data); err != nil {
 		return nil, err
 	}
-	info, _ := copy.root.child("Build")
-	for _, name := range []string{"PlayerStat", "MinionStat", "FullDPSSkill", "Buffs"} {
-		for _, cached := range info.children(name) {
-			info.remove(cached)
-		}
-	}
+	copy.clearCachedResults()
 	model, err := copy.Model()
 	if err != nil {
 		return nil, err
 	}
-	if edit.Selection != nil && edit.Selection.MainGroup > len(model.Groups) {
+	if selectsSkills(edit.Selection) && model.MainGroup > len(model.Groups) {
 		return nil, fmt.Errorf("основная группа отсутствует")
 	}
 	if _, err := copy.Export(); err != nil {
 		return nil, err
 	}
 	return copy, nil
+}
+
+func validateEdit(edit Edit, data *gamedata.Dataset) error {
+	if data == nil {
+		return fmt.Errorf("нет набора данных для правки")
+	}
+	operations := 0
+	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil} {
+		if present {
+			operations++
+		}
+	}
+	if operations != 1 {
+		return fmt.Errorf("нужна ровно одна правка сборки")
+	}
+	return nil
+}
+
+func (d *Document) clearCachedResults() {
+	info, _ := d.root.child("Build")
+	for _, name := range []string{"PlayerStat", "MinionStat", "FullDPSSkill", "Buffs"} {
+		for _, cached := range info.children(name) {
+			info.remove(cached)
+		}
+	}
+}
+
+func selectsSkills(selection *SelectionEdit) bool {
+	if selection == nil {
+		return false
+	}
+	if selection.MainGroup != 0 {
+		return true
+	}
+	return selection.Sets != nil && selection.Sets.Skills != 0
 }
 
 func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
@@ -337,26 +358,8 @@ func (d *Document) editSelection(edit SelectionEdit) error {
 	if edit.Sets == nil && edit.MainGroup == 0 && edit.WeaponSet == 0 {
 		return fmt.Errorf("не указан новый выбор")
 	}
-	if edit.Sets != nil {
-		for _, selection := range []struct {
-			name, attribute string
-			id              int
-		}{
-			{"Tree", "activeSpec", edit.Sets.Tree}, {"Items", "activeItemSet", edit.Sets.Items},
-			{"Skills", "activeSkillSet", edit.Sets.Skills}, {"Config", "activeConfigSet", edit.Sets.Config},
-		} {
-			if selection.id == 0 {
-				continue
-			}
-			if selection.id < 1 {
-				return fmt.Errorf("неверный идентификатор набора")
-			}
-			section, _ := d.root.child(selection.name)
-			if section == nil {
-				return fmt.Errorf("нет секции %s", selection.name)
-			}
-			section.set(selection.attribute, strconv.Itoa(selection.id))
-		}
+	if err := d.selectSets(edit.Sets); err != nil {
+		return err
 	}
 	if edit.MainGroup != 0 {
 		if edit.MainGroup < 1 || edit.MainGroup > 100 {
@@ -365,15 +368,59 @@ func (d *Document) editSelection(edit SelectionEdit) error {
 		info, _ := d.root.child("Build")
 		info.set("mainSocketGroup", strconv.Itoa(edit.MainGroup))
 	}
-	if edit.WeaponSet != 0 {
-		if edit.WeaponSet != 1 && edit.WeaponSet != 2 {
-			return fmt.Errorf("вариант оружия: 1 или 2")
-		}
-		set, err := d.active("Items", "ItemSet", "activeItemSet")
-		if err != nil {
+	return d.selectWeaponSet(edit.WeaponSet)
+}
+
+func (d *Document) selectSets(sets *ActiveSets) error {
+	if sets == nil {
+		return nil
+	}
+	selections := []struct {
+		section, attribute string
+		id                 int
+	}{
+		{"Tree", "activeSpec", sets.Tree},
+		{"Items", "activeItemSet", sets.Items},
+		{"Skills", "activeSkillSet", sets.Skills},
+		{"Config", "activeConfigSet", sets.Config},
+	}
+	for _, selection := range selections {
+		if err := d.selectSet(selection.section, selection.attribute, selection.id); err != nil {
 			return err
 		}
-		set.set("useSecondWeaponSet", strconv.FormatBool(edit.WeaponSet == 2))
 	}
+	return nil
+}
+
+func (d *Document) selectSet(name, attribute string, id int) error {
+	if id == 0 {
+		return nil
+	}
+	if id < 1 {
+		return fmt.Errorf("неверный идентификатор набора")
+	}
+	section, err := d.root.child(name)
+	if err != nil {
+		return err
+	}
+	if section == nil {
+		return fmt.Errorf("нет секции %s", name)
+	}
+	section.set(attribute, strconv.Itoa(id))
+	return nil
+}
+
+func (d *Document) selectWeaponSet(id int) error {
+	if id == 0 {
+		return nil
+	}
+	if id != 1 && id != 2 {
+		return fmt.Errorf("вариант оружия: 1 или 2")
+	}
+	set, err := d.active("Items", "ItemSet", "activeItemSet")
+	if err != nil {
+		return err
+	}
+	set.set("useSecondWeaponSet", strconv.FormatBool(id == 2))
 	return nil
 }

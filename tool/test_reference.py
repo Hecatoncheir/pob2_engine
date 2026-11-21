@@ -38,21 +38,49 @@ class ReferenceIntegrity(unittest.TestCase):
             self.assertEqual(case['input_sha256'], sha256((DATA / 'cases' / (case['id'] + '.xml')).read_bytes()))
 
     def test_spell_matrix_inputs_and_provenance(self):
-        directory = DATA / '0.0.2'
-        golden = read_json(directory / 'spells.lua.json')
-        recipe = read_json(directory / 'spells.recipe.json')
-        self.assertEqual(golden['recipe_sha256'], sha256((directory / 'spells.recipe.json').read_bytes()))
+        self.check_matrix(DATA / '0.0.2', 'spells', 84)
+
+    def test_class_matrix_covers_catalog_and_start_nodes(self):
+        golden, recipes = self.check_matrix(DATA / '0.0.2/classes', 'classes', 168)
+        catalog = read_json(ROOT / 'internal/gamedata/files/catalog.json')
+        classes = {row['id']: row for row in catalog['classes']}
+        self.assertEqual(len(classes), 8)
+        self.assertEqual({row['class_id'] for row in recipes.values()}, set(classes))
+        for case in golden['cases']:
+            self.check_class_metadata(case, classes[case['class_id']])
+        for class_id in classes:
+            self.check_class_cases(recipes.values(), class_id)
+
+    def check_class_metadata(self, case, character):
+        self.assertEqual(case['class_name'], character['name'])
+        self.assertEqual(case['start_node'], character['start_node'])
+        self.assertEqual(case['report']['allocated_nodes'], [character['start_node']])
+
+    def check_class_cases(self, recipes, class_id):
+        selected = [row for row in recipes if row['class_id'] == class_id]
+        self.assertEqual({row['skill'] for row in selected}, {'Fireball', 'Frostbolt', 'Spark'})
+        self.assertEqual({row['level'] for row in selected}, {1, 20, 50, 100})
+
+    def test_group_matrix_inputs_and_provenance(self):
+        self.check_matrix(DATA / '0.0.2/groups', 'groups', 5)
+
+    def check_matrix(self, directory, matrix, count):
+        recipe_path = directory / (matrix + '.recipe.json')
+        golden = read_json(directory / (matrix + '.lua.json'))
+        recipe = read_json(recipe_path)
+        self.assertEqual(golden['recipe_sha256'], sha256(recipe_path.read_bytes()))
         sources = read_json(DATA / 'sources.lock.json')
         self.assertEqual(golden['pob_commit'], sources['pob']['commit'])
         self.assertEqual(golden['mcp_commit'], sources['mcp']['commit'])
         recipes = {case['id']: case for case in recipe['cases']}
         self.assertEqual(len(recipe['cases']), len(recipes))
         self.assertEqual({case['id'] for case in golden['cases']}, set(recipes))
-        self.assertEqual(len(golden['cases']), 84)
+        self.assertEqual(len(golden['cases']), count)
         for case in golden['cases']:
             self.assertEqual(case['input_sha256'], sha256((directory / 'cases' / (case['id'] + '.xml')).read_bytes()))
             self.assertEqual(case['skill'], recipes[case['id']]['skill'])
             self.assertEqual(case['element'], recipes[case['id']]['element'])
+        return golden, recipes
 
     def test_warnings_and_field_loss_are_not_numeric_tolerances(self):
         for actual in [{'warnings': []}, {'warnings': ['different']}, {}]:

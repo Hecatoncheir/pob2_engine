@@ -1,0 +1,517 @@
+{
+  "schema": 1,
+  "stage": "0.0.2/4",
+  "date_moscow": "2026-11-21",
+  "base_commit": "50bf2c8330ad8a9f133ad7370c072490fbf758ae",
+  "scope": "Новые и изменённые функции этапа 4, включая тесты Go и инструменты Python",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 62,
+  "maximum_cognitive": 9,
+  "functions": [
+    {
+      "file": "internal/build/edit.go",
+      "function": "Edited",
+      "line": 68,
+      "cognitive_before": 15,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "validateEdit",
+      "line": 97,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "clearCachedResults",
+      "line": 113,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "selectsSkills",
+      "line": 122,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "editSelection",
+      "line": 357,
+      "cognitive_before": 24,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "selectSets",
+      "line": 374,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "selectSet",
+      "line": 395,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "selectWeaponSet",
+      "line": 413,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectExtensions",
+      "line": 55,
+      "cognitive_before": 22,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectElement",
+      "line": 62,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "retainInactiveIssues",
+      "line": 78,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "isNonCalculationSection",
+      "line": 87,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectAttributes",
+      "line": 96,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectChildren",
+      "line": 104,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "activeElement",
+      "line": 124,
+      "cognitive_before": 6,
+      "cognitive_after": 7,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectSpecialValues",
+      "line": 149,
+      "cognitive_before": 21,
+      "cognitive_after": 5,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectModRange",
+      "line": 170,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectSpecOptions",
+      "line": 178,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectAttributeOverride",
+      "line": 190,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/build/extensions.go",
+      "function": "inspectGemOptions",
+      "line": 199,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/model.go",
+      "function": "readTree",
+      "line": 166,
+      "cognitive_before": 11,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/build/model.go",
+      "function": "readPassiveNodes",
+      "line": 192,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/model.go",
+      "function": "checkClassIdentity",
+      "line": 213,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/selection_test.go",
+      "function": "TestSelectingSmallerSkillSetRequiresExistingMainGroup",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 12
+    },
+    {
+      "file": "internal/calculation/classes_test.go",
+      "function": "classXML",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/calculation/classes_test.go",
+      "function": "TestClassLimitsDoNotBecomeNumericResults",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/calculation/classes_test.go",
+      "function": "checkClassRejected",
+      "line": 39,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/calculation/classes_test.go",
+      "function": "TestDisabledSkillExtensionsDoNotAffectDamage",
+      "line": 51,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/calculation/classes_test.go",
+      "function": "checkInactiveSkillExtension",
+      "line": 66,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/calculation/classes_test.go",
+      "function": "TestInactiveConfigDoesNotApplyUnsupportedModifiers",
+      "line": 87,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/calculation/engine.go",
+      "function": "readCharacter",
+      "line": 111,
+      "cognitive_before": 6,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/calculation/engine_test.go",
+      "function": "TestClassLuaMatrix",
+      "line": 55,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/calculation/engine_test.go",
+      "function": "TestGroupLuaMatrix",
+      "line": 59,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/calculation/engine_test.go",
+      "function": "calculateLuaCase",
+      "line": 106,
+      "cognitive_before": 4,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/calculation/engine_test.go",
+      "function": "checkClassInput",
+      "line": 130,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/calculation/selection.go",
+      "function": "readPassives",
+      "line": 170,
+      "cognitive_before": 18,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/calculation/selection.go",
+      "function": "readPassive",
+      "line": 190,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/calculation/selection.go",
+      "function": "connectedPassives",
+      "line": 206,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "newGroupScenario",
+      "line": 37,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "connect",
+      "line": 56,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "expectEvent",
+      "line": 67,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "setEnabled",
+      "line": 75,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "selectSkills",
+      "line": 88,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "calculate",
+      "line": 103,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "TestGroupAndSetSelectionSurvivesCrashWithoutRepeatingCommands",
+      "line": 118,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/integration/groups_process_test.go",
+      "function": "checkRestart",
+      "line": 145,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/transport/mcpapi/server.go",
+      "function": "New",
+      "line": 19,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "stats_for",
+      "line": 19,
+      "cognitive_before": 3,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "matrix_paths",
+      "line": 39,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "make_group_build",
+      "line": 43,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "catalog_gems",
+      "line": 70,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "class_metadata",
+      "line": 78,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "collect_case",
+      "line": 86,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "worker",
+      "line": 93,
+      "cognitive_before": 8,
+      "cognitive_after": 5,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "execute",
+      "line": 111,
+      "cognitive_before": 7,
+      "cognitive_after": 7,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "tool/reference_spells.py",
+      "function": "main",
+      "line": 144,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/test_reference.py",
+      "function": "test_spell_matrix_inputs_and_provenance",
+      "line": 40,
+      "cognitive_before": 3,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/test_reference.py",
+      "function": "test_class_matrix_covers_catalog_and_start_nodes",
+      "line": 43,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/test_reference.py",
+      "function": "check_class_metadata",
+      "line": 54,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/test_reference.py",
+      "function": "check_class_cases",
+      "line": 59,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/test_reference.py",
+      "function": "test_group_matrix_inputs_and_provenance",
+      "line": 64,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/test_reference.py",
+      "function": "check_matrix",
+      "line": 67,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    }
+  ]
+}
