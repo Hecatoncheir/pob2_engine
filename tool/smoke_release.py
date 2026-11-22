@@ -212,11 +212,31 @@ class Scenario:
         self.steps.append('three_spells_cli_mcp_grpc_shared_calculation')
         self.stop()
         self.restore_sessions(saved)
+        self.check_atomic_xml_creation(package_root)
         upgrade = self.upgrade_session(package_root)
         reports = [dict(value['report'], standalone=direct[session]) for session, value in saved.items()]
         fireball = saved['fireball']['snapshot']['build']
         return {'schema': 2, 'version': version, 'steps': self.steps, 'spells': reports, 'upgrade': upgrade,
                 'total_dps': fireball['calculation']['stats']['TotalDPS'], 'input_sha256': fireball['input_sha256']}
+
+    def check_atomic_xml_creation(self, package_root):
+        self.start('from-xml')
+        create = ('session', 'create', '--session', 'atomic', '--name', 'Fireball',
+                  '--request-id', 'create', '--file', package_root / SPELLS[0]['file'])
+        rejected = self.root / 'invalid.xml'
+        rejected.write_text('<Invalid/>', 'utf-8')
+        self.run(*create[:-1], rejected, *self.connection, code=1, raw=True)
+        initial = self.run(*create, *self.connection)
+        require(initial['revision'] == initial['build']['input_revision'] == 1,
+                'Первая ревизия не содержит исходный XML')
+        self.run('session', 'rename', '--session', 'atomic', '--name', 'После', '--revision', 1,
+                 '--request-id', 'rename', *self.connection)
+        self.stop()
+        self.start('from-xml')
+        require(self.run(*create, *self.connection) == initial, 'Не восстановлен первый снимок XML')
+        require(self.snapshot('atomic')['revision'] == 2, 'Повтор создания откатил сессию')
+        self.stop()
+        self.steps.append('atomic_xml_create_and_exact_retry_after_restart')
 
     def standalone_spells(self, package_root):
         results = {}
@@ -424,6 +444,8 @@ def check_native_lua(scenario):
                                               verify=lambda old, new: check_multigroup_upgrade(matrix, old, new))
         multigroup = check_multigroup(scenario, fixtures, check_source)
         upgrade005 = check_upgrade(scenario, fixtures)
+        upgrade006 = scenario.upgrade_session(fixtures, 'v0.0.6', profile='upgrade006',
+                                              verify=lambda old, new: check_same_lua_revision(old, new, lock))
         timings = {
             'lua': measure_binary_calculations(scenario, fixtures, 'luajit',
                                                lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)),
@@ -435,8 +457,17 @@ def check_native_lua(scenario):
     return dict(version=doctor['pob']['installed_version'], commit=lock['commit'],
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
-                upgrade004=upgrade004, upgrade005=upgrade005, multigroup=multigroup, catalog=catalog, timings=timings,
+                upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
+                multigroup=multigroup, catalog=catalog, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
+
+
+def check_same_lua_revision(previous, updated, lock):
+    old, new = check_updated_build(previous, updated)
+    assert_lua_source(old, lock)
+    assert_lua_source(new, lock)
+    require(old['data_sha256'] == new['data_sha256'], 'При обновлении изменился архив PoB')
+    require(old['issues'] == new['issues'], 'При обновлении изменилась диагностика PoB')
 
 
 def check_multigroup_upgrade(matrix, previous, updated):
