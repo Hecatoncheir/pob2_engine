@@ -2,6 +2,7 @@ package build
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
@@ -9,6 +10,10 @@ import (
 // WithSupport добавляет камень в копию выбранной группы, сохраняя остальные входы.
 // Совместимость и повтор семейства проверяются расчётчиком полного документа.
 func (d *Document) WithSupport(gem gamedata.Gem) (*Document, int, error) {
+	return d.WithSupportParameters(gem, 1, 0)
+}
+
+func (d *Document) WithSupportParameters(gem gamedata.Gem, level, quality int) (*Document, int, error) {
 	if !gem.Support {
 		return nil, 0, fmt.Errorf("нужен камень поддержки")
 	}
@@ -40,7 +45,10 @@ func (d *Document) WithSupport(gem gamedata.Gem) (*Document, int, error) {
 		return nil, 0, fmt.Errorf("нет выбранной группы")
 	}
 	group := groups[model.MainGroup-1]
-	group.parts = append(group.parts, part{element: supportElement(gem)})
+	node := supportElement(gem)
+	node.set("level", strconv.Itoa(level))
+	node.set("quality", strconv.Itoa(quality))
+	group.parts = append(group.parts, part{element: node})
 	copy.clearCachedResults()
 	if _, err := copy.Export(); err != nil {
 		return nil, 0, err
@@ -50,7 +58,7 @@ func (d *Document) WithSupport(gem gamedata.Gem) (*Document, int, error) {
 
 func supportElement(gem gamedata.Gem) *element {
 	node := newElement("Gem")
-	for name, value := range map[string]string{"gemId": gem.ID, "variantId": gem.VariantID, "skillId": gem.SkillID, "nameSpec": gem.Name,
+	for name, value := range map[string]string{"gemId": gem.GameID, "variantId": gem.VariantID, "skillId": gem.SkillID, "nameSpec": gem.Name,
 		"level": "1", "quality": "0", "enabled": "true"} {
 		node.set(name, value)
 	}

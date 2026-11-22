@@ -88,14 +88,7 @@ func (s *Service) restore(ctx context.Context, change Change) error {
 		}
 		result, err = s.Rename(ctx, *change.Rename)
 	case change.Apply != nil:
-		value, exists := s.sessions[change.Apply.SessionID]
-		if !exists {
-			return fmt.Errorf("правка сборки неизвестной сессии")
-		}
-		if _, exists := value.buildRequests[change.Apply.RequestID]; exists {
-			return fmt.Errorf("повтор правки сборки в журнале")
-		}
-		result, err = s.Apply(ctx, *change.Apply)
+		result, err = s.restoreApply(ctx, *change.Apply, change.Result)
 	case change.Calculate != nil:
 		result, err = s.restoreCalculation(ctx, *change.Calculate, change.Result)
 	default:

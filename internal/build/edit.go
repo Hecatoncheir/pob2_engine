@@ -3,6 +3,7 @@ package build
 import (
 	"encoding/xml"
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -98,6 +99,11 @@ func validateEdit(edit Edit, data *gamedata.Dataset) error {
 	if data == nil {
 		return fmt.Errorf("нет набора данных для правки")
 	}
+	return ValidateEdit(edit)
+}
+
+// ValidateEdit проверяет форму команды независимо от изменяемого каталога PoB.
+func ValidateEdit(edit Edit) error {
 	operations := 0
 	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil} {
 		if present {
@@ -263,7 +269,7 @@ func (d *Document) editGems(edit GemsEdit, data *gamedata.Dataset) error {
 	}
 	for _, input := range edit.Gems {
 		gem, ok := data.Gem(input.ID)
-		if !ok || input.Level < 1 || input.Level > 40 || input.Quality < 0 || input.Quality > 100 {
+		if !ok || !validGemInput(input, gem, data.IsRuntime()) {
 			return fmt.Errorf("неверный камень %s", input.ID)
 		}
 		node := newElement("Gem")
@@ -274,6 +280,17 @@ func (d *Document) editGems(edit GemsEdit, data *gamedata.Dataset) error {
 		group.parts = append(group.parts, part{element: node})
 	}
 	return nil
+}
+
+func validGemInput(input GemInput, gem gamedata.Gem, runtime bool) bool {
+	if input.Level < 1 || input.Level > 40 || input.Quality < 0 || input.Quality > 100 {
+		return false
+	}
+	if !runtime {
+		return true
+	}
+	return slices.ContainsFunc(gem.Levels, func(level gamedata.GemLevel) bool { return level.Level == input.Level }) &&
+		slices.Contains(gem.Qualities, input.Quality)
 }
 
 func (d *Document) editEquipment(edit EquipmentEdit) error {
@@ -323,6 +340,9 @@ func (d *Document) editPassives(edit PassivesEdit, data *gamedata.Dataset) error
 	if err != nil {
 		return err
 	}
+	if data.IsRuntime() && model.TreeVersion != data.TreeVersion() {
+		return fmt.Errorf("версия дерева сборки %s не соответствует каталогу %s", model.TreeVersion, data.TreeVersion())
+	}
 	class, ok := data.Class(model.ClassID)
 	if !ok {
 		return fmt.Errorf("неизвестный класс дерева")
@@ -334,6 +354,11 @@ func (d *Document) editPassives(edit PassivesEdit, data *gamedata.Dataset) error
 		}
 		if seen[id] && id != class.StartNode {
 			return fmt.Errorf("повтор пассива")
+		}
+		if data.IsRuntime() {
+			if _, ok := data.Node(id); !ok {
+				return fmt.Errorf("пассив %d отсутствует в активном PoB", id)
+			}
 		}
 		seen[id] = true
 	}

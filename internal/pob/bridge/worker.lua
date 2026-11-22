@@ -28,6 +28,8 @@ end
 
 local json = require("dkjson")
 dofile(directory .. "/lua/headless_bootstrap.lua")
+local catalog = dofile(directory .. "/catalog.lua")
+local diagnostics = dofile(directory .. "/diagnostics.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -73,7 +75,7 @@ local function calculate(xml)
 	local skills = build.controls.mainSkill
 	local selected = skills and skills.list and skills.list[skills.selIndex]
 	local skill = type(selected) == "table" and selected.label or selected
-	return { stats = stats, warnings = warnings, unsupported = unsupportedModifiers(), skill = clean(skill), mode = "EFFECTIVE" }
+	return { stats = stats, warnings = warnings, unsupported = unsupportedModifiers(), issues = diagnostics.collect(), skill = clean(skill), mode = "EFFECTIVE" }
 end
 
 local function reply(value)
@@ -85,6 +87,7 @@ reply({ ready = true })
 for line in io.lines() do
 	local ok, result = pcall(function()
 		local request = assert(json.decode(line))
+		if request.operation == "catalog" then return { catalog = catalog.read() } end
 		return calculate(assert(request.xml))
 	end)
 	if ok then reply(result) else reply({ error = clean(result) }) end

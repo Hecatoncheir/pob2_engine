@@ -10,6 +10,8 @@ import (
 
 type previewSupportInput struct {
 	SupportID        string `json:"support_id" jsonschema:"Точный ID или псевдоним поддержки из каталога"`
+	Level            int    `json:"level,omitempty" jsonschema:"Уровень поддержки; 0 означает 1"`
+	Quality          int    `json:"quality,omitempty" jsonschema:"Качество поддержки, 0–100"`
 	ExpectedRevision uint64 `json:"expected_revision"`
 }
 
@@ -23,11 +25,11 @@ func addCatalogTools(server *mcp.Server, commands application.CatalogCommands, s
 			value, err := commands.Catalog(ctx, input)
 			return nil, value, err
 		})
-	mcp.AddTool(server, &mcp.Tool{Name: "preview_support", Description: "Предпросмотр поддержки уровня 1/качества 0 в полной выбранной группе без записи; проверить compatible, status и issues обоих вариантов", Annotations: read, OutputSchema: calculationOutputSchema[application.SupportPreview]()},
+	mcp.AddTool(server, &mcp.Tool{Name: "preview_support", Description: "Предпросмотр поддержки с выбранными уровнем и качеством в полной группе без записи; проверить compatible, status и issues обоих вариантов", Annotations: read, OutputSchema: calculationOutputSchema[application.SupportPreview]()},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input previewSupportInput) (*mcp.CallToolResult, application.SupportPreview, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()
-			value, err := commands.PreviewSupport(ctx, application.PreviewSupport{SessionID: session, ExpectedRevision: input.ExpectedRevision, SupportID: input.SupportID})
+			value, err := commands.PreviewSupport(ctx, application.PreviewSupport{SessionID: session, ExpectedRevision: input.ExpectedRevision, SupportID: input.SupportID, Level: input.Level, Quality: input.Quality})
 			return nil, value, err
 		})
 }

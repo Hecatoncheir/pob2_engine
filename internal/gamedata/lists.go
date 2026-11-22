@@ -6,6 +6,7 @@ func (d *Dataset) Gems() []Gem {
 	result := slices.Clone(d.catalog.Gems)
 	for i := range result {
 		result[i].Levels = slices.Clone(result[i].Levels)
+		result[i].Qualities = slices.Clone(result[i].Qualities)
 		result[i].ConstantStats = slices.Clone(result[i].ConstantStats)
 	}
 	return result

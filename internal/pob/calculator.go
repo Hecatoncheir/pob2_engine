@@ -13,6 +13,7 @@ import (
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
+	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
 type Layout struct {
@@ -26,6 +27,7 @@ type Calculator struct {
 	layout       Layout
 	gate         chan struct{}
 	worker       *worker
+	data         *gamedata.Dataset
 }
 
 // Парсер XML в PoB распознаёт именованные сущности, а Go кодирует эти символы числами.
@@ -55,7 +57,7 @@ func (c *Calculator) Calculate(ctx context.Context, doc *build.Document) (calcul
 	if err != nil {
 		return calculation.Result{}, err
 	}
-	answer, err := c.run(ctx, xml)
+	answer, err := c.run(ctx, &request{XML: pobXML.Replace(string(xml))})
 	if err != nil {
 		return calculation.Result{}, err
 	}
@@ -84,6 +86,10 @@ func (c *Calculator) result(answer response, digest string) (calculation.Result,
 		r.Status = "partial"
 		r.Issues = append(r.Issues, build.Issue{Code: "unsupported_modifier", Path: "Config/customMods", Message: line})
 	}
+	if len(answer.Issues) > 0 {
+		r.Status = "partial"
+		r.Issues = append(r.Issues, answer.Issues...)
+	}
 	return r, nil
 }
 
@@ -94,13 +100,25 @@ func (i Installation) dataID() string {
 	return "pob-lua-" + i.Version
 }
 
-func (c *Calculator) run(ctx context.Context, xml []byte) (response, error) {
+func (c *Calculator) acquire(ctx context.Context) (func(), error) {
 	select {
 	case <-ctx.Done():
-		return response{}, ctx.Err()
+		return nil, ctx.Err()
 	case c.gate <- struct{}{}:
 	}
-	defer func() { <-c.gate }()
+	return func() { <-c.gate }, nil
+}
+
+func (c *Calculator) run(ctx context.Context, value *request) (response, error) {
+	release, err := c.acquire(ctx)
+	if err != nil {
+		return response{}, err
+	}
+	defer release()
+	return c.execute(ctx, value)
+}
+
+func (c *Calculator) execute(ctx context.Context, value *request) (response, error) {
 	if err := ctx.Err(); err != nil {
 		return response{}, err
 	}
@@ -109,7 +127,28 @@ func (c *Calculator) run(ctx context.Context, xml []byte) (response, error) {
 			return response{}, err
 		}
 	}
-	return c.exchange(ctx, xml)
+	return c.exchange(ctx, value)
+}
+
+// CatalogData читает каталог той же установки, которая выполняет расчёты.
+func (c *Calculator) CatalogData(ctx context.Context) (*gamedata.Dataset, error) {
+	release, err := c.acquire(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer release()
+	if c.data != nil {
+		return c.data, ctx.Err()
+	}
+	answer, err := c.execute(ctx, &request{Operation: "catalog"})
+	if err != nil {
+		return nil, err
+	}
+	if answer.Error != "" || answer.Catalog == nil {
+		return nil, fmt.Errorf("PoB Lua не вернул каталог: %s", answer.Error)
+	}
+	c.data, err = gamedata.NewRuntimeCatalog(*answer.Catalog, c.installation.dataID(), c.installation.SHA256, c.installation.Commit)
+	return c.data, err
 }
 
 func (c *Calculator) start(ctx context.Context) error {
@@ -129,10 +168,10 @@ func (c *Calculator) start(ctx context.Context) error {
 	return nil
 }
 
-func (c *Calculator) exchange(ctx context.Context, xml []byte) (response, error) {
+func (c *Calculator) exchange(ctx context.Context, value *request) (response, error) {
 	w := c.worker
 	done := make(chan workerReply, 1)
-	go func() { done <- w.request(xml) }()
+	go func() { done <- w.request(value) }()
 	select {
 	case <-ctx.Done():
 		c.stop()
@@ -154,13 +193,20 @@ func (c *Calculator) stop() {
 }
 
 type response struct {
-	Ready       bool               `json:"ready"`
-	Skill       string             `json:"skill"`
-	Mode        string             `json:"mode"`
-	Stats       map[string]float64 `json:"stats"`
-	Warnings    []string           `json:"warnings"`
-	Unsupported []string           `json:"unsupported"`
-	Error       string             `json:"error"`
+	Ready       bool                     `json:"ready"`
+	Skill       string                   `json:"skill"`
+	Mode        string                   `json:"mode"`
+	Stats       map[string]float64       `json:"stats"`
+	Warnings    []string                 `json:"warnings"`
+	Unsupported []string                 `json:"unsupported"`
+	Error       string                   `json:"error"`
+	Catalog     *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
+	Issues      []build.Issue            `json:"issues,omitempty"`
+}
+
+type request struct {
+	XML       string `json:"xml,omitempty"`
+	Operation string `json:"operation,omitempty"`
 }
 
 type workerReply struct {
@@ -218,14 +264,13 @@ func openWorker(cmd *exec.Cmd) (*worker, error) {
 		return nil, err
 	}
 	scanner := bufio.NewScanner(out)
-	scanner.Buffer(nil, 4<<20)
+	scanner.Buffer(nil, 8<<20)
 	return &worker{cmd: cmd, input: in, output: scanner}, nil
 }
 
-func (w *worker) request(xml []byte) workerReply {
-	if xml != nil {
-		request := map[string]string{"xml": pobXML.Replace(string(xml))}
-		if err := json.NewEncoder(w.input).Encode(request); err != nil {
+func (w *worker) request(value *request) workerReply {
+	if value != nil {
+		if err := json.NewEncoder(w.input).Encode(value); err != nil {
 			return workerReply{err: fmt.Errorf("запись в PoB Lua: %w", err)}
 		}
 	}

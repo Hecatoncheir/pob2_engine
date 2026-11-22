@@ -54,6 +54,7 @@ type Gem struct {
 	CastTime      float64    `json:"cast_time"`
 	Family        string     `json:"family"`
 	Levels        []GemLevel `json:"levels"`
+	Qualities     []int      `json:"qualities,omitempty"`
 	ConstantStats []Stat     `json:"constant_stats"`
 }
 
@@ -108,6 +109,7 @@ type Manifest struct {
 type Dataset struct {
 	id, tree, commit, hash string
 	catalog                catalog
+	runtime                bool
 }
 
 func Embedded() (*Dataset, error) {
@@ -205,13 +207,33 @@ func (d *Dataset) Class(id int) (Class, bool) {
 }
 func (d *Dataset) Gem(id string) (Gem, bool) {
 	for _, g := range d.catalog.Gems {
-		if g.ID == id || g.SkillID == id || g.Name == id || g.GameID == id || g.VariantID == id {
-			g.Levels = slices.Clone(g.Levels)
-			g.ConstantStats = slices.Clone(g.ConstantStats)
-			return g, true
+		if g.ID == id {
+			return cloneGem(g), true
 		}
 	}
-	return Gem{}, false
+	return d.gemAlias(id)
+}
+
+func (d *Dataset) gemAlias(id string) (Gem, bool) {
+	var result Gem
+	found := false
+	for _, gem := range d.catalog.Gems {
+		if !slices.Contains([]string{gem.SkillID, gem.Name, gem.GameID, gem.VariantID}, id) {
+			continue
+		}
+		if found && d.runtime {
+			return Gem{}, false
+		}
+		result, found = gem, true
+	}
+	return cloneGem(result), found
+}
+
+func cloneGem(gem Gem) Gem {
+	gem.Levels = slices.Clone(gem.Levels)
+	gem.Qualities = slices.Clone(gem.Qualities)
+	gem.ConstantStats = slices.Clone(gem.ConstantStats)
+	return gem
 }
 func (d *Dataset) Item(name string) (Item, bool) {
 	for _, i := range d.catalog.Items {

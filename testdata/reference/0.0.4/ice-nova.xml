@@ -1,0 +1,148 @@
+<PathOfBuilding2>
+	<Build ascendClassName="None" className="Sorceress" level="1" viewMode="TREE" targetVersion="0_1" characterLevelAutoMode="false" mainSocketGroup="1">
+		</Build>
+	<Items showStatDifferences="true" useSecondWeaponSet="nil" activeItemSet="1">
+		<ItemSet id="1" title="Default" useSecondWeaponSet="nil">
+			<Slot name="Weapon 1 Swap" itemPbURL="" itemId="0" />
+			<Slot name="Weapon 2 Swap" itemPbURL="" itemId="0" />
+			<Slot name="Arm 2" itemPbURL="" itemId="0" />
+			<Slot name="Arm 1" itemPbURL="" itemId="0" />
+			<Slot name="Leg 2" itemPbURL="" itemId="0" />
+			<Slot name="Leg 1" itemPbURL="" itemId="0" />
+			<Slot name="Belt" itemPbURL="" itemId="0" />
+			<Slot name="Flask 2" itemPbURL="" itemId="0" />
+			<Slot name="Flask 1" itemPbURL="" itemId="0" />
+			<Slot name="Charm 3" itemPbURL="" itemId="0" />
+			<Slot name="Charm 2" itemPbURL="" itemId="0" />
+			<Slot name="Charm 1" itemPbURL="" itemId="0" />
+			<Slot name="Ring 1" itemPbURL="" itemId="0" />
+			<Slot name="Amulet" itemPbURL="" itemId="0" />
+			<Slot name="Boots" itemPbURL="" itemId="0" />
+			<Slot name="Gloves" itemPbURL="" itemId="0" />
+			<Slot name="Body Armour" itemPbURL="" itemId="0" />
+			<Slot name="Ring 2" itemPbURL="" itemId="0" />
+			<Slot name="Ring 3" itemPbURL="" itemId="0" />
+			<Slot name="Weapon 1" itemPbURL="" itemId="0" />
+			<Slot name="Helmet" itemPbURL="" itemId="0" />
+			<Slot name="Weapon 2" itemPbURL="" itemId="0" />
+		</ItemSet>
+	</Items>
+	<Calcs>
+		<Input name="misc_buffMode" string="EFFECTIVE" />
+		<Input name="skill_number" number="1" />
+		<Section subsection="ViewSkillDetails" id="SkillSelect" collapsed="false" />
+		<Section subsection="SkillHitDamage" id="HitDamage" collapsed="false" />
+		<Section subsection="EmpoweredStats" id="Warcries" collapsed="false" />
+		<Section subsection="SkillDamageoverTime" id="Dot" collapsed="false" />
+		<Section subsection="AttackCastRate" id="Speed" collapsed="false" />
+		<Section subsection="Crits" id="Crit" collapsed="false" />
+		<Section subsection="Impale" id="Impale" collapsed="false" />
+		<Section subsection="SkilltypespecificStats" id="SkillTypeStats" collapsed="false" />
+		<Section subsection="Accuracy" id="HitChance" collapsed="false" />
+		<Section subsection="Bleed" id="Bleed" collapsed="false" />
+		<Section subsection="Poison" id="Poison" collapsed="false" />
+		<Section subsection="Ignite" id="Ignite" collapsed="false" />
+		<Section subsection="Decay" id="Decay" collapsed="false" />
+		<Section subsection="LeechGainonHit" id="LeechGain" collapsed="false" />
+		<Section subsection="NonDamagingAilments" id="EleAilments" collapsed="false" />
+		<Section subsection="OtherEffects" id="MiscEffects" collapsed="false" />
+		<Section subsection="Attributes" id="Attributes" collapsed="false" />
+		<Section subsection="Life" id="Life" collapsed="false" />
+		<Section subsection="Mana" id="Mana" collapsed="false" />
+		<Section subsection="Spirit" id="Spirit" collapsed="false" />
+		<Section subsection="EnergyShield" id="EnergyShield" collapsed="false" />
+		<Section subsection="Resists" id="Resist" collapsed="false" />
+		<Section subsection="Armour" id="Armour" collapsed="false" />
+		<Section subsection="Evasion" id="Evasion" collapsed="false" />
+		<Section subsection="DamageAvoidance" id="DamageAvoidance" collapsed="false" />
+		<Section subsection="Block" id="DamageAvoidance" collapsed="false" />
+		<Section subsection="Dodge" id="DamageAvoidance" collapsed="false" />
+		<Section subsection="Deflection" id="DamageAvoidance" collapsed="false" />
+		<Section subsection="Flasks" id="Flasks" collapsed="false" />
+		<Section subsection="UtilityFlasks" id="Flasks" collapsed="true" />
+		<Section subsection="LifeFlasks" id="Flasks" collapsed="true" />
+		<Section subsection="ManaFlasks" id="Flasks" collapsed="true" />
+		<Section subsection="Charms" id="Flasks" collapsed="true" />
+		<Section subsection="Rage" id="Rage" collapsed="true" />
+		<Section subsection="Charges" id="Charges" collapsed="true" />
+		<Section subsection="Endurance" id="Charges" collapsed="true" />
+		<Section subsection="Frenzy" id="Charges" collapsed="true" />
+		<Section subsection="Power" id="Charges" collapsed="true" />
+		<Section subsection="OtherDefences" id="MiscDefences" collapsed="false" />
+		<Section subsection="StunDuration" id="MiscDefences" collapsed="false" />
+		<Section subsection="OtherAvoidance" id="MiscDefences" collapsed="true" />
+		<Section subsection="OtherAilmentDefences" id="MiscDefences" collapsed="true" />
+		<Section subsection="DamageTaken" id="DamageTaken" collapsed="false" />
+		<Section subsection="DamagingHits" id="DamageTaken" collapsed="false" />
+		<Section subsection="EffectiveHealthPool" id="DamageTaken" collapsed="false" />
+		<Section subsection="MaximumHitTaken" id="DamageTaken" collapsed="false" />
+		<Section subsection="RecoupandHitTakenOverTime" id="DamageTaken" collapsed="true" />
+		<Section subsection="DotsandBuildDegens" id="DamageTaken" collapsed="false" />
+		<Section subsection="EnemyDegens" id="DamageTaken" collapsed="true" />
+	</Calcs>
+	<Notes>
+
+	</Notes>
+	<Config activeConfigSet="1">
+		<ConfigSet id="1">
+			<Input name="questInterlude 2Khari CrossingMolten Shrine" boolean="false" />
+			<Input name="resistancePenalty" number="0" />
+			<Input name="questAct 1ClearfellBeira" boolean="false" />
+			<Input name="questInterlude 3Kriar VillageLythara" boolean="false" />
+			<Input name="questAct 1FreythornKing In The Mists" boolean="false" />
+			<Input name="enemyIsBoss" string="None" />
+			<Input name="questAct 2Spires of DesharSisters of Garukhan Shrine" boolean="false" />
+			<Input name="questAct 3Azak BogIgnagduk" boolean="false" />
+			<Input name="questAct 1Ogham ManorCandlemass" boolean="false" />
+			<Input name="questAct 3Jiquani's MachinariumBlackjaw" boolean="false" />
+			<Input name="questAct 4Eye of HinekoraSilent Hall" boolean="false" />
+			<Placeholder name="enemySpeed" number="700" />
+			<Placeholder name="enemyCritChance" number="5" />
+			<Placeholder name="enemyCritDamage" number="30" />
+			<Placeholder name="multiplierWitheredStackCountSelf" number="15" />
+			<Placeholder name="enemyLevel" number="1" />
+			<Placeholder name="enemyPhysicalDamage" number="3" />
+			<Placeholder name="enemyLightningDamage" number="3" />
+			<Placeholder name="multiplierStunnedRecently" number="1" />
+			<Placeholder name="enemyFireDamage" number="3" />
+			<Placeholder name="enemyChaosDamage" number="1" />
+			<Placeholder name="enemyArmour" number="3" />
+			<Placeholder name="enemyEvasion" number="24" />
+			<Placeholder name="conditionCorruptingCryStages" number="10" />
+			<Placeholder name="multiplierWarcryUsedRecently" number="1" />
+			<Placeholder name="ScorchStacks" number="1" />
+			<Placeholder name="enemyDamageRollRange" number="70" />
+			<Placeholder name="demonFormStacks" number="10" />
+			<Placeholder name="sigilOfPowerStages" number="1" />
+			<Placeholder name="multiplierDifferentGrenadeFired" number="1" />
+			<Placeholder name="multiplierDifferentAmmoFired" number="1" />
+			<Placeholder name="multiplierCurrentEnergyShield" number="100" />
+			<Placeholder name="ChillStacks" number="1" />
+			<Placeholder name="enemyDistance" number="20" />
+			<Placeholder name="enemyCriticalWeaknessStacks" number="20" />
+			<Placeholder name="ShockStacks" number="1" />
+			<Placeholder name="enemyColdDamage" number="3" />
+		</ConfigSet>
+	</Config>
+	<TreeView searchStr="" zoomLevel="3" zoomX="0" zoomY="0" showStatDifferences="true" />
+	<Import exportParty="false" />
+	<Tree activeSpec="1">
+		<Spec masteryEffects="" secondaryAscendClassId="nil" classInternalId="7" classId="7" ascendancyInternalId="" nodes="54447" ascendClassId="0" treeVersion="0_5">
+			<URL>
+				https://www.pathofexile.com/passive-skill-tree/AAAABgcAAAAA
+			</URL>
+			<Sockets />
+			<Overrides>
+				<AttributeOverride strNodes="" dexNodes="" intNodes="" />
+			</Overrides>
+		</Spec>
+	</Tree>
+	<Skills defaultGemLevel="normalMaximum" sortGemsByDPSField="CombinedDPS" sortGemsByDPS="true" activeSkillSet="1" showSupportGemTypes="ALL" showLegacyGems="false" defaultGemQuality="nil">
+		<SkillSet id="1">
+			<Skill mainActiveSkillCalcs="1" includeInFullDPS="true" mainActiveSkill="1" enabled="true" label="">
+				<Gem quality="0" corruptLevel="0" corrupted="false" level="1" gemId="Metadata/Items/Gems/SkillGemIceNova" enabled="true" enableGlobal1="true" enableGlobal2="false" statSetIndex="nil" statSetIndexCalcs="nil" count="1" nameSpec="Ice Nova" skillId="IceNovaPlayer" variantId="IceNova" />
+			</Skill>
+		</SkillSet>
+	</Skills>
+	<Party append="false" destination="All" ShowAdvanceTools="false" />
+</PathOfBuilding2>

@@ -182,7 +182,11 @@ func (s *Service) Apply(ctx context.Context, cmd ApplyBuild) (domain.Snapshot, e
 		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 	}
 	if cmd.Edit != nil {
-		doc, err = doc.Edited(*cmd.Edit, s.data)
+		data, dataErr := s.editData(ctx)
+		if dataErr != nil {
+			return domain.Snapshot{}, dataErr
+		}
+		doc, err = doc.Edited(*cmd.Edit, data)
 		if err != nil {
 			return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 		}
@@ -249,7 +253,11 @@ func (s *Service) Compare(ctx context.Context, cmd CompareBuild) (BuildCompariso
 	}
 	var after *build.Document
 	if cmd.Edit != nil {
-		after, err = before.Edited(*cmd.Edit, s.data)
+		data, dataErr := s.editData(ctx)
+		if dataErr != nil {
+			return BuildComparison{}, dataErr
+		}
+		after, err = before.Edited(*cmd.Edit, data)
 	} else {
 		after, err = build.Parse([]byte(cmd.XML))
 	}

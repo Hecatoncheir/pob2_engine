@@ -339,12 +339,14 @@ func (x *GetCatalogResponse) GetEntries() []*CatalogEntry {
 	return nil
 }
 
-// Добавляет уровень 1/качество 0 в копию выбранной группы; сессию не меняет.
+// Добавляет поддержку в копию выбранной группы; уровень 0 означает 1. Сессию не меняет.
 type PreviewSupportRequest struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	SessionId        string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	ExpectedRevision uint64                 `protobuf:"varint,2,opt,name=expected_revision,json=expectedRevision,proto3" json:"expected_revision,omitempty"`
 	SupportId        string                 `protobuf:"bytes,3,opt,name=support_id,json=supportId,proto3" json:"support_id,omitempty"`
+	Level            int32                  `protobuf:"varint,4,opt,name=level,proto3" json:"level,omitempty"`
+	Quality          int32                  `protobuf:"varint,5,opt,name=quality,proto3" json:"quality,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -398,6 +400,20 @@ func (x *PreviewSupportRequest) GetSupportId() string {
 		return x.SupportId
 	}
 	return ""
+}
+
+func (x *PreviewSupportRequest) GetLevel() int32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+func (x *PreviewSupportRequest) GetQuality() int32 {
+	if x != nil {
+		return x.Quality
+	}
+	return 0
 }
 
 type PreviewSupportResponse struct {
@@ -529,13 +545,15 @@ const file_pob2_v1_catalog_proto_rawDesc = "" +
 	"\x05limit\x18\b \x01(\x05R\x05limit\x12\x14\n" +
 	"\x05total\x18\t \x01(\x05R\x05total\x12/\n" +
 	"\aentries\x18\n" +
-	" \x03(\v2\x15.pob2.v1.CatalogEntryR\aentries\"\x82\x01\n" +
+	" \x03(\v2\x15.pob2.v1.CatalogEntryR\aentries\"\xb2\x01\n" +
 	"\x15PreviewSupportRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12+\n" +
 	"\x11expected_revision\x18\x02 \x01(\x04R\x10expectedRevision\x12\x1d\n" +
 	"\n" +
-	"support_id\x18\x03 \x01(\tR\tsupportId\"\x91\x02\n" +
+	"support_id\x18\x03 \x01(\tR\tsupportId\x12\x14\n" +
+	"\x05level\x18\x04 \x01(\x05R\x05level\x12\x18\n" +
+	"\aquality\x18\x05 \x01(\x05R\aquality\"\x91\x02\n" +
 	"\x16PreviewSupportResponse\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +

@@ -43,11 +43,13 @@ message GetCatalogResponse {
   repeated CatalogEntry entries = 10;
 }
 
-// Добавляет уровень 1/качество 0 в копию выбранной группы; сессию не меняет.
+// Добавляет поддержку в копию выбранной группы; уровень 0 означает 1. Сессию не меняет.
 message PreviewSupportRequest {
   string session_id = 1;
   uint64 expected_revision = 2;
   string support_id = 3;
+  int32 level = 4;
+  int32 quality = 5;
 }
 
 message PreviewSupportResponse {
