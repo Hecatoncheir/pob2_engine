@@ -1,0 +1,838 @@
+{
+  "schema": 1,
+  "stage": "0.0.4",
+  "date_moscow": "2026-11-22",
+  "base_commit": "8978415e0f7e525b27ba15567d1c0a0deb2e516e",
+  "scope": "Новые и изменённые функции выпуска 0.0.4 на Go, Python и Lua, включая тесты; генерируемый API исключён",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a",
+      "lua": "92479bcc5b39443e2d3be855f0ff23544e286179bf0e50092010bff02f3a4cb8"
+    }
+  },
+  "functions_checked": 102,
+  "maximum_cognitive": 10,
+  "functions": [
+    {
+      "file": "internal/application/builds.go",
+      "function": "Apply",
+      "line": 144,
+      "cognitive_before": 19,
+      "cognitive_after": 10,
+      "cyclomatic_after": 11
+    },
+    {
+      "file": "internal/application/builds.go",
+      "function": "applyNewBuild",
+      "line": 179,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/application/builds.go",
+      "function": "Compare",
+      "line": 231,
+      "cognitive_before": 10,
+      "cognitive_after": 10,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "Catalog",
+      "line": 54,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "gemEntry",
+      "line": 104,
+      "cognitive_before": 2,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "catalogEntries",
+      "line": 129,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "gemEntries",
+      "line": 143,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "classEntries",
+      "line": 151,
+      "cognitive_before": 1,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "itemEntries",
+      "line": 165,
+      "cognitive_before": 1,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "passiveEntries",
+      "line": 177,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "passiveEntry",
+      "line": 195,
+      "cognitive_before": 5,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/application/catalog.go",
+      "function": "runtimeItemEntry",
+      "line": 209,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/edit_data.go",
+      "function": "editDocument",
+      "line": 14,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/application/edit_data.go",
+      "function": "editData",
+      "line": 22,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/journal.go",
+      "function": "restore",
+      "line": 63,
+      "cognitive_before": 19,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/journal.go",
+      "function": "validateChange",
+      "line": 77,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/journal.go",
+      "function": "restoreCommand",
+      "line": 90,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/restore_apply.go",
+      "function": "restoreApply",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/application/restore_apply.go",
+      "function": "commitRestoredApply",
+      "line": 45,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/restore_apply.go",
+      "function": "validateStoredApply",
+      "line": 61,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/restore_catalog_test.go",
+      "function": "CatalogData",
+      "line": 19,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/application/restore_catalog_test.go",
+      "function": "TestRecoveryReplaysEditWithoutCurrentCatalog",
+      "line": 23,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/restore_catalog_test.go",
+      "function": "TestRecoveryRejectsDamagedSavedEdit",
+      "line": 54,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "PreviewSupport",
+      "line": 32,
+      "cognitive_before": 6,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "supportCompatible",
+      "line": 62,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "supportSnapshot",
+      "line": 74,
+      "cognitive_before": 7,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/application/support.go",
+      "function": "validateSupportParameters",
+      "line": 99,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 11
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "validateEdit",
+      "line": 98,
+      "cognitive_before": 5,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "ValidateEdit",
+      "line": 106,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "editGems",
+      "line": 226,
+      "cognitive_before": 22,
+      "cognitive_after": 8,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "validateGemGroup",
+      "line": 262,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 11
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "removeGemGroup",
+      "line": 276,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "gemElements",
+      "line": 292,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "gemElement",
+      "line": 304,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "validGemInput",
+      "line": 313,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "editPassives",
+      "line": 366,
+      "cognitive_before": 12,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "selectedPassiveNodes",
+      "line": 399,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "validatePassiveID",
+      "line": 413,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/build/support.go",
+      "function": "WithSupport",
+      "line": 12,
+      "cognitive_before": 9,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/build/support.go",
+      "function": "WithSupportParameters",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 10
+    },
+    {
+      "file": "internal/build/support.go",
+      "function": "supportElement",
+      "line": 59,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/gamedata/catalog.go",
+      "function": "Gem",
+      "line": 209,
+      "cognitive_before": 4,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/gamedata/catalog.go",
+      "function": "gemAlias",
+      "line": 218,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/gamedata/catalog.go",
+      "function": "cloneGem",
+      "line": 233,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/gamedata/catalog.go",
+      "function": "Item",
+      "line": 239,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/gamedata/lists.go",
+      "function": "Gems",
+      "line": 5,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/gamedata/lists.go",
+      "function": "Items",
+      "line": 15,
+      "cognitive_before": 0,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/gamedata/runtime.go",
+      "function": "NewRuntimeCatalog",
+      "line": 18,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/gamedata/runtime.go",
+      "function": "IsRuntime",
+      "line": 32,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/gamedata/runtime_test.go",
+      "function": "TestRuntimeCatalogDoesNotChooseAnAmbiguousGem",
+      "line": 5,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/gamedata/runtime_test.go",
+      "function": "TestRuntimeCatalogKeepsIndependentSnapshots",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "gemEntry",
+      "line": 4,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 11
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "gems",
+      "line": 21,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "classes",
+      "line": 29,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "itemSlots",
+      "line": 39,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "items",
+      "line": 52,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "nodes",
+      "line": 63,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/pob/bridge/catalog.lua",
+      "function": "catalog.read",
+      "line": 74,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/pob/bridge/diagnostics.lua",
+      "function": "gemProblem",
+      "line": 3,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/pob/bridge/diagnostics.lua",
+      "function": "supportProblem",
+      "line": 13,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/bridge/diagnostics.lua",
+      "function": "groupProblems",
+      "line": 24,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/bridge/diagnostics.lua",
+      "function": "itemLines",
+      "line": 35,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/pob/bridge/diagnostics.lua",
+      "function": "diagnostics.collect",
+      "line": 45,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/bridge/worker.lua",
+      "function": "calculate",
+      "line": 60,
+      "cognitive_before": 10,
+      "cognitive_after": 10,
+      "cyclomatic_after": 14
+    },
+    {
+      "file": "internal/pob/bridge/worker.lua",
+      "function": "<closure>",
+      "line": 89,
+      "cognitive_before": 0,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "Calculate",
+      "line": 51,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "result",
+      "line": 71,
+      "cognitive_before": 4,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "acquire",
+      "line": 103,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "run",
+      "line": 112,
+      "cognitive_before": 5,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "execute",
+      "line": 121,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "CatalogData",
+      "line": 134,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "exchange",
+      "line": 171,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "openWorker",
+      "line": 251,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/calculator.go",
+      "function": "request",
+      "line": 271,
+      "cognitive_before": 7,
+      "cognitive_after": 7,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/catalog_test.go",
+      "function": "TestLuaCatalogUsesOriginalPoB",
+      "line": 17,
+      "cognitive_before": null,
+      "cognitive_after": 10,
+      "cyclomatic_after": 14
+    },
+    {
+      "file": "internal/pob/catalog_test.go",
+      "function": "TestLuaCatalogConcurrentReadsShareSuccessfulData",
+      "line": 43,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/catalog_test.go",
+      "function": "TestLuaCatalogRestartsAfterCancellation",
+      "line": 59,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/pob/catalog_test.go",
+      "function": "TestLuaFullCatalogBuildsMatchIndependentReference",
+      "line": 87,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/catalog_test.go",
+      "function": "readCatalogReference",
+      "line": 113,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/catalog_test.go",
+      "function": "checkReferenceStats",
+      "line": 128,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/pob/restart_test.go",
+      "function": "startStalledLuaWorker",
+      "line": 59,
+      "cognitive_before": 5,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/transport/cli/catalog.go",
+      "function": "previewSupport",
+      "line": 35,
+      "cognitive_before": 6,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "PreviewSupport",
+      "line": 55,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/transport/grpcapi/catalog.go",
+      "function": "PreviewSupport",
+      "line": 68,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/transport/grpcapi/lua_acceptance_test.go",
+      "function": "callLuaTool",
+      "line": 162,
+      "cognitive_before": 4,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/grpcapi/lua_acceptance_test.go",
+      "function": "luaToolResult",
+      "line": 166,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/transport/grpcapi/lua_catalog_test.go",
+      "function": "TestLuaFullCatalogAcrossGRPCAndMCP",
+      "line": 17,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 13
+    },
+    {
+      "file": "internal/transport/grpcapi/lua_catalog_test.go",
+      "function": "checkFullLuaCatalogPages",
+      "line": 50,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/transport/grpcapi/lua_catalog_test.go",
+      "function": "checkInvalidLuaSupports",
+      "line": 67,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/transport/mcpapi/catalog.go",
+      "function": "addCatalogTools",
+      "line": 18,
+      "cognitive_before": 0,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/reference_catalog.py",
+      "function": "worker",
+      "line": 15,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/reference_catalog.py",
+      "function": "execute",
+      "line": 31,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "require",
+      "line": 6,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "catalog_page",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "apply_edit",
+      "line": 22,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "preview_support",
+      "line": 28,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "check_new_skill",
+      "line": 38,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "check_equipment_and_passives",
+      "line": 53,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_catalog.py",
+      "function": "check_full_catalog",
+      "line": 68,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "upgrade_session",
+      "line": 298,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "verify_upgrade_journal",
+      "line": 327,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_native_lua",
+      "line": 398,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    }
+  ]
+}

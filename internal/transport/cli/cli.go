@@ -45,8 +45,8 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
 Или: --profile ИМЯ [--start-server] [--runtime-dir КАТАЛОГ] [--data-dir КАТАЛОГ]
 Токен также читается из POB2_ENGINE_TOKEN. Справка команды: КОМАНДА --help.
 Сессии профиля сохраняются на диск. --ephemeral и MCP --standalone используют память.
-Покрытие: попадания Fireball/Frostbolt/Spark, восемь базовых классов без возвышений.
-Проверяйте status и issues; поддерживается ограниченный набор предметов и пассивов.
+Каталог и расчёты по умолчанию предоставляет оригинальный PoB на LuaJIT.
+Прежний режим Go ограничен Fireball/Frostbolt/Spark. Проверяйте status, issues и coverage.
 `
 
 type UsageError struct{ Err error }

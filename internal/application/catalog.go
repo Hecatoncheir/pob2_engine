@@ -59,16 +59,17 @@ func (s *Service) Catalog(ctx context.Context, query CatalogQuery) (CatalogPage,
 	if err != nil {
 		return CatalogPage{}, err
 	}
-	if err := s.loadData(); err != nil {
+	data, err := s.editData(ctx)
+	if err != nil {
 		return CatalogPage{}, err
 	}
-	entries := s.catalogEntries(query.Kind)
+	entries := catalogEntries(data, query.Kind)
 	entries = slices.DeleteFunc(entries, func(entry CatalogEntry) bool { return !matchesCatalog(entry, query.Query) })
 	slices.SortFunc(entries, func(a, b CatalogEntry) int { return strings.Compare(a.ID, b.ID) })
 	total := len(entries)
 	start := min(query.Offset, total)
 	end := min(start+query.Limit, total)
-	return CatalogPage{DataID: s.data.ID(), DataSHA256: s.data.SHA256(), PoBCommit: s.data.PoBCommit(), TreeVersion: s.data.TreeVersion(),
+	return CatalogPage{DataID: data.ID(), DataSHA256: data.SHA256(), PoBCommit: data.PoBCommit(), TreeVersion: data.TreeVersion(),
 		Kind: query.Kind, Query: query.Query, Offset: query.Offset, Limit: query.Limit, Total: total, Entries: entries[start:end]}, ctx.Err()
 }
 
@@ -107,6 +108,14 @@ func gemEntry(gem gamedata.Gem) CatalogEntry {
 	for _, level := range gem.Levels {
 		entry.Levels = append(entry.Levels, level.Level)
 	}
+	if len(gem.Qualities) > 0 {
+		entry.Qualities = gem.Qualities
+		entry.Coverage = []string{"Камень из активной установки PoB; расчёт и предупреждения возвращает оригинальный Lua."}
+		if gem.Mode != "" {
+			entry.Modes = []string{gem.Mode}
+		}
+		return entry
+	}
 	entry.Coverage = []string{"Только statSetIndex=1, без осквернения; одна включённая группа, одно активное умение."}
 	if gem.Support {
 		entry.Coverage = append(entry.Coverage, "Поддержка Fireball/Frostbolt/Spark; уровень 1, качество 0; без повтора семейства.")
@@ -117,51 +126,58 @@ func gemEntry(gem gamedata.Gem) CatalogEntry {
 	return entry
 }
 
-func (s *Service) catalogEntries(kind string) []CatalogEntry {
+func catalogEntries(data *gamedata.Dataset, kind string) []CatalogEntry {
 	switch kind {
 	case "gems":
-		return s.gemEntries()
+		return gemEntries(data)
 	case "classes":
-		return s.classEntries()
+		return classEntries(data)
 	case "items":
-		return s.itemEntries()
+		return itemEntries(data)
 	case "passives":
-		return s.passiveEntries()
+		return passiveEntries(data)
 	}
 	return []CatalogEntry{}
 }
 
-func (s *Service) gemEntries() []CatalogEntry {
+func gemEntries(data *gamedata.Dataset) []CatalogEntry {
 	entries := []CatalogEntry{}
-	for _, gem := range s.data.Gems() {
+	for _, gem := range data.Gems() {
 		entries = append(entries, gemEntry(gem))
 	}
 	return entries
 }
 
-func (s *Service) classEntries() []CatalogEntry {
+func classEntries(data *gamedata.Dataset) []CatalogEntry {
 	entries := []CatalogEntry{}
-	for _, class := range s.data.Classes() {
+	for _, class := range data.Classes() {
 		entry := emptyEntry("classes", strconv.Itoa(class.ID), class.Name)
 		entry.ClassIDs = []int{class.ID}
 		entry.Coverage = []string{"Базовые характеристики, без возвышений; старт дерева " + strconv.Itoa(class.StartNode) + ". Пассивы выбирайте отдельно из каталога."}
+		if data.IsRuntime() {
+			entry.Coverage = []string{"Базовый класс оригинального PoB; редактор возвышений пока отсутствует."}
+		}
 		entries = append(entries, entry)
 	}
 	return entries
 }
 
-func (s *Service) itemEntries() []CatalogEntry {
+func itemEntries(data *gamedata.Dataset) []CatalogEntry {
 	entries := []CatalogEntry{}
-	for _, item := range s.data.Items() {
-		entries = append(entries, itemEntry(item))
+	for _, item := range data.Items() {
+		entry := itemEntry(item)
+		if data.IsRuntime() {
+			entry = runtimeItemEntry(item)
+		}
+		entries = append(entries, entry)
 	}
 	return entries
 }
 
-func (s *Service) passiveEntries() []CatalogEntry {
+func passiveEntries(data *gamedata.Dataset) []CatalogEntry {
 	entries := []CatalogEntry{}
-	for _, node := range s.data.Nodes() {
-		entries = append(entries, s.passiveEntry(node))
+	for _, node := range data.Nodes() {
+		entries = append(entries, passiveEntry(data, node))
 	}
 	return entries
 }
@@ -176,13 +192,25 @@ func itemEntry(item gamedata.Item) CatalogEntry {
 	return entry
 }
 
-func (s *Service) passiveEntry(node gamedata.Node) CatalogEntry {
+func passiveEntry(data *gamedata.Dataset, node gamedata.Node) CatalogEntry {
 	entry := emptyEntry("passives", strconv.Itoa(node.ID), node.Name)
-	for _, class := range s.data.Classes() {
-		if class.StartNode == node.ID || class.ID == 7 && len(node.Neighbors) > 0 {
+	for _, class := range data.Classes() {
+		if class.StartNode == node.ID || !data.IsRuntime() && class.ID == 7 && len(node.Neighbors) > 0 {
 			entry.ClassIDs = append(entry.ClassIDs, class.ID)
 		}
 	}
 	entry.Coverage = []string{"Только перечисленные классы; нужны связь со стартом и доступные очки без наград заданий. Это не полное дерево."}
+	if data.IsRuntime() {
+		entry.Coverage = []string{"Узел активного дерева PoB; применимость выделенных узлов проверяет оригинальный PoB."}
+	}
+	return entry
+}
+
+func runtimeItemEntry(item gamedata.Item) CatalogEntry {
+	entry := emptyEntry("items", item.Name, item.Name)
+	if len(item.Slots) > 0 {
+		entry.Slots = item.Slots
+	}
+	entry.Coverage = []string{"База из активной установки PoB; тип: " + item.SlotType + ". Для правки используйте слот выбранного набора XML и полный текст предмета."}
 	return entry
 }

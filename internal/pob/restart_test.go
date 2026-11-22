@@ -60,11 +60,13 @@ func startStalledLuaWorker(t *testing.T, ctx context.Context, engine *Calculator
 	t.Helper()
 	const bootstrap = `
 common = { xml = { ParseXML = function() return { { elem = "PathOfBuilding2" } } end } }
-function loadBuildFromXML()
+local function stall()
 	local file = assert(io.open(os.getenv("POB2_TEST_WORKER_MARKER"), "w"))
 	file:close()
 	while true do end
 end
+loadBuildFromXML = stall
+main = { LoadTree = stall }
 `
 	work := t.TempDir()
 	marker := filepath.Join(work, "calculation-started")

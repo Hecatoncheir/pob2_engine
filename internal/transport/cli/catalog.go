@@ -39,6 +39,8 @@ func (r runner) previewSupport(ctx context.Context, args []string) error {
 	fs.StringVar(&command.SessionID, "session", "", "явно выбранный session_id")
 	fs.Uint64Var(&command.ExpectedRevision, "revision", 0, "ожидаемая ревизия")
 	fs.StringVar(&command.SupportID, "support", "", "точный ID или псевдоним поддержки из каталога")
+	fs.IntVar(&command.Level, "level", 1, "уровень поддержки из каталога PoB")
+	fs.IntVar(&command.Quality, "quality", 0, "качество поддержки, 0–100")
 	if err := parse(fs, args); err != nil {
 		return err
 	}

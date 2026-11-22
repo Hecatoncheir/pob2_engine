@@ -3,6 +3,7 @@ package build
 import (
 	"encoding/xml"
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -98,6 +99,11 @@ func validateEdit(edit Edit, data *gamedata.Dataset) error {
 	if data == nil {
 		return fmt.Errorf("нет набора данных для правки")
 	}
+	return ValidateEdit(edit)
+}
+
+// ValidateEdit проверяет форму команды независимо от изменяемого каталога PoB.
+func ValidateEdit(edit Edit) error {
 	operations := 0
 	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil} {
 		if present {
@@ -223,30 +229,16 @@ func (d *Document) editGems(edit GemsEdit, data *gamedata.Dataset) error {
 		return err
 	}
 	groups := set.children("Skill")
-	id := edit.GroupID
-	if id == 0 {
-		id = len(groups) + 1
-	}
-	if id < 1 || id > len(groups)+1 || id > 100 || len(edit.Label) > 512 || !utf8.ValidString(edit.Label) || len(edit.Gems) > 12 {
-		return fmt.Errorf("неверная группа камней")
+	id, err := validateGemGroup(edit, groups)
+	if err != nil {
+		return err
 	}
 	if edit.Delete {
-		if id > len(groups) || len(edit.Gems) > 0 {
-			return fmt.Errorf("нельзя удалить эту группу")
-		}
-		set.remove(groups[id-1])
-		info, _ := d.root.child("Build")
-		main, err := integer(info.attr("mainSocketGroup", "1"), "mainSocketGroup", 1, 100)
-		if err != nil {
-			return err
-		}
-		if main > id {
-			main--
-		} else if main == id {
-			main = 1
-		}
-		info.set("mainSocketGroup", strconv.Itoa(main))
-		return nil
+		return d.removeGemGroup(set, groups, id)
+	}
+	nodes, err := gemElements(edit.Gems, data)
+	if err != nil {
+		return err
 	}
 	group := newElement("Skill")
 	if id <= len(groups) {
@@ -261,19 +253,72 @@ func (d *Document) editGems(edit GemsEdit, data *gamedata.Dataset) error {
 	for _, gem := range group.children("Gem") {
 		group.remove(gem)
 	}
-	for _, input := range edit.Gems {
-		gem, ok := data.Gem(input.ID)
-		if !ok || input.Level < 1 || input.Level > 40 || input.Quality < 0 || input.Quality > 100 {
-			return fmt.Errorf("неверный камень %s", input.ID)
-		}
-		node := newElement("Gem")
-		for key, value := range map[string]string{"nameSpec": gem.Name, "skillId": gem.SkillID, "gemId": gem.GameID, "variantId": gem.VariantID,
-			"level": strconv.Itoa(input.Level), "quality": strconv.Itoa(input.Quality), "enabled": strconv.FormatBool(input.Enabled), "statSetIndex": "1"} {
-			node.set(key, value)
-		}
+	for _, node := range nodes {
 		group.parts = append(group.parts, part{element: node})
 	}
 	return nil
+}
+
+func validateGemGroup(edit GemsEdit, groups []*element) (int, error) {
+	id := edit.GroupID
+	if id == 0 {
+		id = len(groups) + 1
+	}
+	if id < 1 || id > len(groups)+1 || id > 100 || len(edit.Label) > 512 || !utf8.ValidString(edit.Label) || len(edit.Gems) > 12 {
+		return 0, fmt.Errorf("неверная группа камней")
+	}
+	if edit.Delete && (id > len(groups) || len(edit.Gems) > 0) {
+		return 0, fmt.Errorf("нельзя удалить эту группу")
+	}
+	return id, nil
+}
+
+func (d *Document) removeGemGroup(set *element, groups []*element, id int) error {
+	set.remove(groups[id-1])
+	info, _ := d.root.child("Build")
+	main, err := integer(info.attr("mainSocketGroup", "1"), "mainSocketGroup", 1, 100)
+	if err != nil {
+		return err
+	}
+	if main > id {
+		main--
+	} else if main == id {
+		main = 1
+	}
+	info.set("mainSocketGroup", strconv.Itoa(main))
+	return nil
+}
+
+func gemElements(inputs []GemInput, data *gamedata.Dataset) ([]*element, error) {
+	nodes := make([]*element, 0, len(inputs))
+	for _, input := range inputs {
+		gem, ok := data.Gem(input.ID)
+		if !ok || !validGemInput(input, gem, data.IsRuntime()) {
+			return nil, fmt.Errorf("неверный камень %s", input.ID)
+		}
+		nodes = append(nodes, gemElement(input, gem))
+	}
+	return nodes, nil
+}
+
+func gemElement(input GemInput, gem gamedata.Gem) *element {
+	node := newElement("Gem")
+	for key, value := range map[string]string{"nameSpec": gem.Name, "skillId": gem.SkillID, "gemId": gem.GameID, "variantId": gem.VariantID,
+		"level": strconv.Itoa(input.Level), "quality": strconv.Itoa(input.Quality), "enabled": strconv.FormatBool(input.Enabled), "statSetIndex": "1"} {
+		node.set(key, value)
+	}
+	return node
+}
+
+func validGemInput(input GemInput, gem gamedata.Gem, runtime bool) bool {
+	if input.Level < 1 || input.Level > 40 || input.Quality < 0 || input.Quality > 100 {
+		return false
+	}
+	if !runtime {
+		return true
+	}
+	return slices.ContainsFunc(gem.Levels, func(level gamedata.GemLevel) bool { return level.Level == input.Level }) &&
+		slices.Contains(gem.Qualities, input.Quality)
 }
 
 func (d *Document) editEquipment(edit EquipmentEdit) error {
@@ -323,19 +368,16 @@ func (d *Document) editPassives(edit PassivesEdit, data *gamedata.Dataset) error
 	if err != nil {
 		return err
 	}
+	if data.IsRuntime() && model.TreeVersion != data.TreeVersion() {
+		return fmt.Errorf("версия дерева сборки %s не соответствует каталогу %s", model.TreeVersion, data.TreeVersion())
+	}
 	class, ok := data.Class(model.ClassID)
 	if !ok {
 		return fmt.Errorf("неизвестный класс дерева")
 	}
-	seen := map[int]bool{class.StartNode: true}
-	for _, id := range edit.Nodes {
-		if id < 1 || id > 1000000 {
-			return fmt.Errorf("неверный идентификатор пассива")
-		}
-		if seen[id] && id != class.StartNode {
-			return fmt.Errorf("повтор пассива")
-		}
-		seen[id] = true
+	seen, err := selectedPassiveNodes(class.StartNode, edit.Nodes, data)
+	if err != nil {
+		return err
 	}
 	if len(seen) > 500 {
 		return fmt.Errorf("слишком много пассивов")
@@ -351,6 +393,32 @@ func (d *Document) editPassives(edit PassivesEdit, data *gamedata.Dataset) error
 	}
 	tree, _ := d.root.child("Tree")
 	tree.children("Spec")[model.ActiveSets.Tree-1].set("nodes", strings.Join(values, ","))
+	return nil
+}
+
+func selectedPassiveNodes(start int, nodes []int, data *gamedata.Dataset) (map[int]bool, error) {
+	seen := map[int]bool{start: true}
+	for _, id := range nodes {
+		if err := validatePassiveID(id, data); err != nil {
+			return nil, err
+		}
+		if seen[id] && id != start {
+			return nil, fmt.Errorf("повтор пассива")
+		}
+		seen[id] = true
+	}
+	return seen, nil
+}
+
+func validatePassiveID(id int, data *gamedata.Dataset) error {
+	if id < 1 || id > 1000000 {
+		return fmt.Errorf("неверный идентификатор пассива")
+	}
+	if data.IsRuntime() {
+		if _, ok := data.Node(id); !ok {
+			return fmt.Errorf("пассив %d отсутствует в активном PoB", id)
+		}
+	}
 	return nil
 }
 

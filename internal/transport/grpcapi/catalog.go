@@ -57,7 +57,7 @@ func (s *Server) PreviewSupport(ctx context.Context, req *pb.PreviewSupportReque
 	if err != nil {
 		return nil, err
 	}
-	value, err := commands.PreviewSupport(ctx, application.PreviewSupport{SessionID: req.GetSessionId(), ExpectedRevision: req.GetExpectedRevision(), SupportID: req.GetSupportId()})
+	value, err := commands.PreviewSupport(ctx, application.PreviewSupport{SessionID: req.GetSessionId(), ExpectedRevision: req.GetExpectedRevision(), SupportID: req.GetSupportId(), Level: int(req.GetLevel()), Quality: int(req.GetQuality())})
 	if err != nil {
 		return nil, rpcError(err)
 	}
@@ -66,7 +66,7 @@ func (s *Server) PreviewSupport(ctx context.Context, req *pb.PreviewSupportReque
 }
 
 func (c *Client) PreviewSupport(ctx context.Context, cmd application.PreviewSupport) (application.SupportPreview, error) {
-	value, err := c.rpc.PreviewSupport(ctx, &pb.PreviewSupportRequest{SessionId: cmd.SessionID, ExpectedRevision: cmd.ExpectedRevision, SupportId: cmd.SupportID})
+	value, err := c.rpc.PreviewSupport(ctx, &pb.PreviewSupportRequest{SessionId: cmd.SessionID, ExpectedRevision: cmd.ExpectedRevision, SupportId: cmd.SupportID, Level: int32(cmd.Level), Quality: int32(cmd.Quality)})
 	if err != nil {
 		return application.SupportPreview{}, err
 	}

@@ -421,17 +421,21 @@ class GetCatalogResponse extends $pb.GeneratedMessage {
   $pb.PbList<CatalogEntry> get entries => $_getList(9);
 }
 
-/// Добавляет уровень 1/качество 0 в копию выбранной группы; сессию не меняет.
+/// Добавляет поддержку в копию выбранной группы; уровень 0 означает 1. Сессию не меняет.
 class PreviewSupportRequest extends $pb.GeneratedMessage {
   factory PreviewSupportRequest({
     $core.String? sessionId,
     $fixnum.Int64? expectedRevision,
     $core.String? supportId,
+    $core.int? level,
+    $core.int? quality,
   }) {
     final result = PreviewSupportRequest._();
     if (sessionId != null) result.sessionId = sessionId;
     if (expectedRevision != null) result.expectedRevision = expectedRevision;
     if (supportId != null) result.supportId = supportId;
+    if (level != null) result.level = level;
+    if (quality != null) result.quality = quality;
     return result;
   }
 
@@ -453,6 +457,8 @@ class PreviewSupportRequest extends $pb.GeneratedMessage {
         2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(3, _omitFieldNames ? '' : 'supportId')
+    ..aI(4, _omitFieldNames ? '' : 'level')
+    ..aI(5, _omitFieldNames ? '' : 'quality')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -505,6 +511,24 @@ class PreviewSupportRequest extends $pb.GeneratedMessage {
   $core.bool hasSupportId() => $_has(2);
   @$pb.TagNumber(3)
   void clearSupportId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get level => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set level($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasLevel() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLevel() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get quality => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set quality($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasQuality() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearQuality() => $_clearField(5);
 }
 
 class PreviewSupportResponse extends $pb.GeneratedMessage {

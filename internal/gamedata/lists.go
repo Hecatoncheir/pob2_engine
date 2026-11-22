@@ -6,12 +6,19 @@ func (d *Dataset) Gems() []Gem {
 	result := slices.Clone(d.catalog.Gems)
 	for i := range result {
 		result[i].Levels = slices.Clone(result[i].Levels)
+		result[i].Qualities = slices.Clone(result[i].Qualities)
 		result[i].ConstantStats = slices.Clone(result[i].ConstantStats)
 	}
 	return result
 }
 
-func (d *Dataset) Items() []Item { return slices.Clone(d.catalog.Items) }
+func (d *Dataset) Items() []Item {
+	result := slices.Clone(d.catalog.Items)
+	for i := range result {
+		result[i].Slots = slices.Clone(result[i].Slots)
+	}
+	return result
+}
 
 func (d *Dataset) Nodes() []Node {
 	result := slices.Clone(d.catalog.Nodes)
