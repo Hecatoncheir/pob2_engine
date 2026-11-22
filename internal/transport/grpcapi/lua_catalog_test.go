@@ -2,8 +2,10 @@ package grpcapi
 
 import (
 	"context"
+	"maps"
 	"math"
 	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
@@ -44,6 +46,33 @@ func TestLuaFullCatalogAcrossGRPCAndMCP(t *testing.T) {
 	view, viewErr := application.ViewSnapshot(current)
 	if err != nil || viewErr != nil || !reflect.DeepEqual(view, snapshot) {
 		t.Fatal("предпросмотр изменил снимок", err, viewErr)
+	}
+	checkAppliedLuaSupport(t, ctx, grpc, preview, command)
+}
+
+func checkAppliedLuaSupport(t *testing.T, ctx context.Context, grpc *Client, preview application.SupportPreview, cmd application.PreviewSupport) {
+	t.Helper()
+	applied, err := grpc.Apply(ctx, application.ApplyBuild{
+		SessionID: cmd.SessionID, ExpectedRevision: cmd.ExpectedRevision, RequestID: "add-previewed-support",
+		Edit: &build.Edit{AddSupport: &build.AddSupportEdit{SupportID: preview.Support.ID, Level: cmd.Level, Quality: cmd.Quality}},
+	})
+	if err != nil || applied.InputSHA256 != preview.Comparison.After.InputSHA256 || applied.CalculationJSON != "" {
+		t.Fatalf("применение поддержки: %+v %v", applied, err)
+	}
+	saved, err := grpc.Calculate(ctx, application.CalculateBuild{
+		SessionID: cmd.SessionID, ExpectedRevision: applied.Revision, RequestID: "calculate-applied-support",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := application.DecodeCalculation(saved)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := preview.Comparison.After
+	if result.Status != want.Status || result.InputSHA256 != want.InputSHA256 ||
+		!maps.Equal(result.Stats, want.Stats) || !slices.Equal(result.Issues, want.Issues) {
+		t.Fatal("итоговый расчёт отличается от предпросмотра")
 	}
 }
 

@@ -65,6 +65,17 @@ def check_equipment_and_passives(scenario, snapshot, lock):
     return result
 
 
+def apply_previewed_support(scenario, snapshot, preview, lock, verify):
+    edit = dict(add_support=dict(support_id=preview['support']['id'], level=1, quality=20))
+    applied = apply_edit(scenario, snapshot, 'append-support', edit)
+    expected = preview['comparison']['after']
+    require(applied['build']['input_sha256'] == expected['input_sha256'], 'Правка отличается от предпросмотра')
+    require(not applied['build'].get('calculation'), 'После правки сохранён прежний расчёт')
+    saved = scenario.calculate('catalog', applied['revision'], 'appended-support-calculate')
+    verify(saved['build']['calculation'], 'Ice Nova', 10.08, lock)
+    return applied, saved, edit
+
+
 def check_full_catalog(scenario, lock, verify):
     counts = {}
     for kind, query in [('gems', 'Ice Nova'), ('classes', 'Sorceress'), ('items', 'Rusted Cuirass'), ('passives', '41965')]:
@@ -72,10 +83,15 @@ def check_full_catalog(scenario, lock, verify):
         catalog_page(scenario, lock, kind, query)
     require(counts['gems'] > 100 and counts['items'] > 100 and counts['passives'] > 1000, 'Каталог остался ограниченным набором Go')
     edited, calculated, preview, edit = check_new_skill(scenario, lock, verify)
-    final = check_equipment_and_passives(scenario, calculated, lock)
+    applied, saved, support_edit = apply_previewed_support(scenario, calculated, preview, lock, verify)
+    final = check_equipment_and_passives(scenario, saved, lock)
     scenario.stop()
     scenario.start('lua')
     replay, = scenario.mcp_tools('catalog', [('edit_build', dict(expected_revision=2, request_id='ice-nova', edit=edit))])
-    require(replay == edited and scenario.snapshot('catalog') == final, 'После перезапуска потерян ответ или изменена сессия')
+    support_replay, = scenario.mcp_tools('catalog', [('edit_build', dict(
+        expected_revision=calculated['revision'], request_id='append-support', edit=support_edit))])
+    require(replay == edited and support_replay == applied and scenario.snapshot('catalog') == final,
+            'После перезапуска потерян ответ или изменена сессия')
     return dict(counts=counts, new_skill_dps=7.84, supported_dps=10.08, support_quality=20,
-                incompatible_support_reported=True, equipment_and_passives=True, restart_exact_retry=True)
+                incompatible_support_reported=True, applied_preview_matches=True,
+                equipment_and_passives=True, restart_exact_retry=True)

@@ -1373,6 +1373,68 @@ func (x *SelectionEdit) GetWeaponSet() uint32 {
 	return 0
 }
 
+type AddSupportEdit struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Идентификатор поддержки из каталога PoB.
+	SupportId string `protobuf:"bytes,1,opt,name=support_id,json=supportId,proto3" json:"support_id,omitempty"`
+	// Ноль означает первый уровень.
+	Level         uint32 `protobuf:"varint,2,opt,name=level,proto3" json:"level,omitempty"`
+	Quality       uint32 `protobuf:"varint,3,opt,name=quality,proto3" json:"quality,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddSupportEdit) Reset() {
+	*x = AddSupportEdit{}
+	mi := &file_pob2_v1_build_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddSupportEdit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddSupportEdit) ProtoMessage() {}
+
+func (x *AddSupportEdit) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_build_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddSupportEdit.ProtoReflect.Descriptor instead.
+func (*AddSupportEdit) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *AddSupportEdit) GetSupportId() string {
+	if x != nil {
+		return x.SupportId
+	}
+	return ""
+}
+
+func (x *AddSupportEdit) GetLevel() uint32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+func (x *AddSupportEdit) GetQuality() uint32 {
+	if x != nil {
+		return x.Quality
+	}
+	return 0
+}
+
 type BuildEdit struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Operation:
@@ -1383,6 +1445,7 @@ type BuildEdit struct {
 	//	*BuildEdit_Equipment
 	//	*BuildEdit_Passives
 	//	*BuildEdit_Selection
+	//	*BuildEdit_AddSupport
 	Operation     isBuildEdit_Operation `protobuf_oneof:"operation"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1390,7 +1453,7 @@ type BuildEdit struct {
 
 func (x *BuildEdit) Reset() {
 	*x = BuildEdit{}
-	mi := &file_pob2_v1_build_proto_msgTypes[17]
+	mi := &file_pob2_v1_build_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1402,7 +1465,7 @@ func (x *BuildEdit) String() string {
 func (*BuildEdit) ProtoMessage() {}
 
 func (x *BuildEdit) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[17]
+	mi := &file_pob2_v1_build_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1415,7 +1478,7 @@ func (x *BuildEdit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildEdit.ProtoReflect.Descriptor instead.
 func (*BuildEdit) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{17}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *BuildEdit) GetOperation() isBuildEdit_Operation {
@@ -1479,6 +1542,15 @@ func (x *BuildEdit) GetSelection() *SelectionEdit {
 	return nil
 }
 
+func (x *BuildEdit) GetAddSupport() *AddSupportEdit {
+	if x != nil {
+		if x, ok := x.Operation.(*BuildEdit_AddSupport); ok {
+			return x.AddSupport
+		}
+	}
+	return nil
+}
+
 type isBuildEdit_Operation interface {
 	isBuildEdit_Operation()
 }
@@ -1507,6 +1579,10 @@ type BuildEdit_Selection struct {
 	Selection *SelectionEdit `protobuf:"bytes,6,opt,name=selection,proto3,oneof"`
 }
 
+type BuildEdit_AddSupport struct {
+	AddSupport *AddSupportEdit `protobuf:"bytes,7,opt,name=add_support,json=addSupport,proto3,oneof"`
+}
+
 func (*BuildEdit_Level) isBuildEdit_Operation() {}
 
 func (*BuildEdit_Config) isBuildEdit_Operation() {}
@@ -1518,6 +1594,8 @@ func (*BuildEdit_Equipment) isBuildEdit_Operation() {}
 func (*BuildEdit_Passives) isBuildEdit_Operation() {}
 
 func (*BuildEdit_Selection) isBuildEdit_Operation() {}
+
+func (*BuildEdit_AddSupport) isBuildEdit_Operation() {}
 
 type StatDelta struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1531,7 +1609,7 @@ type StatDelta struct {
 
 func (x *StatDelta) Reset() {
 	*x = StatDelta{}
-	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	mi := &file_pob2_v1_build_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1543,7 +1621,7 @@ func (x *StatDelta) String() string {
 func (*StatDelta) ProtoMessage() {}
 
 func (x *StatDelta) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	mi := &file_pob2_v1_build_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1556,7 +1634,7 @@ func (x *StatDelta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatDelta.ProtoReflect.Descriptor instead.
 func (*StatDelta) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{18}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *StatDelta) GetStat() string {
@@ -1599,7 +1677,7 @@ type BuildComparison struct {
 
 func (x *BuildComparison) Reset() {
 	*x = BuildComparison{}
-	mi := &file_pob2_v1_build_proto_msgTypes[19]
+	mi := &file_pob2_v1_build_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1611,7 +1689,7 @@ func (x *BuildComparison) String() string {
 func (*BuildComparison) ProtoMessage() {}
 
 func (x *BuildComparison) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[19]
+	mi := &file_pob2_v1_build_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1624,7 +1702,7 @@ func (x *BuildComparison) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildComparison.ProtoReflect.Descriptor instead.
 func (*BuildComparison) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{19}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *BuildComparison) GetBefore() *CalculationResult {
@@ -1778,14 +1856,21 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\n" +
 	"main_group\x18\x02 \x01(\rR\tmainGroup\x12\x1d\n" +
 	"\n" +
-	"weapon_set\x18\x03 \x01(\rR\tweaponSet\"\xc1\x02\n" +
+	"weapon_set\x18\x03 \x01(\rR\tweaponSet\"_\n" +
+	"\x0eAddSupportEdit\x12\x1d\n" +
+	"\n" +
+	"support_id\x18\x01 \x01(\tR\tsupportId\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\rR\x05level\x12\x18\n" +
+	"\aquality\x18\x03 \x01(\rR\aquality\"\xfd\x02\n" +
 	"\tBuildEdit\x12*\n" +
 	"\x05level\x18\x01 \x01(\v2\x12.pob2.v1.LevelEditH\x00R\x05level\x12-\n" +
 	"\x06config\x18\x02 \x01(\v2\x13.pob2.v1.ConfigEditH\x00R\x06config\x12'\n" +
 	"\x04gems\x18\x03 \x01(\v2\x11.pob2.v1.GemsEditH\x00R\x04gems\x126\n" +
 	"\tequipment\x18\x04 \x01(\v2\x16.pob2.v1.EquipmentEditH\x00R\tequipment\x123\n" +
 	"\bpassives\x18\x05 \x01(\v2\x15.pob2.v1.PassivesEditH\x00R\bpassives\x126\n" +
-	"\tselection\x18\x06 \x01(\v2\x16.pob2.v1.SelectionEditH\x00R\tselectionB\v\n" +
+	"\tselection\x18\x06 \x01(\v2\x16.pob2.v1.SelectionEditH\x00R\tselection\x12:\n" +
+	"\vadd_support\x18\a \x01(\v2\x17.pob2.v1.AddSupportEditH\x00R\n" +
+	"addSupportB\v\n" +
 	"\toperation\"m\n" +
 	"\tStatDelta\x12\x12\n" +
 	"\x04stat\x18\x01 \x01(\tR\x04stat\x12\x16\n" +
@@ -1822,7 +1907,7 @@ func file_pob2_v1_build_proto_rawDescGZIP() []byte {
 }
 
 var file_pob2_v1_build_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_pob2_v1_build_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_pob2_v1_build_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_pob2_v1_build_proto_goTypes = []any{
 	(ConfigValueType)(0),      // 0: pob2.v1.ConfigValueType
 	(CalculationStatus)(0),    // 1: pob2.v1.CalculationStatus
@@ -1843,12 +1928,13 @@ var file_pob2_v1_build_proto_goTypes = []any{
 	(*EquipmentEdit)(nil),     // 16: pob2.v1.EquipmentEdit
 	(*PassivesEdit)(nil),      // 17: pob2.v1.PassivesEdit
 	(*SelectionEdit)(nil),     // 18: pob2.v1.SelectionEdit
-	(*BuildEdit)(nil),         // 19: pob2.v1.BuildEdit
-	(*StatDelta)(nil),         // 20: pob2.v1.StatDelta
-	(*BuildComparison)(nil),   // 21: pob2.v1.BuildComparison
-	nil,                       // 22: pob2.v1.BuildModel.SlotsEntry
-	nil,                       // 23: pob2.v1.BuildModel.ConfigEntry
-	nil,                       // 24: pob2.v1.CalculationResult.StatsEntry
+	(*AddSupportEdit)(nil),    // 19: pob2.v1.AddSupportEdit
+	(*BuildEdit)(nil),         // 20: pob2.v1.BuildEdit
+	(*StatDelta)(nil),         // 21: pob2.v1.StatDelta
+	(*BuildComparison)(nil),   // 22: pob2.v1.BuildComparison
+	nil,                       // 23: pob2.v1.BuildModel.SlotsEntry
+	nil,                       // 24: pob2.v1.BuildModel.ConfigEntry
+	nil,                       // 25: pob2.v1.CalculationResult.StatsEntry
 }
 var file_pob2_v1_build_proto_depIdxs = []int32{
 	0,  // 0: pob2.v1.ConfigValue.type:type_name -> pob2.v1.ConfigValueType
@@ -1856,11 +1942,11 @@ var file_pob2_v1_build_proto_depIdxs = []int32{
 	4,  // 2: pob2.v1.BuildModel.active_sets:type_name -> pob2.v1.ActiveSets
 	6,  // 3: pob2.v1.BuildModel.groups:type_name -> pob2.v1.SkillGroup
 	7,  // 4: pob2.v1.BuildModel.items:type_name -> pob2.v1.BuildItem
-	22, // 5: pob2.v1.BuildModel.slots:type_name -> pob2.v1.BuildModel.SlotsEntry
-	23, // 6: pob2.v1.BuildModel.config:type_name -> pob2.v1.BuildModel.ConfigEntry
+	23, // 5: pob2.v1.BuildModel.slots:type_name -> pob2.v1.BuildModel.SlotsEntry
+	24, // 6: pob2.v1.BuildModel.config:type_name -> pob2.v1.BuildModel.ConfigEntry
 	3,  // 7: pob2.v1.BuildModel.issues:type_name -> pob2.v1.BuildIssue
 	1,  // 8: pob2.v1.CalculationResult.status:type_name -> pob2.v1.CalculationStatus
-	24, // 9: pob2.v1.CalculationResult.stats:type_name -> pob2.v1.CalculationResult.StatsEntry
+	25, // 9: pob2.v1.CalculationResult.stats:type_name -> pob2.v1.CalculationResult.StatsEntry
 	9,  // 10: pob2.v1.CalculationResult.modifiers:type_name -> pob2.v1.AppliedModifier
 	3,  // 11: pob2.v1.CalculationResult.issues:type_name -> pob2.v1.BuildIssue
 	8,  // 12: pob2.v1.BuildDocument.model:type_name -> pob2.v1.BuildModel
@@ -1874,15 +1960,16 @@ var file_pob2_v1_build_proto_depIdxs = []int32{
 	16, // 20: pob2.v1.BuildEdit.equipment:type_name -> pob2.v1.EquipmentEdit
 	17, // 21: pob2.v1.BuildEdit.passives:type_name -> pob2.v1.PassivesEdit
 	18, // 22: pob2.v1.BuildEdit.selection:type_name -> pob2.v1.SelectionEdit
-	10, // 23: pob2.v1.BuildComparison.before:type_name -> pob2.v1.CalculationResult
-	10, // 24: pob2.v1.BuildComparison.after:type_name -> pob2.v1.CalculationResult
-	20, // 25: pob2.v1.BuildComparison.deltas:type_name -> pob2.v1.StatDelta
-	2,  // 26: pob2.v1.BuildModel.ConfigEntry.value:type_name -> pob2.v1.ConfigValue
-	27, // [27:27] is the sub-list for method output_type
-	27, // [27:27] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	19, // 23: pob2.v1.BuildEdit.add_support:type_name -> pob2.v1.AddSupportEdit
+	10, // 24: pob2.v1.BuildComparison.before:type_name -> pob2.v1.CalculationResult
+	10, // 25: pob2.v1.BuildComparison.after:type_name -> pob2.v1.CalculationResult
+	21, // 26: pob2.v1.BuildComparison.deltas:type_name -> pob2.v1.StatDelta
+	2,  // 27: pob2.v1.BuildModel.ConfigEntry.value:type_name -> pob2.v1.ConfigValue
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_pob2_v1_build_proto_init() }
@@ -1890,13 +1977,14 @@ func file_pob2_v1_build_proto_init() {
 	if File_pob2_v1_build_proto != nil {
 		return
 	}
-	file_pob2_v1_build_proto_msgTypes[17].OneofWrappers = []any{
+	file_pob2_v1_build_proto_msgTypes[18].OneofWrappers = []any{
 		(*BuildEdit_Level)(nil),
 		(*BuildEdit_Config)(nil),
 		(*BuildEdit_Gems)(nil),
 		(*BuildEdit_Equipment)(nil),
 		(*BuildEdit_Passives)(nil),
 		(*BuildEdit_Selection)(nil),
+		(*BuildEdit_AddSupport)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1904,7 +1992,7 @@ func file_pob2_v1_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pob2_v1_build_proto_rawDesc), len(file_pob2_v1_build_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   23,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

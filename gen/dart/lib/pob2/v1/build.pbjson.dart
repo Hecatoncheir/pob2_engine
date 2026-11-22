@@ -520,6 +520,21 @@ final $typed_data.Uint8List selectionEditDescriptor = $convert.base64Decode(
     'MSHQoKbWFpbl9ncm91cBgCIAEoDVIJbWFpbkdyb3VwEh0KCndlYXBvbl9zZXQYAyABKA1SCXdl'
     'YXBvblNldA==');
 
+@$core.Deprecated('Use addSupportEditDescriptor instead')
+const AddSupportEdit$json = {
+  '1': 'AddSupportEdit',
+  '2': [
+    {'1': 'support_id', '3': 1, '4': 1, '5': 9, '10': 'supportId'},
+    {'1': 'level', '3': 2, '4': 1, '5': 13, '10': 'level'},
+    {'1': 'quality', '3': 3, '4': 1, '5': 13, '10': 'quality'},
+  ],
+};
+
+/// Descriptor for `AddSupportEdit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addSupportEditDescriptor = $convert.base64Decode(
+    'Cg5BZGRTdXBwb3J0RWRpdBIdCgpzdXBwb3J0X2lkGAEgASgJUglzdXBwb3J0SWQSFAoFbGV2ZW'
+    'wYAiABKA1SBWxldmVsEhgKB3F1YWxpdHkYAyABKA1SB3F1YWxpdHk=');
+
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
   '1': 'BuildEdit',
@@ -578,6 +593,15 @@ const BuildEdit$json = {
       '9': 0,
       '10': 'selection'
     },
+    {
+      '1': 'add_support',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.AddSupportEdit',
+      '9': 0,
+      '10': 'addSupport'
+    },
   ],
   '8': [
     {'1': 'operation'},
@@ -591,7 +615,8 @@ final $typed_data.Uint8List buildEditDescriptor = $convert.base64Decode(
     'AyABKAsyES5wb2IyLnYxLkdlbXNFZGl0SABSBGdlbXMSNgoJZXF1aXBtZW50GAQgASgLMhYucG'
     '9iMi52MS5FcXVpcG1lbnRFZGl0SABSCWVxdWlwbWVudBIzCghwYXNzaXZlcxgFIAEoCzIVLnBv'
     'YjIudjEuUGFzc2l2ZXNFZGl0SABSCHBhc3NpdmVzEjYKCXNlbGVjdGlvbhgGIAEoCzIWLnBvYj'
-    'IudjEuU2VsZWN0aW9uRWRpdEgAUglzZWxlY3Rpb25CCwoJb3BlcmF0aW9u');
+    'IudjEuU2VsZWN0aW9uRWRpdEgAUglzZWxlY3Rpb24SOgoLYWRkX3N1cHBvcnQYByABKAsyFy5w'
+    'b2IyLnYxLkFkZFN1cHBvcnRFZGl0SABSCmFkZFN1cHBvcnRCCwoJb3BlcmF0aW9u');
 
 @$core.Deprecated('Use statDeltaDescriptor instead')
 const StatDelta$json = {

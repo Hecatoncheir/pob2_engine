@@ -141,14 +141,8 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 	if value == nil {
 		return nil, nil
 	}
-	count := 0
-	for _, present := range []bool{value.Level != nil, value.Config != nil, value.Gems != nil, value.Equipment != nil, value.Passives != nil, value.Selection != nil} {
-		if present {
-			count++
-		}
-	}
-	if count != 1 {
-		return nil, fmt.Errorf("нужна ровно одна правка")
+	if err := build.ValidateEdit(*value); err != nil {
+		return nil, err
 	}
 	if err := checkWireIntegers(value); err != nil {
 		return nil, err
@@ -183,6 +177,11 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 			out.Sets = wireSets(*value.Selection.Sets)
 		}
 		result.Operation = &pb.BuildEdit_Selection{Selection: out}
+	case value.AddSupport != nil:
+		edit := value.AddSupport
+		result.Operation = &pb.BuildEdit_AddSupport{AddSupport: &pb.AddSupportEdit{
+			SupportId: edit.SupportID, Level: uint32(edit.Level), Quality: uint32(edit.Quality),
+		}}
 	}
 	return result, nil
 }
@@ -200,6 +199,9 @@ func checkWireIntegers(value *build.Edit) error {
 	}
 	if v := value.Passives; v != nil {
 		values = append(values, v.Nodes...)
+	}
+	if v := value.AddSupport; v != nil {
+		values = append(values, v.Level, v.Quality)
 	}
 	if v := value.Selection; v != nil {
 		values = append(values, v.MainGroup, v.WeaponSet)
@@ -251,6 +253,11 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 		if input.GetSets() != nil {
 			sets := localSets(input.GetSets())
 			result.Selection.Sets = &sets
+		}
+	case *pb.BuildEdit_AddSupport:
+		edit := operation.AddSupport
+		result.AddSupport = &build.AddSupportEdit{
+			SupportID: edit.GetSupportId(), Level: int(edit.GetLevel()), Quality: int(edit.GetQuality()),
 		}
 	default:
 		return nil, fmt.Errorf("не указана операция правки")

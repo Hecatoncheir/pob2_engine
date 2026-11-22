@@ -72,6 +72,7 @@ pob2-engine calculate --profile main --session build-1 --revision 4 --request-id
 {"passives":{"nodes":[54447,4739,18845]}}
 {"equipment":{"slot":"Ring 1","raw":"Rarity: Normal\nLazuli Ring\nImplicits: 1\n+25 to maximum Mana"}}
 {"gems":{"group_id":1,"label":"Fireball","enabled":true,"delete":false,"gems":[{"id":"FireballPlayer","level":1,"quality":0,"enabled":true},{"id":"SupportRapidCastingPlayer","level":1,"quality":0,"enabled":true}]}}
+{"add_support":{"support_id":"SupportRapidCastingPlayer","level":1,"quality":0}}
 {"selection":{"weapon_set":2}}
 ```
 
@@ -79,6 +80,28 @@ pob2-engine calculate --profile main --session build-1 --revision 4 --request-id
 снимает предмет, `config.value: null` удаляет условие, `gems.delete: true`
 удаляет группу. Иные ограничения и гарантии — в [BUILD-COMMANDS.md](BUILD-COMMANDS.md).
 Пример пассивов относится к Sorceress уровня не ниже 3 и включает старт класса.
+
+`add_support` дописывает одну поддержку к выбранной расчётной группе активного
+набора. В новой сессии с Ice Nova проверьте Concentrated Area на первой
+ревизии:
+
+```shell
+pob2-engine session create --profile main --session ice-nova --name "Ice Nova" --request-id ice-create --start-server --file testdata/reference/0.0.4/ice-nova.xml
+pob2-engine preview-support --profile main --session ice-nova --revision 1 --support "Concentrated Area" --level 1 --quality 20
+```
+
+Если [предпросмотр](CATALOG.md#предпросмотр-полной-группы) подтвердил
+совместимость, сохраните `{"add_support":{"support_id":"Concentrated Area","level":1,"quality":20}}`
+в `support.json`. В приложении и автоматизации используйте точный
+`support.id` из ответа. Укажите ту же ревизию и параметры при записи,
+затем рассчитайте изменённую сборку:
+
+```shell
+pob2-engine build edit --profile main --session ice-nova --revision 1 --request-id ice-support --file support.json
+pob2-engine calculate --profile main --session ice-nova --revision 2 --request-id ice-calculation
+```
+
+В MCP передайте тот же объект в поле `edit` инструмента `edit_build`.
 
 ## Резервные копии
 

@@ -1690,6 +1690,89 @@ class SelectionEdit extends $pb.GeneratedMessage {
   void clearWeaponSet() => $_clearField(3);
 }
 
+class AddSupportEdit extends $pb.GeneratedMessage {
+  factory AddSupportEdit({
+    $core.String? supportId,
+    $core.int? level,
+    $core.int? quality,
+  }) {
+    final result = AddSupportEdit._();
+    if (supportId != null) result.supportId = supportId;
+    if (level != null) result.level = level;
+    if (quality != null) result.quality = quality;
+    return result;
+  }
+
+  AddSupportEdit._();
+
+  factory AddSupportEdit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      AddSupportEdit()..mergeFromBuffer(data, registry);
+  factory AddSupportEdit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      AddSupportEdit()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AddSupportEdit',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: AddSupportEdit.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'supportId')
+    ..aI(2, _omitFieldNames ? '' : 'level', fieldType: $pb.PbFieldType.OU3)
+    ..aI(3, _omitFieldNames ? '' : 'quality', fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AddSupportEdit clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AddSupportEdit copyWith(void Function(AddSupportEdit) updates) =>
+      super.copyWith((message) => updates(message as AddSupportEdit))
+          as AddSupportEdit;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use AddSupportEdit() / AddSupportEdit.new instead')
+  static AddSupportEdit create() => AddSupportEdit._();
+  static $pb.GeneratedMessage $_createMessage() => AddSupportEdit._();
+  @$core.override
+  AddSupportEdit createEmptyInstance() => AddSupportEdit._();
+  @$core.pragma('dart2js:noInline')
+  static AddSupportEdit getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddSupportEdit>(
+          AddSupportEdit.$_createMessage);
+  static AddSupportEdit? _defaultInstance;
+
+  /// Идентификатор поддержки из каталога PoB.
+  @$pb.TagNumber(1)
+  $core.String get supportId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set supportId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSupportId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSupportId() => $_clearField(1);
+
+  /// Ноль означает первый уровень.
+  @$pb.TagNumber(2)
+  $core.int get level => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set level($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLevel() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLevel() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get quality => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set quality($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasQuality() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearQuality() => $_clearField(3);
+}
+
 enum BuildEdit_Operation {
   level,
   config,
@@ -1697,6 +1780,7 @@ enum BuildEdit_Operation {
   equipment,
   passives,
   selection,
+  addSupport,
   notSet
 }
 
@@ -1708,6 +1792,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     EquipmentEdit? equipment,
     PassivesEdit? passives,
     SelectionEdit? selection,
+    AddSupportEdit? addSupport,
   }) {
     final result = BuildEdit._();
     if (level != null) result.level = level;
@@ -1716,6 +1801,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     if (equipment != null) result.equipment = equipment;
     if (passives != null) result.passives = passives;
     if (selection != null) result.selection = selection;
+    if (addSupport != null) result.addSupport = addSupport;
     return result;
   }
 
@@ -1736,13 +1822,14 @@ class BuildEdit extends $pb.GeneratedMessage {
     4: BuildEdit_Operation.equipment,
     5: BuildEdit_Operation.passives,
     6: BuildEdit_Operation.selection,
+    7: BuildEdit_Operation.addSupport,
     0: BuildEdit_Operation.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BuildEdit',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
       createEmptyInstance: BuildEdit.$_createMessage)
-    ..oo(0, [1, 2, 3, 4, 5, 6])
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7])
     ..aOM<LevelEdit>(1, _omitFieldNames ? '' : 'level',
         subBuilder: LevelEdit.$_createMessage)
     ..aOM<ConfigEdit>(2, _omitFieldNames ? '' : 'config',
@@ -1755,6 +1842,8 @@ class BuildEdit extends $pb.GeneratedMessage {
         subBuilder: PassivesEdit.$_createMessage)
     ..aOM<SelectionEdit>(6, _omitFieldNames ? '' : 'selection',
         subBuilder: SelectionEdit.$_createMessage)
+    ..aOM<AddSupportEdit>(7, _omitFieldNames ? '' : 'addSupport',
+        subBuilder: AddSupportEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1783,6 +1872,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   @$pb.TagNumber(5)
   @$pb.TagNumber(6)
+  @$pb.TagNumber(7)
   BuildEdit_Operation whichOperation() =>
       _BuildEdit_OperationByTag[$_whichOneof(0)]!;
   @$pb.TagNumber(1)
@@ -1791,6 +1881,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   @$pb.TagNumber(5)
   @$pb.TagNumber(6)
+  @$pb.TagNumber(7)
   void clearOperation() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -1858,6 +1949,17 @@ class BuildEdit extends $pb.GeneratedMessage {
   void clearSelection() => $_clearField(6);
   @$pb.TagNumber(6)
   SelectionEdit ensureSelection() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  AddSupportEdit get addSupport => $_getN(6);
+  @$pb.TagNumber(7)
+  set addSupport(AddSupportEdit value) => $_setField(7, value);
+  @$pb.TagNumber(7)
+  $core.bool hasAddSupport() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearAddSupport() => $_clearField(7);
+  @$pb.TagNumber(7)
+  AddSupportEdit ensureAddSupport() => $_ensure(6);
 }
 
 class StatDelta extends $pb.GeneratedMessage {

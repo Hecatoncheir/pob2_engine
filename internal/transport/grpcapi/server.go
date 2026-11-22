@@ -162,7 +162,7 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 		capabilities = append(capabilities, "session.persistence")
 	}
 	if _, ok := s.commands.(application.BuildCommands); ok {
-		capabilities = append(capabilities, "build.import", "build.edit", "build.calculate", "build.compare", "build.export", "calculation.progress")
+		capabilities = append(capabilities, "build.import", "build.edit", "build.add_support", "build.calculate", "build.compare", "build.export", "calculation.progress")
 	}
 	if _, ok := s.commands.(application.CatalogCommands); ok {
 		capabilities = append(capabilities, "catalog.search", "build.preview_support")

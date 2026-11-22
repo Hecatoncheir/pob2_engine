@@ -81,6 +81,52 @@ func TestEditsPreserveOriginalAndUnknownContent(t *testing.T) {
 	}
 }
 
+func TestAddSupportPreservesImportedGroup(t *testing.T) {
+	data, err := gamedata.Embedded()
+	if err != nil {
+		t.Fatal(err)
+	}
+	input, err := os.ReadFile("../../testdata/reference/0.0.5/caster-main.xml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	input = bytes.Replace(input, []byte(`label="Lightning" enabled="true" includeInFullDPS="true"`),
+		[]byte(`label="Lightning" enabled="true" includeInFullDPS="false" future="kept"`), 1)
+	doc, err := Parse(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	added, err := doc.Edited(Edit{AddSupport: &AddSupportEdit{SupportID: "SupportRapidCastingPlayer"}}, data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkOnlySupportAppended(t, doc, added)
+}
+
+func checkOnlySupportAppended(t *testing.T, before, after *Document) {
+	t.Helper()
+	set, err := after.active("Skills", "SkillSet", "activeSkillSet")
+	if err != nil {
+		t.Fatal(err)
+	}
+	group := set.children("Skill")[1]
+	gems := group.children("Gem")
+	last := gems[len(gems)-1]
+	if last.attr("skillId", "") != "SupportRapidCastingPlayer" || last.attr("enabled", "") != "true" {
+		t.Fatal("в выбранной группе нет включённой поддержки")
+	}
+	group.remove(last)
+	before.clearCachedResults()
+	want, err := before.Export()
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := after.Export()
+	if err != nil || !bytes.Equal(got, want) {
+		t.Fatalf("изменился другой участок импортированного XML: %v", err)
+	}
+}
+
 func TestGemsEquipmentPassivesAndSelection(t *testing.T) {
 	doc, err := Parse(fixture(t))
 	if err != nil {

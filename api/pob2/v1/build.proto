@@ -152,6 +152,14 @@ message SelectionEdit {
   uint32 weapon_set = 3;
 }
 
+message AddSupportEdit {
+  // Идентификатор поддержки из каталога PoB.
+  string support_id = 1;
+  // Ноль означает первый уровень.
+  uint32 level = 2;
+  uint32 quality = 3;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;
@@ -160,6 +168,7 @@ message BuildEdit {
     EquipmentEdit equipment = 4;
     PassivesEdit passives = 5;
     SelectionEdit selection = 6;
+    AddSupportEdit add_support = 7;
   }
 }
 

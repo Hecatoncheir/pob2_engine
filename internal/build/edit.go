@@ -47,12 +47,13 @@ type SelectionEdit struct {
 
 // Edit задаёт ровно одну правку. Пустой Raw снимает предмет, nil Value удаляет условие.
 type Edit struct {
-	Level     *LevelEdit     `json:"level,omitempty"`
-	Config    *ConfigEdit    `json:"config,omitempty"`
-	Gems      *GemsEdit      `json:"gems,omitempty"`
-	Equipment *EquipmentEdit `json:"equipment,omitempty"`
-	Passives  *PassivesEdit  `json:"passives,omitempty"`
-	Selection *SelectionEdit `json:"selection,omitempty"`
+	Level      *LevelEdit      `json:"level,omitempty"`
+	Config     *ConfigEdit     `json:"config,omitempty"`
+	Gems       *GemsEdit       `json:"gems,omitempty"`
+	Equipment  *EquipmentEdit  `json:"equipment,omitempty"`
+	Passives   *PassivesEdit   `json:"passives,omitempty"`
+	Selection  *SelectionEdit  `json:"selection,omitempty"`
+	AddSupport *AddSupportEdit `json:"add_support,omitempty"`
 }
 
 func newElement(name string) *element { return &element{name: xml.Name{Local: name}} }
@@ -105,13 +106,16 @@ func validateEdit(edit Edit, data *gamedata.Dataset) error {
 // ValidateEdit проверяет форму команды независимо от изменяемого каталога PoB.
 func ValidateEdit(edit Edit) error {
 	operations := 0
-	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil} {
+	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil} {
 		if present {
 			operations++
 		}
 	}
 	if operations != 1 {
 		return fmt.Errorf("нужна ровно одна правка сборки")
+	}
+	if edit.AddSupport != nil {
+		return edit.AddSupport.ValidateID()
 	}
 	return nil
 }
@@ -154,6 +158,8 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 		return d.editPassives(*edit.Passives, data)
 	case edit.Selection != nil:
 		return d.editSelection(*edit.Selection)
+	case edit.AddSupport != nil:
+		return d.editSupport(*edit.AddSupport, data)
 	}
 	return nil
 }

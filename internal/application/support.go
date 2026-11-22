@@ -3,12 +3,10 @@ package application
 import (
 	"context"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
-	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
 type PreviewSupport struct {
@@ -30,9 +28,21 @@ type SupportPreview struct {
 }
 
 func (s *Service) PreviewSupport(ctx context.Context, cmd PreviewSupport) (SupportPreview, error) {
-	snapshot, gem, err := s.supportSnapshot(ctx, cmd)
+	edit := build.AddSupportEdit{SupportID: cmd.SupportID, Level: cmd.Level, Quality: cmd.Quality}
+	if err := edit.ValidateID(); err != nil {
+		return SupportPreview{}, failure(InvalidArgument, err.Error())
+	}
+	snapshot, err := s.supportSnapshot(ctx, cmd)
 	if err != nil {
 		return SupportPreview{}, err
+	}
+	data, err := s.editData(ctx)
+	if err != nil {
+		return SupportPreview{}, err
+	}
+	gem, level, err := edit.Resolve(data)
+	if err != nil {
+		return SupportPreview{}, failure(InvalidArgument, err.Error())
 	}
 	release, err := s.acquire(ctx)
 	if err != nil {
@@ -42,10 +52,6 @@ func (s *Service) PreviewSupport(ctx context.Context, cmd PreviewSupport) (Suppo
 	before, err := build.Parse([]byte(snapshot.BuildXML))
 	if err != nil {
 		return SupportPreview{}, failure(InvalidArgument, err.Error())
-	}
-	level := cmd.Level
-	if level == 0 {
-		level = 1
 	}
 	after, group, err := before.WithSupportParameters(gem, level, cmd.Quality)
 	if err != nil {
@@ -71,48 +77,15 @@ func supportCompatible(value calculation.Comparison) bool {
 	return true
 }
 
-func (s *Service) supportSnapshot(ctx context.Context, cmd PreviewSupport) (domain.Snapshot, gamedata.Gem, error) {
-	if !utf8.ValidString(cmd.SupportID) || len(cmd.SupportID) > 256 {
-		return domain.Snapshot{}, gamedata.Gem{}, failure(InvalidArgument, "support_id: нужен UTF-8 до 256 байт")
-	}
+func (s *Service) supportSnapshot(ctx context.Context, cmd PreviewSupport) (domain.Snapshot, error) {
 	snapshot, err := s.Snapshot(ctx, cmd.SessionID)
 	if err != nil {
-		return domain.Snapshot{}, gamedata.Gem{}, err
+		return domain.Snapshot{}, err
 	}
 	if snapshot.Revision != cmd.ExpectedRevision {
-		return domain.Snapshot{}, gamedata.Gem{}, failure(RevisionConflict, "снимок для предпросмотра устарел")
+		return domain.Snapshot{}, failure(RevisionConflict, "снимок для предпросмотра устарел")
 	}
-	data, err := s.editData(ctx)
-	if err != nil {
-		return domain.Snapshot{}, gamedata.Gem{}, err
-	}
-	gem, ok := data.Gem(cmd.SupportID)
-	if !ok || !gem.Support {
-		return domain.Snapshot{}, gamedata.Gem{}, failure(InvalidArgument, "неизвестная или неподдерживаемая поддержка")
-	}
-	if err := validateSupportParameters(cmd, gem, data.IsRuntime()); err != nil {
-		return domain.Snapshot{}, gamedata.Gem{}, err
-	}
-	return snapshot, gem, nil
-}
-
-func validateSupportParameters(cmd PreviewSupport, gem gamedata.Gem, runtime bool) error {
-	level := cmd.Level
-	if level == 0 {
-		level = 1
-	}
-	if level < 1 || level > 40 || cmd.Quality < 0 || cmd.Quality > 100 {
-		return failure(InvalidArgument, "поддержка: уровень 1–40, качество 0–100")
-	}
-	if !runtime && (level != 1 || cmd.Quality != 0) {
-		return failure(InvalidArgument, "режим Go поддерживает только уровень 1 и качество 0")
-	}
-	for _, candidate := range gem.Levels {
-		if candidate.Level == level {
-			return nil
-		}
-	}
-	return failure(InvalidArgument, "этого уровня поддержки нет в активном PoB")
+	return snapshot, nil
 }
 
 func comparisonStatus(value calculation.Comparison) string {
