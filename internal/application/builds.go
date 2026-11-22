@@ -173,6 +173,10 @@ func (s *Service) Apply(ctx context.Context, cmd ApplyBuild) (domain.Snapshot, e
 	if err := s.loadData(); err != nil {
 		return domain.Snapshot{}, err
 	}
+	return s.applyNewBuild(ctx, value, cmd, fp)
+}
+
+func (s *Service) applyNewBuild(ctx context.Context, value *session, cmd ApplyBuild, fp string) (domain.Snapshot, error) {
 	xml := cmd.XML
 	if cmd.Edit != nil {
 		xml = value.snapshot.BuildXML
@@ -182,11 +186,7 @@ func (s *Service) Apply(ctx context.Context, cmd ApplyBuild) (domain.Snapshot, e
 		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 	}
 	if cmd.Edit != nil {
-		data, dataErr := s.editData(ctx)
-		if dataErr != nil {
-			return domain.Snapshot{}, dataErr
-		}
-		doc, err = doc.Edited(*cmd.Edit, data)
+		doc, err = s.editDocument(ctx, doc, *cmd.Edit)
 		if err != nil {
 			return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 		}
@@ -253,11 +253,7 @@ func (s *Service) Compare(ctx context.Context, cmd CompareBuild) (BuildCompariso
 	}
 	var after *build.Document
 	if cmd.Edit != nil {
-		data, dataErr := s.editData(ctx)
-		if dataErr != nil {
-			return BuildComparison{}, dataErr
-		}
-		after, err = before.Edited(*cmd.Edit, data)
+		after, err = s.editDocument(ctx, before, *cmd.Edit)
 	} else {
 		after, err = build.Parse([]byte(cmd.XML))
 	}

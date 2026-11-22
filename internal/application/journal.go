@@ -61,6 +61,20 @@ func (s *Service) persist(ctx context.Context, change Change) error {
 }
 
 func (s *Service) restore(ctx context.Context, change Change) error {
+	if err := validateChange(change); err != nil {
+		return err
+	}
+	result, err := s.restoreCommand(ctx, change)
+	if err != nil {
+		return err
+	}
+	if result != change.Result {
+		return fmt.Errorf("снимок команды не соответствует восстановленному состоянию")
+	}
+	return nil
+}
+
+func validateChange(change Change) error {
 	count := 0
 	for _, present := range []bool{change.Create != nil, change.Rename != nil, change.Apply != nil, change.Calculate != nil} {
 		if present {
@@ -70,35 +84,30 @@ func (s *Service) restore(ctx context.Context, change Change) error {
 	if count != 1 {
 		return fmt.Errorf("нужна ровно одна команда в журнале")
 	}
-	var result domain.Snapshot
-	var err error
+	return nil
+}
+
+func (s *Service) restoreCommand(ctx context.Context, change Change) (domain.Snapshot, error) {
 	switch {
-	case change.Create != nil && change.Rename == nil:
+	case change.Create != nil:
 		if _, exists := s.sessions[change.Create.SessionID]; exists {
-			return fmt.Errorf("повтор создания сессии в журнале")
+			return domain.Snapshot{}, fmt.Errorf("повтор создания сессии в журнале")
 		}
-		result, err = s.Create(ctx, *change.Create)
-	case change.Rename != nil && change.Create == nil:
+		return s.Create(ctx, *change.Create)
+	case change.Rename != nil:
 		value, exists := s.sessions[change.Rename.SessionID]
 		if !exists {
-			return fmt.Errorf("правка неизвестной сессии в журнале")
+			return domain.Snapshot{}, fmt.Errorf("правка неизвестной сессии в журнале")
 		}
 		if _, exists := value.requests[change.Rename.RequestID]; exists {
-			return fmt.Errorf("повтор правки в журнале")
+			return domain.Snapshot{}, fmt.Errorf("повтор правки в журнале")
 		}
-		result, err = s.Rename(ctx, *change.Rename)
+		return s.Rename(ctx, *change.Rename)
 	case change.Apply != nil:
-		result, err = s.restoreApply(ctx, *change.Apply, change.Result)
+		return s.restoreApply(ctx, *change.Apply, change.Result)
 	case change.Calculate != nil:
-		result, err = s.restoreCalculation(ctx, *change.Calculate, change.Result)
+		return s.restoreCalculation(ctx, *change.Calculate, change.Result)
 	default:
-		return fmt.Errorf("неизвестная команда в журнале")
+		return domain.Snapshot{}, fmt.Errorf("неизвестная команда в журнале")
 	}
-	if err != nil {
-		return err
-	}
-	if result != change.Result {
-		return fmt.Errorf("снимок команды не соответствует восстановленному состоянию")
-	}
-	return nil
 }

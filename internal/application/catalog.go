@@ -208,11 +208,8 @@ func passiveEntry(data *gamedata.Dataset, node gamedata.Node) CatalogEntry {
 
 func runtimeItemEntry(item gamedata.Item) CatalogEntry {
 	entry := emptyEntry("items", item.Name, item.Name)
-	slots := map[string][]string{"Amulet": {"Amulet"}, "Ring": {"Ring 1", "Ring 2"},
-		"Body Armour": {"Body Armour"}, "Helmet": {"Helmet"}, "Gloves": {"Gloves"},
-		"Boots": {"Boots"}, "Belt": {"Belt"}, "Shield": {"Weapon 2"}, "Quiver": {"Weapon 2"}}
-	if names, ok := slots[item.SlotType]; ok {
-		entry.Slots = names
+	if len(item.Slots) > 0 {
+		entry.Slots = item.Slots
 	}
 	entry.Coverage = []string{"База из активной установки PoB; тип: " + item.SlotType + ". Для правки используйте слот выбранного набора XML и полный текст предмета."}
 	return entry

@@ -7,6 +7,10 @@ local function gemProblem(gem, group)
 	if not granted and gem.nameSpec and gem.nameSpec:match("%S") then
 		return "pob_gem_error", "PoB не распознал камень " .. gem.nameSpec
 	end
+	return nil
+end
+
+local function supportProblem(gem, group)
 	local effect = gem.supportEffect
 	if not effect then return end
 	if effect.superseded then
@@ -21,6 +25,7 @@ local function groupProblems(result, id, group)
 	if not group.enabled then return end
 	for index, gem in ipairs(group.gemList or {}) do
 		local code, message = gemProblem(gem, group)
+		if not code and gem.enabled then code, message = supportProblem(gem, group) end
 		if code then
 			result[#result + 1] = { code = code, path = "Skills/Skill[" .. id .. "]/Gem[" .. index .. "]", message = message }
 		end
@@ -40,12 +45,10 @@ end
 function diagnostics.collect()
 	local result, seen = {}, {}
 	for id, group in ipairs(build.skillsTab.socketGroupList or {}) do groupProblems(result, id, group) end
-	for slot, control in pairs(build.itemsTab.slots or {}) do
-		local id = control.selItemId
-		if id and id > 0 and not seen[id] then
-			seen[id] = true
-			local item = build.itemsTab.items[id]
-			if item then itemLines(result, item, slot) end
+	for slot, item in pairs(build.calcsTab.mainEnv.player.itemList or {}) do
+		if not seen[item] then
+			seen[item] = true
+			itemLines(result, item, slot)
 		end
 	end
 	return result

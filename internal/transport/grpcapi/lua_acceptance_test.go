@@ -160,6 +160,10 @@ func connectLocalMCP(t *testing.T, ctx context.Context, commands application.Com
 }
 
 func callLuaTool(t *testing.T, ctx context.Context, client *mcp.ClientSession, name string, args any) application.SnapshotView {
+	return luaToolResult[application.SnapshotView](t, ctx, client, name, args)
+}
+
+func luaToolResult[T any](t *testing.T, ctx context.Context, client *mcp.ClientSession, name string, args any) T {
 	t.Helper()
 	response, err := client.CallTool(ctx, &mcp.CallToolParams{Name: name, Arguments: args})
 	if err != nil || response.IsError {
@@ -169,7 +173,7 @@ func callLuaTool(t *testing.T, ctx context.Context, client *mcp.ClientSession, n
 	if err != nil {
 		t.Fatal(err)
 	}
-	var result application.SnapshotView
+	var result T
 	if err := json.Unmarshal(data, &result); err != nil {
 		t.Fatal(err)
 	}

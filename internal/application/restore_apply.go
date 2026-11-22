@@ -39,6 +39,10 @@ func (s *Service) restoreApply(ctx context.Context, cmd ApplyBuild, stored domai
 	if expected != stored {
 		return domain.Snapshot{}, fmt.Errorf("правка меняет посторонние поля или неверную ревизию")
 	}
+	return s.commitRestoredApply(ctx, value, cmd, fp, stored)
+}
+
+func (s *Service) commitRestoredApply(ctx context.Context, value *session, cmd ApplyBuild, fp string, stored domain.Snapshot) (domain.Snapshot, error) {
 	doc, err := build.Parse([]byte(stored.BuildXML))
 	if err != nil {
 		return domain.Snapshot{}, err

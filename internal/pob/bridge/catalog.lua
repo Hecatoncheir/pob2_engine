@@ -36,12 +36,25 @@ local function classes(tree)
 	return entries
 end
 
+local function itemSlots(base)
+	local weapon = data.weaponTypeInfo[base.type]
+	if weapon then
+		if weapon.oneHand then return { "Weapon 1", "Weapon 2" } end
+		return { "Weapon 1" }
+	end
+	local slots = { Amulet = { "Amulet" }, Ring = { "Ring 1", "Ring 2" },
+		["Body Armour"] = { "Body Armour" }, Helmet = { "Helmet" }, Gloves = { "Gloves" },
+		Boots = { "Boots" }, Belt = { "Belt" }, Shield = { "Weapon 2" },
+		Quiver = { "Weapon 2" }, Focus = { "Weapon 2" }, Sceptre = { "Weapon 1", "Weapon 2" } }
+	return slots[base.type] or {}
+end
+
 local function items()
 	local entries = {}
 	for name, base in pairs(data.itemBases) do
 		if not base.hidden then
 			entries[#entries + 1] = { name = name, slot_type = base.type,
-				implicit = base.implicit or "", required_level = base.req and base.req.level or 0 }
+				implicit = base.implicit or "", required_level = base.req and base.req.level or 0, slots = itemSlots(base) }
 		end
 	end
 	return entries

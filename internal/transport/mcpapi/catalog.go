@@ -18,7 +18,7 @@ type previewSupportInput struct {
 func addCatalogTools(server *mcp.Server, commands application.CatalogCommands, session string, timeout time.Duration) {
 	openWorld := false
 	read := &mcp.ToolAnnotations{ReadOnlyHint: true, OpenWorldHint: &openWorld}
-	mcp.AddTool(server, &mcp.Tool{Name: "get_catalog", Description: "Найти поддержанные камни, классы, базы предметов или пассивы; обязательно учитывать coverage; limit до 100", Annotations: read},
+	mcp.AddTool(server, &mcp.Tool{Name: "get_catalog", Description: "Найти камни, классы, базы предметов или пассивы активного PoB; учитывать coverage и источник; limit до 100", Annotations: read},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input application.CatalogQuery) (*mcp.CallToolResult, application.CatalogPage, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()

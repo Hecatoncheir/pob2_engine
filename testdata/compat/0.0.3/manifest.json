@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "release": "v0.0.3",
+  "commit": "66325918a1d96e4f1d3f0caf06c2a6ce1de677f1",
+  "binary_sha256": "ebf37dc3a3ec81b70b1cf400d13ae2d59c85430f28efe57fb0337cdaf1b3db96",
+  "calculator": "go",
+  "files": {
+    "snapshot.json": "e1d7083727149172f0328eb86346dfdb03130f8f9d7693fb4541dbfcea6c68d7",
+    "sessions.db": "156a37742d00481a68bbcb9aca65da0724a80aa6e5d7d54b4ec11aeb07e58f7f"
+  }
+}

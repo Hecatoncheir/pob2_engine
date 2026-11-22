@@ -59,10 +59,11 @@ type Gem struct {
 }
 
 type Item struct {
-	Name          string `json:"name"`
-	SlotType      string `json:"slot_type"`
-	Implicit      string `json:"implicit"`
-	RequiredLevel int    `json:"required_level"`
+	Name          string   `json:"name"`
+	SlotType      string   `json:"slot_type"`
+	Implicit      string   `json:"implicit"`
+	RequiredLevel int      `json:"required_level"`
+	Slots         []string `json:"slots,omitempty"`
 }
 
 type Node struct {
@@ -238,6 +239,7 @@ func cloneGem(gem Gem) Gem {
 func (d *Dataset) Item(name string) (Item, bool) {
 	for _, i := range d.catalog.Items {
 		if i.Name == name {
+			i.Slots = slices.Clone(i.Slots)
 			return i, true
 		}
 	}

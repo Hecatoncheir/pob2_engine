@@ -295,11 +295,11 @@ class Scenario:
         self.steps.append('three_spells_catalog_preview_compare_export')
         self.steps.append('three_sessions_backup_verify_restore_exact_retry')
 
-    def upgrade_session(self, package_root, release='v0.0.1', lock=None):
+    def upgrade_session(self, package_root, release='v0.0.1', lock=None, profile='upgrade'):
         directory = package_root / 'testdata/compat' / release.removeprefix('v')
         previous = verify_compatibility_fixture(directory, release)
-        self.run('storage', 'restore', '--profile', 'upgrade', '--data-dir', self.root / 'data', '--file', directory / 'sessions.db')
-        self.start('upgrade')
+        self.run('storage', 'restore', '--profile', profile, '--data-dir', self.root / 'data', '--file', directory / 'sessions.db')
+        self.start(profile)
         require(self.snapshot('main') == previous, f'Открытие изменило сессию {release}')
         require(self.calculate('main', 2, 'calculate') == previous, 'Потерян прежний request_id')
         updated = self.calculate('main', 3, 'release-upgrade')
@@ -309,10 +309,10 @@ class Scenario:
             check_lua_updated_snapshot(previous, updated, lock)
         self.check_upgrade_retries(previous, updated)
         self.stop()
-        self.start('upgrade')
+        self.start(profile)
         self.check_upgrade_retries(previous, updated)
         self.stop()
-        self.verify_upgrade_journal()
+        self.verify_upgrade_journal(profile)
         require(verify_compatibility_fixture(directory, release) == previous, 'Обновление изменило исходный эталон')
         self.steps.append(f"published_{release[1:].replace('.', '')}_session_upgrade_and_restart")
         return {'source_release': release, 'before_data_id': previous['build']['calculation']['data_id'],
@@ -324,8 +324,8 @@ class Scenario:
         require(self.calculate('main', 3, 'release-upgrade') == updated, 'Повтор нового расчёта изменился')
         require(self.snapshot('main') == updated, 'Повтор старого запроса откатил текущую сессию')
 
-    def verify_upgrade_journal(self):
-        database = self.root / 'data/pob2-engine/profiles/upgrade/sessions.db'
+    def verify_upgrade_journal(self, profile='upgrade'):
+        database = self.root / 'data/pob2-engine/profiles' / profile / 'sessions.db'
         verified = self.run('storage', 'verify', '--file', database)
         require(verified['schema'] == '2' and verified['records'] == 4, 'Обновление повторно записало команды')
 
@@ -396,6 +396,7 @@ def smoke_binary(source, tag):
 
 
 def check_native_lua(scenario):
+    from smoke_catalog import check_full_catalog
     scenario.environment.pop('POB2_ENGINE_CALCULATOR')
     fixtures = Path(__file__).resolve().parents[1]
     lock = json.loads((fixtures / 'testdata/reference/sources.lock.json').read_text('utf-8'))['pob']
@@ -407,9 +408,12 @@ def check_native_lua(scenario):
     scenario.start('lua')
     try:
         sessions = {spell['name']: check_lua_session(scenario, fixtures, spell, lock) for spell in SPELLS}
+        open_build_session(scenario, 'catalog', 'Полный каталог', fixtures / 'testdata/reference/fireball.xml')
+        catalog = check_full_catalog(scenario, lock, assert_lua_result)
         selection = check_lua_selection(scenario, fixtures, lock)
         scenario.stop()
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
+        upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
         timings = {
             'lua': measure_binary_calculations(scenario, fixtures, 'luajit',
                                                lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)),
@@ -420,7 +424,8 @@ def check_native_lua(scenario):
         scenario.close()
     return dict(version=doctor['pob']['installed_version'], commit=lock['commit'],
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
-                selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, timings=timings,
+                selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
+                catalog=catalog, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
 
 
