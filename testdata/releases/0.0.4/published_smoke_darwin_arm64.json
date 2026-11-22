@@ -1,0 +1,306 @@
+{
+  "schema": 2,
+  "version": {
+    "protocol_version": "pob2.v1",
+    "version": "v0.0.4"
+  },
+  "steps": [
+    "three_spells_standalone_without_runtime",
+    "three_spells_cli_mcp_grpc_shared_calculation",
+    "three_spells_catalog_preview_compare_export",
+    "three_sessions_backup_verify_restore_exact_retry",
+    "published_001_session_upgrade_and_restart"
+  ],
+  "spells": [
+    {
+      "session_id": "fireball",
+      "skill": "Fireball",
+      "revision": 4,
+      "total_dps": 17.833333333333336,
+      "input_sha256": "84b5914057027b54d2042a5cd1a71411ce322c67616776ed6a1c8d1d27f89aa8",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "previews": [
+        {
+          "support": "Rapid Casting I",
+          "before_dps": 17.833333333333336,
+          "after_dps": 20.508333333333333,
+          "proposal_sha256": "07334f4f05f970e25f7a104ba2e8c0de7ed74b1d0bbdecb05a830cdf87fa81b4"
+        },
+        {
+          "support": "Controlled Destruction",
+          "before_dps": 17.833333333333336,
+          "after_dps": 20.833333333333336,
+          "proposal_sha256": "fae83736ed0a06a23e2ac28988e7313b5dff9621e891b5233295b932a479280d"
+        }
+      ],
+      "comparison_after_dps": 26.750000000000004,
+      "restored_exact_retry": true,
+      "standalone": {
+        "total_dps": 8.916666666666668,
+        "input_sha256": "c2082aecaa30957d84e2ad031f75fdb1ce909e1f3043b86bfebffb20da87ffbd",
+        "data_id": "pob2-0.0.2-spell-hits-v1"
+      }
+    },
+    {
+      "session_id": "frostbolt",
+      "skill": "Frostbolt",
+      "revision": 4,
+      "total_dps": 18.200000000000003,
+      "input_sha256": "9e14b958b2551348daa6d846b58fa4df6e05a0c31d79a2f4cc818f6c4adb2e7a",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "previews": [
+        {
+          "support": "Rapid Casting I",
+          "before_dps": 18.200000000000003,
+          "after_dps": 20.93,
+          "proposal_sha256": "77a6979d80bc33ad5d8fcb268ddcc2f374b8b118ead89669b90effbeebfe5c80"
+        },
+        {
+          "support": "Controlled Destruction",
+          "before_dps": 18.200000000000003,
+          "after_dps": 20.625,
+          "proposal_sha256": "31e1511d2f76dcdb5c0ed0febb842f2b832c74813c5ac5ebcf28668d285c5566"
+        }
+      ],
+      "comparison_after_dps": 27.300000000000004,
+      "restored_exact_retry": true,
+      "standalone": {
+        "total_dps": 9.100000000000001,
+        "input_sha256": "bc56956df27d3e4fb33da99207b6ea72890a9e9e6cde66fcd5e0390bd58b562f",
+        "data_id": "pob2-0.0.2-spell-hits-v1"
+      }
+    },
+    {
+      "session_id": "spark",
+      "skill": "Spark",
+      "revision": 4,
+      "total_dps": 17.12857142857143,
+      "input_sha256": "f4f9c7aac7b8b070df263cfe0feb2cc284b8fb412ca50a263cc5968aed025d9b",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "previews": [
+        {
+          "support": "Rapid Casting I",
+          "before_dps": 17.12857142857143,
+          "after_dps": 19.697857142857142,
+          "proposal_sha256": "0edb3400930b26faddb7592844b0021d2a56e7a9378769dd901ddd8aac0f80ce"
+        },
+        {
+          "support": "Controlled Destruction",
+          "before_dps": 17.12857142857143,
+          "after_dps": 20,
+          "proposal_sha256": "223d11590a0d2ce1d88da55c4a1688dba13ce14ffe2dc5610b9f57aaf85d9548"
+        }
+      ],
+      "comparison_after_dps": 25.692857142857147,
+      "restored_exact_retry": true,
+      "standalone": {
+        "total_dps": 8.564285714285715,
+        "input_sha256": "80ad182caa67001f148e4f733b792e1878503cafa5b93069ed8c573440ac7648",
+        "data_id": "pob2-0.0.2-spell-hits-v1"
+      }
+    }
+  ],
+  "upgrade": {
+    "source_release": "v0.0.1",
+    "before_data_id": "pob2-0.0.1-fireball-v1",
+    "after_data_id": "pob2-0.0.2-spell-hits-v1",
+    "original_revision": 3,
+    "current_revision": 4,
+    "exact_old_retry": true,
+    "restart_verified": true
+  },
+  "total_dps": 17.833333333333336,
+  "input_sha256": "84b5914057027b54d2042a5cd1a71411ce322c67616776ed6a1c8d1d27f89aa8",
+  "commit": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+  "doctor": {
+    "status": "ok",
+    "version": "v0.0.4",
+    "protocol_version": "pob2.v1",
+    "os": "darwin",
+    "arch": "arm64",
+    "go_version": "go1.27.4",
+    "executable": "/private/var/folders/9d/l02zfgrs7c16twd3wbpdmhkc0000gn/T/pob2-release-wc6ij051/pob2-engine",
+    "commit": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "modified": false,
+    "data_id": "pob2-0.0.2-spell-hits-v1",
+    "data_sha256": "643f9ae31bd18297788fc8746fa621da23f999061404d3007c21c67b2855ca18",
+    "tree_version": "0_5",
+    "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+    "restart_required": false,
+    "engine_update": {
+      "status": "unavailable",
+      "installed_version": "v0.0.4",
+      "message": "проверка стабильного выпуска: GitHub вернул HTTP 403"
+    },
+    "pob": {
+      "status": "unavailable",
+      "message": "проверка выпуска PoB: GitHub вернул HTTP 403"
+    }
+  },
+  "lua": {
+    "version": "v0.23.1",
+    "commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+    "archive_sha256": "7e190d3b66191b09416a9cd4d12394d37df374d6d6e59ab4f2366f3d9e81baf7",
+    "dps": {
+      "Fireball": 8.9166666666667,
+      "Frostbolt": 9.1,
+      "Spark": 8.5642857142857
+    },
+    "sessions": {
+      "Fireball": {
+        "edited_dps": 17.833333333333,
+        "preview": {
+          "support": "Rapid Casting I",
+          "before_dps": 17.833333333333,
+          "after_dps": 20.508333333333,
+          "proposal_sha256": "07334f4f05f970e25f7a104ba2e8c0de7ed74b1d0bbdecb05a830cdf87fa81b4"
+        },
+        "cli_replayed_mcp_calculation": true
+      },
+      "Frostbolt": {
+        "edited_dps": 18.2,
+        "preview": {
+          "support": "Rapid Casting I",
+          "before_dps": 18.2,
+          "after_dps": 20.93,
+          "proposal_sha256": "77a6979d80bc33ad5d8fcb268ddcc2f374b8b118ead89669b90effbeebfe5c80"
+        },
+        "cli_replayed_mcp_calculation": true
+      },
+      "Spark": {
+        "edited_dps": 17.128571428571,
+        "preview": {
+          "support": "Rapid Casting I",
+          "before_dps": 17.128571428571,
+          "after_dps": 19.697857142857,
+          "proposal_sha256": "0edb3400930b26faddb7592844b0021d2a56e7a9378769dd901ddd8aac0f80ce"
+        },
+        "cli_replayed_mcp_calculation": true
+      }
+    },
+    "diagnostics": {
+      "gem-requirement-warning": "pob_warning",
+      "unparsed-custom-modifier": "unsupported_modifier"
+    },
+    "selected_set_dps": 17.128571428571,
+    "upgrade": {
+      "source_release": "v0.0.2",
+      "before_data_id": "pob2-0.0.2-spell-hits-v1",
+      "after_data_id": "pob-lua-v0.23.1",
+      "original_revision": 3,
+      "current_revision": 4,
+      "exact_old_retry": true,
+      "restart_verified": true
+    },
+    "upgrade003": {
+      "source_release": "v0.0.3",
+      "before_data_id": "pob2-0.0.2-spell-hits-v1",
+      "after_data_id": "pob-lua-v0.23.1",
+      "original_revision": 3,
+      "current_revision": 4,
+      "exact_old_retry": true,
+      "restart_verified": true
+    },
+    "catalog": {
+      "counts": {
+        "gems": 966,
+        "classes": 8,
+        "items": 1504,
+        "passives": 4544
+      },
+      "new_skill_dps": 7.84,
+      "supported_dps": 10.08,
+      "support_quality": 20,
+      "incompatible_support_reported": true,
+      "equipment_and_passives": true,
+      "restart_exact_retry": true
+    },
+    "timings": {
+      "lua": {
+        "server_ready_ms": 21.599415999986604,
+        "spells": {
+          "fireball": {
+            "first_calculate_ms": 2127.999458999994,
+            "repeated_calculate_ms": [
+              283.1128329999899,
+              194.71158400000377,
+              166.36795800002346,
+              237.28079099998922,
+              246.7051250000054
+            ],
+            "repeated_median_ms": 237.28079099998922
+          },
+          "frostbolt": {
+            "first_calculate_ms": 211.63245899998628,
+            "repeated_calculate_ms": [
+              194.47141599999895,
+              205.43808299999,
+              177.3327919999872,
+              222.29641699999547,
+              312.48208400000976
+            ],
+            "repeated_median_ms": 205.43808299999
+          },
+          "spark": {
+            "first_calculate_ms": 344.45883299997604,
+            "repeated_calculate_ms": [
+              302.95233300000746,
+              676.0385829999791,
+              305.4012919999991,
+              277.5598340000158,
+              238.82650000001604
+            ],
+            "repeated_median_ms": 302.95233300000746
+          }
+        }
+      },
+      "go": {
+        "server_ready_ms": 17.358207999990327,
+        "spells": {
+          "fireball": {
+            "first_calculate_ms": 17.70862500001158,
+            "repeated_calculate_ms": [
+              22.230916000012257,
+              19.871625000007498,
+              17.030999999974483,
+              20.913583999998764,
+              16.66587500000105
+            ],
+            "repeated_median_ms": 19.871625000007498
+          },
+          "frostbolt": {
+            "first_calculate_ms": 17.533917000008614,
+            "repeated_calculate_ms": [
+              19.114625000014485,
+              17.705665999983466,
+              18.645375000005515,
+              16.952375000016673,
+              17.273958000004086
+            ],
+            "repeated_median_ms": 17.705665999983466
+          },
+          "spark": {
+            "first_calculate_ms": 20.1011249999965,
+            "repeated_calculate_ms": [
+              19.284125000012864,
+              17.487458000005063,
+              17.754874999980075,
+              17.740042000014,
+              19.009165999989364
+            ],
+            "repeated_median_ms": 17.754874999980075
+          }
+        }
+      }
+    },
+    "parallel_first_start": true,
+    "reused_cache_offline": true
+  },
+  "tag": "v0.0.4",
+  "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "checked_at": "2026-11-22T12:22:33.270859+00:00",
+  "run_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+  "binary_sha256": "7d4d21c1c2292856c53d9f5f7dece3dd6edd8ac4f6f085d2b3ddc75f7ca82a84",
+  "published_checksum_verified": true
+}

@@ -5,7 +5,7 @@
 `pob2_engine` — движок Path of Exile 2 с сервисом сессий на Go и оригинальными расчётами PoB на LuaJIT. Работают CLI/gRPC/MCP, обнаружение, аренды, сохранение, подписки, установка PoB, `update` и `doctor`. Прежний расчёт Go сохранён для сравнений; команды: `docs/CLI-BUILDS.md`, `docs/RELEASE.md`. Контракты: `docs/SESSION-API.md`, `docs/SERVER-LIFECYCLE.md`, `docs/SESSION-STORAGE.md`, `docs/SESSION-EVENTS.md`.
 
 - `README.md` — архитектура и согласованные требования.
-- `TODO.md` — дорожная карта; `todo_0.0.4.md` — текущий план; `todo_0.0.1.md`, `todo_0.0.2.md` и `todo_0.0.3.md` — завершённые выпуски.
+- `TODO.md` — дорожная карта; `todo_0.0.4.md` — последний завершённый выпуск; `todo_0.0.1.md`, `todo_0.0.2.md` и `todo_0.0.3.md` — предыдущие завершённые выпуски.
 - `CHANGELOG.md` — изменения и записи выпусков.
 - `.github/workflows/ci.yml`, `release.yml` — проверки и публикация по тегам.
 

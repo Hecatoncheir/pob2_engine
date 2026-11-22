@@ -1,0 +1,1462 @@
+[
+  {
+    "id": 137204742296,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8go4mA",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137204742296",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137204742296",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:15:36Z",
+    "started_at": "2026-11-22T12:15:38Z",
+    "completed_at": "2026-11-22T12:15:47Z",
+    "name": "Проверить тег и changelog",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:15:38Z",
+        "completed_at": "2026-11-22T12:15:40Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:15:40Z",
+        "completed_at": "2026-11-22T12:15:44Z"
+      },
+      {
+        "name": "Проверить принадлежность основной ветке",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:15:44Z",
+        "completed_at": "2026-11-22T12:15:44Z"
+      },
+      {
+        "name": "Подготовить примечания версии",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:15:44Z",
+        "completed_at": "2026-11-22T12:15:44Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:15:44Z",
+        "completed_at": "2026-11-22T12:15:45Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-22T12:15:45Z",
+        "completed_at": "2026-11-22T12:15:45Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-22T12:15:45Z",
+        "completed_at": "2026-11-22T12:15:45Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137204742296",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005624,
+    "runner_name": "GitHub Actions 1000005624",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137204742541,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8go5jQ",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137204742541",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137204742541",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:15:36Z",
+    "started_at": "2026-11-22T12:15:38Z",
+    "completed_at": "2026-11-22T12:15:42Z",
+    "name": "Проверить проект / Документация и структура",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:15:38Z",
+        "completed_at": "2026-11-22T12:15:39Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:15:39Z",
+        "completed_at": "2026-11-22T12:15:40Z"
+      },
+      {
+        "name": "Проверить документацию и готовность Go-проекта",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:15:40Z",
+        "completed_at": "2026-11-22T12:15:40Z"
+      },
+      {
+        "name": "Проверить пробелы в последнем коммите",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:15:40Z",
+        "completed_at": "2026-11-22T12:15:40Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:15:40Z",
+        "completed_at": "2026-11-22T12:15:41Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:15:41Z",
+        "completed_at": "2026-11-22T12:15:41Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137204742541",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005625,
+    "runner_name": "GitHub Actions 1000005625",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137204770747,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8gqnuw",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137204770747",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137204770747",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:15:42Z",
+    "started_at": "2026-11-22T12:15:44Z",
+    "completed_at": "2026-11-22T12:18:52Z",
+    "name": "Проверить проект / Эталон Lua / Linux",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:15:45Z",
+        "completed_at": "2026-11-22T12:15:46Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:15:46Z",
+        "completed_at": "2026-11-22T12:15:47Z"
+      },
+      {
+        "name": "Проверить целостность эталонов и отказы инструментов",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:15:47Z",
+        "completed_at": "2026-11-22T12:15:48Z"
+      },
+      {
+        "name": "Подготовить изолированную среду и воспроизвести расчёт",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:15:48Z",
+        "completed_at": "2026-11-22T12:16:14Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:16:14Z",
+        "completed_at": "2026-11-22T12:16:17Z"
+      },
+      {
+        "name": "Проверить LuaJIT в Go, MCP и gRPC",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-22T12:16:17Z",
+        "completed_at": "2026-11-22T12:17:03Z"
+      },
+      {
+        "name": "Проверить воспроизводимость встроенных данных",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-22T12:17:03Z",
+        "completed_at": "2026-11-22T12:17:09Z"
+      },
+      {
+        "name": "Воспроизвести матрицу расчётов и диагностики",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:17:09Z",
+        "completed_at": "2026-11-22T12:17:31Z"
+      },
+      {
+        "name": "Воспроизвести заклинания холода и молнии",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:17:31Z",
+        "completed_at": "2026-11-22T12:17:54Z"
+      },
+      {
+        "name": "Воспроизвести восемь базовых классов и выбор групп",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-22T12:17:54Z",
+        "completed_at": "2026-11-22T12:18:41Z"
+      },
+      {
+        "name": "Воспроизвести Ice Nova и поддержку из полного каталога PoB",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-22T12:18:41Z",
+        "completed_at": "2026-11-22T12:18:47Z"
+      },
+      {
+        "name": "Сохранить отчёт и состав среды",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 12,
+        "started_at": "2026-11-22T12:18:47Z",
+        "completed_at": "2026-11-22T12:18:49Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 23,
+        "started_at": "2026-11-22T12:18:49Z",
+        "completed_at": "2026-11-22T12:18:49Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 24,
+        "started_at": "2026-11-22T12:18:49Z",
+        "completed_at": "2026-11-22T12:18:50Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 25,
+        "started_at": "2026-11-22T12:18:50Z",
+        "completed_at": "2026-11-22T12:18:50Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137204770747",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005631,
+    "runner_name": "GitHub Actions 1000005631",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137204770749,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8gqnvQ",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137204770749",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137204770749",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:15:42Z",
+    "started_at": "2026-11-22T12:15:44Z",
+    "completed_at": "2026-11-22T12:18:04Z",
+    "name": "Проверить проект / Go / Linux",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:15:44Z",
+        "completed_at": "2026-11-22T12:15:45Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:15:45Z",
+        "completed_at": "2026-11-22T12:15:46Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:15:46Z",
+        "completed_at": "2026-11-22T12:15:47Z"
+      },
+      {
+        "name": "Проверить форматирование",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:15:47Z",
+        "completed_at": "2026-11-22T12:15:47Z"
+      },
+      {
+        "name": "Проверить код",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:15:47Z",
+        "completed_at": "2026-11-22T12:16:05Z"
+      },
+      {
+        "name": "Проверить закреплённые источники эталона",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-22T12:16:05Z",
+        "completed_at": "2026-11-22T12:16:05Z"
+      },
+      {
+        "name": "Проверить лицензии поставляемых зависимостей",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-22T12:16:05Z",
+        "completed_at": "2026-11-22T12:16:06Z"
+      },
+      {
+        "name": "Выполнить тесты",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:16:06Z",
+        "completed_at": "2026-11-22T12:16:34Z"
+      },
+      {
+        "name": "Проверить гонки",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:16:34Z",
+        "completed_at": "2026-11-22T12:17:28Z"
+      },
+      {
+        "name": "Измерить расчёт и сохранить состав среды",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-22T12:17:28Z",
+        "completed_at": "2026-11-22T12:18:00Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-22T12:18:00Z",
+        "completed_at": "2026-11-22T12:18:01Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 21,
+        "started_at": "2026-11-22T12:18:01Z",
+        "completed_at": "2026-11-22T12:18:01Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 22,
+        "started_at": "2026-11-22T12:18:01Z",
+        "completed_at": "2026-11-22T12:18:02Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 23,
+        "started_at": "2026-11-22T12:18:02Z",
+        "completed_at": "2026-11-22T12:18:02Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137204770749",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005629,
+    "runner_name": "GitHub Actions 1000005629",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137204770773,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8gqn1Q",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137204770773",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137204770773",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:15:42Z",
+    "started_at": "2026-11-22T12:15:44Z",
+    "completed_at": "2026-11-22T12:17:21Z",
+    "name": "Проверить проект / Protobuf и генерация API",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:15:44Z",
+        "completed_at": "2026-11-22T12:15:46Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:15:46Z",
+        "completed_at": "2026-11-22T12:15:47Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:15:47Z",
+        "completed_at": "2026-11-22T12:15:48Z"
+      },
+      {
+        "name": "Run dart-lang/setup-dart@v1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:15:48Z",
+        "completed_at": "2026-11-22T12:16:00Z"
+      },
+      {
+        "name": "Установить закреплённый Buf",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:16:00Z",
+        "completed_at": "2026-11-22T12:17:04Z"
+      },
+      {
+        "name": "Проверить контракт",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-22T12:17:04Z",
+        "completed_at": "2026-11-22T12:17:04Z"
+      },
+      {
+        "name": "Проверить воспроизводимость Go- и Dart-API",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-22T12:17:04Z",
+        "completed_at": "2026-11-22T12:17:16Z"
+      },
+      {
+        "name": "Проверить сгенерированный Dart API",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:17:16Z",
+        "completed_at": "2026-11-22T12:17:18Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-22T12:17:18Z",
+        "completed_at": "2026-11-22T12:17:18Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 16,
+        "started_at": "2026-11-22T12:17:18Z",
+        "completed_at": "2026-11-22T12:17:18Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-11-22T12:17:19Z",
+        "completed_at": "2026-11-22T12:17:19Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137204770773",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005630,
+    "runner_name": "GitHub Actions 1000005630",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137205604887,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8hdiFw",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137205604887",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137205604887",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:18:53Z",
+    "started_at": "2026-11-22T12:18:54Z",
+    "completed_at": "2026-11-22T12:19:39Z",
+    "name": "Собрать linux / amd64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:18:55Z",
+        "completed_at": "2026-11-22T12:18:57Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:18:57Z",
+        "completed_at": "2026-11-22T12:18:58Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:18:58Z",
+        "completed_at": "2026-11-22T12:19:00Z"
+      },
+      {
+        "name": "Собрать самостоятельный файл",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:19:00Z",
+        "completed_at": "2026-11-22T12:19:34Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:19:34Z",
+        "completed_at": "2026-11-22T12:19:36Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:19:36Z",
+        "completed_at": "2026-11-22T12:19:36Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-22T12:19:36Z",
+        "completed_at": "2026-11-22T12:19:36Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-22T12:19:36Z",
+        "completed_at": "2026-11-22T12:19:36Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137205604887",
+    "labels": [
+      "ubuntu-22.04"
+    ],
+    "runner_id": 1000005634,
+    "runner_name": "GitHub Actions 1000005634",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137205604906,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8hdiKg",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137205604906",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137205604906",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:18:53Z",
+    "started_at": "2026-11-22T12:18:56Z",
+    "completed_at": "2026-11-22T12:19:41Z",
+    "name": "Собрать darwin / arm64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:18:56Z",
+        "completed_at": "2026-11-22T12:18:58Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:18:58Z",
+        "completed_at": "2026-11-22T12:19:01Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:19:01Z",
+        "completed_at": "2026-11-22T12:19:04Z"
+      },
+      {
+        "name": "Собрать самостоятельный файл",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:19:04Z",
+        "completed_at": "2026-11-22T12:19:35Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:19:35Z",
+        "completed_at": "2026-11-22T12:19:38Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:19:38Z",
+        "completed_at": "2026-11-22T12:19:38Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-22T12:19:38Z",
+        "completed_at": "2026-11-22T12:19:38Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-22T12:19:38Z",
+        "completed_at": "2026-11-22T12:19:39Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137205604906",
+    "labels": [
+      "macos-15"
+    ],
+    "runner_id": 1000005632,
+    "runner_name": "GitHub Actions 1000005632",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137205604944,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8hdiUA",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137205604944",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137205604944",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:18:53Z",
+    "started_at": "2026-11-22T12:18:54Z",
+    "completed_at": "2026-11-22T12:19:49Z",
+    "name": "Собрать windows / amd64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:18:55Z",
+        "completed_at": "2026-11-22T12:18:56Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:18:56Z",
+        "completed_at": "2026-11-22T12:19:02Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:19:02Z",
+        "completed_at": "2026-11-22T12:19:06Z"
+      },
+      {
+        "name": "Собрать самостоятельный файл",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:19:06Z",
+        "completed_at": "2026-11-22T12:19:43Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:19:43Z",
+        "completed_at": "2026-11-22T12:19:45Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:19:45Z",
+        "completed_at": "2026-11-22T12:19:46Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-22T12:19:46Z",
+        "completed_at": "2026-11-22T12:19:48Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-22T12:19:48Z",
+        "completed_at": "2026-11-22T12:19:48Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137205604944",
+    "labels": [
+      "windows-latest"
+    ],
+    "runner_id": 1000005633,
+    "runner_name": "GitHub Actions 1000005633",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137205858431,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8htAfw",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137205858431",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137205858431",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:19:50Z",
+    "started_at": "2026-11-22T12:19:52Z",
+    "completed_at": "2026-11-22T12:21:27Z",
+    "name": "Проверить выпуск / darwin / arm64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:19:52Z",
+        "completed_at": "2026-11-22T12:19:55Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:19:55Z",
+        "completed_at": "2026-11-22T12:19:57Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:19:57Z",
+        "completed_at": "2026-11-22T12:20:00Z"
+      },
+      {
+        "name": "Проверить установку обновлений на целевой платформе",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:20:00Z",
+        "completed_at": "2026-11-22T12:20:22Z"
+      },
+      {
+        "name": "Run actions/download-artifact@v8.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:20:22Z",
+        "completed_at": "2026-11-22T12:20:23Z"
+      },
+      {
+        "name": "Проверить бинарник и полный сценарий без среды разработки",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-22T12:20:23Z",
+        "completed_at": "2026-11-22T12:21:22Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-22T12:21:22Z",
+        "completed_at": "2026-11-22T12:21:23Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13,
+        "started_at": "2026-11-22T12:21:23Z",
+        "completed_at": "2026-11-22T12:21:23Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-11-22T12:21:23Z",
+        "completed_at": "2026-11-22T12:21:24Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-22T12:21:24Z",
+        "completed_at": "2026-11-22T12:21:26Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137205858431",
+    "labels": [
+      "macos-15"
+    ],
+    "runner_id": 1000005637,
+    "runner_name": "GitHub Actions 1000005637",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137205858439,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8htAhw",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137205858439",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137205858439",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:19:50Z",
+    "started_at": "2026-11-22T12:19:51Z",
+    "completed_at": "2026-11-22T12:20:37Z",
+    "name": "Проверить выпуск / linux / amd64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:19:51Z",
+        "completed_at": "2026-11-22T12:19:53Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:19:53Z",
+        "completed_at": "2026-11-22T12:19:54Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:19:54Z",
+        "completed_at": "2026-11-22T12:19:54Z"
+      },
+      {
+        "name": "Проверить установку обновлений на целевой платформе",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:19:54Z",
+        "completed_at": "2026-11-22T12:20:07Z"
+      },
+      {
+        "name": "Run actions/download-artifact@v8.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:20:07Z",
+        "completed_at": "2026-11-22T12:20:08Z"
+      },
+      {
+        "name": "Проверить бинарник и полный сценарий без среды разработки",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-22T12:20:08Z",
+        "completed_at": "2026-11-22T12:20:34Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-22T12:20:34Z",
+        "completed_at": "2026-11-22T12:20:34Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13,
+        "started_at": "2026-11-22T12:20:34Z",
+        "completed_at": "2026-11-22T12:20:35Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-11-22T12:20:35Z",
+        "completed_at": "2026-11-22T12:20:35Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-22T12:20:35Z",
+        "completed_at": "2026-11-22T12:20:35Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137205858439",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005635,
+    "runner_name": "GitHub Actions 1000005635",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137205858440,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8htAiA",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137205858440",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137205858440",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:19:50Z",
+    "started_at": "2026-11-22T12:19:51Z",
+    "completed_at": "2026-11-22T12:21:20Z",
+    "name": "Проверить выпуск / windows / amd64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:19:52Z",
+        "completed_at": "2026-11-22T12:19:53Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:19:53Z",
+        "completed_at": "2026-11-22T12:19:58Z"
+      },
+      {
+        "name": "Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:19:58Z",
+        "completed_at": "2026-11-22T12:20:01Z"
+      },
+      {
+        "name": "Проверить установку обновлений на целевой платформе",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:20:01Z",
+        "completed_at": "2026-11-22T12:20:28Z"
+      },
+      {
+        "name": "Run actions/download-artifact@v8.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:20:28Z",
+        "completed_at": "2026-11-22T12:20:29Z"
+      },
+      {
+        "name": "Проверить бинарник и полный сценарий без среды разработки",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-22T12:20:29Z",
+        "completed_at": "2026-11-22T12:21:15Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-22T12:21:15Z",
+        "completed_at": "2026-11-22T12:21:16Z"
+      },
+      {
+        "name": "Post Run actions/setup-go@v7.1.0",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13,
+        "started_at": "2026-11-22T12:21:16Z",
+        "completed_at": "2026-11-22T12:21:16Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-11-22T12:21:16Z",
+        "completed_at": "2026-11-22T12:21:18Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-22T12:21:18Z",
+        "completed_at": "2026-11-22T12:21:18Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137205858440",
+    "labels": [
+      "windows-latest"
+    ],
+    "runner_id": 1000005636,
+    "runner_name": "GitHub Actions 1000005636",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137206302605,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8iIHjQ",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137206302605",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137206302605",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:21:27Z",
+    "started_at": "2026-11-22T12:21:29Z",
+    "completed_at": "2026-11-22T12:21:37Z",
+    "name": "Опубликовать выпуск",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:21:29Z",
+        "completed_at": "2026-11-22T12:21:30Z"
+      },
+      {
+        "name": "Run actions/download-artifact@v8.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:21:30Z",
+        "completed_at": "2026-11-22T12:21:31Z"
+      },
+      {
+        "name": "Run actions/download-artifact@v8.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:21:31Z",
+        "completed_at": "2026-11-22T12:21:32Z"
+      },
+      {
+        "name": "Сверить SHA-256 и опубликовать три бинарника",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:21:32Z",
+        "completed_at": "2026-11-22T12:21:35Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-22T12:21:35Z",
+        "completed_at": "2026-11-22T12:21:35Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137206302605",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005638,
+    "runner_name": "GitHub Actions 1000005638",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137206348395,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8iK6aw",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137206348395",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137206348395",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:21:37Z",
+    "started_at": "2026-11-22T12:21:38Z",
+    "completed_at": "2026-11-22T12:22:45Z",
+    "name": "Проверить скачанный выпуск / windows / amd64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:21:39Z",
+        "completed_at": "2026-11-22T12:21:40Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:21:40Z",
+        "completed_at": "2026-11-22T12:21:45Z"
+      },
+      {
+        "name": "Скачать опубликованный бинарник и повторить сценарий",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:21:45Z",
+        "completed_at": "2026-11-22T12:22:41Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:22:41Z",
+        "completed_at": "2026-11-22T12:22:42Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:22:42Z",
+        "completed_at": "2026-11-22T12:22:44Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:22:44Z",
+        "completed_at": "2026-11-22T12:22:44Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137206348395",
+    "labels": [
+      "windows-latest"
+    ],
+    "runner_id": 1000005639,
+    "runner_name": "GitHub Actions 1000005639",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137206348402,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8iK6cg",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137206348402",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137206348402",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:21:37Z",
+    "started_at": "2026-11-22T12:21:38Z",
+    "completed_at": "2026-11-22T12:22:19Z",
+    "name": "Проверить скачанный выпуск / linux / amd64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:21:39Z",
+        "completed_at": "2026-11-22T12:21:40Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:21:40Z",
+        "completed_at": "2026-11-22T12:21:41Z"
+      },
+      {
+        "name": "Скачать опубликованный бинарник и повторить сценарий",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:21:41Z",
+        "completed_at": "2026-11-22T12:22:16Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:22:16Z",
+        "completed_at": "2026-11-22T12:22:17Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:22:17Z",
+        "completed_at": "2026-11-22T12:22:17Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:22:17Z",
+        "completed_at": "2026-11-22T12:22:17Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137206348402",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000005640,
+    "runner_name": "GitHub Actions 1000005640",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 137206348438,
+    "run_id": 45021350091,
+    "workflow_name": "Выпустить по тегу",
+    "head_branch": "v0.0.4",
+    "run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/runs/45021350091",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOV1wUM88AAAAf8iK6lg",
+    "head_sha": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+    "url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/actions/jobs/137206348438",
+    "html_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45021350091/job/137206348438",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-22T12:21:37Z",
+    "started_at": "2026-11-22T12:21:40Z",
+    "completed_at": "2026-11-22T12:22:39Z",
+    "name": "Проверить скачанный выпуск / darwin / arm64",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-22T12:21:40Z",
+        "completed_at": "2026-11-22T12:21:42Z"
+      },
+      {
+        "name": "Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-22T12:21:42Z",
+        "completed_at": "2026-11-22T12:21:43Z"
+      },
+      {
+        "name": "Скачать опубликованный бинарник и повторить сценарий",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-22T12:21:44Z",
+        "completed_at": "2026-11-22T12:22:33Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@v7.0.2",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-22T12:22:33Z",
+        "completed_at": "2026-11-22T12:22:35Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v7.0.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-22T12:22:35Z",
+        "completed_at": "2026-11-22T12:22:35Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-22T12:22:35Z",
+        "completed_at": "2026-11-22T12:22:36Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/Hecatoncheir/pob2_engine/check-runs/137206348438",
+    "labels": [
+      "macos-15"
+    ],
+    "runner_id": 1000005641,
+    "runner_name": "GitHub Actions 1000005641",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  }
+]
