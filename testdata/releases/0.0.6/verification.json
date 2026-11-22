@@ -1,0 +1,150 @@
+{
+  "tag": "v0.0.6",
+  "commit": "c1971227794f1f1b828d12eaa7254afa40fa79c1",
+  "published_at": "2026-11-22T17:03:45Z",
+  "release_url": "https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.6",
+  "workflow_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45046608871",
+  "jobs": [
+    {
+      "name": "Проверить тег и changelog",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить проект / Документация и структура",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить проект / Эталон Lua / Linux",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить проект / Protobuf и генерация API",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить проект / Go / Linux",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Собрать linux / amd64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Собрать darwin / arm64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Собрать windows / amd64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить выпуск / windows / amd64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить выпуск / linux / amd64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить выпуск / darwin / arm64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Опубликовать выпуск",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить скачанный выпуск / linux / amd64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить скачанный выпуск / darwin / arm64",
+      "conclusion": "success",
+      "attempt": 2
+    },
+    {
+      "name": "Проверить скачанный выпуск / windows / amd64",
+      "conclusion": "success",
+      "attempt": 2
+    }
+  ],
+  "assets": [
+    {
+      "name": "pob2_engine_v0.0.6_darwin_arm64",
+      "size": 16009538,
+      "sha256": "27e6c9012d8d88299af1e33ab3dd6fdd09c220fe0ad33517fb3d2498130e159d"
+    },
+    {
+      "name": "pob2_engine_v0.0.6_linux_amd64",
+      "size": 17125832,
+      "sha256": "cd40a673be778ebd8e66da4960e3f37513ffb9c3128be18c7acbb60b3027357b"
+    },
+    {
+      "name": "pob2_engine_v0.0.6_windows_amd64.exe",
+      "size": 17541632,
+      "sha256": "fd103b1509dc32ab8b9bf897395850211cefca0639a4aef57f84727f948159a1"
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 298,
+      "sha256": "fa18d2621be9c34ee4afe2ca5b70ff148f8cee2aeb9e010fe70bd7140bfbc68c"
+    }
+  ],
+  "reports": [
+    {
+      "platform": "windows-amd64",
+      "published": false,
+      "file": "smoke_windows_amd64.json",
+      "sha256": "5785d81347e112e443ebf49d6ff65b63af35f59ca80e3f51bf03e6a04bf9f490",
+      "binary_sha256": "fd103b1509dc32ab8b9bf897395850211cefca0639a4aef57f84727f948159a1"
+    },
+    {
+      "platform": "linux-amd64",
+      "published": false,
+      "file": "smoke_linux_amd64.json",
+      "sha256": "b427986042d4dc7b3117d13a07fd8bc9e8ea3a312e72db65dd74e2942ec48b67",
+      "binary_sha256": "cd40a673be778ebd8e66da4960e3f37513ffb9c3128be18c7acbb60b3027357b"
+    },
+    {
+      "platform": "darwin-arm64",
+      "published": false,
+      "file": "smoke_darwin_arm64.json",
+      "sha256": "f672946bfcf86b4c221dad2296a627a771577df68d46b9746824ab05bb267e12",
+      "binary_sha256": "27e6c9012d8d88299af1e33ab3dd6fdd09c220fe0ad33517fb3d2498130e159d"
+    },
+    {
+      "platform": "windows-amd64",
+      "published": true,
+      "file": "published_smoke_windows_amd64.json",
+      "sha256": "7ef8336abb6d2e1ce3a5a8f4571944da976cee850d45cc05dc8be4017ef8c1e5",
+      "binary_sha256": "fd103b1509dc32ab8b9bf897395850211cefca0639a4aef57f84727f948159a1"
+    },
+    {
+      "platform": "linux-amd64",
+      "published": true,
+      "file": "published_smoke_linux_amd64.json",
+      "sha256": "a2441082b1eebff060c0a267c437ee5743d95715b55ae49150401634fc79d19d",
+      "binary_sha256": "cd40a673be778ebd8e66da4960e3f37513ffb9c3128be18c7acbb60b3027357b"
+    },
+    {
+      "platform": "darwin-arm64",
+      "published": true,
+      "file": "published_smoke_darwin_arm64.json",
+      "sha256": "23e8af5a34019d4e32cf3f912611ab308770daa037a1f8d158d6d5197c5fa383",
+      "binary_sha256": "27e6c9012d8d88299af1e33ab3dd6fdd09c220fe0ad33517fb3d2498130e159d"
+    }
+  ]
+}
