@@ -78,6 +78,11 @@
   Все 15 заданий [релизного CI](https://github.com/Hecatoncheir/pob2_engine/actions/runs/45030918545)
   прошли. [Итоговые суммы и шесть отчётов](testdata/releases/0.0.5-rc.1/README.md)
   сверены со скачанными бинарниками и метаданными GitHub.
-- [ ] **4.4.** После приёмки кандидата выпустить `v0.0.5`. Повторить проверку
+- [x] **4.4.** После приёмки кандидата выпустить `v0.0.5`. Повторить проверку
   скачанных бинарников и `SHA256SUMS`, закрепить ссылки на отчёты.
   Порядок публикации описан в [руководстве выпуска](docs/RELEASE.md).
+  [Стабильный выпуск](https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.5)
+  принят на Windows x64, Linux x64 и macOS arm64. Все 15 заданий
+  [GitHub Actions](https://github.com/Hecatoncheir/pob2_engine/actions/runs/45032600673)
+  прошли. [Отчёты и SHA-256](testdata/releases/0.0.5/README.md) сверены со
+  скачанными файлами.
