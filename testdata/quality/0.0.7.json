@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "stage": "0.0.7",
+  "date_moscow": "2026-11-22",
+  "base_commit": "c1971227794f1f1b828d12eaa7254afa40fa79c1",
+  "scope": "Изменённые функции Go и Python для создания сессии из XML и приёмки выпуска",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 17,
+  "maximum_cognitive": 10,
+  "functions": [
+    {
+      "file": "internal/application/builds.go",
+      "function": "applyNewBuild",
+      "line": 179,
+      "cognitive_before": 9,
+      "cognitive_after": 8,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/builds.go",
+      "function": "withBuildDocument",
+      "line": 211,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/application/journal_test.go",
+      "function": "TestCreateWithXMLIsAtomicAndReplaysInitialSnapshot",
+      "line": 93,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 12
+    },
+    {
+      "file": "internal/application/journal_test.go",
+      "function": "verifyCreatedXML",
+      "line": 136,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/application/sessions.go",
+      "function": "Create",
+      "line": 102,
+      "cognitive_before": 10,
+      "cognitive_after": 8,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/application/sessions.go",
+      "function": "commitCreation",
+      "line": 126,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/application/sessions.go",
+      "function": "creationEvent",
+      "line": 147,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/transport/cli/cli.go",
+      "function": "session",
+      "line": 371,
+      "cognitive_before": 9,
+      "cognitive_after": 10,
+      "cyclomatic_after": 13
+    },
+    {
+      "file": "internal/transport/cli/cli.go",
+      "function": "createSession",
+      "line": 421,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/transport/grpcapi/client.go",
+      "function": "Create",
+      "line": 173,
+      "cognitive_before": 1,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/grpcapi/server.go",
+      "function": "CreateSession",
+      "line": 194,
+      "cognitive_before": 1,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/grpcapi/server.go",
+      "function": "CreateSessionFromXml",
+      "line": 199,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/server.go",
+      "function": "createSession",
+      "line": 207,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "execute",
+      "line": 206,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_atomic_xml_creation",
+      "line": 222,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_native_lua",
+      "line": 420,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_same_lua_revision",
+      "line": 465,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    }
+  ]
+}

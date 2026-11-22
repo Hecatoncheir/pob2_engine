@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "tag": "v0.0.7-rc.1",
+  "run_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45058491477",
+  "release_url": "https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.7-rc.1",
+  "platforms": {
+    "windows_amd64": {
+      "asset": "pob2_engine_v0.0.7-rc.1_windows_amd64.exe",
+      "sha256": "ea36a2ceafeccfef4479635d98f2b9743aedac9da8d48d7da85f0f6e7b4002c0",
+      "reports": {
+        "smoke": "smoke_windows_amd64.json",
+        "published_smoke": "published_smoke_windows_amd64.json"
+      }
+    },
+    "linux_amd64": {
+      "asset": "pob2_engine_v0.0.7-rc.1_linux_amd64",
+      "sha256": "e6e81bac06571996cfca48151346d5042c119d15a2df61887c1f6e7bebf1be93",
+      "reports": {
+        "smoke": "smoke_linux_amd64.json",
+        "published_smoke": "published_smoke_linux_amd64.json"
+      }
+    },
+    "darwin_arm64": {
+      "asset": "pob2_engine_v0.0.7-rc.1_darwin_arm64",
+      "sha256": "3651349bf7eb35dbb5c10ad07c2d31df97505a9f9f60c70e2bddd075f752a8a6",
+      "reports": {
+        "smoke": "smoke_darwin_arm64.json",
+        "published_smoke": "published_smoke_darwin_arm64.json"
+      }
+    }
+  }
+}
