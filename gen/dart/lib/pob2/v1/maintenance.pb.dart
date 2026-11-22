@@ -67,7 +67,7 @@ class UpdateRequest extends $pb.GeneratedMessage {
           UpdateRequest.$_createMessage);
   static UpdateRequest? _defaultInstance;
 
-  /// При false проверяется только наличие новой стабильной версии.
+  /// При false проверяется наличие обновления или предыдущей установки.
   @$pb.TagNumber(1)
   $core.bool get apply => $_getBF(0);
   @$pb.TagNumber(1)
@@ -77,7 +77,7 @@ class UpdateRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearApply() => $_clearField(1);
 
-  /// all, engine или pob. Пустое значение означает all.
+  /// all, engine, pob, pob@vX.Y.Z или pob-rollback. Пустое значение означает all.
   @$pb.TagNumber(2)
   $core.String get target => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -155,7 +155,7 @@ class UpdateResponse extends $pb.GeneratedMessage {
           UpdateResponse.$_createMessage);
   static UpdateResponse? _defaultInstance;
 
-  /// up_to_date, available, updated или development_build.
+  /// Статус обновления или отката для выбранной цели.
   @$pb.TagNumber(1)
   $core.String get status => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -537,6 +537,11 @@ class ComponentVersion extends $pb.GeneratedMessage {
     $core.String? releaseUrl,
     $core.String? message,
     $core.bool? restartRequired,
+    $core.String? installedCommit,
+    $core.String? runningVersion,
+    $core.String? runningCommit,
+    $core.String? previousVersion,
+    $core.String? previousCommit,
   }) {
     final result = ComponentVersion._();
     if (status != null) result.status = status;
@@ -545,6 +550,11 @@ class ComponentVersion extends $pb.GeneratedMessage {
     if (releaseUrl != null) result.releaseUrl = releaseUrl;
     if (message != null) result.message = message;
     if (restartRequired != null) result.restartRequired = restartRequired;
+    if (installedCommit != null) result.installedCommit = installedCommit;
+    if (runningVersion != null) result.runningVersion = runningVersion;
+    if (runningCommit != null) result.runningCommit = runningCommit;
+    if (previousVersion != null) result.previousVersion = previousVersion;
+    if (previousCommit != null) result.previousCommit = previousCommit;
     return result;
   }
 
@@ -567,6 +577,11 @@ class ComponentVersion extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'releaseUrl')
     ..aOS(5, _omitFieldNames ? '' : 'message')
     ..aOB(6, _omitFieldNames ? '' : 'restartRequired')
+    ..aOS(7, _omitFieldNames ? '' : 'installedCommit')
+    ..aOS(8, _omitFieldNames ? '' : 'runningVersion')
+    ..aOS(9, _omitFieldNames ? '' : 'runningCommit')
+    ..aOS(10, _omitFieldNames ? '' : 'previousVersion')
+    ..aOS(11, _omitFieldNames ? '' : 'previousCommit')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -644,6 +659,51 @@ class ComponentVersion extends $pb.GeneratedMessage {
   $core.bool hasRestartRequired() => $_has(5);
   @$pb.TagNumber(6)
   void clearRestartRequired() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get installedCommit => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set installedCommit($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasInstalledCommit() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearInstalledCommit() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get runningVersion => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set runningVersion($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasRunningVersion() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearRunningVersion() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get runningCommit => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set runningCommit($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasRunningCommit() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearRunningCommit() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get previousVersion => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set previousVersion($core.String value) => $_setString(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasPreviousVersion() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearPreviousVersion() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get previousCommit => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set previousCommit($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasPreviousCommit() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearPreviousCommit() => $_clearField(11);
 }
 
 class DoctorServer extends $pb.GeneratedMessage {

@@ -22,7 +22,7 @@ func (r runner) maintenance(ctx context.Context, command string, args []string) 
 	switch command {
 	case "update":
 		fs.BoolVar(&check, "check", false, "проверить наличие обновления без записи")
-		fs.StringVar(&target, "target", "all", "что обновлять: all, engine или pob")
+		fs.StringVar(&target, "target", "all", "цель обновления: all, engine, pob, pob@vX.Y.Z или pob-rollback")
 	case "doctor":
 		fs.BoolVar(&licenses, "licenses", false, "вывести тексты встроенных лицензий")
 	}

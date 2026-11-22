@@ -2,18 +2,36 @@ package maintenance
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 )
 
-func updatePoB(ctx context.Context, apply bool) (pob.State, error) {
+func (s *Service) updatePoB(ctx context.Context, apply bool, target string) (pob.State, error) {
 	manager, err := pob.Local()
 	if err != nil {
 		return failedComponent(pob.State{}, err), err
 	}
-	state, err := manager.Update(ctx, apply)
+	var state pob.State
+	if target == "pob-rollback" {
+		state, err = manager.Rollback(ctx, apply)
+	} else if tag, ok := strings.CutPrefix(target, "pob@"); ok {
+		state, err = manager.UpdateTo(ctx, apply, tag)
+	} else {
+		state, err = manager.Update(ctx, apply)
+	}
+	s.reportRunningPoB(&state)
 	return failedComponent(state, err), err
+}
+
+func (s *Service) reportRunningPoB(state *pob.State) {
+	if running := s.running.Load(); running != nil {
+		state.RunningVersion, state.RunningCommit = running.Version, running.Commit
+		if state.InstalledVersion != "" {
+			state.RestartRequired = state.InstalledVersion != running.Version || state.InstalledCommit != running.Commit
+		}
+	}
 }
 
 func failedComponent(state pob.State, err error) pob.State {
@@ -33,7 +51,7 @@ func (s *Service) engineState(update UpdateResult, err error) pob.State {
 
 func (s *Service) updateAll(ctx context.Context, apply bool) (UpdateResult, error) {
 	// Сначала обновляем комплект PoB, пока текущий процесс ещё обслуживает команды.
-	upstream, pobErr := updatePoB(ctx, apply)
+	upstream, pobErr := s.updatePoB(ctx, apply, "pob")
 	engine, engineErr := s.updateEngine(ctx, apply)
 	state := s.engineState(engine, engineErr)
 	engine.Engine, engine.PoB = &state, &upstream
@@ -56,11 +74,12 @@ func (s *Service) inspectUpdates(ctx context.Context, report *Report) {
 	defer cancel()
 	upstream := make(chan pob.State, 1)
 	go func() {
-		state, _ := updatePoB(check, false)
+		state, _ := s.updatePoB(check, false, "pob")
 		upstream <- state
 	}()
 	update, err := s.updateEngine(check, false)
 	engine := s.engineState(update, err)
 	installed := <-upstream
 	report.EngineUpdate, report.PoB = &engine, &installed
+	report.RestartRequired = report.RestartRequired || installed.RestartRequired
 }

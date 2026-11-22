@@ -7,6 +7,7 @@ import (
 
 	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
+	"github.com/Hecatoncheir/pob2_engine/internal/maintenance"
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 )
 
@@ -41,5 +42,6 @@ func openLuaJITCalculator(ctx context.Context) (calculation.Calculator, func(), 
 	if err != nil {
 		return nil, nil, err
 	}
+	maintenance.Local().SetRunningPoB(i)
 	return engine, func() { _ = engine.Close() }, nil
 }

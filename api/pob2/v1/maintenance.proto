@@ -5,14 +5,14 @@ package pob2.v1;
 option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
 
 message UpdateRequest {
-  // При false проверяется только наличие новой стабильной версии.
+  // При false проверяется наличие обновления или предыдущей установки.
   bool apply = 1;
-  // all, engine или pob. Пустое значение означает all.
+  // all, engine, pob, pob@vX.Y.Z или pob-rollback. Пустое значение означает all.
   string target = 2;
 }
 
 message UpdateResponse {
-  // up_to_date, available, updated или development_build.
+  // Статус обновления или отката для выбранной цели.
   string status = 1;
   string current_version = 2;
   string latest_version = 3;
@@ -52,6 +52,11 @@ message ComponentVersion {
   string release_url = 4;
   string message = 5;
   bool restart_required = 6;
+  string installed_commit = 7;
+  string running_version = 8;
+  string running_commit = 9;
+  string previous_version = 10;
+  string previous_commit = 11;
 }
 
 message DoctorServer {

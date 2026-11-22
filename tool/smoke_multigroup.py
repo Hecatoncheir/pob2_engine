@@ -37,10 +37,10 @@ def xml_structure(node):
 
 
 class Matrix:
-    def __init__(self, scenario, fixtures, check_source):
+    def __init__(self, scenario, fixtures, check_source, cases=None):
         self.scenario = scenario
         self.directory = fixtures / 'testdata/reference/0.0.5'
-        self.cases = json.loads((self.directory / 'golden.json').read_text('utf-8'))['cases']
+        self.cases = cases if cases is not None else json.loads((self.directory / 'golden.json').read_text('utf-8'))['cases']
         self.check_source = check_source
 
     def fixture(self, name):

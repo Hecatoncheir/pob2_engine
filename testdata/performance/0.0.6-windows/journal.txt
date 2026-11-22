@@ -1,0 +1,11 @@
+goos: windows
+goarch: amd64
+pkg: github.com/Hecatoncheir/pob2_engine/internal/storage
+cpu: AMD Ryzen 9 3900XT 12-Core Processor
+BenchmarkPublishedCalculationAppend-24    	      30	   4387777 ns/op
+BenchmarkPublishedCalculationAppend-24    	      30	   4095690 ns/op
+BenchmarkPublishedCalculationAppend-24    	      30	   4147323 ns/op
+BenchmarkPublishedCalculationAppend-24    	      30	   4208663 ns/op
+BenchmarkPublishedCalculationAppend-24    	      30	   4164103 ns/op
+PASS
+ok  	github.com/Hecatoncheir/pob2_engine/internal/storage	1.704s

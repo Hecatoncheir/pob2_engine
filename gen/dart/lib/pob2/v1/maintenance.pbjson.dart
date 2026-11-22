@@ -151,6 +151,11 @@ const ComponentVersion$json = {
     {'1': 'release_url', '3': 4, '4': 1, '5': 9, '10': 'releaseUrl'},
     {'1': 'message', '3': 5, '4': 1, '5': 9, '10': 'message'},
     {'1': 'restart_required', '3': 6, '4': 1, '5': 8, '10': 'restartRequired'},
+    {'1': 'installed_commit', '3': 7, '4': 1, '5': 9, '10': 'installedCommit'},
+    {'1': 'running_version', '3': 8, '4': 1, '5': 9, '10': 'runningVersion'},
+    {'1': 'running_commit', '3': 9, '4': 1, '5': 9, '10': 'runningCommit'},
+    {'1': 'previous_version', '3': 10, '4': 1, '5': 9, '10': 'previousVersion'},
+    {'1': 'previous_commit', '3': 11, '4': 1, '5': 9, '10': 'previousCommit'},
   ],
 };
 
@@ -160,7 +165,10 @@ final $typed_data.Uint8List componentVersionDescriptor = $convert.base64Decode(
     '92ZXJzaW9uGAIgASgJUhBpbnN0YWxsZWRWZXJzaW9uEiUKDmxhdGVzdF92ZXJzaW9uGAMgASgJ'
     'Ug1sYXRlc3RWZXJzaW9uEh8KC3JlbGVhc2VfdXJsGAQgASgJUgpyZWxlYXNlVXJsEhgKB21lc3'
     'NhZ2UYBSABKAlSB21lc3NhZ2USKQoQcmVzdGFydF9yZXF1aXJlZBgGIAEoCFIPcmVzdGFydFJl'
-    'cXVpcmVk');
+    'cXVpcmVkEikKEGluc3RhbGxlZF9jb21taXQYByABKAlSD2luc3RhbGxlZENvbW1pdBInCg9ydW'
+    '5uaW5nX3ZlcnNpb24YCCABKAlSDnJ1bm5pbmdWZXJzaW9uEiUKDnJ1bm5pbmdfY29tbWl0GAkg'
+    'ASgJUg1ydW5uaW5nQ29tbWl0EikKEHByZXZpb3VzX3ZlcnNpb24YCiABKAlSD3ByZXZpb3VzVm'
+    'Vyc2lvbhInCg9wcmV2aW91c19jb21taXQYCyABKAlSDnByZXZpb3VzQ29tbWl0');
 
 @$core.Deprecated('Use doctorServerDescriptor instead')
 const DoctorServer$json = {

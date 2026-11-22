@@ -12,20 +12,22 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-
-	"github.com/Hecatoncheir/pob2_engine/internal/privatefs"
 )
 
-func (m *Manager) install(ctx context.Context, rel release) error {
+func (m *Manager) install(ctx context.Context, rel release, current Installation) (installationState, error) {
 	file, err := portableAsset(rel)
 	if err != nil {
-		return err
+		return installationState{}, err
 	}
 	revision, err := m.releaseCommit(ctx, rel)
 	if err != nil {
-		return err
+		return installationState{}, err
 	}
-	return m.stage(ctx, file, Installation{Version: rel.Tag, SHA256: file.sha256(), Commit: revision})
+	next := installationState{Installation: Installation{Version: rel.Tag, SHA256: file.sha256(), Commit: revision}}
+	if current.Version != "" {
+		next.Previous = &current
+	}
+	return next, m.stage(ctx, file, next)
 }
 
 func (m *Manager) releaseCommit(ctx context.Context, rel release) (string, error) {
@@ -44,12 +46,13 @@ func (m *Manager) releaseCommit(ctx context.Context, rel release) (string, error
 	return revision.SHA, nil
 }
 
-func (m *Manager) stage(ctx context.Context, file asset, i Installation) error {
+func (m *Manager) stage(ctx context.Context, file asset, next installationState) error {
 	staging, err := os.MkdirTemp(m.root, ".pob-stage-")
 	if err != nil {
 		return err
 	}
 	defer os.RemoveAll(staging)
+	i := next.Installation
 	if err := m.extract(ctx, file, staging, false); err != nil {
 		return err
 	}
@@ -64,9 +67,9 @@ func (m *Manager) stage(ctx context.Context, file asset, i Installation) error {
 		return err
 	}
 	if err := m.probe(ctx, i); err != nil {
-		return fmt.Errorf("новый PoB не прошёл проверку запуска: %w", err)
+		return fmt.Errorf("новый PoB не прошёл проверку: %w", err)
 	}
-	return m.publish(ctx, staging, i)
+	return m.publish(ctx, staging, next)
 }
 
 func sourceRoot(staging string) (string, error) {
@@ -78,28 +81,17 @@ func sourceRoot(staging string) (string, error) {
 	return "", fmt.Errorf("в портативном PoB отсутствует Launch.lua")
 }
 
-func (m *Manager) publish(ctx context.Context, staging string, i Installation) error {
+func (m *Manager) publish(ctx context.Context, staging string, next installationState) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
-	if err := moveInstallation(staging, m.locate(i)); err != nil {
+	if err := m.moveInstallation(ctx, staging, m.locate(next.Installation)); err != nil {
 		return err
 	}
-	f, err := os.CreateTemp(m.root, ".pob-current-")
-	if err != nil {
-		return err
-	}
-	defer os.Remove(f.Name())
-	if err := writeManifest(f, i); err != nil {
-		return err
-	}
-	if err := ctx.Err(); err != nil {
-		return err
-	}
-	return privatefs.Replace(f.Name(), filepath.Join(m.root, "current.json"))
+	return m.writeInstallation(ctx, next)
 }
 
-func moveInstallation(staging string, target Installation) error {
+func (m *Manager) moveInstallation(ctx context.Context, staging string, target Installation) error {
 	_, err := os.Stat(target.Directory)
 	switch {
 	case os.IsNotExist(err):
@@ -107,12 +99,14 @@ func moveInstallation(staging string, target Installation) error {
 	case err != nil:
 		return err
 	default:
-		_, err := target.Layout()
-		return err
+		if err := m.probe(ctx, target); err != nil {
+			return fmt.Errorf("PoB в кэше не прошёл проверку: %w", err)
+		}
+		return nil
 	}
 }
 
-func writeManifest(f *os.File, i Installation) error {
+func writeManifest(f *os.File, i installationState) error {
 	defer f.Close()
 	if err := json.NewEncoder(f).Encode(i); err != nil {
 		return err

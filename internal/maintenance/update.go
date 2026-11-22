@@ -34,16 +34,17 @@ func (s *Service) Update(ctx context.Context, apply bool, targets ...string) (Up
 	if len(targets) != 0 {
 		target = targets[0]
 	}
+	if target == "pob" || target == "pob-rollback" || strings.HasPrefix(target, "pob@") {
+		state, err := s.updatePoB(ctx, apply, target)
+		return UpdateResult{Status: state.Status, RestartRequired: state.RestartRequired, PoB: &state}, err
+	}
 	switch target {
 	case "engine":
 		return s.updateEngine(ctx, apply)
-	case "pob":
-		state, err := updatePoB(ctx, apply)
-		return UpdateResult{Status: state.Status, RestartRequired: state.RestartRequired, PoB: &state}, err
 	case "", "all":
 		return s.updateAll(ctx, apply)
 	default:
-		return UpdateResult{}, fmt.Errorf("цель обновления: all, engine или pob")
+		return UpdateResult{}, fmt.Errorf("цель обновления: all, engine, pob, pob@vX.Y.Z или pob-rollback")
 	}
 }
 

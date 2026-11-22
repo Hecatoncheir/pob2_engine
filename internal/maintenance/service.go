@@ -7,8 +7,10 @@ import (
 	"path/filepath"
 	"runtime"
 	"sync"
+	"sync/atomic"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
+	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 )
 
 type Commands interface {
@@ -24,6 +26,7 @@ type Service struct {
 	path    string
 	image   os.FileInfo
 	pathErr error
+	running atomic.Pointer[pob.Installation]
 }
 
 // Local запоминает путь и исходный файл один раз на процесс.
@@ -32,6 +35,11 @@ var Local = sync.OnceValue(func() *Service {
 	s.path, s.image, s.pathErr = installedExecutable()
 	return s
 })
+
+// SetRunningPoB фиксирует установку, которую процесс выбрал для расчётов.
+func (s *Service) SetRunningPoB(i pob.Installation) {
+	s.running.Store(&i)
+}
 
 func installedExecutable() (string, os.FileInfo, error) {
 	name, err := os.Executable()

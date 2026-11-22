@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "asset": "PathOfBuildingCommunity-PoE2-Portable.zip",
+  "previous": {
+    "version": "v0.23.0",
+    "commit": "99bc6e107fd36ae541b349fc36a44281cb371313",
+    "size": 382513904,
+    "sha256": "3c3a523f7ebc50039b1c8d444b428de5566f3ecde521c07b8fa678872f806293"
+  },
+  "updated": {
+    "version": "v0.23.1",
+    "commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+    "size": 382640331,
+    "sha256": "7e190d3b66191b09416a9cd4d12394d37df374d6d6e59ab4f2366f3d9e81baf7"
+  }
+}

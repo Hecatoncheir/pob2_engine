@@ -9,8 +9,8 @@ import (
 )
 
 type updateInput struct {
-	Apply  bool   `json:"apply,omitempty" jsonschema:"Явно разрешить установку обновления. По умолчанию только проверка"`
-	Target string `json:"target,omitempty" jsonschema:"Что обновлять: all, engine или pob. По умолчанию all"`
+	Apply  bool   `json:"apply,omitempty" jsonschema:"Явно разрешить обновление или откат. По умолчанию только проверка"`
+	Target string `json:"target,omitempty" jsonschema:"Цель all, engine, pob, pob@vX.Y.Z или pob-rollback. По умолчанию all"`
 }
 
 func addMaintenanceTools(server *mcp.Server, target any, timeout time.Duration) {
@@ -20,7 +20,7 @@ func addMaintenanceTools(server *mcp.Server, target any, timeout time.Duration) 
 	}
 	openWorld, destructive := true, true
 	mcp.AddTool(server, &mcp.Tool{
-		Name: "update", Description: "Проверить стабильные выпуски PoB2Engine и Path of Building. При apply=true установить обновление после проверки SHA-256.",
+		Name: "update", Description: "Проверить обновление или возможность отката PoB. При apply=true установить проверенный пакет либо выбрать предыдущую установку для следующего запуска.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: &openWorld, DestructiveHint: &destructive},
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, input updateInput) (*mcp.CallToolResult, maintenance.UpdateResult, error) {
 		ctx, cancel := context.WithTimeout(ctx, max(timeout, maintenance.UpdateTimeout))

@@ -23,9 +23,9 @@ const (
 
 type UpdateRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// При false проверяется только наличие новой стабильной версии.
+	// При false проверяется наличие обновления или предыдущей установки.
 	Apply bool `protobuf:"varint,1,opt,name=apply,proto3" json:"apply,omitempty"`
-	// all, engine или pob. Пустое значение означает all.
+	// all, engine, pob, pob@vX.Y.Z или pob-rollback. Пустое значение означает all.
 	Target        string `protobuf:"bytes,2,opt,name=target,proto3" json:"target,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -77,7 +77,7 @@ func (x *UpdateRequest) GetTarget() string {
 
 type UpdateResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// up_to_date, available, updated или development_build.
+	// Статус обновления или отката для выбранной цели.
 	Status          string            `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	CurrentVersion  string            `protobuf:"bytes,2,opt,name=current_version,json=currentVersion,proto3" json:"current_version,omitempty"`
 	LatestVersion   string            `protobuf:"bytes,3,opt,name=latest_version,json=latestVersion,proto3" json:"latest_version,omitempty"`
@@ -392,6 +392,11 @@ type ComponentVersion struct {
 	ReleaseUrl       string                 `protobuf:"bytes,4,opt,name=release_url,json=releaseUrl,proto3" json:"release_url,omitempty"`
 	Message          string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`
 	RestartRequired  bool                   `protobuf:"varint,6,opt,name=restart_required,json=restartRequired,proto3" json:"restart_required,omitempty"`
+	InstalledCommit  string                 `protobuf:"bytes,7,opt,name=installed_commit,json=installedCommit,proto3" json:"installed_commit,omitempty"`
+	RunningVersion   string                 `protobuf:"bytes,8,opt,name=running_version,json=runningVersion,proto3" json:"running_version,omitempty"`
+	RunningCommit    string                 `protobuf:"bytes,9,opt,name=running_commit,json=runningCommit,proto3" json:"running_commit,omitempty"`
+	PreviousVersion  string                 `protobuf:"bytes,10,opt,name=previous_version,json=previousVersion,proto3" json:"previous_version,omitempty"`
+	PreviousCommit   string                 `protobuf:"bytes,11,opt,name=previous_commit,json=previousCommit,proto3" json:"previous_commit,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -466,6 +471,41 @@ func (x *ComponentVersion) GetRestartRequired() bool {
 		return x.RestartRequired
 	}
 	return false
+}
+
+func (x *ComponentVersion) GetInstalledCommit() string {
+	if x != nil {
+		return x.InstalledCommit
+	}
+	return ""
+}
+
+func (x *ComponentVersion) GetRunningVersion() string {
+	if x != nil {
+		return x.RunningVersion
+	}
+	return ""
+}
+
+func (x *ComponentVersion) GetRunningCommit() string {
+	if x != nil {
+		return x.RunningCommit
+	}
+	return ""
+}
+
+func (x *ComponentVersion) GetPreviousVersion() string {
+	if x != nil {
+		return x.PreviousVersion
+	}
+	return ""
+}
+
+func (x *ComponentVersion) GetPreviousCommit() string {
+	if x != nil {
+		return x.PreviousCommit
+	}
+	return ""
 }
 
 type DoctorServer struct {
@@ -602,7 +642,7 @@ const file_pob2_v1_maintenance_proto_rawDesc = "" +
 	"\x06issues\x18\x0f \x03(\tR\x06issues\x12-\n" +
 	"\x06server\x18\x10 \x01(\v2\x15.pob2.v1.DoctorServerR\x06server\x12>\n" +
 	"\rengine_update\x18\x11 \x01(\v2\x19.pob2.v1.ComponentVersionR\fengineUpdate\x12+\n" +
-	"\x03pob\x18\x12 \x01(\v2\x19.pob2.v1.ComponentVersionR\x03pob\"\xe4\x01\n" +
+	"\x03pob\x18\x12 \x01(\v2\x19.pob2.v1.ComponentVersionR\x03pob\"\xb3\x03\n" +
 	"\x10ComponentVersion\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12+\n" +
 	"\x11installed_version\x18\x02 \x01(\tR\x10installedVersion\x12%\n" +
@@ -610,7 +650,13 @@ const file_pob2_v1_maintenance_proto_rawDesc = "" +
 	"\vrelease_url\x18\x04 \x01(\tR\n" +
 	"releaseUrl\x12\x18\n" +
 	"\amessage\x18\x05 \x01(\tR\amessage\x12)\n" +
-	"\x10restart_required\x18\x06 \x01(\bR\x0frestartRequired\"\xe0\x01\n" +
+	"\x10restart_required\x18\x06 \x01(\bR\x0frestartRequired\x12)\n" +
+	"\x10installed_commit\x18\a \x01(\tR\x0finstalledCommit\x12'\n" +
+	"\x0frunning_version\x18\b \x01(\tR\x0erunningVersion\x12%\n" +
+	"\x0erunning_commit\x18\t \x01(\tR\rrunningCommit\x12)\n" +
+	"\x10previous_version\x18\n" +
+	" \x01(\tR\x0fpreviousVersion\x12'\n" +
+	"\x0fprevious_commit\x18\v \x01(\tR\x0epreviousCommit\"\xe0\x01\n" +
 	"\fDoctorServer\x12\x14\n" +
 	"\x05state\x18\x01 \x01(\tR\x05state\x12\x12\n" +
 	"\x04mode\x18\x02 \x01(\tR\x04mode\x12!\n" +
