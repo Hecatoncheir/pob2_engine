@@ -14,7 +14,7 @@
       "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
     }
   },
-  "functions_checked": 259,
+  "functions_checked": 260,
   "maximum_cognitive": 10,
   "functions": [
     {
@@ -1892,7 +1892,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "run",
-      "line": 147,
+      "line": 148,
       "cognitive_before": 1,
       "cognitive_after": 2,
       "cyclomatic_after": 3
@@ -1900,7 +1900,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "mcp_edit",
-      "line": 176,
+      "line": 177,
       "cognitive_before": 1,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -1908,7 +1908,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "mcp_tools",
-      "line": 181,
+      "line": 182,
       "cognitive_before": null,
       "cognitive_after": 2,
       "cyclomatic_after": 3
@@ -1916,7 +1916,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "upgrade_session",
-      "line": 297,
+      "line": 298,
       "cognitive_before": 0,
       "cognitive_after": 2,
       "cyclomatic_after": 2
@@ -1924,7 +1924,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "native_target",
-      "line": 332,
+      "line": 333,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -1932,7 +1932,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "call_mcp",
-      "line": 338,
+      "line": 339,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -1940,7 +1940,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "damage_edit",
-      "line": 343,
+      "line": 344,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -1948,7 +1948,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "run_scenario",
-      "line": 348,
+      "line": 349,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -1956,7 +1956,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "report_metadata",
-      "line": 357,
+      "line": 358,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -1964,7 +1964,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "smoke",
-      "line": 365,
+      "line": 366,
       "cognitive_before": 1,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -1972,7 +1972,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "smoke_binary",
-      "line": 375,
+      "line": 376,
       "cognitive_before": null,
       "cognitive_after": 3,
       "cyclomatic_after": 4
@@ -1980,7 +1980,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "check_native_lua",
-      "line": 397,
+      "line": 398,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -1988,7 +1988,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "open_build_session",
-      "line": 426,
+      "line": 427,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -1996,7 +1996,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "measure_binary_calculations",
-      "line": 433,
+      "line": 434,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -2004,7 +2004,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "measure_session_calculations",
-      "line": 443,
+      "line": 444,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -2012,7 +2012,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "check_lua_session",
-      "line": 457,
+      "line": 458,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -2020,7 +2020,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "check_lua_selection",
-      "line": 472,
+      "line": 473,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -2028,7 +2028,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "check_lua_install",
-      "line": 486,
+      "line": 487,
       "cognitive_before": null,
       "cognitive_after": 3,
       "cyclomatic_after": 4
@@ -2036,7 +2036,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "calculate_lua_file",
-      "line": 495,
+      "line": 496,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -2044,7 +2044,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "verify_lua_offline",
-      "line": 500,
+      "line": 501,
       "cognitive_before": null,
       "cognitive_after": 4,
       "cyclomatic_after": 6
@@ -2052,7 +2052,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "assert_lua_result",
-      "line": 516,
+      "line": 517,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -2060,7 +2060,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "assert_lua_source",
-      "line": 524,
+      "line": 525,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -2068,7 +2068,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "check_lua_updated_snapshot",
-      "line": 530,
+      "line": 531,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -2076,7 +2076,7 @@
     {
       "file": "tool/smoke_release.py",
       "function": "check_lua_diagnostics",
-      "line": 537,
+      "line": 538,
       "cognitive_before": null,
       "cognitive_after": 4,
       "cyclomatic_after": 4
@@ -2084,10 +2084,18 @@
     {
       "file": "tool/smoke_release.py",
       "function": "main",
-      "line": 548,
+      "line": 549,
       "cognitive_before": 1,
       "cognitive_after": 3,
       "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/test_package_release.py",
+      "function": "test_native_binary_does_not_block_linux_cache_directory",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
     }
   ]
 }

@@ -138,7 +138,8 @@ class Scenario:
                                                    'XDG_CONFIG_HOME', 'XDG_CACHE_HOME'}
                             and not key.upper().startswith(('POB', 'PYTHON'))}
         self.environment.update(PATH='', HOME=str(root), USERPROFILE=str(root), APPDATA=str(root),
-                                LOCALAPPDATA=str(root), XDG_CONFIG_HOME=str(root), XDG_CACHE_HOME=str(root),
+                                LOCALAPPDATA=str(root), XDG_CONFIG_HOME=str(root / 'config'),
+                                XDG_CACHE_HOME=str(root / 'cache'),
                                 POB_DIR=str(root / 'missing-pob'), POB2_ENGINE_CALCULATOR='go')
         self.server = None
         self.connection = []

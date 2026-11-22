@@ -13,6 +13,17 @@ import smoke_release
 
 
 class PackageTests(unittest.TestCase):
+    def test_native_binary_does_not_block_linux_cache_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binary = root / 'pob2-engine'
+            binary.write_bytes(b'fixture')
+            scenario = smoke_release.Scenario(binary, root)
+            cache = Path(scenario.environment['XDG_CACHE_HOME']) / 'pob2-engine' / 'pob'
+            cache.mkdir(parents=True)
+            self.assertEqual(binary.read_bytes(), b'fixture')
+            self.assertTrue(cache.is_dir())
+
     def test_packages_three_spells_and_published_001_session(self):
         files = package_release.documentation()
         names = ['testdata/reference/fireball.xml',
