@@ -1,0 +1,164 @@
+{
+  "session_id": "main",
+  "build_name": "Fireball",
+  "revision": 3,
+  "build": {
+    "xml": "\u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e\n\u003cPathOfBuilding2\u003e\u003cBuild ascendClassName=\"None\" characterLevelAutoMode=\"false\" className=\"Sorceress\" level=\"1\" mainSocketGroup=\"1\" targetVersion=\"0_1\" viewMode=\"TREE\"\u003e\u003cPlayerStat stat=\"AverageHit\" value=\"10.7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"AverageBurstDamage\" value=\"10.7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Speed\" value=\"0.83333333333333\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"PreEffectiveCritChance\" value=\"7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"CritChance\" value=\"7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"CritMultiplier\" value=\"2\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"HitChance\" value=\"100\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"TotalDPS\" value=\"8.9166666666667\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"TotalDot\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"WithBleedDPS\" value=\"8.9166666666667\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"IgniteDPS\" value=\"1.0755555555556\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"WithIgniteDPS\" value=\"9.9922222222222\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"WithPoisonDPS\" value=\"8.9166666666667\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"TotalDotDPS\" value=\"1.0755555555556\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"CullingDPS\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ReservationDPS\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"CombinedDPS\" value=\"9.9922222222222\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaCost\" value=\"10\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaPercentCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaPerSecondCost\" value=\"8.3333333333333\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaPercentPerSecondCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifeCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifePercentCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifePerSecondCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifePercentPerSecondCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ESCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ESPerSecondCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ESPercentPerSecondCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"RageCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"SoulCost\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Str\" value=\"7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Dex\" value=\"7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Int\" value=\"15\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Devotion\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Tribute\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"TotalEHP\" value=\"43.589377683795\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"PhysicalMaximumHitTaken\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LightningMaximumHitTaken\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FireMaximumHitTaken\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ColdMaximumHitTaken\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ChaosMaximumHitTaken\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Darkness\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ReservedDarkness\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Life\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Spec:LifeInc\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifeUnreserved\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifeRecoverable\" value=\"42\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifeUnreservedPercent\" value=\"100\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifeRegenRecovery\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LifeLeechGainRate\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Mana\" value=\"64\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Spec:ManaInc\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaUnreserved\" value=\"64\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaUnreservedPercent\" value=\"100\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaRegenRecovery\" value=\"2.6\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ManaLeechGainRate\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Spirit\" value=\"1\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"SpiritUnreserved\" value=\"1\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"SpiritUnreservedPercent\" value=\"100\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EnergyShield\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EnergyShieldRecoveryCap\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Spec:EnergyShieldInc\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EnergyShieldRegenRecovery\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EnergyShieldLeechGainRate\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"RageRegenRecovery\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Evasion\" value=\"7\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Spec:EvasionInc\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EvadeChance\" value=\"5\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"MeleeEvadeChance\" value=\"5\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ProjectileEvadeChance\" value=\"5\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"SpellEvadeChance\" value=\"5\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"SpellProjectileEvadeChance\" value=\"5\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"DeflectionRating\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"DeflectChance\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Armour\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"Spec:ArmourInc\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"PhysicalDamageReduction\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EffectiveBlockChance\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EffectiveSpellBlockChance\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"AttackDodgeChance\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"SpellDodgeChance\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EffectiveSpellSuppressionChance\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FireResist\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FireResistOverCap\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ColdResist\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ColdResistOverCap\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LightningResist\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"LightningResistOverCap\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ChaosResist\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"ChaosResistOverCap\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EffectiveMovementSpeedMod\" value=\"1\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"MovementSpeedWhileUsingSkill\" value=\"0.3\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"PresenceRadiusMetres\" value=\"4\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FullDPS\" value=\"9.9922222222222\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FullDotDPS\" value=\"1.0755555555556\"\u003e\u003c/PlayerStat\u003e\u003cFullDPSSkill skillPart=\"\" source=\"\" stat=\"Fireball\" value=\"8.9166666666667\"\u003e\u003c/FullDPSSkill\u003e\u003cFullDPSSkill skillPart=\"\" source=\"Fireball\" stat=\"Best Ignite DPS\" value=\"1.0755555555556\"\u003e\u003c/FullDPSSkill\u003e\u003cPlayerStat stat=\"PowerCharges\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"PowerChargesMax\" value=\"3\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FrenzyCharges\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"FrenzyChargesMax\" value=\"3\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EnduranceCharges\" value=\"0\"\u003e\u003c/PlayerStat\u003e\u003cPlayerStat stat=\"EnduranceChargesMax\" value=\"3\"\u003e\u003c/PlayerStat\u003e\u003cBuffs buffList=\"\" combatList=\"\" curseList=\"\"\u003e\u003c/Buffs\u003e\u003cTimelessData devotionVariant1=\"1\" devotionVariant2=\"1\" searchList=\"\" searchListFallback=\"\"\u003e\u003c/TimelessData\u003e\u003c/Build\u003e\u003cItems activeItemSet=\"1\" showStatDifferences=\"true\" useSecondWeaponSet=\"nil\"\u003e\u003cItemSet id=\"1\" title=\"Default\" useSecondWeaponSet=\"nil\"\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Weapon 1 Swap\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Weapon 2 Swap\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Arm 2\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Arm 1\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Leg 2\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Leg 1\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Belt\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Flask 2\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Flask 1\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Charm 3\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Charm 2\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Charm 1\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Ring 1\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Amulet\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Boots\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Gloves\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Body Armour\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Ring 2\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Ring 3\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Weapon 1\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Helmet\"\u003e\u003c/Slot\u003e\u003cSlot itemId=\"0\" itemPbURL=\"\" name=\"Weapon 2\"\u003e\u003c/Slot\u003e\u003c/ItemSet\u003e\u003c/Items\u003e\u003cCalcs\u003e\n\u0026#x9;\u0026#x9;\u003cInput name=\"misc_buffMode\" string=\"EFFECTIVE\"\u003e\u003c/Input\u003e\n\u0026#x9;\u0026#x9;\u003cInput name=\"skill_number\" number=\"1\"\u003e\u003c/Input\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"SkillSelect\" subsection=\"ViewSkillDetails\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"HitDamage\" subsection=\"SkillHitDamage\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Warcries\" subsection=\"EmpoweredStats\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Dot\" subsection=\"SkillDamageoverTime\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Speed\" subsection=\"AttackCastRate\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Crit\" subsection=\"Crits\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Impale\" subsection=\"Impale\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"SkillTypeStats\" subsection=\"SkilltypespecificStats\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"HitChance\" subsection=\"Accuracy\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Bleed\" subsection=\"Bleed\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Poison\" subsection=\"Poison\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Ignite\" subsection=\"Ignite\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Decay\" subsection=\"Decay\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"LeechGain\" subsection=\"LeechGainonHit\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"EleAilments\" subsection=\"NonDamagingAilments\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"MiscEffects\" subsection=\"OtherEffects\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Attributes\" subsection=\"Attributes\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Life\" subsection=\"Life\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Mana\" subsection=\"Mana\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Spirit\" subsection=\"Spirit\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"EnergyShield\" subsection=\"EnergyShield\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Resist\" subsection=\"Resists\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Armour\" subsection=\"Armour\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Evasion\" subsection=\"Evasion\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageAvoidance\" subsection=\"DamageAvoidance\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageAvoidance\" subsection=\"Block\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageAvoidance\" subsection=\"Dodge\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageAvoidance\" subsection=\"Deflection\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"Flasks\" subsection=\"Flasks\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Flasks\" subsection=\"UtilityFlasks\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Flasks\" subsection=\"LifeFlasks\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Flasks\" subsection=\"ManaFlasks\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Flasks\" subsection=\"Charms\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Rage\" subsection=\"Rage\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Charges\" subsection=\"Charges\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Charges\" subsection=\"Endurance\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Charges\" subsection=\"Frenzy\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"Charges\" subsection=\"Power\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"MiscDefences\" subsection=\"OtherDefences\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"MiscDefences\" subsection=\"StunDuration\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"MiscDefences\" subsection=\"OtherAvoidance\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"MiscDefences\" subsection=\"OtherAilmentDefences\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageTaken\" subsection=\"DamageTaken\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageTaken\" subsection=\"DamagingHits\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageTaken\" subsection=\"EffectiveHealthPool\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageTaken\" subsection=\"MaximumHitTaken\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"DamageTaken\" subsection=\"RecoupandHitTakenOverTime\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"false\" id=\"DamageTaken\" subsection=\"DotsandBuildDegens\"\u003e\u003c/Section\u003e\n\u0026#x9;\u0026#x9;\u003cSection collapsed=\"true\" id=\"DamageTaken\" subsection=\"EnemyDegens\"\u003e\u003c/Section\u003e\n\u0026#x9;\u003c/Calcs\u003e\u003cNotes\u003e\n\n\u0026#x9;\u003c/Notes\u003e\u003cConfig activeConfigSet=\"1\"\u003e\u003cConfigSet id=\"1\"\u003e\u003cInput boolean=\"false\" name=\"questInterlude 2Khari CrossingMolten Shrine\"\u003e\u003c/Input\u003e\u003cInput name=\"resistancePenalty\" number=\"0\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 1ClearfellBeira\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questInterlude 3Kriar VillageLythara\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 1FreythornKing In The Mists\"\u003e\u003c/Input\u003e\u003cInput name=\"enemyIsBoss\" string=\"None\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 2Spires of DesharSisters of Garukhan Shrine\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 3Azak BogIgnagduk\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 1Ogham ManorCandlemass\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 3Jiquani\u0026#39;s MachinariumBlackjaw\"\u003e\u003c/Input\u003e\u003cInput boolean=\"false\" name=\"questAct 4Eye of HinekoraSilent Hall\"\u003e\u003c/Input\u003e\u003cPlaceholder name=\"enemySpeed\" number=\"700\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyCritChance\" number=\"5\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyCritDamage\" number=\"30\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"multiplierWitheredStackCountSelf\" number=\"15\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyLevel\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyPhysicalDamage\" number=\"3\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyLightningDamage\" number=\"3\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"multiplierStunnedRecently\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyFireDamage\" number=\"3\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyChaosDamage\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyArmour\" number=\"3\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyEvasion\" number=\"24\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"conditionCorruptingCryStages\" number=\"10\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"multiplierWarcryUsedRecently\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"ScorchStacks\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyDamageRollRange\" number=\"70\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"demonFormStacks\" number=\"10\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"sigilOfPowerStages\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"multiplierDifferentGrenadeFired\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"multiplierDifferentAmmoFired\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"multiplierCurrentEnergyShield\" number=\"100\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"ChillStacks\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyDistance\" number=\"20\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyCriticalWeaknessStacks\" number=\"20\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"ShockStacks\" number=\"1\"\u003e\u003c/Placeholder\u003e\u003cPlaceholder name=\"enemyColdDamage\" number=\"3\"\u003e\u003c/Placeholder\u003e\u003c/ConfigSet\u003e\u003c/Config\u003e\u003cTreeView searchStr=\"\" showStatDifferences=\"true\" zoomLevel=\"3\" zoomX=\"0\" zoomY=\"0\"\u003e\u003c/TreeView\u003e\u003cImport exportParty=\"false\"\u003e\u003c/Import\u003e\u003cTree activeSpec=\"1\"\u003e\u003cSpec ascendClassId=\"0\" ascendancyInternalId=\"\" classId=\"7\" classInternalId=\"7\" masteryEffects=\"\" nodes=\"54447\" secondaryAscendClassId=\"nil\" treeVersion=\"0_5\"\u003e\u003cURL\u003e\n\u0026#x9;\u0026#x9;\u0026#x9;\u0026#x9;https://www.pathofexile.com/passive-skill-tree/AAAABgcAAAAA\n\u0026#x9;\u0026#x9;\u0026#x9;\u003c/URL\u003e\u003cSockets\u003e\u003c/Sockets\u003e\u003cOverrides\u003e\u003cAttributeOverride dexNodes=\"\" intNodes=\"\" strNodes=\"\"\u003e\u003c/AttributeOverride\u003e\u003c/Overrides\u003e\u003c/Spec\u003e\u003c/Tree\u003e\u003cSkills activeSkillSet=\"1\" defaultGemLevel=\"normalMaximum\" defaultGemQuality=\"nil\" showLegacyGems=\"false\" showSupportGemTypes=\"ALL\" sortGemsByDPS=\"true\" sortGemsByDPSField=\"CombinedDPS\"\u003e\u003cSkillSet id=\"1\"\u003e\u003cSkill enabled=\"true\" includeInFullDPS=\"true\" label=\"\" mainActiveSkill=\"1\" mainActiveSkillCalcs=\"1\"\u003e\u003cGem corruptLevel=\"0\" corrupted=\"false\" count=\"1\" enableGlobal1=\"true\" enableGlobal2=\"false\" enabled=\"true\" gemId=\"Metadata/Items/Gem/SkillGemFireball\" level=\"1\" nameSpec=\"Fireball\" quality=\"0\" skillId=\"FireballPlayer\" statSetIndex=\"nil\" statSetIndexCalcs=\"nil\" variantId=\"Fireball\"\u003e\u003c/Gem\u003e\u003c/Skill\u003e\u003c/SkillSet\u003e\u003c/Skills\u003e\u003cParty ShowAdvanceTools=\"false\" append=\"false\" destination=\"All\"\u003e\u003c/Party\u003e\u003c/PathOfBuilding2\u003e\n",
+    "input_sha256": "c2082aecaa30957d84e2ad031f75fdb1ce909e1f3043b86bfebffb20da87ffbd",
+    "input_revision": 2,
+    "model": {
+      "target_version": "0_1",
+      "tree_version": "0_5",
+      "class": "Sorceress",
+      "class_id": 7,
+      "ascendancy": "None",
+      "ascendancy_id": 0,
+      "level": 1,
+      "main_group": 1,
+      "weapon_set": 1,
+      "active_sets": {
+        "skills": 1,
+        "items": 1,
+        "tree": 1,
+        "config": 1
+      },
+      "groups": [
+        {
+          "id": 1,
+          "label": "",
+          "enabled": true,
+          "main_skill": 1,
+          "gems": [
+            {
+              "variant_id": "Fireball",
+              "id": "Metadata/Items/Gem/SkillGemFireball",
+              "name": "Fireball",
+              "skill_id": "FireballPlayer",
+              "level": 1,
+              "quality": 0,
+              "enabled": true,
+              "stat_set": 1,
+              "corrupted": false
+            }
+          ]
+        }
+      ],
+      "items": [],
+      "slots": {
+        "Amulet": 0,
+        "Arm 1": 0,
+        "Arm 2": 0,
+        "Belt": 0,
+        "Body Armour": 0,
+        "Boots": 0,
+        "Charm 1": 0,
+        "Charm 2": 0,
+        "Charm 3": 0,
+        "Flask 1": 0,
+        "Flask 2": 0,
+        "Gloves": 0,
+        "Helmet": 0,
+        "Leg 1": 0,
+        "Leg 2": 0,
+        "Ring 1": 0,
+        "Ring 2": 0,
+        "Ring 3": 0,
+        "Weapon 1": 0,
+        "Weapon 1 Swap": 0,
+        "Weapon 2": 0,
+        "Weapon 2 Swap": 0
+      },
+      "nodes": [
+        54447
+      ],
+      "config": {
+        "enemyIsBoss": {
+          "type": "string",
+          "value": "None"
+        },
+        "questAct 1ClearfellBeira": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questAct 1FreythornKing In The Mists": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questAct 1Ogham ManorCandlemass": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questAct 2Spires of DesharSisters of Garukhan Shrine": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questAct 3Azak BogIgnagduk": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questAct 3Jiquani's MachinariumBlackjaw": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questAct 4Eye of HinekoraSilent Hall": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questInterlude 2Khari CrossingMolten Shrine": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "questInterlude 3Kriar VillageLythara": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "resistancePenalty": {
+          "type": "number",
+          "value": "0"
+        }
+      },
+      "issues": []
+    },
+    "calculation": {
+      "status": "complete",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "data_sha256": "643f9ae31bd18297788fc8746fa621da23f999061404d3007c21c67b2855ca18",
+      "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+      "input_sha256": "c2082aecaa30957d84e2ad031f75fdb1ce909e1f3043b86bfebffb20da87ffbd",
+      "skill": "Fireball",
+      "mode": "Projectile hits",
+      "stats": {
+        "AverageHit": 10.700000000000001,
+        "CastRate": 0.8333333333333334,
+        "ChaosResist": 0,
+        "ColdResist": 0,
+        "CritChance": 7,
+        "CritEffect": 1.07,
+        "CritMultiplier": 2,
+        "Dex": 7,
+        "FireCritAverage": 20,
+        "FireHitAverage": 10,
+        "FireMaxBase": 12,
+        "FireMinBase": 8,
+        "FireResist": 0,
+        "FireStoredCombinedAvg": 10.700000000000001,
+        "FireStoredHitAvg": 10,
+        "FireStoredHitMax": 12,
+        "FireStoredHitMin": 8,
+        "Int": 15,
+        "Life": 42,
+        "LightningResist": 0,
+        "Mana": 64,
+        "ManaCost": 10,
+        "ManaPerSecondCost": 8.333333333333334,
+        "ManaRegen": 2.6,
+        "Speed": 0.8333333333333334,
+        "Str": 7,
+        "TotalDPS": 8.916666666666668
+      },
+      "modifiers": [],
+      "issues": []
+    },
+    "calculated_from_revision": 2
+  }
+}

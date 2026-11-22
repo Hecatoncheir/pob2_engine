@@ -1,6 +1,7 @@
-"""Проверить распакованный релиз на настоящей целевой ОС без среды разработки."""
+"""Проверить релизный бинарник на целевой ОС без среды разработки."""
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -9,9 +10,12 @@ import os
 from pathlib import Path
 import platform
 import queue
+import shutil
+from statistics import median
 import subprocess
 import tempfile
 import threading
+from time import perf_counter
 import zipfile
 
 DATA_ID = 'pob2-0.0.2-spell-hits-v1'
@@ -21,7 +25,7 @@ SPELLS = (
     {'id': 'spark', 'name': 'Spark', 'file': 'testdata/reference/0.0.2/cases/spark-minimal.xml', 'dps': 8.5642857142857},
 )
 MCP_TOOLS = {'get_snapshot', 'rename_build', 'import_build', 'edit_build', 'calculate_build',
-             'compare_build', 'export_build', 'get_catalog', 'preview_support'}
+             'compare_build', 'export_build', 'get_catalog', 'preview_support', 'doctor', 'update'}
 
 
 def require(condition, message):
@@ -36,7 +40,7 @@ def verify_checksum(archive, checksums):
         name = name.lstrip(' *')
         require(name not in entries, 'Повтор файла в SHA256SUMS')
         entries[name] = digest
-    require(entries.get(archive.name) == hashlib.sha256(archive.read_bytes()).hexdigest(), 'Архив не совпал с SHA256SUMS')
+    require(entries.get(archive.name) == hashlib.sha256(archive.read_bytes()).hexdigest(), 'Файл не совпал с SHA256SUMS')
 
 
 def unpack(archive, destination, tag):
@@ -80,7 +84,7 @@ def mcp_result(messages, request_id):
     response = receive(messages)
     require(response.get('id') == request_id and 'result' in response, 'Нет ответа MCP')
     result = response['result']
-    require(not result.get('isError'), 'MCP вернул ошибку инструмента')
+    require(not result.get('isError'), f"MCP вернул ошибку инструмента: {result.get('content')}")
     return result
 
 
@@ -91,7 +95,7 @@ def initialize_mcp(send, messages):
     send({'method': 'notifications/initialized'})
     send({'id': 2, 'method': 'tools/list', 'params': {}})
     tools = mcp_result(messages, 2)['tools']
-    require({tool['name'] for tool in tools} == MCP_TOOLS, 'Неверный набор девяти инструментов MCP')
+    require({tool['name'] for tool in tools} == MCP_TOOLS, 'Неверный набор инструментов MCP')
 
 
 def check_calculation(result, dps):
@@ -99,21 +103,25 @@ def check_calculation(result, dps):
     require(math.isclose(result['stats']['TotalDPS'], dps, rel_tol=1e-10, abs_tol=1e-9), 'DPS не совпал с эталоном Lua')
 
 
-def verify_compatibility_fixture(directory):
+def verify_compatibility_fixture(directory, release='v0.0.1'):
     manifest = json.loads((directory / 'manifest.json').read_text('utf-8'))
-    require(manifest['release'] == 'v0.0.1' and manifest['schema'] == 1, 'Неверный эталон обновления')
+    require(manifest['release'] == release and manifest['schema'] == 1, 'Неверный эталон обновления')
     require(set(manifest['files']) == {'sessions.db', 'snapshot.json'}, 'Неполный эталон обновления')
     for name, digest in manifest['files'].items():
         require(hashlib.sha256((directory / name).read_bytes()).hexdigest() == digest, 'Изменён эталон: ' + name)
     return json.loads((directory / 'snapshot.json').read_text('utf-8'))
 
 
-def check_updated_snapshot(previous, updated):
+def check_updated_build(previous, updated):
     require(updated['revision'] == 4, 'Новая версия не сохранила расчёт')
     old, new = previous['build'], updated['build']
     require(new['xml'] == old['xml'] and new['input_sha256'] == old['input_sha256'], 'Обновление изменило входы')
     require(new['calculated_from_revision'] == old['input_revision'], 'Потеряна привязка обновлённого расчёта')
-    old_result, new_result = old['calculation'], new['calculation']
+    return old['calculation'], new['calculation']
+
+
+def check_updated_snapshot(previous, updated):
+    old_result, new_result = check_updated_build(previous, updated)
     require(old_result['data_id'] == 'pob2-0.0.1-fireball-v1' and new_result['data_id'] == DATA_ID, 'Набор данных не обновился')
     require(new_result['data_sha256'] != old_result['data_sha256'], 'Не изменился хеш набора')
     check_calculation(new_result, old_result['stats']['TotalDPS'])
@@ -126,17 +134,20 @@ class Scenario:
     def __init__(self, binary, root):
         self.binary, self.root = binary, root
         self.environment = {key: value for key, value in os.environ.items()
-                            if key.upper() not in {'PATH', 'HOME', 'USERPROFILE', 'APPDATA', 'LOCALAPPDATA', 'XDG_CONFIG_HOME'}
+                            if key.upper() not in {'PATH', 'HOME', 'USERPROFILE', 'APPDATA', 'LOCALAPPDATA',
+                                                   'XDG_CONFIG_HOME', 'XDG_CACHE_HOME'}
                             and not key.upper().startswith(('POB', 'PYTHON'))}
         self.environment.update(PATH='', HOME=str(root), USERPROFILE=str(root), APPDATA=str(root),
-                                LOCALAPPDATA=str(root), XDG_CONFIG_HOME=str(root), POB_DIR=str(root / 'missing-pob'))
+                                LOCALAPPDATA=str(root), XDG_CONFIG_HOME=str(root), XDG_CACHE_HOME=str(root),
+                                POB_DIR=str(root / 'missing-pob'), POB2_ENGINE_CALCULATOR='go')
         self.server = None
         self.connection = []
         self.steps = []
 
-    def run(self, *args, code=0, raw=False):
+    def run(self, *args, code=0, raw=False, timeout=20, environment=None):
         result = subprocess.run([str(self.binary), *map(str, args)], cwd=self.root,
-                                env=self.environment, capture_output=True, encoding='utf-8', timeout=20)
+                                env=self.environment if environment is None else environment,
+                                capture_output=True, encoding='utf-8', timeout=timeout)
         require(result.returncode == code, f'{args[0]}: выход {result.returncode}, stderr={result.stderr}')
         return result.stdout if raw else json.loads(result.stdout)
 
@@ -163,7 +174,13 @@ class Scenario:
             self.server.wait(timeout=10)
 
     def mcp_edit(self, session):
-        process = subprocess.Popen([str(self.binary), 'mcp', '--attach', session, *self.connection],
+        doctor, edited = self.mcp_tools(session, [('doctor', {}), ('edit_build', damage_edit())])
+        require(doctor['status'] == 'ok' and doctor['server']['storage_mode'] == 'disk', 'MCP doctor не проверил сервер')
+        require(edited['revision'] == 3, 'MCP не изменил сборку')
+
+    def mcp_tools(self, session, calls):
+        with_session = ['--attach', session, *self.connection]
+        process = subprocess.Popen([str(self.binary), 'mcp', *with_session],
                                    cwd=self.root, env=self.environment, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, encoding='utf-8')
         messages = queue.Queue()
@@ -175,13 +192,11 @@ class Scenario:
 
         try:
             initialize_mcp(send, messages)
-            send({'id': 3, 'method': 'tools/call', 'params': {'name': 'edit_build', 'arguments': {
-                'expected_revision': 2, 'request_id': 'damage', 'edit': {'config': {'name': 'customMods',
-                'value': {'type': 'string', 'value': '100% increased Spell Damage'}}}}}})
-            result = mcp_result(messages, 3)
-            require(result['structuredContent']['revision'] == 3, 'MCP не изменил сборку')
+            answers = [call_mcp(send, messages, request_id, name, args)
+                       for request_id, (name, args) in enumerate(calls, start=3)]
             process.stdin.close()
             require(process.wait(timeout=10) == 0, 'MCP не завершился по EOF')
+            return answers
         finally:
             if process.poll() is None:
                 process.kill()
@@ -279,24 +294,27 @@ class Scenario:
         self.steps.append('three_spells_catalog_preview_compare_export')
         self.steps.append('three_sessions_backup_verify_restore_exact_retry')
 
-    def upgrade_session(self, package_root):
-        directory = package_root / 'testdata/compat/0.0.1'
-        previous = verify_compatibility_fixture(directory)
+    def upgrade_session(self, package_root, release='v0.0.1', lock=None):
+        directory = package_root / 'testdata/compat' / release.removeprefix('v')
+        previous = verify_compatibility_fixture(directory, release)
         self.run('storage', 'restore', '--profile', 'upgrade', '--data-dir', self.root / 'data', '--file', directory / 'sessions.db')
         self.start('upgrade')
-        require(self.snapshot('main') == previous, 'Открытие изменило сессию выпущенного 0.0.1')
+        require(self.snapshot('main') == previous, f'Открытие изменило сессию {release}')
         require(self.calculate('main', 2, 'calculate') == previous, 'Потерян прежний request_id')
         updated = self.calculate('main', 3, 'release-upgrade')
-        check_updated_snapshot(previous, updated)
+        if lock is None:
+            check_updated_snapshot(previous, updated)
+        else:
+            check_lua_updated_snapshot(previous, updated, lock)
         self.check_upgrade_retries(previous, updated)
         self.stop()
         self.start('upgrade')
         self.check_upgrade_retries(previous, updated)
         self.stop()
         self.verify_upgrade_journal()
-        require(verify_compatibility_fixture(directory) == previous, 'Обновление изменило исходный эталон')
-        self.steps.append('published_001_session_upgrade_and_restart')
-        return {'source_release': 'v0.0.1', 'before_data_id': previous['build']['calculation']['data_id'],
+        require(verify_compatibility_fixture(directory, release) == previous, 'Обновление изменило исходный эталон')
+        self.steps.append(f"published_{release[1:].replace('.', '')}_session_upgrade_and_restart")
+        return {'source_release': release, 'before_data_id': previous['build']['calculation']['data_id'],
                 'after_data_id': updated['build']['calculation']['data_id'], 'original_revision': previous['revision'],
                 'current_revision': updated['revision'], 'exact_old_retry': True, 'restart_verified': True}
 
@@ -311,38 +329,234 @@ class Scenario:
         require(verified['schema'] == '2' and verified['records'] == 4, 'Обновление повторно записало команды')
 
 
+def native_target():
+    goos = {'Windows': 'windows', 'Linux': 'linux', 'Darwin': 'darwin'}[platform.system()]
+    arch = {'AMD64': 'amd64', 'x86_64': 'amd64', 'arm64': 'arm64', 'aarch64': 'arm64'}[platform.machine()]
+    return goos, arch
+
+
+def call_mcp(send, messages, request_id, name, arguments):
+    send({'id': request_id, 'method': 'tools/call', 'params': {'name': name, 'arguments': arguments}})
+    return mcp_result(messages, request_id)['structuredContent']
+
+
+def damage_edit():
+    return {'expected_revision': 2, 'request_id': 'damage', 'edit': {'config': {'name': 'customMods',
+            'value': {'type': 'string', 'value': '100% increased Spell Damage'}}}}
+
+
+def run_scenario(binary, fixtures, work, tag):
+    work.mkdir()
+    scenario = Scenario(binary, work)
+    try:
+        return scenario.execute(fixtures, tag)
+    finally:
+        scenario.close()
+
+
+def report_metadata(result, path, tag, sha_field):
+    return dict(result, tag=tag, platform=platform.platform(), machine=platform.machine(),
+                checked_at=datetime.now(timezone.utc).isoformat(),
+                run_url=(os.environ['GITHUB_SERVER_URL'] + '/' + os.environ['GITHUB_REPOSITORY']
+                         + '/actions/runs/' + os.environ['GITHUB_RUN_ID']) if os.environ.get('GITHUB_RUN_ID') else None,
+                **{sha_field: hashlib.sha256(path.read_bytes()).hexdigest()})
+
+
 def smoke(archive, tag):
     with tempfile.TemporaryDirectory(prefix='pob2-release-') as directory:
         root = Path(directory).resolve()
         package_root = root / 'package'
         manifest, binary = unpack(archive, package_root, tag)
-        goos = {'Windows': 'windows', 'Linux': 'linux', 'Darwin': 'darwin'}[platform.system()]
-        arch = {'AMD64': 'amd64', 'x86_64': 'amd64', 'arm64': 'arm64', 'aarch64': 'arm64'}[platform.machine()]
-        require((goos, arch) == (manifest['goos'], manifest['goarch']), 'Архив не соответствует настоящей платформе')
-        work = root / 'work'
-        work.mkdir()
-        scenario = Scenario(binary, work)
-        try:
-            result = scenario.execute(package_root, tag)
-        finally:
-            scenario.close()
-        return dict(result, tag=tag, commit=manifest['commit'], platform=platform.platform(), machine=platform.machine(),
-                    archive_sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),
-                    checked_at=datetime.now(timezone.utc).isoformat(),
-                    run_url=(os.environ['GITHUB_SERVER_URL'] + '/' + os.environ['GITHUB_REPOSITORY']
-                             + '/actions/runs/' + os.environ['GITHUB_RUN_ID']) if os.environ.get('GITHUB_RUN_ID') else None)
+        require(native_target() == (manifest['goos'], manifest['goarch']), 'Архив не соответствует настоящей платформе')
+        result = run_scenario(binary, package_root, root / 'work', tag)
+        return report_metadata(dict(result, commit=manifest['commit']), archive, tag, 'archive_sha256')
+
+
+def smoke_binary(source, tag):
+    goos, arch = native_target()
+    extension = '.exe' if goos == 'windows' else ''
+    require(source.name == f'pob2_engine_{tag}_{goos}_{arch}{extension}', 'Бинарник не соответствует тегу и платформе')
+    with tempfile.TemporaryDirectory(prefix='pob2-release-') as directory:
+        root = Path(directory).resolve()
+        binary = Path(shutil.copyfile(source, root / f'pob2-engine{extension}'))
+        binary.chmod(0o755)
+        scenario = Scenario(binary, root)
+        doctor = scenario.run('doctor')
+        require(doctor['status'] == 'ok' and doctor['data_id'] == DATA_ID, 'Doctor: каталог не прошёл проверку')
+        require((doctor['os'], doctor['arch'], doctor['version']) == (goos, arch, tag), 'Doctor: неверная сборка')
+        require(doctor.get('commit', '') == os.environ.get('GITHUB_SHA', doctor.get('commit', '')), 'Doctor: неверный commit')
+        licenses = scenario.run('doctor', '--licenses')
+        require(all(licenses.get(name) for name in ('LICENSE', 'THIRD_PARTY_NOTICES.md', '.licenses/runtime/manifest.json')),
+                'Бинарник не содержит лицензионные уведомления')
+        result = run_scenario(binary, Path(__file__).resolve().parents[1], root / 'work', tag)
+        lua = check_native_lua(scenario)
+        return report_metadata(dict(result, commit=doctor.get('commit', ''), doctor=doctor, lua=lua),
+                               source, tag, 'binary_sha256')
+
+
+def check_native_lua(scenario):
+    scenario.environment.pop('POB2_ENGINE_CALCULATOR')
+    fixtures = Path(__file__).resolve().parents[1]
+    lock = json.loads((fixtures / 'testdata/reference/sources.lock.json').read_text('utf-8'))['pob']
+    results = check_lua_install(scenario, fixtures, lock)
+    verify_lua_offline(scenario, fixtures, lock)
+    diagnostics = check_lua_diagnostics(scenario, fixtures, lock)
+    doctor = scenario.run('doctor')
+    require(doctor['pob']['installed_version'] == lock['tag'], 'Doctor: неожиданная версия установленного PoB')
+    scenario.start('lua')
+    try:
+        sessions = {spell['name']: check_lua_session(scenario, fixtures, spell, lock) for spell in SPELLS}
+        selection = check_lua_selection(scenario, fixtures, lock)
+        scenario.stop()
+        upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
+        timings = {
+            'lua': measure_binary_calculations(scenario, fixtures, 'luajit',
+                                               lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)),
+            'go': measure_binary_calculations(scenario, fixtures, 'go',
+                                              lambda result, spell: check_calculation(result, spell['dps'])),
+        }
+    finally:
+        scenario.close()
+    return dict(version=doctor['pob']['installed_version'], commit=lock['commit'],
+                archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
+                selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, timings=timings,
+                parallel_first_start=True, reused_cache_offline=True)
+
+
+def open_build_session(scenario, session, name, fixture):
+    scenario.run('session', 'create', '--session', session, '--name', name, '--request-id', 'create-' + session,
+                 *scenario.connection)
+    scenario.run('build', 'import', '--session', session, '--revision', 1, '--request-id', 'import',
+                 '--file', fixture, *scenario.connection)
+
+
+def measure_binary_calculations(scenario, fixtures, engine, verify_result):
+    scenario.environment['POB2_ENGINE_CALCULATOR'] = engine
+    started = perf_counter()
+    scenario.start('timing-' + engine)
+    ready_ms = (perf_counter() - started) * 1000
+    timings = {spell['id']: measure_session_calculations(scenario, fixtures, spell, verify_result) for spell in SPELLS}
+    scenario.stop()
+    return dict(server_ready_ms=ready_ms, spells=timings)
+
+
+def measure_session_calculations(scenario, fixtures, spell, verify_result):
+    session = spell['id']
+    open_build_session(scenario, session, spell['name'], fixtures / spell['file'])
+    samples = []
+    for revision in range(2, 8):
+        started = perf_counter()
+        snapshot = scenario.calculate(session, revision, f'timing-{revision}')
+        samples.append((perf_counter() - started) * 1000)
+        require(snapshot['revision'] == revision + 1, 'Замер получил повтор старого расчёта')
+        verify_result(snapshot['build']['calculation'], spell)
+    first, *warm = samples
+    return dict(first_calculate_ms=first, repeated_calculate_ms=warm, repeated_median_ms=median(warm))
+
+
+def check_lua_session(scenario, fixtures, spell, lock):
+    session = spell['id']
+    open_build_session(scenario, session, spell['name'], fixtures / spell['file'])
+    calls = [('edit_build', damage_edit()),
+             ('calculate_build', {'expected_revision': 3, 'request_id': 'calculate'}),
+             ('get_snapshot', {})]
+    edited, calculated, snapshot = scenario.mcp_tools(session, calls)
+    require(edited['revision'] == 3 and calculated['revision'] == 4, 'MCP не сохранил правку и расчёт')
+    repeated = scenario.calculate(session, 3, 'calculate')
+    require(calculated == snapshot == repeated, 'CLI и MCP получили разные снимки расчёта gRPC')
+    dps = assert_lua_result(calculated['build']['calculation'], spell['name'], spell['dps'] * 2, lock)
+    preview = scenario.preview_support(session, repeated, 'Rapid Casting I')
+    return dict(edited_dps=dps, preview=preview, cli_replayed_mcp_calculation=True)
+
+
+def check_lua_selection(scenario, fixtures, lock):
+    fixture = fixtures / 'testdata/reference/0.0.2/groups/cases/druid-group-1.xml'
+    open_build_session(scenario, 'sets', 'Druid', fixture)
+    edit = {'selection': {'main_group': 1, 'sets': {'skills': 2, 'config': 2, 'items': 1, 'tree': 1}}}
+    args = {'expected_revision': 2, 'request_id': 'sets', 'edit': edit}
+    edited, = scenario.mcp_tools('sets', [('edit_build', args)])
+    active = edited['build']['model']['active_sets']
+    require(edited['revision'] == 3 and active['skills'] == active['config'] == 2,
+            'После правки сервер не вернул выбранные наборы')
+    calculated = scenario.calculate('sets', 3, 'calculate')['build']['calculation']
+    assert_lua_result(calculated, 'Spark', 17.1285714285714, lock)
+    return calculated
+
+
+def check_lua_install(scenario, fixtures, lock):
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = [pool.submit(calculate_lua_file, scenario, fixtures, spell) for spell in SPELLS[:2]]
+        results = [future.result() for future in first]
+    results.append(calculate_lua_file(scenario, fixtures, SPELLS[2]))
+    return {spell['name']: assert_lua_result(result, spell['name'], spell['dps'], lock)
+            for spell, result in zip(SPELLS, results, strict=True)}
+
+
+def calculate_lua_file(scenario, fixtures, spell, environment=None):
+    return scenario.run('calculate', '--file', fixtures / spell['file'], '--timeout', '40s', timeout=355,
+                        environment=environment)
+
+
+def verify_lua_offline(scenario, fixtures, lock):
+    environment = {key: value for key, value in scenario.environment.items()
+                   if key.upper() not in {'HTTP_PROXY', 'HTTPS_PROXY', 'NO_PROXY'}}
+    environment.update(HTTP_PROXY='http://127.0.0.1:0', HTTPS_PROXY='http://127.0.0.1:0')
+    spell = SPELLS[0]
+    calculated = calculate_lua_file(scenario, fixtures, spell, environment)
+    assert_lua_result(calculated, spell['name'], spell['dps'], lock)
+    checked = scenario.run('doctor', environment=environment)['pob']
+    require(checked['status'] == 'unavailable' and checked['installed_version'] == lock['tag'],
+            'Doctor должен показать установленный PoB при недоступности GitHub')
+    update = scenario.run('update', '--check', environment=environment)
+    require(update['status'] == 'partial' and update['engine']['status'] == 'unavailable'
+            and update['pob']['installed_version'] == lock['tag'],
+            'Update должен показать статус двигателя и установленную версию PoB без GitHub')
+
+
+def assert_lua_result(result, name, dps, lock):
+    assert_lua_source(result, lock)
+    require(result['status'] == 'complete' and result['skill'] == name, f'Неполный расчёт PoB для {name}')
+    actual = result['stats']['TotalDPS']
+    require(math.isclose(actual, dps, abs_tol=1e-8), f'DPS {name}: {actual}')
+    return actual
+
+
+def assert_lua_source(result, lock):
+    require(result['data_id'] == f"pob-lua-{lock['tag']}", 'Расчёт выполнен с неожиданной версией PoB')
+    require(result['pob_commit'] == lock['commit'], 'Неожиданная ревизия PoB')
+    require(len(result['data_sha256']) == 64, 'Нет SHA-256 архива PoB')
+
+
+def check_lua_updated_snapshot(previous, updated, lock):
+    old, new = check_updated_build(previous, updated)
+    require(old['data_id'] == DATA_ID, 'Прежний расчёт выполнен с неожиданным набором данных')
+    require(new['data_sha256'] != old['data_sha256'], 'Новый расчёт сохранил контрольную сумму прежнего каталога')
+    assert_lua_result(new, 'Fireball', old['stats']['TotalDPS'], lock)
+
+
+def check_lua_diagnostics(scenario, fixtures, lock):
+    examples = {'gem-requirement-warning': 'pob_warning', 'unparsed-custom-modifier': 'unsupported_modifier'}
+    for name, code in examples.items():
+        file = fixtures / 'testdata/reference/cases' / (name + '.xml')
+        result = scenario.run('calculate', '--file', file, '--timeout', '40s', code=4, timeout=45)
+        assert_lua_source(result, lock)
+        require(result['status'] == 'partial' and any(issue['code'] == code for issue in result['issues']),
+                f'PoB не передал диагностику {code}')
+    return examples
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--archive', required=True, type=Path)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument('--binary', type=Path)
+    source.add_argument('--archive', type=Path)
     parser.add_argument('--tag', required=True)
     parser.add_argument('--report', required=True, type=Path)
     parser.add_argument('--checksums', type=Path, help='SHA256SUMS скачанного выпуска')
     args = parser.parse_args()
     if args.checksums:
-        verify_checksum(args.archive, args.checksums)
-    report = smoke(args.archive, args.tag)
+        verify_checksum(args.binary or args.archive, args.checksums)
+    report = smoke_binary(args.binary, args.tag) if args.binary else smoke(args.archive, args.tag)
     report['published_checksum_verified'] = args.checksums is not None
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')

@@ -25,6 +25,7 @@ func TestMain(m *testing.M) {
 	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" || os.Getenv("POB2_PERSISTENCE_HELPER") == "1" || os.Getenv("POB2_RECOVERY_HELPER") == "1" {
 		os.Exit(m.Run())
 	}
+	_ = os.Setenv("POB2_ENGINE_CALCULATOR", "go")
 	dir, err := os.MkdirTemp("", "pob2-process-test-")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
+	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/discovery"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"github.com/Hecatoncheir/pob2_engine/internal/storage"
@@ -31,12 +32,16 @@ func Start(profile discovery.Profile, address, token string, commands applicatio
 }
 
 func StartDurable(ctx context.Context, profile discovery.Profile, address, token, dataDir string, config lifecycle.Config) (*Server, error) {
+	return StartDurableWithCalculator(ctx, profile, address, token, dataDir, config, nil)
+}
+
+func StartDurableWithCalculator(ctx context.Context, profile discovery.Profile, address, token, dataDir string, config lifecycle.Config, calculator calculation.Calculator) (*Server, error) {
 	return start(profile, address, token, config, func() (application.Commands, io.Closer, error) {
 		journal, err := storage.Open(ctx, dataDir, profile.Name)
 		if err != nil {
 			return nil, nil, err
 		}
-		service, err := application.OpenService(ctx, journal)
+		service, err := application.OpenServiceWithCalculator(ctx, journal, calculator)
 		if err != nil {
 			journal.Close()
 			return nil, nil, err

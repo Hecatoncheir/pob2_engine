@@ -71,7 +71,7 @@ func fingerprint(kind string, command any) (string, error) {
 func (s *Service) loadData() error {
 	s.dataOnce.Do(func() {
 		s.data, s.dataError = gamedata.Embedded()
-		if s.dataError == nil {
+		if s.dataError == nil && s.calculator == nil {
 			s.calculator, s.dataError = calculation.New(s.data)
 		}
 	})

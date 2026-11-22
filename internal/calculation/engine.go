@@ -10,6 +10,9 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
+// LocalPoBDataID обозначает расчёт из явно выбранного каталога PoB.
+const LocalPoBDataID = "pob-lua-local"
+
 type Result struct {
 	Status      string             `json:"status"`
 	DataID      string             `json:"data_id"`

@@ -49,28 +49,42 @@ func DecodeCalculation(snapshot domain.Snapshot) (*calculation.Result, error) {
 		return nil, fmt.Errorf("лишние данные расчёта")
 	}
 	if result.InputSHA256 != snapshot.InputSHA256 || !inputHash.MatchString(result.InputSHA256) ||
-		!inputHash.MatchString(result.DataSHA256) || !sourceCommit.MatchString(result.PoBCommit) || result.DataID == "" ||
+		!hasCalculationSource(result) ||
 		snapshot.BuildRevision == 0 || snapshot.CalculatedFromRevision != snapshot.BuildRevision {
 		return nil, fmt.Errorf("результат не соответствует входу или данным")
 	}
+	if err := validateCalculationStats(result); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+func validateCalculationStats(result calculation.Result) error {
 	switch result.Status {
 	case "complete", "partial":
 		if len(result.Stats) == 0 {
-			return nil, fmt.Errorf("нет числовых результатов")
+			return fmt.Errorf("нет числовых результатов")
 		}
 	case "unsupported":
 		if result.Stats != nil {
-			return nil, fmt.Errorf("неподдержанный расчёт содержит числа")
+			return fmt.Errorf("неподдержанный расчёт содержит числа")
 		}
 	default:
-		return nil, fmt.Errorf("неизвестный статус расчёта")
+		return fmt.Errorf("неизвестный статус расчёта")
 	}
 	for _, value := range result.Stats {
 		if math.IsNaN(value) || math.IsInf(value, 0) {
-			return nil, fmt.Errorf("неверное число расчёта")
+			return fmt.Errorf("неверное число расчёта")
 		}
 	}
-	return &result, nil
+	return nil
+}
+
+func hasCalculationSource(result calculation.Result) bool {
+	if result.DataID == calculation.LocalPoBDataID {
+		return result.DataSHA256 == "" && result.PoBCommit == ""
+	}
+	return result.DataID != "" && inputHash.MatchString(result.DataSHA256) && sourceCommit.MatchString(result.PoBCommit)
 }
 
 func ViewSnapshot(snapshot domain.Snapshot) (SnapshotView, error) {

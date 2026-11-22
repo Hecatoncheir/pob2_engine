@@ -16,7 +16,8 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'catalog.pb.dart' as $1;
+import 'catalog.pb.dart' as $2;
+import 'maintenance.pb.dart' as $1;
 import 'session.pb.dart' as $0;
 
 export 'session.pb.dart';
@@ -39,6 +40,20 @@ class SessionServiceClient extends $grpc.Client {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$getServerInfo, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.UpdateResponse> update(
+    $1.UpdateRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$update, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.DoctorResponse> doctor(
+    $1.DoctorRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$doctor, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.CreateSessionResponse> createSession(
@@ -85,15 +100,15 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$compareBuild, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.GetCatalogResponse> getCatalog(
-    $1.GetCatalogRequest request, {
+  $grpc.ResponseFuture<$2.GetCatalogResponse> getCatalog(
+    $2.GetCatalogRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$getCatalog, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.PreviewSupportResponse> previewSupport(
-    $1.PreviewSupportRequest request, {
+  $grpc.ResponseFuture<$2.PreviewSupportResponse> previewSupport(
+    $2.PreviewSupportRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$previewSupport, request, options: options);
@@ -159,6 +174,16 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/GetServerInfo',
           ($0.GetServerInfoRequest value) => value.writeToBuffer(),
           $0.GetServerInfoResponse.fromBuffer);
+  static final _$update =
+      $grpc.ClientMethod<$1.UpdateRequest, $1.UpdateResponse>(
+          '/pob2.v1.SessionService/Update',
+          ($1.UpdateRequest value) => value.writeToBuffer(),
+          $1.UpdateResponse.fromBuffer);
+  static final _$doctor =
+      $grpc.ClientMethod<$1.DoctorRequest, $1.DoctorResponse>(
+          '/pob2.v1.SessionService/Doctor',
+          ($1.DoctorRequest value) => value.writeToBuffer(),
+          $1.DoctorResponse.fromBuffer);
   static final _$createSession =
       $grpc.ClientMethod<$0.CreateSessionRequest, $0.CreateSessionResponse>(
           '/pob2.v1.SessionService/CreateSession',
@@ -190,15 +215,15 @@ class SessionServiceClient extends $grpc.Client {
           ($0.CompareBuildRequest value) => value.writeToBuffer(),
           $0.CompareBuildResponse.fromBuffer);
   static final _$getCatalog =
-      $grpc.ClientMethod<$1.GetCatalogRequest, $1.GetCatalogResponse>(
+      $grpc.ClientMethod<$2.GetCatalogRequest, $2.GetCatalogResponse>(
           '/pob2.v1.SessionService/GetCatalog',
-          ($1.GetCatalogRequest value) => value.writeToBuffer(),
-          $1.GetCatalogResponse.fromBuffer);
+          ($2.GetCatalogRequest value) => value.writeToBuffer(),
+          $2.GetCatalogResponse.fromBuffer);
   static final _$previewSupport =
-      $grpc.ClientMethod<$1.PreviewSupportRequest, $1.PreviewSupportResponse>(
+      $grpc.ClientMethod<$2.PreviewSupportRequest, $2.PreviewSupportResponse>(
           '/pob2.v1.SessionService/PreviewSupport',
-          ($1.PreviewSupportRequest value) => value.writeToBuffer(),
-          $1.PreviewSupportResponse.fromBuffer);
+          ($2.PreviewSupportRequest value) => value.writeToBuffer(),
+          $2.PreviewSupportResponse.fromBuffer);
   static final _$exportBuild =
       $grpc.ClientMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
           '/pob2.v1.SessionService/ExportBuild',
@@ -250,6 +275,20 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.GetServerInfoRequest.fromBuffer(value),
             ($0.GetServerInfoResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.UpdateRequest, $1.UpdateResponse>(
+        'Update',
+        update_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.UpdateRequest.fromBuffer(value),
+        ($1.UpdateResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.DoctorRequest, $1.DoctorResponse>(
+        'Doctor',
+        doctor_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.DoctorRequest.fromBuffer(value),
+        ($1.DoctorResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.CreateSessionRequest, $0.CreateSessionResponse>(
             'CreateSession',
@@ -302,22 +341,22 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.CompareBuildRequest.fromBuffer(value),
             ($0.CompareBuildResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.GetCatalogRequest, $1.GetCatalogResponse>(
+    $addMethod($grpc.ServiceMethod<$2.GetCatalogRequest, $2.GetCatalogResponse>(
         'GetCatalog',
         getCatalog_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.GetCatalogRequest.fromBuffer(value),
-        ($1.GetCatalogResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.PreviewSupportRequest,
-            $1.PreviewSupportResponse>(
+        ($core.List<$core.int> value) => $2.GetCatalogRequest.fromBuffer(value),
+        ($2.GetCatalogResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.PreviewSupportRequest,
+            $2.PreviewSupportResponse>(
         'PreviewSupport',
         previewSupport_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $1.PreviewSupportRequest.fromBuffer(value),
-        ($1.PreviewSupportResponse value) => value.writeToBuffer()));
+            $2.PreviewSupportRequest.fromBuffer(value),
+        ($2.PreviewSupportResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
             'ExportBuild',
@@ -388,6 +427,22 @@ abstract class SessionServiceBase extends $grpc.Service {
   $async.Future<$0.GetServerInfoResponse> getServerInfo(
       $grpc.ServiceCall call, $0.GetServerInfoRequest request);
 
+  $async.Future<$1.UpdateResponse> update_Pre(
+      $grpc.ServiceCall $call, $async.Future<$1.UpdateRequest> $request) async {
+    return update($call, await $request);
+  }
+
+  $async.Future<$1.UpdateResponse> update(
+      $grpc.ServiceCall call, $1.UpdateRequest request);
+
+  $async.Future<$1.DoctorResponse> doctor_Pre(
+      $grpc.ServiceCall $call, $async.Future<$1.DoctorRequest> $request) async {
+    return doctor($call, await $request);
+  }
+
+  $async.Future<$1.DoctorResponse> doctor(
+      $grpc.ServiceCall call, $1.DoctorRequest request);
+
   $async.Future<$0.CreateSessionResponse> createSession_Pre(
       $grpc.ServiceCall $call,
       $async.Future<$0.CreateSessionRequest> $request) async {
@@ -439,22 +494,22 @@ abstract class SessionServiceBase extends $grpc.Service {
   $async.Future<$0.CompareBuildResponse> compareBuild(
       $grpc.ServiceCall call, $0.CompareBuildRequest request);
 
-  $async.Future<$1.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
-      $async.Future<$1.GetCatalogRequest> $request) async {
+  $async.Future<$2.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
+      $async.Future<$2.GetCatalogRequest> $request) async {
     return getCatalog($call, await $request);
   }
 
-  $async.Future<$1.GetCatalogResponse> getCatalog(
-      $grpc.ServiceCall call, $1.GetCatalogRequest request);
+  $async.Future<$2.GetCatalogResponse> getCatalog(
+      $grpc.ServiceCall call, $2.GetCatalogRequest request);
 
-  $async.Future<$1.PreviewSupportResponse> previewSupport_Pre(
+  $async.Future<$2.PreviewSupportResponse> previewSupport_Pre(
       $grpc.ServiceCall $call,
-      $async.Future<$1.PreviewSupportRequest> $request) async {
+      $async.Future<$2.PreviewSupportRequest> $request) async {
     return previewSupport($call, await $request);
   }
 
-  $async.Future<$1.PreviewSupportResponse> previewSupport(
-      $grpc.ServiceCall call, $1.PreviewSupportRequest request);
+  $async.Future<$2.PreviewSupportResponse> previewSupport(
+      $grpc.ServiceCall call, $2.PreviewSupportRequest request);
 
   $async.Future<$0.ExportBuildResponse> exportBuild_Pre($grpc.ServiceCall $call,
       $async.Future<$0.ExportBuildRequest> $request) async {

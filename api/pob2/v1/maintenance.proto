@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package pob2.v1;
+
+option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
+
+message UpdateRequest {
+  // При false проверяется только наличие новой стабильной версии.
+  bool apply = 1;
+  // all, engine или pob. Пустое значение означает all.
+  string target = 2;
+}
+
+message UpdateResponse {
+  // up_to_date, available, updated или development_build.
+  string status = 1;
+  string current_version = 2;
+  string latest_version = 3;
+  string release_url = 4;
+  bool restart_required = 5;
+  ComponentVersion engine = 6;
+  ComponentVersion pob = 7;
+}
+
+message DoctorRequest {}
+
+message DoctorResponse {
+  string status = 1;
+  string version = 2;
+  string protocol_version = 3;
+  string os = 4;
+  string arch = 5;
+  string go_version = 6;
+  string executable = 7;
+  string commit = 8;
+  bool modified = 9;
+  string data_id = 10;
+  string data_sha256 = 11;
+  string tree_version = 12;
+  string pob_commit = 13;
+  bool restart_required = 14;
+  repeated string issues = 15;
+  DoctorServer server = 16;
+  ComponentVersion engine_update = 17;
+  ComponentVersion pob = 18;
+}
+
+message ComponentVersion {
+  string status = 1;
+  string installed_version = 2;
+  string latest_version = 3;
+  string release_url = 4;
+  string message = 5;
+  bool restart_required = 6;
+}
+
+message DoctorServer {
+  string state = 1;
+  string mode = 2;
+  string storage_mode = 3;
+  string storage_path = 4;
+  int64 storage_bytes = 5;
+  uint32 clients = 6;
+  uint32 active_tasks = 7;
+}

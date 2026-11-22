@@ -166,46 +166,60 @@ func TestCleanStandaloneCalculationAndStatusExitCodes(t *testing.T) {
 		{"fireball.xml", 0, "complete"}, {"cases/gem-requirement-warning.xml", 4, "partial"}, {"cases/unparsed-custom-modifier.xml", 3, "unsupported"},
 	} {
 		t.Run(sample.status, func(t *testing.T) {
-			root := t.TempDir()
-			data, err := os.ReadFile(filepath.Join("../../testdata/reference", sample.name))
-			if err != nil {
-				t.Fatal(err)
-			}
-			input := filepath.Join(root, "build.xml")
-			if err := os.WriteFile(input, data, 0600); err != nil {
-				t.Fatal(err)
-			}
-			cmd := exec.CommandContext(ctx, binary, "calculate", "--file", input)
-			cmd.Dir = root
-			for _, entry := range os.Environ() {
-				name, _, _ := strings.Cut(entry, "=")
-				if name != "PATH" && name != "HOME" && name != "APPDATA" && name != "LOCALAPPDATA" && name != "USERPROFILE" && !strings.HasPrefix(name, "POB_") && !strings.HasPrefix(name, "POB2_") && !strings.HasPrefix(name, "PYTHON") {
-					cmd.Env = append(cmd.Env, entry)
-				}
-			}
-			cmd.Env = append(cmd.Env, "PATH=", "HOME="+root, "USERPROFILE="+root, "APPDATA="+root, "LOCALAPPDATA="+root, "POB_DIR="+filepath.Join(root, "missing-pob"))
-			var output, diagnostics bytes.Buffer
-			cmd.Stdout = &output
-			cmd.Stderr = &diagnostics
-			_ = cmd.Run()
-			if cmd.ProcessState == nil || cmd.ProcessState.ExitCode() != sample.code {
-				t.Fatalf("выход: %v %s", cmd.ProcessState, &diagnostics)
-			}
-			var result calculation.Result
-			if err := json.Unmarshal(output.Bytes(), &result); err != nil {
-				t.Fatal(err)
-			}
+			result := calculateInCleanEnvironment(t, ctx, sample.name, sample.code)
 			if result.Status != sample.status || result.DataSHA256 == "" {
 				t.Fatalf("неверный результат: %+v", result)
 			}
 			if sample.status == "unsupported" && result.Stats != nil {
 				t.Fatal("неподдержанный ввод превратился в числа")
 			}
-			if sample.code != 0 && diagnostics.Len() == 0 {
-				t.Fatal("нет диагностики в stderr")
-			}
 		})
 	}
+}
+
+func calculateInCleanEnvironment(t *testing.T, ctx context.Context, fixture string, code int) calculation.Result {
+	t.Helper()
+	root := t.TempDir()
+	data, err := os.ReadFile(filepath.Join("../../testdata/reference", fixture))
+	if err != nil {
+		t.Fatal(err)
+	}
+	input := filepath.Join(root, "build.xml")
+	if err := os.WriteFile(input, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.CommandContext(ctx, binary, "calculate", "--file", input)
+	cmd.Dir, cmd.Env = root, cleanCalculationEnvironment(root)
+	var output, diagnostics bytes.Buffer
+	cmd.Stdout, cmd.Stderr = &output, &diagnostics
+	_ = cmd.Run()
+	if cmd.ProcessState == nil || cmd.ProcessState.ExitCode() != code {
+		t.Fatalf("выход: %v %s", cmd.ProcessState, &diagnostics)
+	}
+	if code != 0 && diagnostics.Len() == 0 {
+		t.Fatal("нет диагностики в stderr")
+	}
+	var result calculation.Result
+	if err := json.Unmarshal(output.Bytes(), &result); err != nil {
+		t.Fatal(err)
+	}
+	return result
+}
+
+func cleanCalculationEnvironment(root string) []string {
+	var env []string
+	for _, entry := range os.Environ() {
+		name, _, _ := strings.Cut(entry, "=")
+		switch strings.ToUpper(name) {
+		case "PATH", "HOME", "APPDATA", "LOCALAPPDATA", "USERPROFILE":
+			continue
+		}
+		if !strings.HasPrefix(name, "POB_") && !strings.HasPrefix(name, "POB2_") && !strings.HasPrefix(name, "PYTHON") {
+			env = append(env, entry)
+		}
+	}
+	return append(env, "PATH=", "HOME="+root, "USERPROFILE="+root, "APPDATA="+root, "LOCALAPPDATA="+root,
+		"POB_DIR="+filepath.Join(root, "missing-pob"), "POB2_ENGINE_CALCULATOR=go")
 }
 
 func TestEveryMCPEditSurvivesCrashAndReachesGRPC(t *testing.T) {

@@ -88,7 +88,7 @@ func (p Profile) Publish(record Record) error {
 	if err := f.Close(); err != nil {
 		return err
 	}
-	return replaceRecord(f.Name(), p.RecordPath())
+	return privatefs.Replace(f.Name(), p.RecordPath())
 }
 
 // RemoveOwn вызывается до освобождения server.lock, поэтому чужой файл сохраняется.
@@ -114,12 +114,11 @@ func (p Profile) TryLock(name string) (*Lock, error) {
 	if name != "server" && name != "launch" {
 		return nil, fmt.Errorf("неизвестная блокировка")
 	}
-	f, err := os.OpenFile(filepath.Join(p.Dir, name+".lock"), os.O_CREATE|os.O_RDWR, 0600)
-	if err != nil {
-		return nil, err
+	f, err := privatefs.TryLock(filepath.Join(p.Dir, name+".lock"))
+	if errors.Is(err, privatefs.ErrLocked) {
+		return nil, ErrLocked
 	}
-	if err := lockFile(f); err != nil {
-		f.Close()
+	if err != nil {
 		return nil, err
 	}
 	return &Lock{file: f}, nil

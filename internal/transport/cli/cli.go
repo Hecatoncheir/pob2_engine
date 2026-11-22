@@ -12,10 +12,12 @@ import (
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
+	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/discovery"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 	"github.com/Hecatoncheir/pob2_engine/internal/host"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
+	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/mcpapi"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -28,6 +30,8 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   serve                     Запустить сервер: --mode persistent|automatic
   connect                   Обнаружить сервер и удерживать аренду до EOF или Ctrl+C
   info                      Проверить готовность, протокол и возможности сервера
+  update                    Установить стабильный выпуск или проверить его наличие с --check
+  doctor                    Проверить бинарник, набор данных и состояние выбранного сервера
   session create|get|rename  Создать сессию, получить снимок или переименовать сборку
   build import|edit|export|compare  Операции полной сборки выбранной сессии
   calculate                 Рассчитать --file XML либо выбранную --session
@@ -81,6 +85,8 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.connect(ctx, args[1:])
 	case "info", "shutdown":
 		return r.serverCommand(ctx, args[0], args[1:])
+	case "update", "doctor":
+		return r.maintenance(ctx, args[0], args[1:])
 	case "session":
 		return r.session(ctx, args[1:])
 	case "mcp":
@@ -142,10 +148,14 @@ type connection struct {
 }
 
 func connectFlags(fs *flag.FlagSet) *connection {
+	return connectFlagsWithTimeout(fs, 5*time.Second)
+}
+
+func connectFlagsWithTimeout(fs *flag.FlagSet, timeout time.Duration) *connection {
 	c := &connection{kind: "cli"}
 	fs.StringVar(&c.address, "address", "", "адрес запущенного сервера 127.0.0.1:порт")
 	fs.StringVar(&c.token, "token", os.Getenv("POB2_ENGINE_TOKEN"), "токен сервера; по умолчанию POB2_ENGINE_TOKEN")
-	fs.DurationVar(&c.timeout, "timeout", 5*time.Second, "таймаут подключения и каждой команды")
+	fs.DurationVar(&c.timeout, "timeout", timeout, "таймаут подключения и каждой команды")
 	fs.StringVar(&c.profile, "profile", "", "профиль обнаружения сервера")
 	fs.StringVar(&c.baseDir, "runtime-dir", "", "базовый каталог; профиль хранится в КАТАЛОГ/pob2-engine/ИМЯ")
 	fs.StringVar(&c.dataDir, "data-dir", "", "базовый каталог данных; по умолчанию os.UserConfigDir()")
@@ -179,7 +189,7 @@ type runningServer interface {
 	Close(context.Context) error
 }
 
-func (r runner) serve(ctx context.Context, args []string) (resultErr error) {
+func (r runner) serve(ctx context.Context, args []string) error {
 	fs := r.flags("serve")
 	address := fs.String("listen", "127.0.0.1:0", "локальный адрес; порт 0 выбирается автоматически")
 	token := fs.String("token", os.Getenv("POB2_ENGINE_TOKEN"), "токен; без значения создаётся случайный")
@@ -200,10 +210,22 @@ func (r runner) serve(ctx context.Context, args []string) (resultErr error) {
 	if !*ephemeral && *profileName == "" {
 		*profileName = "default"
 	}
-	server, err := startServer(ctx, *profileName, *baseDir, *dataDir, *address, *token, config)
+	if err := grpcapi.ValidateAddress(*address); err != nil {
+		return err
+	}
+	calculator, closeCalculator, err := openCalculator(ctx)
 	if err != nil {
 		return err
 	}
+	defer closeCalculator()
+	server, err := startServer(ctx, *profileName, *baseDir, *dataDir, *address, *token, config, calculator)
+	if err != nil {
+		return err
+	}
+	return r.waitForServer(ctx, server)
+}
+
+func (r runner) waitForServer(ctx context.Context, server runningServer) (resultErr error) {
 	defer func() {
 		stopCtx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 		defer cancel()
@@ -224,18 +246,18 @@ func (r runner) serve(ctx context.Context, args []string) (resultErr error) {
 	}
 }
 
-func startServer(ctx context.Context, name, baseDir, dataDir, address, token string, config lifecycle.Config) (runningServer, error) {
+func startServer(ctx context.Context, name, baseDir, dataDir, address, token string, config lifecycle.Config, calculator calculation.Calculator) (runningServer, error) {
 	if name == "" {
 		if baseDir != "" {
 			return nil, &UsageError{Err: fmt.Errorf("для --runtime-dir нужен --profile")}
 		}
-		return grpcapi.StartWithConfig(address, token, application.NewService(), config)
+		return grpcapi.StartWithConfig(address, token, application.NewServiceWithCalculator(calculator), config)
 	}
 	profile, err := discovery.Open(baseDir, name)
 	if err != nil {
 		return nil, err
 	}
-	return host.StartDurable(ctx, profile, address, token, dataDir, config)
+	return host.StartDurableWithCalculator(ctx, profile, address, token, dataDir, config, calculator)
 }
 
 func (r runner) connect(ctx context.Context, args []string) error {
@@ -249,25 +271,14 @@ func (r runner) connect(ctx context.Context, args []string) error {
 	if c.profile == "" && c.address == "" {
 		c.profile = "default"
 	}
-	connectCtx, cancel := context.WithTimeout(ctx, c.timeout)
+	connectCtx, cancel := context.WithTimeout(ctx, c.connectTimeout())
 	defer cancel()
 	client, err := c.dial(connectCtx)
 	if err != nil {
 		return err
 	}
 	defer client.Close()
-	info, err := client.Info(connectCtx)
-	if err != nil {
-		return err
-	}
-	var output any = info
-	if *connectionJSON {
-		output, err = c.credentials(client)
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.write(output); err != nil {
+	if err := r.writeConnection(connectCtx, client, c, *connectionJSON); err != nil {
 		return err
 	}
 	cancel()
@@ -282,6 +293,32 @@ func (r runner) connect(ctx context.Context, args []string) error {
 	case <-client.Done():
 		return fmt.Errorf("аренда сервера утрачена")
 	}
+}
+
+func (c *connection) usesServer() bool {
+	return c.address != "" || c.profile != "" || c.startServer || c.baseDir != "" || c.dataDir != ""
+}
+
+func (c *connection) connectTimeout() time.Duration {
+	if c.startServer && os.Getenv("POB2_ENGINE_CALCULATOR") != "go" {
+		return c.timeout + pob.InstallTimeout
+	}
+	return c.timeout
+}
+
+func (r runner) writeConnection(ctx context.Context, client *grpcapi.Client, c *connection, credentials bool) error {
+	info, err := client.Info(ctx)
+	if err != nil {
+		return err
+	}
+	if !credentials {
+		return r.write(info)
+	}
+	value, err := c.credentials(client)
+	if err != nil {
+		return err
+	}
+	return r.write(value)
 }
 
 // credentials передаётся только через явно запрошенный приватный канал stdout.
@@ -397,31 +434,41 @@ func (r runner) mcp(ctx context.Context, args []string) error {
 	if *standalone == (*attach != "") {
 		return &UsageError{Err: fmt.Errorf("выберите один режим: --attach СЕССИЯ или --standalone --session СЕССИЯ")}
 	}
-	var commands application.Commands
 	if *standalone {
-		if c.address != "" || c.profile != "" || c.startServer || c.baseDir != "" || c.dataDir != "" {
-			return &UsageError{Err: fmt.Errorf("--standalone не принимает параметры подключения")}
-		}
-		service := application.NewService()
-		if _, err := service.Create(ctx, application.CreateSession{SessionID: *id, BuildName: *name, RequestID: "standalone-init"}); err != nil {
-			return err
-		}
-		commands = service
-	} else {
-		if *id != "" {
-			return &UsageError{Err: fmt.Errorf("при --attach укажите сессию только в --attach")}
-		}
-		connectCtx, cancel := context.WithTimeout(ctx, c.timeout)
-		defer cancel()
-		client, err := c.dial(connectCtx)
-		if err != nil {
-			return err
-		}
-		defer client.Close()
-		if _, err := client.Snapshot(connectCtx, *attach); err != nil {
-			return err
-		}
-		*id, commands = *attach, client
+		return r.standaloneMCP(ctx, c, *id, *name)
 	}
-	return mcpapi.New(commands, *id, c.timeout).Run(ctx, &mcp.IOTransport{Reader: r.in, Writer: writer{r.out}})
+	if *id != "" {
+		return &UsageError{Err: fmt.Errorf("при --attach укажите сессию только в --attach")}
+	}
+	return r.attachedMCP(ctx, c, *attach)
+}
+
+func (r runner) standaloneMCP(ctx context.Context, c *connection, id, name string) error {
+	if c.usesServer() {
+		return &UsageError{Err: fmt.Errorf("--standalone не принимает параметры подключения")}
+	}
+	calculator, closeCalculator, err := openCalculator(ctx)
+	if err != nil {
+		return err
+	}
+	defer closeCalculator()
+	service := application.NewServiceWithCalculator(calculator)
+	if _, err := service.Create(ctx, application.CreateSession{SessionID: id, BuildName: name, RequestID: "standalone-init"}); err != nil {
+		return err
+	}
+	return mcpapi.New(service, id, c.timeout).Run(ctx, &mcp.IOTransport{Reader: r.in, Writer: writer{r.out}})
+}
+
+func (r runner) attachedMCP(ctx context.Context, c *connection, id string) error {
+	connectCtx, cancel := context.WithTimeout(ctx, c.connectTimeout())
+	defer cancel()
+	client, err := c.dial(connectCtx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	if _, err := client.Snapshot(connectCtx, id); err != nil {
+		return err
+	}
+	return mcpapi.New(client, id, c.timeout).Run(ctx, &mcp.IOTransport{Reader: r.in, Writer: writer{r.out}})
 }
