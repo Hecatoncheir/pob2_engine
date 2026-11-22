@@ -7,7 +7,8 @@
 
 ## Импорт, расчёт и смена группы
 
-Запустите `pob2-engine serve --profile example` и выполните в другом терминале:
+Запустите `pob2-engine serve --profile example`. В другом терминале
+импортируйте сборку и запросите предпросмотр.
 
 ```shell
 pob2-engine session create --profile example --session caster --name Sorceress --request-id create-caster
@@ -37,8 +38,8 @@ pob2-engine calculate --profile example --session caster --revision 4 --request-
 
 ## Та же правка через MCP и gRPC
 
-Подключите `pob2-engine mcp --attach caster --profile example` и вызовите
-`edit_build` с аргументами:
+Подключите `pob2-engine mcp --attach caster --profile example` и передайте
+`edit_build` такой запрос.
 
 ```json
 {

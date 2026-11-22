@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "unit": "ns/op",
+  "platform": "windows-amd64",
+  "cpu": "AMD Ryzen 9 3900XT",
+  "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+  "iterations_per_sample": 20,
+  "baseline_commit": "85e94f660f9ec1f0217ee8fae3984b51b6b46fea",
+  "candidate_commit": "5e2d7d91e6162e0860fb2781a7628d723638c937",
+  "baseline": {
+    "caster": [
+      195179025,
+      189967990,
+      193826265
+    ],
+    "attacker": [
+      208394650,
+      202297815,
+      202792510
+    ],
+    "minion": [
+      212427785,
+      197837990,
+      202745930
+    ]
+  },
+  "candidate": {
+    "caster": [
+      211403025,
+      184916655,
+      188333440
+    ],
+    "attacker": [
+      210637495,
+      187942255,
+      205811720
+    ],
+    "minion": [
+      214525250,
+      222533100,
+      222464710
+    ]
+  },
+  "minion_alternating_iterations": 12,
+  "minion_alternating": [
+    {
+      "label": "baseline",
+      "ns_per_operation": 232627258
+    },
+    {
+      "label": "candidate",
+      "ns_per_operation": 238155325
+    },
+    {
+      "label": "candidate",
+      "ns_per_operation": 249468000
+    },
+    {
+      "label": "baseline",
+      "ns_per_operation": 219614375
+    }
+  ]
+}
