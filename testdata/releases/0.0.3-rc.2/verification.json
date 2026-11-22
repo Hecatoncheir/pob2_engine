@@ -1,0 +1,280 @@
+{
+  "schema": 1,
+  "tag": "v0.0.3-rc.2",
+  "commit": "0ac207e57215851e4f10d99eb3271de070123310",
+  "workflow_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45016648990",
+  "assets_checked": 4,
+  "api_asset_digests_verified": true,
+  "platforms": [
+    {
+      "goos": "windows",
+      "goarch": "amd64",
+      "binary": "pob2_engine_v0.0.3-rc.2_windows_amd64.exe",
+      "sha256": "4f65990287a0df6cbf9f3a48142945bc0f01522f1c548d1e3f4982cc2b695422",
+      "platform": "Windows-2025Server-10.0.26100-SP0",
+      "machine": "AMD64",
+      "timings": {
+        "lua": {
+          "server_ready_ms": 36.804100000011886,
+          "spells": {
+            "fireball": {
+              "first_calculate_ms": 2218.630399999995,
+              "repeated_calculate_ms": [
+                252.20429999998828,
+                268.7583000000018,
+                250.23840000000064,
+                241.2717999999927,
+                241.67629999999463
+              ],
+              "repeated_median_ms": 250.23840000000064
+            },
+            "frostbolt": {
+              "first_calculate_ms": 226.01570000000493,
+              "repeated_calculate_ms": [
+                224.0150000000085,
+                228.318900000005,
+                216.36259999999652,
+                239.49450000000638,
+                270.49590000001444
+              ],
+              "repeated_median_ms": 228.318900000005
+            },
+            "spark": {
+              "first_calculate_ms": 291.73059999999396,
+              "repeated_calculate_ms": [
+                519.4990999999902,
+                254.48209999998994,
+                231.83200000002557,
+                225.01970000001847,
+                217.70530000000576
+              ],
+              "repeated_median_ms": 231.83200000002557
+            }
+          }
+        },
+        "go": {
+          "server_ready_ms": 38.31389999999146,
+          "spells": {
+            "fireball": {
+              "first_calculate_ms": 38.922499999983984,
+              "repeated_calculate_ms": [
+                35.372500000022455,
+                42.18500000001768,
+                39.12750000000642,
+                44.44269999999051,
+                38.58160000001476
+              ],
+              "repeated_median_ms": 39.12750000000642
+            },
+            "frostbolt": {
+              "first_calculate_ms": 45.477500000004056,
+              "repeated_calculate_ms": [
+                39.70970000000307,
+                39.95169999998893,
+                41.50920000000724,
+                38.693100000017466,
+                38.78699999998503
+              ],
+              "repeated_median_ms": 39.70970000000307
+            },
+            "spark": {
+              "first_calculate_ms": 38.61579999997389,
+              "repeated_calculate_ms": [
+                35.64339999999788,
+                49.21510000002627,
+                38.82649999999899,
+                39.83400000001325,
+                38.519900000011376
+              ],
+              "repeated_median_ms": 38.82649999999899
+            }
+          }
+        }
+      }
+    },
+    {
+      "goos": "linux",
+      "goarch": "amd64",
+      "binary": "pob2_engine_v0.0.3-rc.2_linux_amd64",
+      "sha256": "1d1c95e07de565a2def2c5b3ac3a0a95c75f51cec46f52b936647896690656b2",
+      "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+      "machine": "x86_64",
+      "timings": {
+        "lua": {
+          "server_ready_ms": 7.121735000005458,
+          "spells": {
+            "fireball": {
+              "first_calculate_ms": 2195.9665639999953,
+              "repeated_calculate_ms": [
+                204.72657299999497,
+                204.6373740000007,
+                191.245262999999,
+                197.857857999999,
+                189.44339700000512
+              ],
+              "repeated_median_ms": 197.857857999999
+            },
+            "frostbolt": {
+              "first_calculate_ms": 201.03245100000322,
+              "repeated_calculate_ms": [
+                188.6899130000046,
+                185.68630700000455,
+                187.58831600000292,
+                204.11799699999733,
+                233.34314999999606
+              ],
+              "repeated_median_ms": 188.6899130000046
+            },
+            "spark": {
+              "first_calculate_ms": 229.04542199999867,
+              "repeated_calculate_ms": [
+                497.59104099999973,
+                181.90806999999865,
+                172.06742600000524,
+                189.53358999999637,
+                204.0261980000011
+              ],
+              "repeated_median_ms": 189.53358999999637
+            }
+          }
+        },
+        "go": {
+          "server_ready_ms": 8.17576300000411,
+          "spells": {
+            "fireball": {
+              "first_calculate_ms": 16.60284400000478,
+              "repeated_calculate_ms": [
+                15.108038999997575,
+                15.859966999997255,
+                13.11939699999698,
+                14.20963399999664,
+                15.30634299999889
+              ],
+              "repeated_median_ms": 15.108038999997575
+            },
+            "frostbolt": {
+              "first_calculate_ms": 14.95829200000287,
+              "repeated_calculate_ms": [
+                13.939082000000269,
+                13.889296000002105,
+                13.55192600000521,
+                14.652942000004998,
+                13.25177400000399
+              ],
+              "repeated_median_ms": 13.889296000002105
+            },
+            "spark": {
+              "first_calculate_ms": 15.105871999999465,
+              "repeated_calculate_ms": [
+                16.13634899999994,
+                15.587311000004433,
+                14.615731999995774,
+                15.660775000000626,
+                15.593929999994316
+              ],
+              "repeated_median_ms": 15.593929999994316
+            }
+          }
+        }
+      }
+    },
+    {
+      "goos": "darwin",
+      "goarch": "arm64",
+      "binary": "pob2_engine_v0.0.3-rc.2_darwin_arm64",
+      "sha256": "b567421b8adc2875c1bbd83eea1382123708f4b4b5b1d12a059a967ccdca5ab2",
+      "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+      "machine": "arm64",
+      "timings": {
+        "lua": {
+          "server_ready_ms": 10.82850000000235,
+          "spells": {
+            "fireball": {
+              "first_calculate_ms": 1673.1424159999904,
+              "repeated_calculate_ms": [
+                192.28983299998959,
+                181.39175000001728,
+                146.0362919999909,
+                136.59933299999238,
+                147.2167910000053
+              ],
+              "repeated_median_ms": 147.2167910000053
+            },
+            "frostbolt": {
+              "first_calculate_ms": 133.10191700000473,
+              "repeated_calculate_ms": [
+                137.5931249999951,
+                131.8985409999982,
+                138.88266600000065,
+                157.55937500000528,
+                194.3207920000134
+              ],
+              "repeated_median_ms": 138.88266600000065
+            },
+            "spark": {
+              "first_calculate_ms": 172.08216699998502,
+              "repeated_calculate_ms": [
+                380.8482500000139,
+                144.89491700001622,
+                143.4174999999982,
+                174.32241600002385,
+                163.2932079999989
+              ],
+              "repeated_median_ms": 163.2932079999989
+            }
+          }
+        },
+        "go": {
+          "server_ready_ms": 12.109749999979158,
+          "spells": {
+            "fireball": {
+              "first_calculate_ms": 13.31679199998348,
+              "repeated_calculate_ms": [
+                13.900583999998162,
+                12.864332999981798,
+                12.719083999996883,
+                13.169874999988451,
+                13.221250000015061
+              ],
+              "repeated_median_ms": 13.169874999988451
+            },
+            "frostbolt": {
+              "first_calculate_ms": 12.662250000005315,
+              "repeated_calculate_ms": [
+                12.80229200000349,
+                14.48616700000116,
+                14.121291999998675,
+                12.586333999990984,
+                12.50699999999938
+              ],
+              "repeated_median_ms": 12.80229200000349
+            },
+            "spark": {
+              "first_calculate_ms": 12.159374999981765,
+              "repeated_calculate_ms": [
+                13.057083000006742,
+                13.512875000003532,
+                13.687707999991972,
+                13.964624999999842,
+                13.231750000016973
+              ],
+              "repeated_median_ms": 13.512875000003532
+            }
+          }
+        }
+      }
+    }
+  ],
+  "evidence_sha256": {
+    "jobs.json": "88cf7746363927a3c1570e581f6a1404ed2f6cf1c7476c4d1b43dad69f35753d",
+    "published_smoke_darwin_arm64.json": "d51d4d7be519162f68366a9ac99bb933be71ae4e9ac8f72e4e88172104e86687",
+    "published_smoke_linux_amd64.json": "7165bdc28bc6ba5f788a175297f4c96594c96c4f3164ab63c44a7bc2e6c8147b",
+    "published_smoke_windows_amd64.json": "3a109ce5005218be90ab36e6430c475a905aa01cd138cc94e300aa3c3539ebff",
+    "release.json": "78ff1d58307ae2db2b1a56cda18490a8464d46593e003d0615592f6049f84364",
+    "SHA256SUMS": "c7a9b186fc6d84ca3dc70027caa436ceb7bdf98be03666849d97d8f35301e833",
+    "smoke_darwin_arm64.json": "cf2b88676bd20a3c11b6bce246d2fb8366533fa48d77a8549ef2307a6c5bf909",
+    "smoke_linux_amd64.json": "46380a0f4df609c91fa94ea60a911790198e55f9ed724548dba7d92679ff8a6a",
+    "smoke_windows_amd64.json": "c629d038837b067dcb58d0d2db77a2be0a43da1d0ea8c81e1256f23af663026b",
+    "workflow.json": "f485de0bf9130d7d1f7e8e6814a2c782fe31093b4515a0cb125942f7732ad7b5"
+  }
+}
