@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "release": "v0.0.5",
+  "commit": "8f75da67986efde3588dfc09b37c81a8e4be5a61",
+  "binary_sha256": "9411087dfbbdc1dd7057d50af90436a1a83577a9aa7b6c6996b414e27be5d52f",
+  "calculator": "luajit",
+  "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+  "files": {
+    "sessions.db": "d58fdba27fd09a8706a231d5a6a656caffce494c01c3012f33c569f020f03003",
+    "snapshot.json": "fb39f3ee5547bec6f3d07613689e22a795bc98d032404394b10913972ce6dcc1"
+  }
+}

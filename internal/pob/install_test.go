@@ -68,7 +68,7 @@ func TestEnsureKeepsInstalledPoBOffline(t *testing.T) {
 		t.Fatal(err)
 	}
 	cached := Installation{Version: "v0.23.2", SHA256: strings.Repeat("1", 64), Commit: strings.Repeat("2", 40)}
-	if err := m.publish(t.Context(), dir, cached); err != nil {
+	if err := m.publish(t.Context(), dir, installationState{Installation: cached}); err != nil {
 		t.Fatal(err)
 	}
 	active, err := m.Ensure(t.Context())
@@ -88,5 +88,20 @@ func TestCheckUpdateStillQueriesLatestPoB(t *testing.T) {
 	state, err := m.Update(t.Context(), false)
 	if err != nil || state.Status != "available" || state.LatestVersion != next {
 		t.Fatalf("должен быть доступен новый выпуск: %+v, %v", state, err)
+	}
+}
+
+func TestCheckUpdateToUsesExactOfficialTag(t *testing.T) {
+	const tag = "v0.23.1"
+	url := "https://api.github.com/repos/" + repository + "/releases/tags/" + tag
+	m := Manager{root: t.TempDir(), client: &http.Client{Transport: installTransport(func(req *http.Request) (*http.Response, error) {
+		if req.URL.String() != url {
+			t.Fatalf("ожидалась проверка заданного выпуска, получен %s", req.URL)
+		}
+		return archiveTransport(`{"tag_name":"` + tag + `"}`).RoundTrip(req)
+	})}}
+	state, err := m.UpdateTo(t.Context(), false, tag)
+	if err != nil || state.LatestVersion != tag || state.Status != "available" {
+		t.Fatalf("не найден указанный выпуск: %+v, %v", state, err)
 	}
 }

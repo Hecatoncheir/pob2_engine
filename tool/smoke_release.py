@@ -400,6 +400,7 @@ def smoke_binary(source, tag):
 def check_native_lua(scenario):
     from smoke_catalog import check_full_catalog
     from smoke_multigroup import Matrix, check_multigroup
+    from smoke_upgrade import check_upgrade
     scenario.environment.pop('POB2_ENGINE_CALCULATOR')
     fixtures = Path(__file__).resolve().parents[1]
     lock = json.loads((fixtures / 'testdata/reference/sources.lock.json').read_text('utf-8'))['pob']
@@ -422,6 +423,7 @@ def check_native_lua(scenario):
         upgrade004 = scenario.upgrade_session(fixtures, 'v0.0.4', profile='upgrade004',
                                               verify=lambda old, new: check_multigroup_upgrade(matrix, old, new))
         multigroup = check_multigroup(scenario, fixtures, check_source)
+        upgrade005 = check_upgrade(scenario, fixtures)
         timings = {
             'lua': measure_binary_calculations(scenario, fixtures, 'luajit',
                                                lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)),
@@ -433,7 +435,7 @@ def check_native_lua(scenario):
     return dict(version=doctor['pob']['installed_version'], commit=lock['commit'],
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
-                upgrade004=upgrade004, multigroup=multigroup, catalog=catalog, timings=timings,
+                upgrade004=upgrade004, upgrade005=upgrade005, multigroup=multigroup, catalog=catalog, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
 
 

@@ -151,6 +151,11 @@ jobs:
         run: python3 tool/reference_catalog.py
       - name: Воспроизвести многогрупповые сборки оригинального PoB
         run: python3 tool/reference_multigroup.py
+      - name: Сверить расчёты с оригинальным PoB предыдущего выпуска
+        run: |
+          python3 tool/reference_upgrade.py
+          go build -o .reference/upgrade-check ./cmd/pob2-engine
+          python3 tool/smoke_upgrade.py .reference/upgrade-check
       - name: Сохранить отчёт и состав среды
         if: always()
         uses: actions/upload-artifact@v7.0.2

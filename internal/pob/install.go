@@ -2,7 +2,6 @@ package pob
 
 import (
 	"context"
-	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"fmt"
@@ -39,6 +38,11 @@ type Installation struct {
 type State struct {
 	Status           string `json:"status"`
 	InstalledVersion string `json:"installed_version,omitempty"`
+	InstalledCommit  string `json:"installed_commit,omitempty"`
+	RunningVersion   string `json:"running_version,omitempty"`
+	RunningCommit    string `json:"running_commit,omitempty"`
+	PreviousVersion  string `json:"previous_version,omitempty"`
+	PreviousCommit   string `json:"previous_commit,omitempty"`
 	LatestVersion    string `json:"latest_version,omitempty"`
 	ReleaseURL       string `json:"release_url,omitempty"`
 	Message          string `json:"message,omitempty"`
@@ -64,21 +68,8 @@ func Local() (*Manager, error) {
 }
 
 func (m *Manager) Installed() (Installation, error) {
-	if m.local != "" {
-		return localInstallation(m.local, m.localNative)
-	}
-	var i Installation
-	data, err := os.ReadFile(filepath.Join(m.root, "current.json"))
-	if err != nil {
-		return i, err
-	}
-	if err := json.Unmarshal(data, &i); err != nil {
-		return i, err
-	}
-	if !tags.MatchString(i.Version) || !digestPattern.MatchString(i.SHA256) || !commitPattern.MatchString(i.Commit) {
-		return i, fmt.Errorf("повреждён манифест установки PoB")
-	}
-	return m.locate(i), nil
+	entry, err := m.readInstallation()
+	return entry.Installation, err
 }
 
 func localInstallation(dir, native string) (Installation, error) {
@@ -135,17 +126,25 @@ func (m *Manager) Ensure(ctx context.Context) (Installation, error) {
 }
 
 func (m *Manager) Update(ctx context.Context, apply bool) (State, error) {
-	installed, err := m.Installed()
+	return m.update(ctx, apply, m.latest)
+}
+
+// UpdateTo проверяет или устанавливает указанный стабильный выпуск PoB.
+func (m *Manager) UpdateTo(ctx context.Context, apply bool, tag string) (State, error) {
+	return m.update(ctx, apply, func(ctx context.Context) (release, error) { return m.tagged(ctx, tag) })
+}
+
+func (m *Manager) update(ctx context.Context, apply bool, lookup func(context.Context) (release, error)) (State, error) {
+	installed, err := m.readInstallation()
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return State{Status: "invalid_installation"}, err
 	}
-	if err == nil {
-		if _, err := installed.Layout(); err != nil {
-			return State{Status: "invalid_installation", InstalledVersion: installed.Version}, err
-		}
+	state := installed.describe(State{Status: "up_to_date"})
+	if err := verifyInstalledLayout(installed); err != nil {
+		state.Status = "invalid_installation"
+		return state, err
 	}
-	state := State{Status: "up_to_date", InstalledVersion: installed.Version}
-	release, err := m.latest(ctx)
+	release, err := lookup(ctx)
 	if err != nil {
 		state.Status = "unavailable"
 		return state, err
@@ -158,11 +157,20 @@ func (m *Manager) Update(ctx context.Context, apply bool) (State, error) {
 	if installed.Version != "" && !newer(release.Tag, installed.Version) {
 		return state, nil
 	}
-	state.Status = "available"
 	if apply {
+		state.Status = "rejected"
 		return m.installUpdate(ctx, release, state)
 	}
+	state.Status = "available"
 	return state, nil
+}
+
+func verifyInstalledLayout(entry installationState) error {
+	if entry.Version == "" {
+		return nil
+	}
+	_, err := entry.Layout()
+	return err
 }
 
 func newer(next, installed string) bool {
@@ -186,20 +194,21 @@ func (m *Manager) installUpdate(ctx context.Context, release release, state Stat
 		return state, fmt.Errorf("блокировка установки PoB: %w", err)
 	}
 	defer lock.Close()
-	current, err := m.Installed()
+	current, err := m.readInstallation()
 	if err == nil && !newer(release.Tag, current.Version) {
-		state.Status, state.InstalledVersion = "up_to_date", current.Version
-		return state, nil
+		state.Status = "up_to_date"
+		return current.describe(state), nil
 	}
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return state, err
 	}
-	if err := m.install(ctx, release); err != nil {
-		return state, err
+	next, err := m.install(ctx, release, current.Installation)
+	if err != nil {
+		return current.describe(state), err
 	}
-	state.Status, state.InstalledVersion = "updated", release.Tag
+	state.Status = "updated"
 	state.RestartRequired = current.Version != ""
-	return state, nil
+	return next.describe(state), nil
 }
 
 func waitForInstaller(ctx context.Context, path string) (*os.File, error) {
@@ -219,13 +228,4 @@ func waitForInstaller(ctx context.Context, path string) (*os.File, error) {
 		case <-wait.C:
 		}
 	}
-}
-
-func probeInstallation(ctx context.Context, i Installation) error {
-	c, err := NewCalculator(i)
-	if err != nil {
-		return err
-	}
-	defer c.Close()
-	return c.start(ctx)
 }

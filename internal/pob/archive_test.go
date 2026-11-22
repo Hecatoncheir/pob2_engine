@@ -77,7 +77,7 @@ func TestPublishInstallation(t *testing.T) {
 		t.Fatal(err)
 	}
 	i := Installation{Version: "v0.23.1", SHA256: fmt.Sprintf("%064d", 1), Commit: fmt.Sprintf("%040d", 1)}
-	if err := m.publish(t.Context(), staging, i); err != nil {
+	if err := m.publish(t.Context(), staging, installationState{Installation: i}); err != nil {
 		t.Fatal(err)
 	}
 	active, err := m.Installed()

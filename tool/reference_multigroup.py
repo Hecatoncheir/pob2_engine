@@ -31,18 +31,18 @@ def reference_case(api, path):
                 warnings=report['warnings'], unsupported=unsupported)
 
 
-def worker():
+def worker(pob_dir):
     sys.path.insert(0, str(CACHE / 'mcp'))
     from pob_poe2_mcp.api import BuildAPI
 
-    with BuildAPI(pob_dir=CACHE / 'pob', mode='engine') as api:
+    with BuildAPI(pob_dir=pob_dir, mode='engine') as api:
         cases = {path.stem: reference_case(api, path) for path in sorted(DIRECTORY.glob('*.xml'))}
     print(encode(cases).decode('utf-8'), end='')
 
 
-def collect_cases():
+def collect_cases(pob_dir=CACHE / 'pob'):
     with tempfile.TemporaryDirectory(prefix='multigroup-reference-', dir=CACHE) as home:
-        process = subprocess.run([sys.executable, '-X', 'utf8', str(Path(__file__).resolve()), '--worker'],
+        process = subprocess.run([sys.executable, '-X', 'utf8', str(Path(__file__).resolve()), '--worker', str(pob_dir)],
                                  cwd=ROOT, env=environment(Path(home)), capture_output=True,
                                  text=True, encoding='utf-8', timeout=120)
     if process.returncode:
@@ -67,4 +67,4 @@ def execute(record):
 
 
 if __name__ == '__main__':
-    worker() if '--worker' in sys.argv else execute('--record' in sys.argv)
+    worker(Path(sys.argv[2])) if '--worker' in sys.argv else execute('--record' in sys.argv)

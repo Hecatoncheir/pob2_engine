@@ -91,7 +91,9 @@ func encodeComponent(state *pob.State) *pb.ComponentVersion {
 	}
 	return &pb.ComponentVersion{Status: state.Status, InstalledVersion: state.InstalledVersion,
 		LatestVersion: state.LatestVersion, ReleaseUrl: state.ReleaseURL,
-		RestartRequired: state.RestartRequired, Message: state.Message}
+		RestartRequired: state.RestartRequired, Message: state.Message,
+		InstalledCommit: state.InstalledCommit, RunningVersion: state.RunningVersion, RunningCommit: state.RunningCommit,
+		PreviousVersion: state.PreviousVersion, PreviousCommit: state.PreviousCommit}
 }
 
 func decodeComponent(state *pb.ComponentVersion) *pob.State {
@@ -100,5 +102,7 @@ func decodeComponent(state *pb.ComponentVersion) *pob.State {
 	}
 	return &pob.State{Status: state.GetStatus(), InstalledVersion: state.GetInstalledVersion(),
 		LatestVersion: state.GetLatestVersion(), ReleaseURL: state.GetReleaseUrl(),
-		RestartRequired: state.GetRestartRequired(), Message: state.GetMessage()}
+		RestartRequired: state.GetRestartRequired(), Message: state.GetMessage(),
+		InstalledCommit: state.GetInstalledCommit(), RunningVersion: state.GetRunningVersion(), RunningCommit: state.GetRunningCommit(),
+		PreviousVersion: state.GetPreviousVersion(), PreviousCommit: state.GetPreviousCommit()}
 }

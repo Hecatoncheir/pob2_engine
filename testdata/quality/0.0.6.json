@@ -1,0 +1,653 @@
+{
+  "schema": 1,
+  "stage": "0.0.6",
+  "date_moscow": "2026-11-22",
+  "base_commit": "e2335a50569d416492157e2a86713b9e7763af1e",
+  "scope": "Новые и изменённые функции Go и Python для проверки, обновления и отката PoB",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 79,
+  "maximum_cognitive": 9,
+  "functions": [
+    {
+      "file": "internal/maintenance/components.go",
+      "function": "updatePoB",
+      "line": 11,
+      "cognitive_before": 1,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/maintenance/components.go",
+      "function": "reportRunningPoB",
+      "line": 28,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/maintenance/components.go",
+      "function": "updateAll",
+      "line": 52,
+      "cognitive_before": 5,
+      "cognitive_after": 5,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/maintenance/components.go",
+      "function": "inspectUpdates",
+      "line": 72,
+      "cognitive_before": 0,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/maintenance/service.go",
+      "function": "SetRunningPoB",
+      "line": 40,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/maintenance/update.go",
+      "function": "Update",
+      "line": 32,
+      "cognitive_before": 2,
+      "cognitive_after": 4,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/archive.go",
+      "function": "install",
+      "line": 17,
+      "cognitive_before": 2,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/archive.go",
+      "function": "stage",
+      "line": 49,
+      "cognitive_before": 7,
+      "cognitive_after": 7,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/archive.go",
+      "function": "publish",
+      "line": 84,
+      "cognitive_before": 5,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/archive.go",
+      "function": "moveInstallation",
+      "line": 94,
+      "cognitive_before": 1,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/archive.go",
+      "function": "writeManifest",
+      "line": 109,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/archive_test.go",
+      "function": "TestPublishInstallation",
+      "line": 70,
+      "cognitive_before": 5,
+      "cognitive_after": 5,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/install.go",
+      "function": "Installed",
+      "line": 70,
+      "cognitive_before": 5,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/pob/install.go",
+      "function": "Update",
+      "line": 128,
+      "cognitive_before": 10,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/pob/install.go",
+      "function": "UpdateTo",
+      "line": 133,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/pob/install.go",
+      "function": "update",
+      "line": 137,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/pob/install.go",
+      "function": "verifyInstalledLayout",
+      "line": 168,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/pob/install.go",
+      "function": "installUpdate",
+      "line": 188,
+      "cognitive_before": 7,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/pob/install_test.go",
+      "function": "TestEnsureKeepsInstalledPoBOffline",
+      "line": 60,
+      "cognitive_before": 4,
+      "cognitive_after": 4,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/pob/install_test.go",
+      "function": "TestCheckUpdateToUsesExactOfficialTag",
+      "line": 94,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "readInstallation",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "validInstallation",
+      "line": 45,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "describe",
+      "line": 49,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "writeInstallation",
+      "line": 58,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "Rollback",
+      "line": 74,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "unavailableRollback",
+      "line": 92,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "rollback",
+      "line": 96,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/installation_state.go",
+      "function": "activateRollback",
+      "line": 119,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/pob/probe.go",
+      "function": "probeInstallation",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/pob/probe.go",
+      "function": "probeBuild",
+      "line": 32,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/pob/releases.go",
+      "function": "latest",
+      "line": 54,
+      "cognitive_before": 3,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/pob/releases.go",
+      "function": "tagged",
+      "line": 58,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/pob/releases.go",
+      "function": "stableRelease",
+      "line": 72,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/pob/rollback_test.go",
+      "function": "installForRollback",
+      "line": 13,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/pob/rollback_test.go",
+      "function": "TestPoBRollbackOfflineWithBrokenCurrentInstallation",
+      "line": 37,
+      "cognitive_before": null,
+      "cognitive_after": 8,
+      "cyclomatic_after": 13
+    },
+    {
+      "file": "internal/pob/rollback_test.go",
+      "function": "TestPoBRollbackCanceledBeforeCommitKeepsBothVersions",
+      "line": 62,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/pob/rollback_test.go",
+      "function": "TestRejectCachedCandidateBeforeActivation",
+      "line": 81,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/storage/append_benchmark_test.go",
+      "function": "BenchmarkPublishedCalculationAppend",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 9,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/transport/cli/calculator.go",
+      "function": "openLuaJITCalculator",
+      "line": 30,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/cli/maintenance.go",
+      "function": "maintenance",
+      "line": 12,
+      "cognitive_before": 7,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/transport/grpcapi/maintenance.go",
+      "function": "Update",
+      "line": 14,
+      "cognitive_before": 2,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/transport/grpcapi/maintenance.go",
+      "function": "Doctor",
+      "line": 29,
+      "cognitive_before": 2,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/maintenance.go",
+      "function": "encodeComponent",
+      "line": 88,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/grpcapi/maintenance.go",
+      "function": "decodeComponent",
+      "line": 99,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/mcpapi/maintenance.go",
+      "function": "addMaintenanceTools",
+      "line": 16,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/measure_rpc/main.go",
+      "function": "main",
+      "line": 22,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/measure_rpc/main.go",
+      "function": "run",
+      "line": 29,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/measure_rpc/main.go",
+      "function": "measure",
+      "line": 52,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/measure_rpc/main.go",
+      "function": "measureCalculations",
+      "line": 68,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/measure_rpc/main.go",
+      "function": "timedCalculation",
+      "line": 92,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "tool/measure_upgrade.py",
+      "function": "check_source",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/measure_upgrade.py",
+      "function": "grpc_measure",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/measure_upgrade.py",
+      "function": "memory_measure",
+      "line": 25,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/measure_upgrade.py",
+      "function": "durable_measure",
+      "line": 36,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/measure_upgrade.py",
+      "function": "measure",
+      "line": 44,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/measure_upgrade.py",
+      "function": "main",
+      "line": 62,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/reference_multigroup.py",
+      "function": "worker",
+      "line": 34,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_multigroup.py",
+      "function": "collect_cases",
+      "line": 43,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_upgrade.py",
+      "function": "portable_archive",
+      "line": 18,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_upgrade.py",
+      "function": "verify_archive",
+      "line": 35,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/reference_upgrade.py",
+      "function": "unpack_portable",
+      "line": 44,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "tool/reference_upgrade.py",
+      "function": "execute",
+      "line": 53,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "__init__",
+      "line": 40,
+      "cognitive_before": 0,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_native_lua",
+      "line": 400,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "pinned_releases",
+      "line": 22,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "check_source",
+      "line": 29,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "expect_installation",
+      "line": 34,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "offline_environment",
+      "line": 40,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "update_target",
+      "line": 46,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "install_previous",
+      "line": 50,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "update_live",
+      "line": 64,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "assert_restart_pending",
+      "line": 77,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "current_launch",
+      "line": 88,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "rollback_offline",
+      "line": 96,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "verify_replayed",
+      "line": 111,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "check_catalog",
+      "line": 118,
+      "cognitive_before": null,
+      "cognitive_after": 6,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "run_upgrade_cycle",
+      "line": 133,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "check_upgrade",
+      "line": 160,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_upgrade.py",
+      "function": "check_older_corpus",
+      "line": 171,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    }
+  ]
+}

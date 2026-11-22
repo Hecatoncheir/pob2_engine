@@ -52,8 +52,26 @@ func checkRedirect(req *http.Request, previous []*http.Request) error {
 }
 
 func (m *Manager) latest(ctx context.Context) (release, error) {
+	return m.stableRelease(ctx, latestURL)
+}
+
+func (m *Manager) tagged(ctx context.Context, tag string) (release, error) {
+	if !tags.MatchString(tag) {
+		return release{}, fmt.Errorf("версия PoB должна иметь вид vX.Y.Z")
+	}
+	value, err := m.stableRelease(ctx, "https://api.github.com/repos/"+repository+"/releases/tags/"+tag)
+	if err != nil {
+		return release{}, err
+	}
+	if value.Tag != tag {
+		return release{}, fmt.Errorf("GitHub вернул %s вместо %s", value.Tag, tag)
+	}
+	return value, nil
+}
+
+func (m *Manager) stableRelease(ctx context.Context, url string) (release, error) {
 	var rel release
-	if err := m.readJSON(ctx, latestURL, &rel); err != nil {
+	if err := m.readJSON(ctx, url, &rel); err != nil {
 		return rel, fmt.Errorf("проверка выпуска PoB: %w", err)
 	}
 	if !tags.MatchString(rel.Tag) || rel.Draft || rel.Prerelease {
