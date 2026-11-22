@@ -149,6 +149,8 @@ jobs:
           python3 tool/reference_spells.py --matrix groups
       - name: Воспроизвести Ice Nova и поддержку из полного каталога PoB
         run: python3 tool/reference_catalog.py
+      - name: Воспроизвести многогрупповые сборки оригинального PoB
+        run: python3 tool/reference_multigroup.py
       - name: Сохранить отчёт и состав среды
         if: always()
         uses: actions/upload-artifact@v7.0.2

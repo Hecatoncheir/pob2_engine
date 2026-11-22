@@ -1,0 +1,389 @@
+{
+  "schema": 1,
+  "stage": "0.0.5",
+  "date_moscow": "2026-11-22",
+  "base_commit": "81f489a2dd79ecebeabfa0d4bd54f20611dbc209",
+  "scope": "Новые и изменённые функции Go и Python для расчёта и приёмки многогрупповых сборок",
+  "tool": {
+    "repository": "https://github.com/Hecatoncheir/treesitter_cyclomatic_complexity",
+    "commit": "7b216f2344d87a910e6c1ffbd974fe60950c15ce",
+    "neovim": "0.12.6",
+    "nested_functions": "inline",
+    "parser_sha256": {
+      "go": "af6af9a689f34ffbf34469e580240a2603d3948aea69fededcbf376b6ba11344",
+      "python": "3a4141a36161ff1e6c8f56a88a48258fb2beebec71cb6e96cf8ad8c5cc4d460a"
+    }
+  },
+  "functions_checked": 46,
+  "maximum_cognitive": 10,
+  "functions": [
+    {
+      "file": "internal/application/builds_test.go",
+      "function": "TestQueuedMultigroupCalculationCannotOverwriteGroupSelection",
+      "line": 123,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "removeGemGroup",
+      "line": 276,
+      "cognitive_before": 3,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "setMainGroup",
+      "line": 292,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/build/edit.go",
+      "function": "editSelection",
+      "line": 433,
+      "cognitive_before": 7,
+      "cognitive_after": 7,
+      "cyclomatic_after": 8
+    },
+    {
+      "file": "internal/build/edit_test.go",
+      "function": "TestLegacyMainSkillIndexFollowsGroupEdits",
+      "line": 11,
+      "cognitive_before": null,
+      "cognitive_after": 5,
+      "cyclomatic_after": 6
+    },
+    {
+      "file": "internal/build/edit_test.go",
+      "function": "assertMainGroup",
+      "line": 39,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "internal/build/model.go",
+      "function": "mainGroup",
+      "line": 96,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "internal/build/model.go",
+      "function": "Model",
+      "line": 103,
+      "cognitive_before": 12,
+      "cognitive_after": 6,
+      "cyclomatic_after": 7
+    },
+    {
+      "file": "internal/build/model.go",
+      "function": "readModelSections",
+      "line": 132,
+      "cognitive_before": null,
+      "cognitive_after": 7,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "internal/pob/restart_test.go",
+      "function": "TestLuaJITRestartsAfterCanceledCalculation",
+      "line": 14,
+      "cognitive_before": 6,
+      "cognitive_after": 6,
+      "cyclomatic_after": 9
+    },
+    {
+      "file": "internal/transport/mcpapi/builds.go",
+      "function": "addBuildTools",
+      "line": 41,
+      "cognitive_before": 2,
+      "cognitive_after": 2,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/mcpapi/schema.go",
+      "function": "calculationOutputSchema",
+      "line": 11,
+      "cognitive_before": 1,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/mcpapi/schema.go",
+      "function": "buildInputSchema",
+      "line": 18,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "internal/transport/mcpapi/schema.go",
+      "function": "toolSchema",
+      "line": 26,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "internal/transport/mcpapi/schema_test.go",
+      "function": "TestBuildInputAcceptsPartialSetSelection",
+      "line": 10,
+      "cognitive_before": null,
+      "cognitive_after": 10,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/reference_multigroup.py",
+      "function": "reference_case",
+      "line": 17,
+      "cognitive_before": null,
+      "cognitive_after": 10,
+      "cyclomatic_after": 11
+    },
+    {
+      "file": "tool/reference_multigroup.py",
+      "function": "worker",
+      "line": 34,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_multigroup.py",
+      "function": "collect_cases",
+      "line": 43,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/reference_multigroup.py",
+      "function": "execute",
+      "line": 53,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "issue_messages",
+      "line": 16,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "expected_exit",
+      "line": 20,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "check_result",
+      "line": 24,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "xml_structure",
+      "line": 35,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "__init__",
+      "line": 40,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "fixture",
+      "line": 46,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "check_snapshot",
+      "line": 52,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "verify_result",
+      "line": 65,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "run_build",
+      "line": 69,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "mcp",
+      "line": 72,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "open",
+      "line": 76,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "edit",
+      "line": 85,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "edit_file",
+      "line": 93,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "calculate",
+      "line": 98,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "calculate_cli",
+      "line": 107,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "preview",
+      "line": 111,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "compare_weapons",
+      "line": 121,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "check_comparison",
+      "line": 129,
+      "cognitive_before": null,
+      "cognitive_after": 3,
+      "cyclomatic_after": 4
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "roundtrip",
+      "line": 139,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "measure",
+      "line": 147,
+      "cognitive_before": null,
+      "cognitive_after": 2,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "measure_case",
+      "line": 151,
+      "cognitive_before": null,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "exercise_matrix",
+      "line": 161,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "check_restart",
+      "line": 183,
+      "cognitive_before": null,
+      "cognitive_after": 4,
+      "cyclomatic_after": 5
+    },
+    {
+      "file": "tool/smoke_multigroup.py",
+      "function": "check_multigroup",
+      "line": 208,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "upgrade_session",
+      "line": 298,
+      "cognitive_before": 2,
+      "cognitive_after": 3,
+      "cyclomatic_after": 3
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_native_lua",
+      "line": 400,
+      "cognitive_before": 1,
+      "cognitive_after": 1,
+      "cyclomatic_after": 2
+    },
+    {
+      "file": "tool/smoke_release.py",
+      "function": "check_multigroup_upgrade",
+      "line": 440,
+      "cognitive_before": null,
+      "cognitive_after": 0,
+      "cyclomatic_after": 1
+    }
+  ]
+}

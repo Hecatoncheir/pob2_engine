@@ -11,7 +11,7 @@ type layout struct{ attributes, children string }
 // Известные поля перечислены явно: расширения сохраняются, но не теряются в расчёте.
 var layouts = map[string]layout{
 	"PathOfBuilding2":    {"", "Build Items Tree Skills Config Calcs Notes TreeView Party Import"},
-	"Build":              {"level className ascendClassName targetVersion mainSocketGroup characterLevelAutoMode viewMode", "PlayerStat MinionStat FullDPSSkill Buffs TimelessData"},
+	"Build":              {"level className ascendClassName targetVersion mainSocketGroup mainSkillIndex characterLevelAutoMode viewMode", "PlayerStat MinionStat FullDPSSkill Buffs TimelessData"},
 	"Buffs":              {"buffList combatList curseList", ""},
 	"TimelessData":       {"searchList searchListFallback devotionVariant1 devotionVariant2 socketFilterDistance", ""},
 	"Import":             {"exportParty", ""},

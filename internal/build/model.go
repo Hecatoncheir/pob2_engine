@@ -93,6 +93,13 @@ func (m *Model) issue(path, message string) {
 	m.Issues = append(m.Issues, Issue{Code: "unsupported_xml", Path: path, Message: message})
 }
 
+func mainGroup(info *element) (int, error) {
+	if id, err := strconv.Atoi(info.attr("mainSkillIndex", "")); err == nil && id >= 1 && id <= 100 {
+		return id, nil
+	}
+	return integer(info.attr("mainSocketGroup", "1"), "Build/mainSocketGroup", 1, 100)
+}
+
 func (d *Document) Model() (Model, error) {
 	m := Model{WeaponSet: 1, Slots: make(map[string]int), Config: make(map[string]ConfigValue),
 		Groups: []Group{}, Items: []Item{}, Nodes: []int{}, Issues: []Issue{}}
@@ -111,10 +118,18 @@ func (d *Document) Model() (Model, error) {
 	if err != nil {
 		return m, err
 	}
-	m.MainGroup, err = integer(info.attr("mainSocketGroup", "1"), "Build/mainSocketGroup", 1, 100)
+	m.MainGroup, err = mainGroup(info)
 	if err != nil {
 		return m, err
 	}
+	if err := d.readModelSections(&m); err != nil {
+		return m, err
+	}
+	d.findExtensions(&m)
+	return m, nil
+}
+
+func (d *Document) readModelSections(m *Model) error {
 	for _, section := range []struct {
 		name  string
 		parse func(*element) error
@@ -123,18 +138,17 @@ func (d *Document) Model() (Model, error) {
 	} {
 		node, err := d.root.child(section.name)
 		if err != nil {
-			return m, err
+			return err
 		}
 		if node == nil {
 			m.issue(section.name, "отсутствует секция")
 			continue
 		}
 		if err := section.parse(node); err != nil {
-			return m, err
+			return err
 		}
 	}
-	d.findExtensions(&m)
-	return m, nil
+	return nil
 }
 
 func selectedByID(parent *element, child, attribute string) (*element, int, error) {

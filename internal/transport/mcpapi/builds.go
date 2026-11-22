@@ -49,7 +49,7 @@ func addBuildTools(server *mcp.Server, commands application.BuildCommands, sessi
 			value, err := commands.Apply(ctx, application.ApplyBuild{SessionID: session, ExpectedRevision: input.ExpectedRevision, RequestID: input.RequestID, XML: input.XML})
 			return snapshotResult(value, err)
 		})
-	mcp.AddTool(server, &mcp.Tool{Name: "edit_build", Description: "Изменить уровень, условие, камни, экипировку, пассивы или выбранные наборы; вернуть изменённую сборку", Annotations: write, OutputSchema: calculationOutputSchema[application.SnapshotView]()},
+	mcp.AddTool(server, &mcp.Tool{Name: "edit_build", Description: "Изменить уровень, условие, камни, экипировку, пассивы или выбранные наборы; вернуть изменённую сборку", Annotations: write, InputSchema: buildInputSchema[editInput](), OutputSchema: calculationOutputSchema[application.SnapshotView]()},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input editInput) (*mcp.CallToolResult, application.SnapshotView, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()
@@ -68,7 +68,7 @@ func addBuildTools(server *mcp.Server, commands application.BuildCommands, sessi
 			value, err := commands.Calculate(ctx, application.CalculateBuild{SessionID: session, ExpectedRevision: input.ExpectedRevision, RequestID: input.RequestID})
 			return snapshotResult(value, err)
 		})
-	mcp.AddTool(server, &mcp.Tool{Name: "compare_build", Description: "Сравнить текущую сборку с XML или одной правкой без изменения сессии; проверить статусы обоих вариантов", Annotations: read, OutputSchema: calculationOutputSchema[application.BuildComparison]()},
+	mcp.AddTool(server, &mcp.Tool{Name: "compare_build", Description: "Сравнить текущую сборку с XML или одной правкой без изменения сессии; проверить статусы обоих вариантов", Annotations: read, InputSchema: buildInputSchema[compareInput](), OutputSchema: calculationOutputSchema[application.BuildComparison]()},
 		func(ctx context.Context, _ *mcp.CallToolRequest, input compareInput) (*mcp.CallToolResult, application.BuildComparison, error) {
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()

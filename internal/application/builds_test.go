@@ -120,6 +120,38 @@ func TestBuildStorageFailureDoesNotPublish(t *testing.T) {
 	}
 }
 
+func TestQueuedMultigroupCalculationCannotOverwriteGroupSelection(t *testing.T) {
+	journal := &testJournal{}
+	s, initial := importedService(t, journal)
+	xml, err := os.ReadFile("../../testdata/reference/0.0.5/caster-main.xml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	imported, err := s.Apply(t.Context(), ApplyBuild{SessionID: "main", ExpectedRevision: initial.Revision, RequestID: "caster", XML: string(xml)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 3*time.Second)
+	defer cancel()
+	release := holdWorkers(s)
+	completed := make(chan error, 1)
+	go func() {
+		_, err := s.Calculate(ctx, CalculateBuild{SessionID: "main", ExpectedRevision: imported.Revision, RequestID: "queued"})
+		completed <- err
+	}()
+	waitAdmission(t, s, 1)
+	changed, err := s.Apply(t.Context(), ApplyBuild{SessionID: "main", ExpectedRevision: imported.Revision, RequestID: "select-group",
+		Edit: &build.Edit{Selection: &build.SelectionEdit{MainGroup: 1}}})
+	release()
+	if err != nil {
+		t.Fatal(err)
+	}
+	expectCode(t, <-completed, RevisionConflict)
+	if got, err := s.Snapshot(t.Context(), "main"); err != nil || got != changed || len(journal.changes) != int(changed.Revision) {
+		t.Fatal("устаревший расчёт изменил сессию или журнал")
+	}
+}
+
 func waitAdmission(t *testing.T, s *Service, count int) {
 	t.Helper()
 	deadline := time.Now().Add(2 * time.Second)
