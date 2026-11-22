@@ -481,6 +481,172 @@ class CreateSessionResponse extends $pb.GeneratedMessage {
   SessionSnapshot ensureSnapshot() => $_ensure(0);
 }
 
+/// Создаёт сессию и сохраняет XML в первой ревизии одной командой.
+class CreateSessionFromXmlRequest extends $pb.GeneratedMessage {
+  factory CreateSessionFromXmlRequest({
+    $core.String? sessionId,
+    $core.String? buildName,
+    $core.String? requestId,
+    $core.String? xml,
+  }) {
+    final result = CreateSessionFromXmlRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (buildName != null) result.buildName = buildName;
+    if (requestId != null) result.requestId = requestId;
+    if (xml != null) result.xml = xml;
+    return result;
+  }
+
+  CreateSessionFromXmlRequest._();
+
+  factory CreateSessionFromXmlRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CreateSessionFromXmlRequest()..mergeFromBuffer(data, registry);
+  factory CreateSessionFromXmlRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CreateSessionFromXmlRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateSessionFromXmlRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: CreateSessionFromXmlRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..aOS(2, _omitFieldNames ? '' : 'buildName')
+    ..aOS(3, _omitFieldNames ? '' : 'requestId')
+    ..aOS(4, _omitFieldNames ? '' : 'xml')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSessionFromXmlRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSessionFromXmlRequest copyWith(
+          void Function(CreateSessionFromXmlRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as CreateSessionFromXmlRequest))
+          as CreateSessionFromXmlRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use CreateSessionFromXmlRequest() / CreateSessionFromXmlRequest.new instead')
+  static CreateSessionFromXmlRequest create() =>
+      CreateSessionFromXmlRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      CreateSessionFromXmlRequest._();
+  @$core.override
+  CreateSessionFromXmlRequest createEmptyInstance() =>
+      CreateSessionFromXmlRequest._();
+  @$core.pragma('dart2js:noInline')
+  static CreateSessionFromXmlRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateSessionFromXmlRequest>(
+          CreateSessionFromXmlRequest.$_createMessage);
+  static CreateSessionFromXmlRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get buildName => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set buildName($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBuildName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBuildName() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get requestId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set requestId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasRequestId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRequestId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get xml => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set xml($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasXml() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearXml() => $_clearField(4);
+}
+
+class CreateSessionFromXmlResponse extends $pb.GeneratedMessage {
+  factory CreateSessionFromXmlResponse({
+    SessionSnapshot? snapshot,
+  }) {
+    final result = CreateSessionFromXmlResponse._();
+    if (snapshot != null) result.snapshot = snapshot;
+    return result;
+  }
+
+  CreateSessionFromXmlResponse._();
+
+  factory CreateSessionFromXmlResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CreateSessionFromXmlResponse()..mergeFromBuffer(data, registry);
+  factory CreateSessionFromXmlResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CreateSessionFromXmlResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CreateSessionFromXmlResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: CreateSessionFromXmlResponse.$_createMessage)
+    ..aOM<SessionSnapshot>(1, _omitFieldNames ? '' : 'snapshot',
+        subBuilder: SessionSnapshot.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSessionFromXmlResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CreateSessionFromXmlResponse copyWith(
+          void Function(CreateSessionFromXmlResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as CreateSessionFromXmlResponse))
+          as CreateSessionFromXmlResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use CreateSessionFromXmlResponse() / CreateSessionFromXmlResponse.new instead')
+  static CreateSessionFromXmlResponse create() =>
+      CreateSessionFromXmlResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      CreateSessionFromXmlResponse._();
+  @$core.override
+  CreateSessionFromXmlResponse createEmptyInstance() =>
+      CreateSessionFromXmlResponse._();
+  @$core.pragma('dart2js:noInline')
+  static CreateSessionFromXmlResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateSessionFromXmlResponse>(
+          CreateSessionFromXmlResponse.$_createMessage);
+  static CreateSessionFromXmlResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  SessionSnapshot get snapshot => $_getN(0);
+  @$pb.TagNumber(1)
+  set snapshot(SessionSnapshot value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSnapshot() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSnapshot() => $_clearField(1);
+  @$pb.TagNumber(1)
+  SessionSnapshot ensureSnapshot() => $_ensure(0);
+}
+
 class GetSnapshotRequest extends $pb.GeneratedMessage {
   factory GetSnapshotRequest({
     $core.String? sessionId,

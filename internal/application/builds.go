@@ -191,7 +191,25 @@ func (s *Service) applyNewBuild(ctx context.Context, value *session, cmd ApplyBu
 			return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 		}
 	}
-	serialized, err := doc.Export()
+	result := value.snapshot
+	result.Revision++
+	result, err = withBuildDocument(result, doc)
+	if err != nil {
+		return domain.Snapshot{}, err
+	}
+	change := Change{Apply: &cmd, Result: result}
+	fields, err := changedBuildFields(value.snapshot.BuildXML, doc)
+	if err != nil {
+		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
+	}
+	if err := s.commitBuild(ctx, value, cmd.RequestID, fp, "build_changed", fields, change, int64(len(fp)+len(result.BuildXML)+1024)); err != nil {
+		return domain.Snapshot{}, err
+	}
+	return result, nil
+}
+
+func withBuildDocument(snapshot domain.Snapshot, doc *build.Document) (domain.Snapshot, error) {
+	xml, err := doc.Export()
 	if err != nil {
 		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 	}
@@ -199,22 +217,12 @@ func (s *Service) applyNewBuild(ctx context.Context, value *session, cmd ApplyBu
 	if err != nil {
 		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 	}
-	result := value.snapshot
-	result.Revision++
-	result.BuildRevision = result.Revision
-	result.BuildXML = string(serialized)
-	result.InputSHA256 = digest
-	result.CalculationJSON = ""
-	result.CalculatedFromRevision = 0
-	change := Change{Apply: &cmd, Result: result}
-	fields, err := changedBuildFields(value.snapshot.BuildXML, doc)
-	if err != nil {
-		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
-	}
-	if err := s.commitBuild(ctx, value, cmd.RequestID, fp, "build_changed", fields, change, int64(len(fp)+len(serialized)+1024)); err != nil {
-		return domain.Snapshot{}, err
-	}
-	return result, nil
+	snapshot.BuildRevision = snapshot.Revision
+	snapshot.BuildXML = string(xml)
+	snapshot.InputSHA256 = digest
+	snapshot.CalculationJSON = ""
+	snapshot.CalculatedFromRevision = 0
+	return snapshot, nil
 }
 
 func (s *Service) Export(ctx context.Context, id string) (ExportedBuild, error) {

@@ -24,6 +24,18 @@ pob2-engine calculate --file build.xml
 
 ## Сохраняемая сессия
 
+Чтобы открыть общую сборку сразу с XML, выполните:
+
+```shell
+pob2-engine session create --profile main --start-server --session build-1 --name Fireball --request-id create-1 --file build.xml
+```
+
+Первая ревизия уже содержит документ. `--file -` читает XML из stdin.
+Ошибочный XML и сбой записи не создают сессию. Точный повтор возвращает
+первый снимок, даже если сборка уже изменена.
+
+Существующие команды создания пустой сессии и последующего импорта:
+
 ```shell
 pob2-engine session create --profile main --start-server --session build-1 --name Fireball --request-id create-1
 pob2-engine build import --profile main --session build-1 --revision 1 --request-id import-1 --file build.xml

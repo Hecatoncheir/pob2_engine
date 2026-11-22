@@ -112,6 +112,45 @@ final $typed_data.Uint8List createSessionResponseDescriptor = $convert.base64Dec
     'ChVDcmVhdGVTZXNzaW9uUmVzcG9uc2USNAoIc25hcHNob3QYASABKAsyGC5wb2IyLnYxLlNlc3'
     'Npb25TbmFwc2hvdFIIc25hcHNob3Q=');
 
+@$core.Deprecated('Use createSessionFromXmlRequestDescriptor instead')
+const CreateSessionFromXmlRequest$json = {
+  '1': 'CreateSessionFromXmlRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'build_name', '3': 2, '4': 1, '5': 9, '10': 'buildName'},
+    {'1': 'request_id', '3': 3, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'xml', '3': 4, '4': 1, '5': 9, '10': 'xml'},
+  ],
+};
+
+/// Descriptor for `CreateSessionFromXmlRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createSessionFromXmlRequestDescriptor =
+    $convert.base64Decode(
+        'ChtDcmVhdGVTZXNzaW9uRnJvbVhtbFJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2'
+        'lvbklkEh0KCmJ1aWxkX25hbWUYAiABKAlSCWJ1aWxkTmFtZRIdCgpyZXF1ZXN0X2lkGAMgASgJ'
+        'UglyZXF1ZXN0SWQSEAoDeG1sGAQgASgJUgN4bWw=');
+
+@$core.Deprecated('Use createSessionFromXmlResponseDescriptor instead')
+const CreateSessionFromXmlResponse$json = {
+  '1': 'CreateSessionFromXmlResponse',
+  '2': [
+    {
+      '1': 'snapshot',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.SessionSnapshot',
+      '10': 'snapshot'
+    },
+  ],
+};
+
+/// Descriptor for `CreateSessionFromXmlResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createSessionFromXmlResponseDescriptor =
+    $convert.base64Decode(
+        'ChxDcmVhdGVTZXNzaW9uRnJvbVhtbFJlc3BvbnNlEjQKCHNuYXBzaG90GAEgASgLMhgucG9iMi'
+        '52MS5TZXNzaW9uU25hcHNob3RSCHNuYXBzaG90');
+
 @$core.Deprecated('Use getSnapshotRequestDescriptor instead')
 const GetSnapshotRequest$json = {
   '1': 'GetSnapshotRequest',

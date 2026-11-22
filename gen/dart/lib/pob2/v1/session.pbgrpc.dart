@@ -63,6 +63,13 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$createSession, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.CreateSessionFromXmlResponse> createSessionFromXml(
+    $0.CreateSessionFromXmlRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$createSessionFromXml, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.GetSnapshotResponse> getSnapshot(
     $0.GetSnapshotRequest request, {
     $grpc.CallOptions? options,
@@ -189,6 +196,11 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/CreateSession',
           ($0.CreateSessionRequest value) => value.writeToBuffer(),
           $0.CreateSessionResponse.fromBuffer);
+  static final _$createSessionFromXml = $grpc.ClientMethod<
+          $0.CreateSessionFromXmlRequest, $0.CreateSessionFromXmlResponse>(
+      '/pob2.v1.SessionService/CreateSessionFromXml',
+      ($0.CreateSessionFromXmlRequest value) => value.writeToBuffer(),
+      $0.CreateSessionFromXmlResponse.fromBuffer);
   static final _$getSnapshot =
       $grpc.ClientMethod<$0.GetSnapshotRequest, $0.GetSnapshotResponse>(
           '/pob2.v1.SessionService/GetSnapshot',
@@ -298,6 +310,15 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.CreateSessionRequest.fromBuffer(value),
             ($0.CreateSessionResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CreateSessionFromXmlRequest,
+            $0.CreateSessionFromXmlResponse>(
+        'CreateSessionFromXml',
+        createSessionFromXml_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.CreateSessionFromXmlRequest.fromBuffer(value),
+        ($0.CreateSessionFromXmlResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.GetSnapshotRequest, $0.GetSnapshotResponse>(
             'GetSnapshot',
@@ -451,6 +472,15 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$0.CreateSessionResponse> createSession(
       $grpc.ServiceCall call, $0.CreateSessionRequest request);
+
+  $async.Future<$0.CreateSessionFromXmlResponse> createSessionFromXml_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.CreateSessionFromXmlRequest> $request) async {
+    return createSessionFromXml($call, await $request);
+  }
+
+  $async.Future<$0.CreateSessionFromXmlResponse> createSessionFromXml(
+      $grpc.ServiceCall call, $0.CreateSessionFromXmlRequest request);
 
   $async.Future<$0.GetSnapshotResponse> getSnapshot_Pre($grpc.ServiceCall $call,
       $async.Future<$0.GetSnapshotRequest> $request) async {
