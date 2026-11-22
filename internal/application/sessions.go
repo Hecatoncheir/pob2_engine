@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 	"unicode/utf8"
 
+	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
@@ -25,6 +26,7 @@ type CreateSession struct {
 	SessionID string `json:"session_id"`
 	BuildName string `json:"build_name"`
 	RequestID string `json:"request_id"`
+	XML       string `json:"xml,omitempty"`
 }
 
 type RenameBuild struct {
@@ -118,8 +120,16 @@ func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapsho
 	if len(s.sessions) >= maxSessions || len(s.requests) >= maxRequests {
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит сессий или команд")
 	}
-	result := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: 1}
-	retainedBytes := int64(1024 + len(cmd.SessionID) + len(cmd.RequestID) + len(cmd.BuildName))
+	return s.commitCreation(ctx, cmd)
+}
+
+func (s *Service) commitCreation(ctx context.Context, cmd CreateSession) (domain.Snapshot, error) {
+	event, err := creationEvent(cmd)
+	if err != nil {
+		return domain.Snapshot{}, err
+	}
+	result := event.Snapshot
+	retainedBytes := int64(1024 + len(cmd.SessionID) + len(cmd.RequestID) + len(cmd.BuildName) + len(cmd.XML) + len(result.BuildXML))
 	if !s.reserve(retainedBytes) {
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит истории в памяти")
 	}
@@ -129,9 +139,31 @@ func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapsho
 	}
 	s.sessions[cmd.SessionID] = &session{snapshot: result, createRequestID: cmd.RequestID, requests: make(map[string]rename),
 		buildRequests: make(map[string]buildRequest), pending: make(map[string]*pendingCalculation),
-		events: []Event{{Snapshot: result, Kind: "created", RequestID: cmd.RequestID}}, changed: make(chan struct{})}
+		events: []Event{event}, changed: make(chan struct{})}
 	s.requests[cmd.RequestID] = creation{command: cmd, result: result}
 	return result, nil
+}
+
+func creationEvent(cmd CreateSession) (Event, error) {
+	initial := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: 1}
+	event := Event{Snapshot: initial, Kind: "created", RequestID: cmd.RequestID}
+	if cmd.XML == "" {
+		return event, nil
+	}
+	doc, err := build.Parse([]byte(cmd.XML))
+	if err != nil {
+		return Event{}, failure(InvalidArgument, err.Error())
+	}
+	event.Snapshot, err = withBuildDocument(initial, doc)
+	if err != nil {
+		return Event{}, err
+	}
+	fields, err := changedBuildFields("", doc)
+	if err != nil {
+		return Event{}, failure(InvalidArgument, err.Error())
+	}
+	event.ChangedFields = "build_name," + fields
+	return event, nil
 }
 
 func (s *Service) find(id string) (*session, error) {

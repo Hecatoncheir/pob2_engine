@@ -19,24 +19,25 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SessionService_GetServerInfo_FullMethodName  = "/pob2.v1.SessionService/GetServerInfo"
-	SessionService_Update_FullMethodName         = "/pob2.v1.SessionService/Update"
-	SessionService_Doctor_FullMethodName         = "/pob2.v1.SessionService/Doctor"
-	SessionService_CreateSession_FullMethodName  = "/pob2.v1.SessionService/CreateSession"
-	SessionService_GetSnapshot_FullMethodName    = "/pob2.v1.SessionService/GetSnapshot"
-	SessionService_RenameBuild_FullMethodName    = "/pob2.v1.SessionService/RenameBuild"
-	SessionService_ApplyBuild_FullMethodName     = "/pob2.v1.SessionService/ApplyBuild"
-	SessionService_CalculateBuild_FullMethodName = "/pob2.v1.SessionService/CalculateBuild"
-	SessionService_CompareBuild_FullMethodName   = "/pob2.v1.SessionService/CompareBuild"
-	SessionService_GetCatalog_FullMethodName     = "/pob2.v1.SessionService/GetCatalog"
-	SessionService_PreviewSupport_FullMethodName = "/pob2.v1.SessionService/PreviewSupport"
-	SessionService_ExportBuild_FullMethodName    = "/pob2.v1.SessionService/ExportBuild"
-	SessionService_WatchSession_FullMethodName   = "/pob2.v1.SessionService/WatchSession"
-	SessionService_WatchServer_FullMethodName    = "/pob2.v1.SessionService/WatchServer"
-	SessionService_Shutdown_FullMethodName       = "/pob2.v1.SessionService/Shutdown"
-	SessionService_RegisterClient_FullMethodName = "/pob2.v1.SessionService/RegisterClient"
-	SessionService_Heartbeat_FullMethodName      = "/pob2.v1.SessionService/Heartbeat"
-	SessionService_ReleaseClient_FullMethodName  = "/pob2.v1.SessionService/ReleaseClient"
+	SessionService_GetServerInfo_FullMethodName        = "/pob2.v1.SessionService/GetServerInfo"
+	SessionService_Update_FullMethodName               = "/pob2.v1.SessionService/Update"
+	SessionService_Doctor_FullMethodName               = "/pob2.v1.SessionService/Doctor"
+	SessionService_CreateSession_FullMethodName        = "/pob2.v1.SessionService/CreateSession"
+	SessionService_CreateSessionFromXml_FullMethodName = "/pob2.v1.SessionService/CreateSessionFromXml"
+	SessionService_GetSnapshot_FullMethodName          = "/pob2.v1.SessionService/GetSnapshot"
+	SessionService_RenameBuild_FullMethodName          = "/pob2.v1.SessionService/RenameBuild"
+	SessionService_ApplyBuild_FullMethodName           = "/pob2.v1.SessionService/ApplyBuild"
+	SessionService_CalculateBuild_FullMethodName       = "/pob2.v1.SessionService/CalculateBuild"
+	SessionService_CompareBuild_FullMethodName         = "/pob2.v1.SessionService/CompareBuild"
+	SessionService_GetCatalog_FullMethodName           = "/pob2.v1.SessionService/GetCatalog"
+	SessionService_PreviewSupport_FullMethodName       = "/pob2.v1.SessionService/PreviewSupport"
+	SessionService_ExportBuild_FullMethodName          = "/pob2.v1.SessionService/ExportBuild"
+	SessionService_WatchSession_FullMethodName         = "/pob2.v1.SessionService/WatchSession"
+	SessionService_WatchServer_FullMethodName          = "/pob2.v1.SessionService/WatchServer"
+	SessionService_Shutdown_FullMethodName             = "/pob2.v1.SessionService/Shutdown"
+	SessionService_RegisterClient_FullMethodName       = "/pob2.v1.SessionService/RegisterClient"
+	SessionService_Heartbeat_FullMethodName            = "/pob2.v1.SessionService/Heartbeat"
+	SessionService_ReleaseClient_FullMethodName        = "/pob2.v1.SessionService/ReleaseClient"
 )
 
 // SessionServiceClient is the client API for SessionService service.
@@ -49,6 +50,7 @@ type SessionServiceClient interface {
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Doctor(ctx context.Context, in *DoctorRequest, opts ...grpc.CallOption) (*DoctorResponse, error)
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
+	CreateSessionFromXml(ctx context.Context, in *CreateSessionFromXmlRequest, opts ...grpc.CallOption) (*CreateSessionFromXmlResponse, error)
 	GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*GetSnapshotResponse, error)
 	RenameBuild(ctx context.Context, in *RenameBuildRequest, opts ...grpc.CallOption) (*RenameBuildResponse, error)
 	ApplyBuild(ctx context.Context, in *ApplyBuildRequest, opts ...grpc.CallOption) (*ApplyBuildResponse, error)
@@ -107,6 +109,16 @@ func (c *sessionServiceClient) CreateSession(ctx context.Context, in *CreateSess
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateSessionResponse)
 	err := c.cc.Invoke(ctx, SessionService_CreateSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) CreateSessionFromXml(ctx context.Context, in *CreateSessionFromXmlRequest, opts ...grpc.CallOption) (*CreateSessionFromXmlResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateSessionFromXmlResponse)
+	err := c.cc.Invoke(ctx, SessionService_CreateSessionFromXml_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -290,6 +302,7 @@ type SessionServiceServer interface {
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Doctor(context.Context, *DoctorRequest) (*DoctorResponse, error)
 	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
+	CreateSessionFromXml(context.Context, *CreateSessionFromXmlRequest) (*CreateSessionFromXmlResponse, error)
 	GetSnapshot(context.Context, *GetSnapshotRequest) (*GetSnapshotResponse, error)
 	RenameBuild(context.Context, *RenameBuildRequest) (*RenameBuildResponse, error)
 	ApplyBuild(context.Context, *ApplyBuildRequest) (*ApplyBuildResponse, error)
@@ -325,6 +338,9 @@ func (UnimplementedSessionServiceServer) Doctor(context.Context, *DoctorRequest)
 }
 func (UnimplementedSessionServiceServer) CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateSession not implemented")
+}
+func (UnimplementedSessionServiceServer) CreateSessionFromXml(context.Context, *CreateSessionFromXmlRequest) (*CreateSessionFromXmlResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateSessionFromXml not implemented")
 }
 func (UnimplementedSessionServiceServer) GetSnapshot(context.Context, *GetSnapshotRequest) (*GetSnapshotResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSnapshot not implemented")
@@ -457,6 +473,24 @@ func _SessionService_CreateSession_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SessionServiceServer).CreateSession(ctx, req.(*CreateSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_CreateSessionFromXml_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateSessionFromXmlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).CreateSessionFromXml(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_CreateSessionFromXml_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).CreateSessionFromXml(ctx, req.(*CreateSessionFromXmlRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -714,6 +748,10 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSession",
 			Handler:    _SessionService_CreateSession_Handler,
+		},
+		{
+			MethodName: "CreateSessionFromXml",
+			Handler:    _SessionService_CreateSessionFromXml_Handler,
 		},
 		{
 			MethodName: "GetSnapshot",

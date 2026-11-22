@@ -14,6 +14,7 @@ service SessionService {
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc Doctor(DoctorRequest) returns (DoctorResponse);
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc CreateSessionFromXml(CreateSessionFromXmlRequest) returns (CreateSessionFromXmlResponse);
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
   rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);
   rpc ApplyBuild(ApplyBuildRequest) returns (ApplyBuildResponse);
@@ -61,6 +62,18 @@ message CreateSessionRequest {
 }
 
 message CreateSessionResponse {
+  SessionSnapshot snapshot = 1;
+}
+
+// Создаёт сессию и сохраняет XML в первой ревизии одной командой.
+message CreateSessionFromXmlRequest {
+  string session_id = 1;
+  string build_name = 2;
+  string request_id = 3;
+  string xml = 4;
+}
+
+message CreateSessionFromXmlResponse {
   SessionSnapshot snapshot = 1;
 }
 

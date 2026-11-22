@@ -379,13 +379,16 @@ func (r runner) session(ctx context.Context, args []string) error {
 	fs := r.flags("session " + operation)
 	c := connectFlags(fs)
 	id := fs.String("session", "", "явно выбранный session_id")
-	var name, requestID string
+	var name, requestID, file string
 	var revision uint64
 	if operation != "get" {
 		fs.StringVar(&name, "name", "", "название сборки")
 		fs.StringVar(&requestID, "request-id", "", "идентификатор команды для безопасного повтора")
 	}
-	if operation == "rename" {
+	switch operation {
+	case "create":
+		fs.StringVar(&file, "file", "", "начальный XML-файл либо - для stdin")
+	case "rename":
 		fs.Uint64Var(&revision, "revision", 0, "ожидаемая ревизия")
 	}
 	if err := parse(fs, args[1:]); err != nil {
@@ -393,6 +396,10 @@ func (r runner) session(ctx context.Context, args []string) error {
 	}
 	ctx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
+	if operation == "create" {
+		cmd := application.CreateSession{SessionID: *id, BuildName: name, RequestID: requestID}
+		return r.createSession(ctx, c, cmd, file)
+	}
 	client, err := c.dial(ctx)
 	if err != nil {
 		return err
@@ -400,13 +407,34 @@ func (r runner) session(ctx context.Context, args []string) error {
 	defer client.Close()
 	var value domain.Snapshot
 	switch operation {
-	case "create":
-		value, err = client.Create(ctx, application.CreateSession{SessionID: *id, BuildName: name, RequestID: requestID})
 	case "rename":
 		value, err = client.Rename(ctx, application.RenameBuild{SessionID: *id, BuildName: name, ExpectedRevision: revision, RequestID: requestID})
 	default:
 		value, err = client.Snapshot(ctx, *id)
 	}
+	if err != nil {
+		return err
+	}
+	return r.write(value)
+}
+
+func (r runner) createSession(ctx context.Context, c *connection, cmd application.CreateSession, file string) error {
+	if file != "" {
+		data, err := r.readInput(ctx, file)
+		if err != nil {
+			return err
+		}
+		if len(data) == 0 {
+			return &UsageError{Err: fmt.Errorf("нужен XML сборки")}
+		}
+		cmd.XML = string(data)
+	}
+	client, err := c.dial(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	value, err := client.Create(ctx, cmd)
 	if err != nil {
 		return err
 	}

@@ -171,6 +171,13 @@ func (c *Client) Info(ctx context.Context) (*pb.GetServerInfoResponse, error) {
 }
 
 func (c *Client) Create(ctx context.Context, cmd application.CreateSession) (domain.Snapshot, error) {
+	if cmd.XML != "" {
+		res, err := c.rpc.CreateSessionFromXml(ctx, &pb.CreateSessionFromXmlRequest{SessionId: cmd.SessionID, BuildName: cmd.BuildName, RequestId: cmd.RequestID, Xml: cmd.XML})
+		if err != nil {
+			return domain.Snapshot{}, err
+		}
+		return fromSnapshot(res.GetSnapshot())
+	}
 	res, err := c.rpc.CreateSession(ctx, &pb.CreateSessionRequest{SessionId: cmd.SessionID, BuildName: cmd.BuildName, RequestId: cmd.RequestID})
 	if err != nil {
 		return domain.Snapshot{}, err

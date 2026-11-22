@@ -192,12 +192,25 @@ func (s *Server) ReleaseClient(_ context.Context, req *pb.ReleaseClientRequest) 
 }
 
 func (s *Server) CreateSession(ctx context.Context, req *pb.CreateSessionRequest) (*pb.CreateSessionResponse, error) {
-	value, err := s.commands.Create(ctx, application.CreateSession{SessionID: req.GetSessionId(), BuildName: req.GetBuildName(), RequestID: req.GetRequestId()})
+	message, err := s.createSession(ctx, application.CreateSession{SessionID: req.GetSessionId(), BuildName: req.GetBuildName(), RequestID: req.GetRequestId()})
+	return &pb.CreateSessionResponse{Snapshot: message}, err
+}
+
+func (s *Server) CreateSessionFromXml(ctx context.Context, req *pb.CreateSessionFromXmlRequest) (*pb.CreateSessionFromXmlResponse, error) {
+	if req.GetXml() == "" {
+		return nil, status.Error(codes.InvalidArgument, "нужен XML сборки")
+	}
+	message, err := s.createSession(ctx, application.CreateSession{SessionID: req.GetSessionId(), BuildName: req.GetBuildName(), RequestID: req.GetRequestId(), XML: req.GetXml()})
+	return &pb.CreateSessionFromXmlResponse{Snapshot: message}, err
+}
+
+func (s *Server) createSession(ctx context.Context, cmd application.CreateSession) (*pb.SessionSnapshot, error) {
+	value, err := s.commands.Create(ctx, cmd)
 	if err != nil {
 		return nil, rpcError(err)
 	}
 	message, err := snapshot(value)
-	return &pb.CreateSessionResponse{Snapshot: message}, rpcError(err)
+	return message, rpcError(err)
 }
 
 func (s *Server) GetSnapshot(ctx context.Context, req *pb.GetSnapshotRequest) (*pb.GetSnapshotResponse, error) {
