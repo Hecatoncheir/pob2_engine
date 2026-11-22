@@ -598,13 +598,13 @@
       "function": "current_launch",
       "line": 88,
       "cognitive_before": null,
-      "cognitive_after": 3,
-      "cyclomatic_after": 4
+      "cognitive_after": 6,
+      "cyclomatic_after": 5
     },
     {
       "file": "tool/smoke_upgrade.py",
       "function": "rollback_offline",
-      "line": 96,
+      "line": 104,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -612,7 +612,7 @@
     {
       "file": "tool/smoke_upgrade.py",
       "function": "verify_replayed",
-      "line": 111,
+      "line": 119,
       "cognitive_before": null,
       "cognitive_after": 1,
       "cyclomatic_after": 2
@@ -620,7 +620,7 @@
     {
       "file": "tool/smoke_upgrade.py",
       "function": "check_catalog",
-      "line": 118,
+      "line": 126,
       "cognitive_before": null,
       "cognitive_after": 6,
       "cyclomatic_after": 4
@@ -628,7 +628,7 @@
     {
       "file": "tool/smoke_upgrade.py",
       "function": "run_upgrade_cycle",
-      "line": 133,
+      "line": 141,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -636,7 +636,7 @@
     {
       "file": "tool/smoke_upgrade.py",
       "function": "check_upgrade",
-      "line": 160,
+      "line": 168,
       "cognitive_before": null,
       "cognitive_after": 0,
       "cyclomatic_after": 1
@@ -644,7 +644,7 @@
     {
       "file": "tool/smoke_upgrade.py",
       "function": "check_older_corpus",
-      "line": 171,
+      "line": 179,
       "cognitive_before": null,
       "cognitive_after": 3,
       "cyclomatic_after": 4

@@ -87,10 +87,18 @@ def assert_restart_pending(scenario, previous, new):
 
 def current_launch(scenario, release):
     env = scenario.environment
-    base = env['LOCALAPPDATA'] if sys.platform == 'win32' else env['XDG_CACHE_HOME']
+    if sys.platform == 'win32':
+        base = Path(env['LOCALAPPDATA'])
+    elif sys.platform == 'darwin':
+        base = Path(env['HOME']) / 'Library/Caches'
+    else:
+        base = Path(env['XDG_CACHE_HOME'])
     name = release['version'] + '-' + release['sha256'][:12]
-    root = Path(base) / 'pob2-engine' / 'pob' / name
-    return next(path for path in (root / 'Launch.lua', root / 'src/Launch.lua') if path.is_file())
+    root = base / 'pob2-engine' / 'pob' / name
+    for path in (root / 'Launch.lua', root / 'src/Launch.lua'):
+        if path.is_file():
+            return path
+    raise FileNotFoundError('Не найден файл запуска установленного PoB в ' + str(root))
 
 
 def rollback_offline(scenario, matrix, previous, new):
