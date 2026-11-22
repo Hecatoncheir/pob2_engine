@@ -25,14 +25,21 @@ python tool/notices.py --archive .reference/licenses.zip
 
 Первая команда обновляет копии из проверенного кэша Go; вторая обнаруживает
 новые зависимости, изменённые тексты и устаревшие файлы. Используйте версию Go
-из `go.mod`. CI проверяет копии, а выпуск по тегу включает отдельный ZIP
-лицензий вместе с бинарниками и исходниками. При удалении зависимости сначала
+из `go.mod`. CI проверяет копии. Релизный бинарник выдаёт лицензии по команде
+`doctor --licenses`. При удалении зависимости сначала
 проверьте указанные скриптом оставшиеся уведомления.
 
-## Эталон и будущие заимствования
+## Расчётный адаптер и эталон
 
-Закреплённые PoB и Python/Lua MCP используются только для разработки и CI.
-Их исходники и нативная среда не входят в Go-бинарник. Ревизии и контрольные
+Файлы `HeadlessWrapper.lua`, `_SimpleGraphic.def.lua`, `headless_bootstrap.lua`
+и `tree-image-sizes.json` в `internal/pob/bridge/` взяты из
+[pob-poe2-mcp, commit 312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a](https://github.com/Hecatoncheir/pob-poe2-mcp/tree/312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a/pob_poe2_mcp)
+и распространяются по [MIT](internal/pob/bridge/LICENSE). Оригинальные Lua-код
+и данные PoB загружаются из выпуска сообщества. LuaJIT и `lua-utf8` для Linux
+и macOS загружаются из [pob-poe2-mcp v0.24.1](https://github.com/Hecatoncheir/pob-poe2-mcp/releases/tag/v0.24.1).
+
+Закреплённые эталонные копии PoB и Python/Lua MCP используются в разработке и CI.
+Ревизии и контрольные
 суммы заданы в [sources.lock.json](testdata/reference/sources.lock.json);
 оригинальные лицензии сохранены отдельно:
 [PoB](.licenses/reference/pob-LICENSE.md), [MCP](.licenses/reference/mcp-LICENSE.txt).

@@ -13,6 +13,7 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
+	"github.com/Hecatoncheir/pob2_engine/internal/maintenance"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -34,18 +35,19 @@ type Ready struct {
 // Server обслуживает loopback; способ хранения задаётся общим сервисом команд.
 type Server struct {
 	pb.UnimplementedSessionServiceServer
-	commands   application.Commands
-	rpc        *grpc.Server
-	listener   net.Listener
-	token      string
-	life       *lifecycle.Manager
-	instanceID string
-	stopOnce   sync.Once
-	forceOnce  sync.Once
-	force      chan struct{}
-	done       chan struct{}
-	stopped    chan struct{}
-	serveErr   error
+	commands    application.Commands
+	maintenance maintenance.Commands
+	rpc         *grpc.Server
+	listener    net.Listener
+	token       string
+	life        *lifecycle.Manager
+	instanceID  string
+	stopOnce    sync.Once
+	forceOnce   sync.Once
+	force       chan struct{}
+	done        chan struct{}
+	stopped     chan struct{}
+	serveErr    error
 }
 
 func Start(address, token string, commands application.Commands) (*Server, error) {
@@ -69,7 +71,7 @@ func StartWithConfig(address, token string, commands application.Commands, confi
 		return nil, err
 	}
 	s := &Server{
-		commands: commands, listener: listener, token: token, life: life, instanceID: rand.Text(),
+		commands: commands, maintenance: maintenance.Local(), listener: listener, token: token, life: life, instanceID: rand.Text(),
 		done: make(chan struct{}), stopped: make(chan struct{}), force: make(chan struct{}),
 	}
 	s.rpc = grpc.NewServer(grpc.MaxRecvMsgSize(maxMessageSize), grpc.MaxSendMsgSize(maxMessageSize), grpc.UnaryInterceptor(s.authorize), grpc.StreamInterceptor(s.authorizeStream))
@@ -140,7 +142,7 @@ func (s *Server) authorize(ctx context.Context, req any, info *grpc.UnaryServerI
 
 func controlMethod(method string) bool {
 	switch method {
-	case pb.SessionService_GetServerInfo_FullMethodName, pb.SessionService_RegisterClient_FullMethodName,
+	case pb.SessionService_GetServerInfo_FullMethodName, pb.SessionService_Doctor_FullMethodName, pb.SessionService_RegisterClient_FullMethodName,
 		pb.SessionService_Heartbeat_FullMethodName, pb.SessionService_ReleaseClient_FullMethodName, pb.SessionService_Shutdown_FullMethodName:
 		return true
 	default:
@@ -152,7 +154,7 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	stats := s.life.Stats()
 	storageMode, storagePath := s.storageInfo()
 	capabilities := buildinfo.Capabilities()
-	capabilities = append(capabilities, "server.events")
+	capabilities = append(capabilities, "server.events", maintenance.UpdateCapability, maintenance.DoctorCapability)
 	if _, ok := s.commands.(application.Events); ok {
 		capabilities = append(capabilities, "session.events")
 	}

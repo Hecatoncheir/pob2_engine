@@ -31,7 +31,8 @@ jobs:
           import os
           import re
 
-          documents = ['README.md', 'TODO.md', 'todo_0.0.1.md', 'todo_0.0.2.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'testdata/reference/README.md']
+          documents = ['README.md', 'TODO.md', 'CHANGELOG.md', 'AGENTS.md', 'THIRD_PARTY_NOTICES.md', 'testdata/reference/README.md']
+          documents.extend(str(path) for path in sorted(Path('.').glob('todo_*.md')))
           documents.extend(str(path) for path in sorted(Path('docs').glob('*.md')))
           for name in documents:
               text = Path(name).read_text(encoding='utf-8')
@@ -127,6 +128,15 @@ jobs:
         run: python3 -m unittest discover -s tool -p 'test_*.py'
       - name: Подготовить изолированную среду и воспроизвести расчёт
         run: python3 tool/reference_lua.py --prepare
+      - uses: actions/setup-go@v7.1.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Проверить LuaJIT в Go, MCP и gRPC
+        env:
+          POB2_ENGINE_POB_DIR: ${{ github.workspace }}/.reference/pob
+          POB2_ENGINE_POB_NATIVE_DIR: ${{ github.workspace }}/.reference/linux-x86_64/native
+        run: go test ./internal/pob ./internal/transport/grpcapi -run 'Test(LocalLuaJITCalculationAcrossGRPCAndMCP|Lua.*)' -count=1
       - name: Проверить воспроизводимость встроенных данных
         run: python3 tool/export_data.py
       - name: Воспроизвести матрицу расчётов и диагностики

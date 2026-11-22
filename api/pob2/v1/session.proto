@@ -4,12 +4,15 @@ package pob2.v1;
 
 import "pob2/v1/build.proto";
 import "pob2/v1/catalog.proto";
+import "pob2/v1/maintenance.proto";
 
 option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
 
 // SessionService предоставляет общий сервис сессий первого этапа.
 service SessionService {
   rpc GetServerInfo(GetServerInfoRequest) returns (GetServerInfoResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Doctor(DoctorRequest) returns (DoctorResponse);
   rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse);
   rpc RenameBuild(RenameBuildRequest) returns (RenameBuildResponse);

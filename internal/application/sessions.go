@@ -70,7 +70,7 @@ type Service struct {
 	journal    Journal
 	dataOnce   sync.Once
 	data       *gamedata.Dataset
-	calculator *calculation.Engine
+	calculator calculation.Calculator
 	dataError  error
 	admission  chan struct{}
 	workers    chan struct{}
@@ -79,6 +79,12 @@ type Service struct {
 
 func NewService() *Service {
 	return &Service{sessions: make(map[string]*session), requests: make(map[string]creation), admission: make(chan struct{}, 20), workers: make(chan struct{}, 4)}
+}
+
+func NewServiceWithCalculator(calculator calculation.Calculator) *Service {
+	s := NewService()
+	s.calculator = calculator
+	return s
 }
 
 func validate(sessionID, name, requestID string) error {

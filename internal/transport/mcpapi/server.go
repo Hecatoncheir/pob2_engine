@@ -18,7 +18,7 @@ type renameInput struct {
 
 func New(commands application.Commands, sessionID string, timeout time.Duration) *mcp.Server {
 	server := mcp.NewServer(&mcp.Implementation{Name: "pob2_engine", Version: buildinfo.Version}, &mcp.ServerOptions{
-		Instructions: fmt.Sprintf("Выбрана сессия %q. Все правки требуют текущую ревизию и request_id. Поддерживаются попадания Fireball/Frostbolt/Spark и восемь базовых классов без возвышений, ограниченные предметы и пассивы; проверяйте status и issues. Совпадение с PoB не означает проверку в игре. Flutter пока не подключается.", sessionID),
+		Instructions: fmt.Sprintf("Выбрана сессия %q. Для правок указывайте текущую ревизию и request_id. По умолчанию XML рассчитывает PoB. Поиск и допустимые правки зависят от встроенного каталога. Проверяйте status и issues в результате.", sessionID),
 	})
 	openWorld, destructive := false, true
 	mcp.AddTool(server, &mcp.Tool{
@@ -47,5 +47,6 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	if catalog, ok := commands.(application.CatalogCommands); ok {
 		addCatalogTools(server, catalog, sessionID, timeout)
 	}
+	addMaintenanceTools(server, commands, timeout)
 	return server
 }

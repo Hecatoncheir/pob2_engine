@@ -15,7 +15,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'build.pb.dart' as $2;
+import 'build.pb.dart' as $3;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
@@ -24,7 +24,7 @@ class SessionSnapshot extends $pb.GeneratedMessage {
     $core.String? sessionId,
     $core.String? buildName,
     $fixnum.Int64? revision,
-    $2.BuildDocument? build,
+    $3.BuildDocument? build,
   }) {
     final result = SessionSnapshot._();
     if (sessionId != null) result.sessionId = sessionId;
@@ -52,8 +52,8 @@ class SessionSnapshot extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(
         3, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.BuildDocument>(4, _omitFieldNames ? '' : 'build',
-        subBuilder: $2.BuildDocument.$_createMessage)
+    ..aOM<$3.BuildDocument>(4, _omitFieldNames ? '' : 'build',
+        subBuilder: $3.BuildDocument.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -106,15 +106,15 @@ class SessionSnapshot extends $pb.GeneratedMessage {
   void clearRevision() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $2.BuildDocument get build => $_getN(3);
+  $3.BuildDocument get build => $_getN(3);
   @$pb.TagNumber(4)
-  set build($2.BuildDocument value) => $_setField(4, value);
+  set build($3.BuildDocument value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasBuild() => $_has(3);
   @$pb.TagNumber(4)
   void clearBuild() => $_clearField(4);
   @$pb.TagNumber(4)
-  $2.BuildDocument ensureBuild() => $_ensure(3);
+  $3.BuildDocument ensureBuild() => $_ensure(3);
 }
 
 class GetServerInfoRequest extends $pb.GeneratedMessage {
@@ -1521,7 +1521,7 @@ class ApplyBuildRequest extends $pb.GeneratedMessage {
     $fixnum.Int64? expectedRevision,
     $core.String? requestId,
     $core.String? xml,
-    $2.BuildEdit? edit,
+    $3.BuildEdit? edit,
   }) {
     final result = ApplyBuildRequest._();
     if (sessionId != null) result.sessionId = sessionId;
@@ -1558,8 +1558,8 @@ class ApplyBuildRequest extends $pb.GeneratedMessage {
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(3, _omitFieldNames ? '' : 'requestId')
     ..aOS(4, _omitFieldNames ? '' : 'xml')
-    ..aOM<$2.BuildEdit>(5, _omitFieldNames ? '' : 'edit',
-        subBuilder: $2.BuildEdit.$_createMessage)
+    ..aOM<$3.BuildEdit>(5, _omitFieldNames ? '' : 'edit',
+        subBuilder: $3.BuildEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1629,15 +1629,15 @@ class ApplyBuildRequest extends $pb.GeneratedMessage {
   void clearXml() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $2.BuildEdit get edit => $_getN(4);
+  $3.BuildEdit get edit => $_getN(4);
   @$pb.TagNumber(5)
-  set edit($2.BuildEdit value) => $_setField(5, value);
+  set edit($3.BuildEdit value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasEdit() => $_has(4);
   @$pb.TagNumber(5)
   void clearEdit() => $_clearField(5);
   @$pb.TagNumber(5)
-  $2.BuildEdit ensureEdit() => $_ensure(4);
+  $3.BuildEdit ensureEdit() => $_ensure(4);
 }
 
 class ApplyBuildResponse extends $pb.GeneratedMessage {
@@ -1867,7 +1867,7 @@ class CompareBuildRequest extends $pb.GeneratedMessage {
     $core.String? sessionId,
     $fixnum.Int64? expectedRevision,
     $core.String? xml,
-    $2.BuildEdit? edit,
+    $3.BuildEdit? edit,
   }) {
     final result = CompareBuildRequest._();
     if (sessionId != null) result.sessionId = sessionId;
@@ -1902,8 +1902,8 @@ class CompareBuildRequest extends $pb.GeneratedMessage {
         2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(3, _omitFieldNames ? '' : 'xml')
-    ..aOM<$2.BuildEdit>(4, _omitFieldNames ? '' : 'edit',
-        subBuilder: $2.BuildEdit.$_createMessage)
+    ..aOM<$3.BuildEdit>(4, _omitFieldNames ? '' : 'edit',
+        subBuilder: $3.BuildEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1965,22 +1965,22 @@ class CompareBuildRequest extends $pb.GeneratedMessage {
   void clearXml() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $2.BuildEdit get edit => $_getN(3);
+  $3.BuildEdit get edit => $_getN(3);
   @$pb.TagNumber(4)
-  set edit($2.BuildEdit value) => $_setField(4, value);
+  set edit($3.BuildEdit value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasEdit() => $_has(3);
   @$pb.TagNumber(4)
   void clearEdit() => $_clearField(4);
   @$pb.TagNumber(4)
-  $2.BuildEdit ensureEdit() => $_ensure(3);
+  $3.BuildEdit ensureEdit() => $_ensure(3);
 }
 
 class CompareBuildResponse extends $pb.GeneratedMessage {
   factory CompareBuildResponse({
     $core.String? sessionId,
     $fixnum.Int64? revision,
-    $2.BuildComparison? comparison,
+    $3.BuildComparison? comparison,
   }) {
     final result = CompareBuildResponse._();
     if (sessionId != null) result.sessionId = sessionId;
@@ -2006,8 +2006,8 @@ class CompareBuildResponse extends $pb.GeneratedMessage {
     ..a<$fixnum.Int64>(
         2, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
         defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.BuildComparison>(3, _omitFieldNames ? '' : 'comparison',
-        subBuilder: $2.BuildComparison.$_createMessage)
+    ..aOM<$3.BuildComparison>(3, _omitFieldNames ? '' : 'comparison',
+        subBuilder: $3.BuildComparison.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2052,15 +2052,15 @@ class CompareBuildResponse extends $pb.GeneratedMessage {
   void clearRevision() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $2.BuildComparison get comparison => $_getN(2);
+  $3.BuildComparison get comparison => $_getN(2);
   @$pb.TagNumber(3)
-  set comparison($2.BuildComparison value) => $_setField(3, value);
+  set comparison($3.BuildComparison value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasComparison() => $_has(2);
   @$pb.TagNumber(3)
   void clearComparison() => $_clearField(3);
   @$pb.TagNumber(3)
-  $2.BuildComparison ensureComparison() => $_ensure(2);
+  $3.BuildComparison ensureComparison() => $_ensure(2);
 }
 
 class ExportBuildRequest extends $pb.GeneratedMessage {

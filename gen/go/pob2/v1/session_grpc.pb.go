@@ -20,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	SessionService_GetServerInfo_FullMethodName  = "/pob2.v1.SessionService/GetServerInfo"
+	SessionService_Update_FullMethodName         = "/pob2.v1.SessionService/Update"
+	SessionService_Doctor_FullMethodName         = "/pob2.v1.SessionService/Doctor"
 	SessionService_CreateSession_FullMethodName  = "/pob2.v1.SessionService/CreateSession"
 	SessionService_GetSnapshot_FullMethodName    = "/pob2.v1.SessionService/GetSnapshot"
 	SessionService_RenameBuild_FullMethodName    = "/pob2.v1.SessionService/RenameBuild"
@@ -44,6 +46,8 @@ const (
 // SessionService предоставляет общий сервис сессий первого этапа.
 type SessionServiceClient interface {
 	GetServerInfo(ctx context.Context, in *GetServerInfoRequest, opts ...grpc.CallOption) (*GetServerInfoResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	Doctor(ctx context.Context, in *DoctorRequest, opts ...grpc.CallOption) (*DoctorResponse, error)
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*CreateSessionResponse, error)
 	GetSnapshot(ctx context.Context, in *GetSnapshotRequest, opts ...grpc.CallOption) (*GetSnapshotResponse, error)
 	RenameBuild(ctx context.Context, in *RenameBuildRequest, opts ...grpc.CallOption) (*RenameBuildResponse, error)
@@ -73,6 +77,26 @@ func (c *sessionServiceClient) GetServerInfo(ctx context.Context, in *GetServerI
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetServerInfoResponse)
 	err := c.cc.Invoke(ctx, SessionService_GetServerInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateResponse)
+	err := c.cc.Invoke(ctx, SessionService_Update_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) Doctor(ctx context.Context, in *DoctorRequest, opts ...grpc.CallOption) (*DoctorResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DoctorResponse)
+	err := c.cc.Invoke(ctx, SessionService_Doctor_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -263,6 +287,8 @@ func (c *sessionServiceClient) ReleaseClient(ctx context.Context, in *ReleaseCli
 // SessionService предоставляет общий сервис сессий первого этапа.
 type SessionServiceServer interface {
 	GetServerInfo(context.Context, *GetServerInfoRequest) (*GetServerInfoResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	Doctor(context.Context, *DoctorRequest) (*DoctorResponse, error)
 	CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error)
 	GetSnapshot(context.Context, *GetSnapshotRequest) (*GetSnapshotResponse, error)
 	RenameBuild(context.Context, *RenameBuildRequest) (*RenameBuildResponse, error)
@@ -290,6 +316,12 @@ type UnimplementedSessionServiceServer struct{}
 
 func (UnimplementedSessionServiceServer) GetServerInfo(context.Context, *GetServerInfoRequest) (*GetServerInfoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetServerInfo not implemented")
+}
+func (UnimplementedSessionServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedSessionServiceServer) Doctor(context.Context, *DoctorRequest) (*DoctorResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Doctor not implemented")
 }
 func (UnimplementedSessionServiceServer) CreateSession(context.Context, *CreateSessionRequest) (*CreateSessionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateSession not implemented")
@@ -371,6 +403,42 @@ func _SessionService_GetServerInfo_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SessionServiceServer).GetServerInfo(ctx, req.(*GetServerInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).Update(ctx, req.(*UpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_Doctor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DoctorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).Doctor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_Doctor_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).Doctor(ctx, req.(*DoctorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -634,6 +702,14 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetServerInfo",
 			Handler:    _SessionService_GetServerInfo_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _SessionService_Update_Handler,
+		},
+		{
+			MethodName: "Doctor",
+			Handler:    _SessionService_Doctor_Handler,
 		},
 		{
 			MethodName: "CreateSession",

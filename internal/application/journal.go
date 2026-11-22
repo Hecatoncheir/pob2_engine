@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 )
 
@@ -25,7 +26,11 @@ type Journal interface {
 }
 
 func OpenService(ctx context.Context, journal Journal) (*Service, error) {
-	s := NewService()
+	return OpenServiceWithCalculator(ctx, journal, nil)
+}
+
+func OpenServiceWithCalculator(ctx context.Context, journal Journal, calculator calculation.Calculator) (*Service, error) {
+	s := NewServiceWithCalculator(calculator)
 	if err := journal.Load(ctx, func(change Change) error { return s.restore(ctx, change) }); err != nil {
 		return nil, fmt.Errorf("не удалось восстановить сессии: %w", err)
 	}

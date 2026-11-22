@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "release": "v0.0.2",
+  "commit": "c99de760578e7f1e13c51fd60d6a57c83578fd2f",
+  "files": {
+    "sessions.db": "53a9cc097b2514f9d19c256e69dd1189f5c7385a43b22e82a7bdafa18c08c28b",
+    "snapshot.json": "b942eadbca8049d45b65d748caf18fdedb25925a9f026b81126d3d13eac08f38"
+  }
+}

@@ -19,12 +19,23 @@ type Comparison struct {
 	Deltas []Delta `json:"deltas"`
 }
 
+type Calculator interface {
+	Calculate(context.Context, *build.Document) (Result, error)
+	Compare(context.Context, *build.Document, *build.Document) (Comparison, error)
+}
+
 func (e *Engine) Compare(ctx context.Context, before, after *build.Document) (Comparison, error) {
-	old, err := e.Calculate(ctx, before)
+	return Compare(ctx, e, before, after)
+}
+
+func Compare(ctx context.Context, engine interface {
+	Calculate(context.Context, *build.Document) (Result, error)
+}, before, after *build.Document) (Comparison, error) {
+	old, err := engine.Calculate(ctx, before)
 	if err != nil {
 		return Comparison{}, err
 	}
-	current, err := e.Calculate(ctx, after)
+	current, err := engine.Calculate(ctx, after)
 	if err != nil {
 		return Comparison{}, err
 	}

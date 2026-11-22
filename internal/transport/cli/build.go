@@ -11,8 +11,6 @@ import (
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
-	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
-	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
 type ResultStatusError struct{ Status string }
@@ -85,43 +83,50 @@ func (r runner) calculate(ctx context.Context, args []string) error {
 	if (*file == "") == (*id == "") {
 		return &UsageError{Err: fmt.Errorf("нужен --file либо --session")}
 	}
-	ctx, cancel := context.WithTimeout(ctx, connection.timeout)
-	defer cancel()
 	if *file != "" {
-		if connection.profile != "" || connection.address != "" || connection.startServer || connection.dataDir != "" || connection.baseDir != "" || *request != "" || *revision != 0 {
+		if connection.usesServer() || *request != "" || *revision != 0 {
 			return &UsageError{Err: fmt.Errorf("расчёт --file не принимает параметры сервера и сессии")}
 		}
-		data, err := r.readInput(ctx, *file)
-		if err != nil {
-			return err
-		}
-		doc, err := build.Parse(data)
-		if err != nil {
-			return &UsageError{Err: err}
-		}
-		dataset, err := gamedata.Embedded()
-		if err != nil {
-			return err
-		}
-		engine, err := calculation.New(dataset)
-		if err != nil {
-			return err
-		}
-		result, err := engine.Calculate(ctx, doc)
-		if err != nil {
-			return err
-		}
-		if err := r.write(result); err != nil {
-			return err
-		}
-		return resultStatus(result.Status)
+		return r.calculateFile(ctx, *file, connection)
 	}
+	return r.calculateSession(ctx, connection, application.CalculateBuild{SessionID: *id, ExpectedRevision: *revision, RequestID: *request})
+}
+
+func (r runner) calculateFile(ctx context.Context, file string, c *connection) error {
+	data, err := r.readInput(ctx, file)
+	if err != nil {
+		return err
+	}
+	doc, err := build.Parse(data)
+	if err != nil {
+		return &UsageError{Err: err}
+	}
+	engine, closeCalculator, err := openCalculator(ctx)
+	if err != nil {
+		return err
+	}
+	defer closeCalculator()
+	ctx, cancel := context.WithTimeout(ctx, c.timeout)
+	defer cancel()
+	result, err := engine.Calculate(ctx, doc)
+	if err != nil {
+		return err
+	}
+	if err := r.write(result); err != nil {
+		return err
+	}
+	return resultStatus(result.Status)
+}
+
+func (r runner) calculateSession(ctx context.Context, connection *connection, cmd application.CalculateBuild) error {
+	ctx, cancel := context.WithTimeout(ctx, connection.timeout)
+	defer cancel()
 	client, err := connection.dial(ctx)
 	if err != nil {
 		return err
 	}
 	defer client.Close()
-	snapshot, err := client.Calculate(ctx, application.CalculateBuild{SessionID: *id, ExpectedRevision: *revision, RequestID: *request})
+	snapshot, err := client.Calculate(ctx, cmd)
 	if err != nil {
 		return err
 	}
