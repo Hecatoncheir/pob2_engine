@@ -85,10 +85,13 @@
   максимум COG — 9. `buf breaking` с тегом `v0.0.5` и проверка генерации прошли.
   [PR №4](https://github.com/Hecatoncheir/pob2_engine/pull/4) слит после
   успешного [CI](https://github.com/Hecatoncheir/pob2_engine/actions/runs/45039959445).
-- [ ] **4.3.** Принять `v0.0.6-rc.2`. На Windows x64, Linux x64 и macOS arm64
+- [x] **4.3.** Принять `v0.0.6-rc.2`. На Windows x64, Linux x64 и macOS arm64
   проверить скачанные бинарники, SHA-256, установку с чистого кэша, отказ
   при неисправном обновлении, переход на новую версию и откат офлайн.
   Сверить сессии и ответы `request_id`, сохранить нативные отчёты.
+  Все 15 заданий [релизного CI](https://github.com/Hecatoncheir/pob2_engine/actions/runs/45043116094)
+  прошли после повтора задания macOS при HTTP 403. [SHA-256 и шесть отчётов](testdata/releases/0.0.6-rc.2/README.md)
+  сверены со скачанными бинарниками и метаданными GitHub.
   [Первый прогон](https://github.com/Hecatoncheir/pob2_engine/actions/runs/45041341022)
   выявил неверный путь к кэшу PoB в сценарии macOS. Публикация остановилась.
   Для `rc.2` сценарий использует `Library/Caches`.
