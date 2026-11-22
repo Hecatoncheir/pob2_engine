@@ -276,7 +276,7 @@ func validateGemGroup(edit GemsEdit, groups []*element) (int, error) {
 func (d *Document) removeGemGroup(set *element, groups []*element, id int) error {
 	set.remove(groups[id-1])
 	info, _ := d.root.child("Build")
-	main, err := integer(info.attr("mainSocketGroup", "1"), "mainSocketGroup", 1, 100)
+	main, err := mainGroup(info)
 	if err != nil {
 		return err
 	}
@@ -285,8 +285,16 @@ func (d *Document) removeGemGroup(set *element, groups []*element, id int) error
 	} else if main == id {
 		main = 1
 	}
-	info.set("mainSocketGroup", strconv.Itoa(main))
+	setMainGroup(info, main)
 	return nil
+}
+
+func setMainGroup(info *element, id int) {
+	value := strconv.Itoa(id)
+	info.set("mainSocketGroup", value)
+	if info.attr("mainSkillIndex", "") != "" {
+		info.set("mainSkillIndex", value)
+	}
 }
 
 func gemElements(inputs []GemInput, data *gamedata.Dataset) ([]*element, error) {
@@ -434,7 +442,7 @@ func (d *Document) editSelection(edit SelectionEdit) error {
 			return fmt.Errorf("неверная основная группа")
 		}
 		info, _ := d.root.child("Build")
-		info.set("mainSocketGroup", strconv.Itoa(edit.MainGroup))
+		setMainGroup(info, edit.MainGroup)
 	}
 	return d.selectWeaponSet(edit.WeaponSet)
 }

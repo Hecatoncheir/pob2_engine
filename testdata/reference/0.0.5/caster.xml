@@ -1,0 +1,35 @@
+<PathOfBuilding2>
+  <Build className="Sorceress" ascendClassName="None" level="20" characterLevelAutoMode="false" targetVersion="0_1" mainSocketGroup="1" mainSkillIndex="1" />
+  <Items activeItemSet="1" useSecondWeaponSet="false">
+    <ItemSet id="1" useSecondWeaponSet="false" />
+  </Items>
+  <Skills activeSkillSet="1">
+    <SkillSet id="1">
+      <Skill label="Cold" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Ice Nova" gemId="Metadata/Items/Gems/SkillGemIceNova" variantId="IceNova" skillId="IceNovaPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+      <Skill label="Lightning" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Spark" gemId="Metadata/Items/Gems/SkillGemSpark" variantId="Spark" skillId="SparkPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+      <Skill label="Disabled" enabled="false" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Fireball" gemId="Metadata/Items/Gem/SkillGemFireball" variantId="Fireball" skillId="FireballPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+    </SkillSet>
+    <SkillSet id="2" title="Alternate">
+      <Skill label="Projectile" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Frostbolt" gemId="Metadata/Items/Gems/SkillGemFrostbolt" variantId="FrostBolt" skillId="FrostboltPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+    </SkillSet>
+  </Skills>
+  <Tree activeSpec="1">
+    <Spec treeVersion="0_5" classId="7" classInternalId="7" ascendClassId="0" nodes="54447" />
+  </Tree>
+  <Config activeConfigSet="1">
+    <ConfigSet id="1">
+      <Input name="resistancePenalty" number="0" />
+      <Input name="enemyIsBoss" string="None" />
+      <Input name="enemyLevel" number="20" />
+    </ConfigSet>
+  </Config>
+  <ReleaseFixture retained="true">opaque-value</ReleaseFixture>
+</PathOfBuilding2>

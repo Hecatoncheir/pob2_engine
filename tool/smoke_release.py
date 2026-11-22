@@ -295,7 +295,7 @@ class Scenario:
         self.steps.append('three_spells_catalog_preview_compare_export')
         self.steps.append('three_sessions_backup_verify_restore_exact_retry')
 
-    def upgrade_session(self, package_root, release='v0.0.1', lock=None, profile='upgrade'):
+    def upgrade_session(self, package_root, release='v0.0.1', lock=None, profile='upgrade', verify=None):
         directory = package_root / 'testdata/compat' / release.removeprefix('v')
         previous = verify_compatibility_fixture(directory, release)
         self.run('storage', 'restore', '--profile', profile, '--data-dir', self.root / 'data', '--file', directory / 'sessions.db')
@@ -303,7 +303,9 @@ class Scenario:
         require(self.snapshot('main') == previous, f'Открытие изменило сессию {release}')
         require(self.calculate('main', 2, 'calculate') == previous, 'Потерян прежний request_id')
         updated = self.calculate('main', 3, 'release-upgrade')
-        if lock is None:
+        if verify is not None:
+            verify(previous, updated)
+        elif lock is None:
             check_updated_snapshot(previous, updated)
         else:
             check_lua_updated_snapshot(previous, updated, lock)
@@ -397,6 +399,7 @@ def smoke_binary(source, tag):
 
 def check_native_lua(scenario):
     from smoke_catalog import check_full_catalog
+    from smoke_multigroup import Matrix, check_multigroup
     scenario.environment.pop('POB2_ENGINE_CALCULATOR')
     fixtures = Path(__file__).resolve().parents[1]
     lock = json.loads((fixtures / 'testdata/reference/sources.lock.json').read_text('utf-8'))['pob']
@@ -414,6 +417,11 @@ def check_native_lua(scenario):
         scenario.stop()
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
         upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
+        check_source = lambda result: assert_lua_source(result, lock)
+        matrix = Matrix(scenario, fixtures, check_source)
+        upgrade004 = scenario.upgrade_session(fixtures, 'v0.0.4', profile='upgrade004',
+                                              verify=lambda old, new: check_multigroup_upgrade(matrix, old, new))
+        multigroup = check_multigroup(scenario, fixtures, check_source)
         timings = {
             'lua': measure_binary_calculations(scenario, fixtures, 'luajit',
                                                lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)),
@@ -425,8 +433,14 @@ def check_native_lua(scenario):
     return dict(version=doctor['pob']['installed_version'], commit=lock['commit'],
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
-                catalog=catalog, timings=timings,
+                upgrade004=upgrade004, multigroup=multigroup, catalog=catalog, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
+
+
+def check_multigroup_upgrade(matrix, previous, updated):
+    check_updated_build(previous, updated)
+    matrix.check_snapshot(previous, 'attacker')
+    matrix.check_snapshot(updated, 'attacker')
 
 
 def open_build_session(scenario, session, name, fixture):

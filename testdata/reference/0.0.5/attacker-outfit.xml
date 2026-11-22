@@ -1,0 +1,43 @@
+<PathOfBuilding2>
+  <Build className="Warrior" ascendClassName="None" level="20" characterLevelAutoMode="false" targetVersion="0_1" mainSocketGroup="1" />
+  <Items activeItemSet="2" useSecondWeaponSet="false">
+    <ItemSet id="1" useSecondWeaponSet="true">
+      <Slot name="Weapon 1" itemId="1" />
+      <Slot name="Weapon 1 Swap" itemId="2" />
+      <Slot name="Body Armour" itemId="3" />
+    </ItemSet>
+    <ItemSet id="2" title="Alternate" useSecondWeaponSet="false">
+      <Slot name="Weapon 1" itemId="2" />
+      <Slot name="Weapon 1 Swap" itemId="1" />
+      <Slot name="Body Armour" itemId="4" />
+    </ItemSet>
+    <Item id="1">Rarity: NORMAL
+Wooden Club</Item>
+    <Item id="2">Rarity: NORMAL
+Smithing Hammer</Item>
+    <Item id="3">Rarity: NORMAL
+Rusted Cuirass</Item>
+    <Item id="4">Rarity: NORMAL
+Iron Cuirass</Item>
+  </Items>
+  <Skills activeSkillSet="1">
+    <SkillSet id="1">
+      <Skill label="Attack" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Rolling Slam" gemId="Metadata/Items/Gems/SkillGemRollingSlam" variantId="RollingSlam" skillId="RollingSlamPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+      <Skill label="Ground" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Earthquake" gemId="Metadata/Items/Gems/SkillGemEarthquake" variantId="Earthquake" skillId="EarthquakePlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+    </SkillSet>
+  </Skills>
+  <Tree activeSpec="1">
+    <Spec treeVersion="0_5" classId="6" classInternalId="6" ascendClassId="0" nodes="47175" />
+  </Tree>
+  <Config activeConfigSet="1">
+    <ConfigSet id="1">
+      <Input name="resistancePenalty" number="0" />
+      <Input name="enemyIsBoss" string="None" />
+      <Input name="enemyLevel" number="20" />
+    </ConfigSet>
+  </Config>
+</PathOfBuilding2>

@@ -37,8 +37,8 @@ func TestLuaJITRestartsAfterCanceledCalculation(t *testing.T) {
 		t.Fatal("расчёт не завершился после отмены")
 	}
 
-	result, err := engine.Calculate(ctx, doc)
-	if err != nil || result.Status != "complete" || math.Abs(result.Stats["TotalDPS"]-spell.dps) > 1e-8 {
+	result, err := engine.Calculate(ctx, readBuild(t, "0.0.5/caster-alternate.xml"))
+	if err != nil || result.Status != "complete" || result.Skill != "Frostbolt" || math.Abs(result.Stats["FullDPS"]-9.1) > 1e-8 {
 		t.Fatalf("перезапущенный LuaJIT не вернул эталонный расчёт: %+v, %v", result, err)
 	}
 }

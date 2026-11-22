@@ -1,0 +1,28 @@
+<PathOfBuilding2>
+  <Build className="Witch" ascendClassName="None" level="20" characterLevelAutoMode="false" targetVersion="0_1" mainSocketGroup="1" />
+  <Items activeItemSet="1" useSecondWeaponSet="false">
+    <ItemSet id="1" useSecondWeaponSet="false" />
+  </Items>
+  <Skills activeSkillSet="1">
+    <SkillSet id="1">
+      <Skill label="Minion" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="3">
+        <Gem nameSpec="Skeletal Arsonist" gemId="Metadata/Items/Gems/SkillGemSkeletalArsonist" variantId="SkeletalArsonist" skillId="SummonSkeletalArsonistsPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+      <Skill label="Utility" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Bone Cage" gemId="Metadata/Items/Gem/SkillGemBoneCage" variantId="BoneCage" skillId="BoneCagePlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+    </SkillSet>
+  </Skills>
+  <Tree activeSpec="1">
+    <Spec treeVersion="0_5" classId="1" classInternalId="1" ascendClassId="0" nodes="54447" />
+  </Tree>
+  <Config activeConfigSet="1">
+    <ConfigSet id="1">
+      <Input name="resistancePenalty" number="0" />
+      <Input name="enemyIsBoss" string="None" />
+      <Input name="enemyLevel" number="20" />
+      <Input name="customMods" string="Unmapped fixture modifier" />
+      <Input name="enemyFireResist" number="40" />
+    </ConfigSet>
+  </Config>
+</PathOfBuilding2>

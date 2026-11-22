@@ -1,0 +1,351 @@
+{
+  "cases": {
+    "attacker": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "2b328afa5841f606dffd1fe335867f1e967e39baa41a6529cc48c0c0c5fa7c07",
+      "main_group": 1,
+      "skill": "Rolling Slam",
+      "stats": {
+        "Armour": 45,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 3.2014873602897,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 321,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 2.3287313871353
+      },
+      "unsupported": [],
+      "warnings": [],
+      "weapon_set": 1
+    },
+    "attacker-armour": {
+      "active_sets": {
+        "config": 1,
+        "items": 2,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "60f6814d2a077fcfb744dcf931e310767e515aa3b626bf7bd30cd8175d2fb16d",
+      "main_group": 1,
+      "skill": "Rolling Slam",
+      "stats": {
+        "Armour": 115,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 30,
+        "FullDPS": 10.241984445259,
+        "IgniteDPS": 0.018530304,
+        "ImpaleDPS": null,
+        "Life": 353,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 6.0683621681046
+      },
+      "unsupported": [],
+      "warnings": [
+        "You do not meet the Strength requirement of Release Ward, Iron Cuirass"
+      ],
+      "weapon_set": 1
+    },
+    "attacker-outfit": {
+      "active_sets": {
+        "config": 1,
+        "items": 2,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "ef8c99e1a1d457e30cbf5c239ec3bdb3075231bf9623b8fd027c0bcfafc68b24",
+      "main_group": 1,
+      "skill": "Rolling Slam",
+      "stats": {
+        "Armour": 115,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 10.241984445259,
+        "IgniteDPS": 0.018530304,
+        "ImpaleDPS": null,
+        "Life": 321,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 6.0683621681046
+      },
+      "unsupported": [],
+      "warnings": [
+        "You do not meet the Strength requirement of Iron Cuirass"
+      ],
+      "weapon_set": 1
+    },
+    "attacker-swap": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "4d72faeea930d4a7e1fa56c96090727c03214164e4742611c85444b11424d0fe",
+      "main_group": 1,
+      "skill": "Rolling Slam",
+      "stats": {
+        "Armour": 45,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 10.241984445259,
+        "IgniteDPS": 0.018530304,
+        "ImpaleDPS": null,
+        "Life": 321,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 6.0683621681046
+      },
+      "unsupported": [],
+      "warnings": [],
+      "weapon_set": 2
+    },
+    "caster": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true,
+        false
+      ],
+      "gem_errors": [],
+      "input_sha256": "aa0ff4df18273ba00e18c2ca2ffeea7685185889b24f5e4353c5b149df137b76",
+      "main_group": 1,
+      "skill": "Ice Nova",
+      "stats": {
+        "Armour": 0,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 16.404285714286,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 305,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 7.84
+      },
+      "unsupported": [],
+      "warnings": [],
+      "weapon_set": 1
+    },
+    "caster-alternate": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 2,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "eb5468ad695494335e098569238fadc4c2df326e3b97fcd34e4bec6d1589d3a7",
+      "main_group": 1,
+      "skill": "Frostbolt",
+      "stats": {
+        "Armour": 0,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 9.1,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 305,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 9.1
+      },
+      "unsupported": [],
+      "warnings": [],
+      "weapon_set": 1
+    },
+    "caster-main": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true,
+        false
+      ],
+      "gem_errors": [],
+      "input_sha256": "ab1a44f2dfa112fc872afe58b07b3440abc26ad407c634afb5e09eed80d4d34b",
+      "main_group": 2,
+      "skill": "Spark",
+      "stats": {
+        "Armour": 0,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 16.404285714286,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 305,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 8.5642857142857
+      },
+      "unsupported": [],
+      "warnings": [],
+      "weapon_set": 1
+    },
+    "caster-preview": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true,
+        false
+      ],
+      "gem_errors": [],
+      "input_sha256": "1a9e74a1cd9fd8fe73719fe0307d502f81ffff7fa09cc4c872b3c03fe135dd46",
+      "main_group": 1,
+      "skill": "Ice Nova",
+      "stats": {
+        "Armour": 0,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 18.644285714286,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 305,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 10.08
+      },
+      "unsupported": [],
+      "warnings": [],
+      "weapon_set": 1
+    },
+    "minion": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "c9f91641aa6ea54f5c26812768abaca64b06981a8d39491efe281dc15721b9bc",
+      "main_group": 1,
+      "skill": "Skeletal Arsonist Minion",
+      "stats": {
+        "Armour": 0,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 14.091933768994,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 305,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 0
+      },
+      "unsupported": [
+        "Unmapped fixture modifier"
+      ],
+      "warnings": [
+        "Your unreserved Spirit is negative"
+      ],
+      "weapon_set": 1
+    },
+    "minion-resistant": {
+      "active_sets": {
+        "config": 1,
+        "items": 1,
+        "skills": 1,
+        "tree": 1
+      },
+      "enabled_groups": [
+        true,
+        true
+      ],
+      "gem_errors": [],
+      "input_sha256": "6a4e2698318590cc53427e9edd8fea79138d5dc79209e1230fe03b8cd897d779",
+      "main_group": 1,
+      "skill": "Skeletal Arsonist Minion",
+      "stats": {
+        "Armour": 0,
+        "ChaosResist": 0,
+        "ColdResist": 10,
+        "EnergyShield": 0,
+        "FireResist": 10,
+        "FullDPS": 12.201331587176,
+        "IgniteDPS": null,
+        "ImpaleDPS": null,
+        "Life": 305,
+        "LightningResist": 10,
+        "Spirit": 100,
+        "TotalDPS": 0
+      },
+      "unsupported": [
+        "Unmapped fixture modifier"
+      ],
+      "warnings": [
+        "Your unreserved Spirit is negative"
+      ],
+      "weapon_set": 1
+    }
+  },
+  "mcp_commit": "312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a",
+  "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+  "schema": 1
+}

@@ -2,10 +2,47 @@ package build
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
+
+func TestLegacyMainSkillIndexFollowsGroupEdits(t *testing.T) {
+	data, err := gamedata.Embedded()
+	if err != nil {
+		t.Fatal(err)
+	}
+	xml, err := os.ReadFile("../../testdata/reference/0.0.5/caster-main.xml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	xml = bytes.Replace(xml, []byte(`mainSocketGroup="2"`), []byte(`mainSocketGroup="1"`), 1)
+	doc, err := Parse(xml)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertMainGroup(t, doc, 2)
+	selected, err := doc.Edited(Edit{Selection: &SelectionEdit{MainGroup: 3}}, data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertMainGroup(t, selected, 3)
+	deleted, err := selected.Edited(Edit{Gems: &GemsEdit{GroupID: 1, Delete: true}}, data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertMainGroup(t, deleted, 2)
+	assertMainGroup(t, doc, 2)
+}
+
+func assertMainGroup(t *testing.T, doc *Document, id int) {
+	t.Helper()
+	model, err := doc.Model()
+	if err != nil || model.MainGroup != id {
+		t.Fatalf("основная группа %d, ожидалась %d: %v", model.MainGroup, id, err)
+	}
+}
 
 func TestEditsPreserveOriginalAndUnknownContent(t *testing.T) {
 	xml := bytes.Replace(fixture(t), []byte(`</PathOfBuilding2>`), []byte(`<Future value="kept"/></PathOfBuilding2>`), 1)
