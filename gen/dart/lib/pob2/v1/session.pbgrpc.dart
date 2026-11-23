@@ -16,7 +16,8 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'catalog.pb.dart' as $2;
+import 'build.pb.dart' as $2;
+import 'catalog.pb.dart' as $3;
 import 'maintenance.pb.dart' as $1;
 import 'session.pb.dart' as $0;
 
@@ -107,15 +108,36 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$compareBuild, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.GetCatalogResponse> getCatalog(
-    $2.GetCatalogRequest request, {
+  $grpc.ResponseFuture<$2.GetTreeGeometryResponse> getTreeGeometry(
+    $2.GetTreeGeometryRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getTreeGeometry, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.GetTreeNodeTooltipResponse> getTreeNodeTooltip(
+    $2.GetTreeNodeTooltipRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getTreeNodeTooltip, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.GetBuildReportResponse> getBuildReport(
+    $2.GetBuildReportRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getBuildReport, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$3.GetCatalogResponse> getCatalog(
+    $3.GetCatalogRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$getCatalog, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.PreviewSupportResponse> previewSupport(
-    $2.PreviewSupportRequest request, {
+  $grpc.ResponseFuture<$3.PreviewSupportResponse> previewSupport(
+    $3.PreviewSupportRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$previewSupport, request, options: options);
@@ -249,16 +271,31 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/CompareBuild',
           ($0.CompareBuildRequest value) => value.writeToBuffer(),
           $0.CompareBuildResponse.fromBuffer);
+  static final _$getTreeGeometry =
+      $grpc.ClientMethod<$2.GetTreeGeometryRequest, $2.GetTreeGeometryResponse>(
+          '/pob2.v1.SessionService/GetTreeGeometry',
+          ($2.GetTreeGeometryRequest value) => value.writeToBuffer(),
+          $2.GetTreeGeometryResponse.fromBuffer);
+  static final _$getTreeNodeTooltip = $grpc.ClientMethod<
+          $2.GetTreeNodeTooltipRequest, $2.GetTreeNodeTooltipResponse>(
+      '/pob2.v1.SessionService/GetTreeNodeTooltip',
+      ($2.GetTreeNodeTooltipRequest value) => value.writeToBuffer(),
+      $2.GetTreeNodeTooltipResponse.fromBuffer);
+  static final _$getBuildReport =
+      $grpc.ClientMethod<$2.GetBuildReportRequest, $2.GetBuildReportResponse>(
+          '/pob2.v1.SessionService/GetBuildReport',
+          ($2.GetBuildReportRequest value) => value.writeToBuffer(),
+          $2.GetBuildReportResponse.fromBuffer);
   static final _$getCatalog =
-      $grpc.ClientMethod<$2.GetCatalogRequest, $2.GetCatalogResponse>(
+      $grpc.ClientMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
           '/pob2.v1.SessionService/GetCatalog',
-          ($2.GetCatalogRequest value) => value.writeToBuffer(),
-          $2.GetCatalogResponse.fromBuffer);
+          ($3.GetCatalogRequest value) => value.writeToBuffer(),
+          $3.GetCatalogResponse.fromBuffer);
   static final _$previewSupport =
-      $grpc.ClientMethod<$2.PreviewSupportRequest, $2.PreviewSupportResponse>(
+      $grpc.ClientMethod<$3.PreviewSupportRequest, $3.PreviewSupportResponse>(
           '/pob2.v1.SessionService/PreviewSupport',
-          ($2.PreviewSupportRequest value) => value.writeToBuffer(),
-          $2.PreviewSupportResponse.fromBuffer);
+          ($3.PreviewSupportRequest value) => value.writeToBuffer(),
+          $3.PreviewSupportResponse.fromBuffer);
   static final _$exportBuild =
       $grpc.ClientMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
           '/pob2.v1.SessionService/ExportBuild',
@@ -400,22 +437,49 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.CompareBuildRequest.fromBuffer(value),
             ($0.CompareBuildResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.GetCatalogRequest, $2.GetCatalogResponse>(
+    $addMethod($grpc.ServiceMethod<$2.GetTreeGeometryRequest,
+            $2.GetTreeGeometryResponse>(
+        'GetTreeGeometry',
+        getTreeGeometry_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetTreeGeometryRequest.fromBuffer(value),
+        ($2.GetTreeGeometryResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.GetTreeNodeTooltipRequest,
+            $2.GetTreeNodeTooltipResponse>(
+        'GetTreeNodeTooltip',
+        getTreeNodeTooltip_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetTreeNodeTooltipRequest.fromBuffer(value),
+        ($2.GetTreeNodeTooltipResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.GetBuildReportRequest,
+            $2.GetBuildReportResponse>(
+        'GetBuildReport',
+        getBuildReport_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetBuildReportRequest.fromBuffer(value),
+        ($2.GetBuildReportResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
         'GetCatalog',
         getCatalog_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.GetCatalogRequest.fromBuffer(value),
-        ($2.GetCatalogResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.PreviewSupportRequest,
-            $2.PreviewSupportResponse>(
+        ($core.List<$core.int> value) => $3.GetCatalogRequest.fromBuffer(value),
+        ($3.GetCatalogResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.PreviewSupportRequest,
+            $3.PreviewSupportResponse>(
         'PreviewSupport',
         previewSupport_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $2.PreviewSupportRequest.fromBuffer(value),
-        ($2.PreviewSupportResponse value) => value.writeToBuffer()));
+            $3.PreviewSupportRequest.fromBuffer(value),
+        ($3.PreviewSupportResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.ExportBuildRequest, $0.ExportBuildResponse>(
             'ExportBuild',
@@ -587,22 +651,49 @@ abstract class SessionServiceBase extends $grpc.Service {
   $async.Future<$0.CompareBuildResponse> compareBuild(
       $grpc.ServiceCall call, $0.CompareBuildRequest request);
 
-  $async.Future<$2.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
-      $async.Future<$2.GetCatalogRequest> $request) async {
+  $async.Future<$2.GetTreeGeometryResponse> getTreeGeometry_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetTreeGeometryRequest> $request) async {
+    return getTreeGeometry($call, await $request);
+  }
+
+  $async.Future<$2.GetTreeGeometryResponse> getTreeGeometry(
+      $grpc.ServiceCall call, $2.GetTreeGeometryRequest request);
+
+  $async.Future<$2.GetTreeNodeTooltipResponse> getTreeNodeTooltip_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetTreeNodeTooltipRequest> $request) async {
+    return getTreeNodeTooltip($call, await $request);
+  }
+
+  $async.Future<$2.GetTreeNodeTooltipResponse> getTreeNodeTooltip(
+      $grpc.ServiceCall call, $2.GetTreeNodeTooltipRequest request);
+
+  $async.Future<$2.GetBuildReportResponse> getBuildReport_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetBuildReportRequest> $request) async {
+    return getBuildReport($call, await $request);
+  }
+
+  $async.Future<$2.GetBuildReportResponse> getBuildReport(
+      $grpc.ServiceCall call, $2.GetBuildReportRequest request);
+
+  $async.Future<$3.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
+      $async.Future<$3.GetCatalogRequest> $request) async {
     return getCatalog($call, await $request);
   }
 
-  $async.Future<$2.GetCatalogResponse> getCatalog(
-      $grpc.ServiceCall call, $2.GetCatalogRequest request);
+  $async.Future<$3.GetCatalogResponse> getCatalog(
+      $grpc.ServiceCall call, $3.GetCatalogRequest request);
 
-  $async.Future<$2.PreviewSupportResponse> previewSupport_Pre(
+  $async.Future<$3.PreviewSupportResponse> previewSupport_Pre(
       $grpc.ServiceCall $call,
-      $async.Future<$2.PreviewSupportRequest> $request) async {
+      $async.Future<$3.PreviewSupportRequest> $request) async {
     return previewSupport($call, await $request);
   }
 
-  $async.Future<$2.PreviewSupportResponse> previewSupport(
-      $grpc.ServiceCall call, $2.PreviewSupportRequest request);
+  $async.Future<$3.PreviewSupportResponse> previewSupport(
+      $grpc.ServiceCall call, $3.PreviewSupportRequest request);
 
   $async.Future<$0.ExportBuildResponse> exportBuild_Pre($grpc.ServiceCall $call,
       $async.Future<$0.ExportBuildRequest> $request) async {

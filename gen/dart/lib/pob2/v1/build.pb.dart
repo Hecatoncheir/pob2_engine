@@ -2080,6 +2080,849 @@ class TreeClassEdit extends $pb.GeneratedMessage {
   void clearMode() => $_clearField(3);
 }
 
+class GetTreeGeometryRequest extends $pb.GeneratedMessage {
+  factory GetTreeGeometryRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+  }) {
+    final result = GetTreeGeometryRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    return result;
+  }
+
+  GetTreeGeometryRequest._();
+
+  factory GetTreeGeometryRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeGeometryRequest()..mergeFromBuffer(data, registry);
+  factory GetTreeGeometryRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeGeometryRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeGeometryRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeGeometryRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeGeometryRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeGeometryRequest copyWith(
+          void Function(GetTreeGeometryRequest) updates) =>
+      super.copyWith((message) => updates(message as GetTreeGeometryRequest))
+          as GetTreeGeometryRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeGeometryRequest() / GetTreeGeometryRequest.new instead')
+  static GetTreeGeometryRequest create() => GetTreeGeometryRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreeGeometryRequest._();
+  @$core.override
+  GetTreeGeometryRequest createEmptyInstance() => GetTreeGeometryRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeGeometryRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeGeometryRequest>(
+          GetTreeGeometryRequest.$_createMessage);
+  static GetTreeGeometryRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  /// Ноль читает дерево последнего снимка сессии.
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+}
+
+class GetTreeGeometryResponse extends $pb.GeneratedMessage {
+  factory GetTreeGeometryResponse({
+    $fixnum.Int64? revision,
+    $core.String? version,
+    $core.Iterable<TreeGeometryNode>? nodes,
+    $core.Iterable<TreeGeometryEdge>? edges,
+  }) {
+    final result = GetTreeGeometryResponse._();
+    if (revision != null) result.revision = revision;
+    if (version != null) result.version = version;
+    if (nodes != null) result.nodes.addAll(nodes);
+    if (edges != null) result.edges.addAll(edges);
+    return result;
+  }
+
+  GetTreeGeometryResponse._();
+
+  factory GetTreeGeometryResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeGeometryResponse()..mergeFromBuffer(data, registry);
+  factory GetTreeGeometryResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeGeometryResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeGeometryResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeGeometryResponse.$_createMessage)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(2, _omitFieldNames ? '' : 'version')
+    ..pPM<TreeGeometryNode>(3, _omitFieldNames ? '' : 'nodes',
+        subBuilder: TreeGeometryNode.$_createMessage)
+    ..pPM<TreeGeometryEdge>(4, _omitFieldNames ? '' : 'edges',
+        subBuilder: TreeGeometryEdge.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeGeometryResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeGeometryResponse copyWith(
+          void Function(GetTreeGeometryResponse) updates) =>
+      super.copyWith((message) => updates(message as GetTreeGeometryResponse))
+          as GetTreeGeometryResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeGeometryResponse() / GetTreeGeometryResponse.new instead')
+  static GetTreeGeometryResponse create() => GetTreeGeometryResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreeGeometryResponse._();
+  @$core.override
+  GetTreeGeometryResponse createEmptyInstance() => GetTreeGeometryResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeGeometryResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeGeometryResponse>(
+          GetTreeGeometryResponse.$_createMessage);
+  static GetTreeGeometryResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get revision => $_getI64(0);
+  @$pb.TagNumber(1)
+  set revision($fixnum.Int64 value) => $_setInt64(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRevision() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRevision() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get version => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set version($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasVersion() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearVersion() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<TreeGeometryNode> get nodes => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<TreeGeometryEdge> get edges => $_getList(3);
+}
+
+class TreeGeometryNode extends $pb.GeneratedMessage {
+  factory TreeGeometryNode({
+    $core.int? id,
+    $core.double? x,
+    $core.double? y,
+    $core.String? name,
+    $core.String? kind,
+    $core.String? icon,
+    $core.bool? allocated,
+    $core.bool? attribute,
+    $core.int? allocationMode,
+    $core.double? drawSize,
+  }) {
+    final result = TreeGeometryNode._();
+    if (id != null) result.id = id;
+    if (x != null) result.x = x;
+    if (y != null) result.y = y;
+    if (name != null) result.name = name;
+    if (kind != null) result.kind = kind;
+    if (icon != null) result.icon = icon;
+    if (allocated != null) result.allocated = allocated;
+    if (attribute != null) result.attribute = attribute;
+    if (allocationMode != null) result.allocationMode = allocationMode;
+    if (drawSize != null) result.drawSize = drawSize;
+    return result;
+  }
+
+  TreeGeometryNode._();
+
+  factory TreeGeometryNode.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeGeometryNode()..mergeFromBuffer(data, registry);
+  factory TreeGeometryNode.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeGeometryNode()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreeGeometryNode',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreeGeometryNode.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'id', fieldType: $pb.PbFieldType.OU3)
+    ..aD(2, _omitFieldNames ? '' : 'x')
+    ..aD(3, _omitFieldNames ? '' : 'y')
+    ..aOS(4, _omitFieldNames ? '' : 'name')
+    ..aOS(5, _omitFieldNames ? '' : 'kind')
+    ..aOS(6, _omitFieldNames ? '' : 'icon')
+    ..aOB(7, _omitFieldNames ? '' : 'allocated')
+    ..aOB(8, _omitFieldNames ? '' : 'attribute')
+    ..aI(9, _omitFieldNames ? '' : 'allocationMode',
+        fieldType: $pb.PbFieldType.OU3)
+    ..aD(10, _omitFieldNames ? '' : 'drawSize')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeGeometryNode clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeGeometryNode copyWith(void Function(TreeGeometryNode) updates) =>
+      super.copyWith((message) => updates(message as TreeGeometryNode))
+          as TreeGeometryNode;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreeGeometryNode() / TreeGeometryNode.new instead')
+  static TreeGeometryNode create() => TreeGeometryNode._();
+  static $pb.GeneratedMessage $_createMessage() => TreeGeometryNode._();
+  @$core.override
+  TreeGeometryNode createEmptyInstance() => TreeGeometryNode._();
+  @$core.pragma('dart2js:noInline')
+  static TreeGeometryNode getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreeGeometryNode>(
+          TreeGeometryNode.$_createMessage);
+  static TreeGeometryNode? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get id => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set id($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get x => $_getN(1);
+  @$pb.TagNumber(2)
+  set x($core.double value) => $_setDouble(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasX() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearX() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get y => $_getN(2);
+  @$pb.TagNumber(3)
+  set y($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasY() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearY() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get name => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set name($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasName() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearName() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get kind => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set kind($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasKind() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearKind() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get icon => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set icon($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasIcon() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearIcon() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.bool get allocated => $_getBF(6);
+  @$pb.TagNumber(7)
+  set allocated($core.bool value) => $_setBool(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasAllocated() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearAllocated() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.bool get attribute => $_getBF(7);
+  @$pb.TagNumber(8)
+  set attribute($core.bool value) => $_setBool(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasAttribute() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearAttribute() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.int get allocationMode => $_getIZ(8);
+  @$pb.TagNumber(9)
+  set allocationMode($core.int value) => $_setUnsignedInt32(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasAllocationMode() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearAllocationMode() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.double get drawSize => $_getN(9);
+  @$pb.TagNumber(10)
+  set drawSize($core.double value) => $_setDouble(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasDrawSize() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearDrawSize() => $_clearField(10);
+}
+
+class TreeGeometryEdge extends $pb.GeneratedMessage {
+  factory TreeGeometryEdge({
+    $core.int? fromNode,
+    $core.int? toNode,
+  }) {
+    final result = TreeGeometryEdge._();
+    if (fromNode != null) result.fromNode = fromNode;
+    if (toNode != null) result.toNode = toNode;
+    return result;
+  }
+
+  TreeGeometryEdge._();
+
+  factory TreeGeometryEdge.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeGeometryEdge()..mergeFromBuffer(data, registry);
+  factory TreeGeometryEdge.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeGeometryEdge()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreeGeometryEdge',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreeGeometryEdge.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'fromNode', fieldType: $pb.PbFieldType.OU3)
+    ..aI(2, _omitFieldNames ? '' : 'toNode', fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeGeometryEdge clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeGeometryEdge copyWith(void Function(TreeGeometryEdge) updates) =>
+      super.copyWith((message) => updates(message as TreeGeometryEdge))
+          as TreeGeometryEdge;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreeGeometryEdge() / TreeGeometryEdge.new instead')
+  static TreeGeometryEdge create() => TreeGeometryEdge._();
+  static $pb.GeneratedMessage $_createMessage() => TreeGeometryEdge._();
+  @$core.override
+  TreeGeometryEdge createEmptyInstance() => TreeGeometryEdge._();
+  @$core.pragma('dart2js:noInline')
+  static TreeGeometryEdge getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreeGeometryEdge>(
+          TreeGeometryEdge.$_createMessage);
+  static TreeGeometryEdge? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get fromNode => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set fromNode($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFromNode() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFromNode() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get toNode => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set toNode($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasToNode() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearToNode() => $_clearField(2);
+}
+
+class GetTreeNodeTooltipRequest extends $pb.GeneratedMessage {
+  factory GetTreeNodeTooltipRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+    $core.int? nodeId,
+    $core.bool? compare,
+  }) {
+    final result = GetTreeNodeTooltipRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    if (nodeId != null) result.nodeId = nodeId;
+    if (compare != null) result.compare = compare;
+    return result;
+  }
+
+  GetTreeNodeTooltipRequest._();
+
+  factory GetTreeNodeTooltipRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeNodeTooltipRequest()..mergeFromBuffer(data, registry);
+  factory GetTreeNodeTooltipRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeNodeTooltipRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeNodeTooltipRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeNodeTooltipRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aI(3, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
+    ..aOB(4, _omitFieldNames ? '' : 'compare')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeNodeTooltipRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeNodeTooltipRequest copyWith(
+          void Function(GetTreeNodeTooltipRequest) updates) =>
+      super.copyWith((message) => updates(message as GetTreeNodeTooltipRequest))
+          as GetTreeNodeTooltipRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeNodeTooltipRequest() / GetTreeNodeTooltipRequest.new instead')
+  static GetTreeNodeTooltipRequest create() => GetTreeNodeTooltipRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      GetTreeNodeTooltipRequest._();
+  @$core.override
+  GetTreeNodeTooltipRequest createEmptyInstance() =>
+      GetTreeNodeTooltipRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeNodeTooltipRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeNodeTooltipRequest>(
+          GetTreeNodeTooltipRequest.$_createMessage);
+  static GetTreeNodeTooltipRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get nodeId => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set nodeId($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasNodeId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearNodeId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get compare => $_getBF(3);
+  @$pb.TagNumber(4)
+  set compare($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasCompare() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearCompare() => $_clearField(4);
+}
+
+class GetTreeNodeTooltipResponse extends $pb.GeneratedMessage {
+  factory GetTreeNodeTooltipResponse({
+    $fixnum.Int64? revision,
+    $core.int? nodeId,
+    $core.Iterable<TreeTooltipLine>? lines,
+    $core.Iterable<$core.int>? path,
+    $core.int? points,
+    $core.String? note,
+    $core.Iterable<$core.String>? recipe,
+  }) {
+    final result = GetTreeNodeTooltipResponse._();
+    if (revision != null) result.revision = revision;
+    if (nodeId != null) result.nodeId = nodeId;
+    if (lines != null) result.lines.addAll(lines);
+    if (path != null) result.path.addAll(path);
+    if (points != null) result.points = points;
+    if (note != null) result.note = note;
+    if (recipe != null) result.recipe.addAll(recipe);
+    return result;
+  }
+
+  GetTreeNodeTooltipResponse._();
+
+  factory GetTreeNodeTooltipResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeNodeTooltipResponse()..mergeFromBuffer(data, registry);
+  factory GetTreeNodeTooltipResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeNodeTooltipResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeNodeTooltipResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeNodeTooltipResponse.$_createMessage)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aI(2, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
+    ..pPM<TreeTooltipLine>(3, _omitFieldNames ? '' : 'lines',
+        subBuilder: TreeTooltipLine.$_createMessage)
+    ..p<$core.int>(4, _omitFieldNames ? '' : 'path', $pb.PbFieldType.KU3)
+    ..aI(5, _omitFieldNames ? '' : 'points', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(6, _omitFieldNames ? '' : 'note')
+    ..pPS(7, _omitFieldNames ? '' : 'recipe')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeNodeTooltipResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeNodeTooltipResponse copyWith(
+          void Function(GetTreeNodeTooltipResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as GetTreeNodeTooltipResponse))
+          as GetTreeNodeTooltipResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeNodeTooltipResponse() / GetTreeNodeTooltipResponse.new instead')
+  static GetTreeNodeTooltipResponse create() => GetTreeNodeTooltipResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      GetTreeNodeTooltipResponse._();
+  @$core.override
+  GetTreeNodeTooltipResponse createEmptyInstance() =>
+      GetTreeNodeTooltipResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeNodeTooltipResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeNodeTooltipResponse>(
+          GetTreeNodeTooltipResponse.$_createMessage);
+  static GetTreeNodeTooltipResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get revision => $_getI64(0);
+  @$pb.TagNumber(1)
+  set revision($fixnum.Int64 value) => $_setInt64(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRevision() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRevision() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get nodeId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set nodeId($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasNodeId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNodeId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<TreeTooltipLine> get lines => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$core.int> get path => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.int get points => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set points($core.int value) => $_setUnsignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasPoints() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPoints() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get note => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set note($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasNote() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearNote() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $pb.PbList<$core.String> get recipe => $_getList(6);
+}
+
+class TreeTooltipLine extends $pb.GeneratedMessage {
+  factory TreeTooltipLine({
+    $core.double? size,
+    $core.String? text,
+    $core.bool? separator,
+  }) {
+    final result = TreeTooltipLine._();
+    if (size != null) result.size = size;
+    if (text != null) result.text = text;
+    if (separator != null) result.separator = separator;
+    return result;
+  }
+
+  TreeTooltipLine._();
+
+  factory TreeTooltipLine.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeTooltipLine()..mergeFromBuffer(data, registry);
+  factory TreeTooltipLine.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeTooltipLine()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreeTooltipLine',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreeTooltipLine.$_createMessage)
+    ..aD(1, _omitFieldNames ? '' : 'size')
+    ..aOS(2, _omitFieldNames ? '' : 'text')
+    ..aOB(3, _omitFieldNames ? '' : 'separator')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeTooltipLine clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeTooltipLine copyWith(void Function(TreeTooltipLine) updates) =>
+      super.copyWith((message) => updates(message as TreeTooltipLine))
+          as TreeTooltipLine;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreeTooltipLine() / TreeTooltipLine.new instead')
+  static TreeTooltipLine create() => TreeTooltipLine._();
+  static $pb.GeneratedMessage $_createMessage() => TreeTooltipLine._();
+  @$core.override
+  TreeTooltipLine createEmptyInstance() => TreeTooltipLine._();
+  @$core.pragma('dart2js:noInline')
+  static TreeTooltipLine getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreeTooltipLine>(
+          TreeTooltipLine.$_createMessage);
+  static TreeTooltipLine? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get size => $_getN(0);
+  @$pb.TagNumber(1)
+  set size($core.double value) => $_setDouble(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSize() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSize() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get text => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set text($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasText() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearText() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get separator => $_getBF(2);
+  @$pb.TagNumber(3)
+  set separator($core.bool value) => $_setBool(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasSeparator() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearSeparator() => $_clearField(3);
+}
+
+class GetBuildReportRequest extends $pb.GeneratedMessage {
+  factory GetBuildReportRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+  }) {
+    final result = GetBuildReportRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    return result;
+  }
+
+  GetBuildReportRequest._();
+
+  factory GetBuildReportRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportRequest()..mergeFromBuffer(data, registry);
+  factory GetBuildReportRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBuildReportRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetBuildReportRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportRequest copyWith(
+          void Function(GetBuildReportRequest) updates) =>
+      super.copyWith((message) => updates(message as GetBuildReportRequest))
+          as GetBuildReportRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetBuildReportRequest() / GetBuildReportRequest.new instead')
+  static GetBuildReportRequest create() => GetBuildReportRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetBuildReportRequest._();
+  @$core.override
+  GetBuildReportRequest createEmptyInstance() => GetBuildReportRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetBuildReportRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBuildReportRequest>(
+          GetBuildReportRequest.$_createMessage);
+  static GetBuildReportRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+}
+
+class GetBuildReportResponse extends $pb.GeneratedMessage {
+  factory GetBuildReportResponse({
+    $fixnum.Int64? revision,
+    $core.List<$core.int>? reportJson,
+  }) {
+    final result = GetBuildReportResponse._();
+    if (revision != null) result.revision = revision;
+    if (reportJson != null) result.reportJson = reportJson;
+    return result;
+  }
+
+  GetBuildReportResponse._();
+
+  factory GetBuildReportResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportResponse()..mergeFromBuffer(data, registry);
+  factory GetBuildReportResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBuildReportResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetBuildReportResponse.$_createMessage)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'reportJson', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportResponse copyWith(
+          void Function(GetBuildReportResponse) updates) =>
+      super.copyWith((message) => updates(message as GetBuildReportResponse))
+          as GetBuildReportResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetBuildReportResponse() / GetBuildReportResponse.new instead')
+  static GetBuildReportResponse create() => GetBuildReportResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetBuildReportResponse._();
+  @$core.override
+  GetBuildReportResponse createEmptyInstance() => GetBuildReportResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetBuildReportResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBuildReportResponse>(
+          GetBuildReportResponse.$_createMessage);
+  static GetBuildReportResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get revision => $_getI64(0);
+  @$pb.TagNumber(1)
+  set revision($fixnum.Int64 value) => $_setInt64(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRevision() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRevision() => $_clearField(1);
+
+  /// UTF-8 JSON с полями штатного отчёта PoB II, включая целые ID форм и каталогов.
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get reportJson => $_getN(1);
+  @$pb.TagNumber(2)
+  set reportJson($core.List<$core.int> value) => $_setBytes(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasReportJson() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearReportJson() => $_clearField(2);
+}
+
 enum BuildEdit_Operation {
   level,
   config,

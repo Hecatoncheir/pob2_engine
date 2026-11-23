@@ -160,6 +160,35 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 или в `build edit --file` для записи. MCP принимает ту же форму в `edit`,
 gRPC использует `BuildEdit.jewel` и объявляет `build.tree_jewels`.
 
+Координаты и связи узлов активной спецификации можно получить по ревизии
+сессии. Запрос возвращает версию дерева, типы и значки узлов, признаки
+назначения и режимы комплектов оружия. Он не создаёт новую ревизию.
+
+```shell
+pob2-engine tree-geometry --profile main --session build-1 --revision 3
+```
+
+MCP предоставляет `get_tree_geometry`, gRPC — `GetTreeGeometry`.
+
+Текст подсказки, путь и стоимость узла доступны по его ID. Флаг
+`--compare` добавляет изменение характеристик по расчёту PoB.
+
+```shell
+pob2-engine tree-node-tooltip --profile main --session build-1 --revision 3 --node 13397 --compare
+```
+
+MCP предоставляет `get_tree_node_tooltip`, gRPC — `GetTreeNodeTooltip`.
+
+Штатный отчёт Lua включает группы умений, предметы и слоты, условия,
+характеристики, предупреждения, заметки и варианты дерева.
+
+```shell
+pob2-engine build-report --profile main --session build-1 --revision 3
+```
+
+MCP предоставляет `get_build_report`, gRPC — `GetBuildReport`. В gRPC
+поле `report_json` содержит отчёт в UTF-8 с целыми ID узлов и вариантов.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

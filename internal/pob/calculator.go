@@ -250,14 +250,19 @@ type response struct {
 	TreeEdit       *build.PassiveChange     `json:"tree_edit,omitempty"`
 	TreeIdentity   *build.TreeIdentity      `json:"tree_identity,omitempty"`
 	TreeClass      *build.TreeClassChange   `json:"tree_class,omitempty"`
+	TreeGeometry   *build.TreeGeometry      `json:"tree_geometry,omitempty"`
+	TreeTooltip    *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
+	BuildReport    json.RawMessage          `json:"build_report,omitempty"`
 }
 
 type request struct {
 	XML            string                   `json:"xml,omitempty"`
+	BuildName      string                   `json:"build_name,omitempty"`
 	Operation      string                   `json:"operation,omitempty"`
 	Slot           string                   `json:"slot,omitempty"`
 	ItemID         int                      `json:"item_id,omitempty"`
 	NodeID         int                      `json:"node_id,omitempty"`
+	Compare        bool                     `json:"compare,omitempty"`
 	Action         string                   `json:"action,omitempty"`
 	Attribute      build.PassiveAttribute   `json:"attribute,omitempty"`
 	AllocationMode build.TreeAllocationMode `json:"allocation_mode,omitempty"`

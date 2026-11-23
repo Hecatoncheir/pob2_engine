@@ -191,6 +191,71 @@ message TreeClassEdit {
   string mode = 3;
 }
 
+message GetTreeGeometryRequest {
+  string session_id = 1;
+  // Ноль читает дерево последнего снимка сессии.
+  uint64 expected_revision = 2;
+}
+
+message GetTreeGeometryResponse {
+  uint64 revision = 1;
+  string version = 2;
+  repeated TreeGeometryNode nodes = 3;
+  repeated TreeGeometryEdge edges = 4;
+}
+
+message TreeGeometryNode {
+  uint32 id = 1;
+  double x = 2;
+  double y = 3;
+  string name = 4;
+  string kind = 5;
+  string icon = 6;
+  bool allocated = 7;
+  bool attribute = 8;
+  uint32 allocation_mode = 9;
+  double draw_size = 10;
+}
+
+message TreeGeometryEdge {
+  uint32 from_node = 1;
+  uint32 to_node = 2;
+}
+
+message GetTreeNodeTooltipRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  uint32 node_id = 3;
+  bool compare = 4;
+}
+
+message GetTreeNodeTooltipResponse {
+  uint64 revision = 1;
+  uint32 node_id = 2;
+  repeated TreeTooltipLine lines = 3;
+  repeated uint32 path = 4;
+  uint32 points = 5;
+  string note = 6;
+  repeated string recipe = 7;
+}
+
+message TreeTooltipLine {
+  double size = 1;
+  string text = 2;
+  bool separator = 3;
+}
+
+message GetBuildReportRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+}
+
+message GetBuildReportResponse {
+  uint64 revision = 1;
+  // UTF-8 JSON с полями штатного отчёта PoB II, включая целые ID форм и каталогов.
+  bytes report_json = 2;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;
