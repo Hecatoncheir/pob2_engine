@@ -1,26 +1,34 @@
-local function checkNode(node, usesModes)
-	assert(node and (node.type == "Normal" or node.type == "Notable"), "Выберите обычный пассив или значимое умение")
+local function checkNode(node, rules)
+	assert(node and (node.type == "Normal" or node.type == "Notable" or node == rules.socket),
+		"Выберите обычный пассив, значимый узел или пустое гнездо самоцвета")
 	assert(not node.ascendancyName and not node.containJewelSocket and not node.isMultipleChoice
 		and not node.isMultipleChoiceOption and not node.isGrantedPassive and not node.isFreeAllocate,
 		"Путь затрагивает особый пассив")
-	assert(usesModes or node.allocMode == 0, "Путь затрагивает ветвь комплекта оружия")
+	assert(rules.usesModes or node.allocMode == 0, "Путь затрагивает ветвь комплекта оружия")
 end
 
-local function checkAllocation(build, node, usesModes)
-	checkNode(node, usesModes)
+local function checkSocket(spec, node, mode)
+	if not node or node.type ~= "Socket" then return end
+	assert(not mode or mode == "common", "Гнездо назначается в общем режиме")
+	assert(not spec.jewels[node.id] or spec.jewels[node.id] == 0, "Сначала выньте самоцвет из гнезда")
+	return node
+end
+
+local function checkAllocation(build, node, rules)
+	checkNode(node, rules)
 	assert(not node.unlockConstraint or build.treeTab.viewer:checkUnlockConstraints(build, node),
 		"Условия доступа к узлу не выполнены")
 end
 
-local function allocate(build, node, attribute, usesModes)
-	checkAllocation(build, node, usesModes)
+local function allocate(build, node, attribute, rules)
+	checkAllocation(build, node, rules)
 	local spec = build.spec
 	assert(not node.alloc, "Пассив уже назначен")
 	local path = spec:GetEffectiveAllocationPath(node)
 	assert(path and #path > 0, "Нет доступного пути к узлу")
 	if #node.intuitiveLeapLikesAffecting == 0 then
 		for _, step in ipairs(path) do
-			checkAllocation(build, step, usesModes)
+			checkAllocation(build, step, rules)
 		end
 	end
 	if attribute then
@@ -32,10 +40,10 @@ local function allocate(build, node, attribute, usesModes)
 	assert(node.alloc, "PoB не назначил выбранный пассив")
 end
 
-local function refund(build, node, usesModes)
+local function refund(build, node, rules)
 	assert(node.alloc, "Пассив ещё не назначен")
 	for _, step in ipairs(node.depends) do
-		checkNode(step, usesModes)
+		checkNode(step, rules)
 	end
 	build.spec:DeallocNode(node)
 	assert(not node.alloc, "PoB не снял выбранный пассив")
@@ -82,28 +90,28 @@ local function recordAllocation(change, id, before, after)
 	}
 end
 
-local function collectRemoved(change, spec, before, usesModes)
+local function collectRemoved(change, spec, before, rules)
 	for id, mode in pairs(before) do
 		if not spec.allocNodes[id] then
-			checkNode(spec.nodes[id], usesModes)
+			checkNode(spec.nodes[id], rules)
 			change.removed[#change.removed + 1] = id
 			recordAllocation(change, id, mode, nil)
 		end
 	end
 end
 
-local function collectChange(spec, before, usesModes)
-	local change = { added = {}, removed = {}, allocations = usesModes and {} or nil }
+local function collectChange(spec, before, rules)
+	local change = { added = {}, removed = {}, allocations = rules.usesModes and {} or nil }
 	for id, node in pairs(spec.allocNodes) do
 		if before[id] == nil then
-			checkNode(node, usesModes)
+			checkNode(node, rules)
 			change.added[#change.added + 1] = id
 		else
-			assert(usesModes or node.allocMode == before[id], "Правка меняет ветвь комплекта оружия")
+			assert(rules.usesModes or node.allocMode == before[id], "Правка меняет ветвь комплекта оружия")
 		end
 		recordAllocation(change, id, before[id], node.allocMode)
 	end
-	collectRemoved(change, spec, before, usesModes)
+	collectRemoved(change, spec, before, rules)
 	table.sort(change.added)
 	table.sort(change.removed)
 	if change.allocations then
@@ -118,11 +126,11 @@ local function pointUsage(spec)
 	return { passives = total - math.min(weapon1, weapon2), weapon_set_1 = weapon1, weapon_set_2 = weapon2 }
 end
 
-local function applyEdit(build, node, request, usesModes)
+local function applyEdit(build, node, request, rules)
 	local spec = build.spec
 	local index = request.attribute and assert(attributeIndices[request.attribute], "Неизвестный атрибут узла")
 	if request.action == "allocate" then
-		allocate(build, node, index, usesModes)
+		allocate(build, node, index, rules)
 		assert(node.allocMode == spec.allocMode, "PoB назначил пассив в другом режиме")
 		return
 	end
@@ -131,7 +139,7 @@ local function applyEdit(build, node, request, usesModes)
 		return setAttribute(spec, node, request.attribute, assert(index))
 	end
 	assert(request.action == "refund", "Неизвестное действие дерева")
-	refund(build, node, usesModes)
+	refund(build, node, rules)
 end
 
 return function(build, request)
@@ -140,13 +148,14 @@ return function(build, request)
 		"PoB загрузил другую спецификацию или версию дерева")
 	local node = spec.nodes[request.node_id]
 	local usesModes = request.allocation_mode ~= nil
-	checkNode(node, usesModes)
+	local rules = { usesModes = usesModes, socket = checkSocket(spec, node, request.allocation_mode) }
+	checkNode(node, rules)
 	local before = {}
 	for id, allocated in pairs(spec.allocNodes) do before[id] = allocated.allocMode end
 	local beforePoints = usesModes and pointUsage(spec)
 	spec.allocMode = usesModes and assert(allocationModes[request.allocation_mode], "Неизвестный режим дерева") or 0
-	local attributeChange = applyEdit(build, node, request, usesModes)
-	local change = collectChange(spec, before, usesModes)
+	local attributeChange = applyEdit(build, node, request, rules)
+	local change = collectChange(spec, before, rules)
 	if attributeChange then change.attributes[#change.attributes + 1] = attributeChange end
 	if usesModes then change.points = { before = beforePoints, after = pointUsage(spec) } end
 	return change
