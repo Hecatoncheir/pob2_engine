@@ -2923,6 +2923,76 @@ class GetBuildReportResponse extends $pb.GeneratedMessage {
   void clearReportJson() => $_clearField(2);
 }
 
+class SkillChoiceEdit extends $pb.GeneratedMessage {
+  factory SkillChoiceEdit({
+    $core.String? control,
+    $core.int? optionId,
+  }) {
+    final result = SkillChoiceEdit._();
+    if (control != null) result.control = control;
+    if (optionId != null) result.optionId = optionId;
+    return result;
+  }
+
+  SkillChoiceEdit._();
+
+  factory SkillChoiceEdit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SkillChoiceEdit()..mergeFromBuffer(data, registry);
+  factory SkillChoiceEdit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SkillChoiceEdit()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SkillChoiceEdit',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: SkillChoiceEdit.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'control')
+    ..aI(2, _omitFieldNames ? '' : 'optionId', fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SkillChoiceEdit clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SkillChoiceEdit copyWith(void Function(SkillChoiceEdit) updates) =>
+      super.copyWith((message) => updates(message as SkillChoiceEdit))
+          as SkillChoiceEdit;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use SkillChoiceEdit() / SkillChoiceEdit.new instead')
+  static SkillChoiceEdit create() => SkillChoiceEdit._();
+  static $pb.GeneratedMessage $_createMessage() => SkillChoiceEdit._();
+  @$core.override
+  SkillChoiceEdit createEmptyInstance() => SkillChoiceEdit._();
+  @$core.pragma('dart2js:noInline')
+  static SkillChoiceEdit getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SkillChoiceEdit>(
+          SkillChoiceEdit.$_createMessage);
+  static SkillChoiceEdit? _defaultInstance;
+
+  /// groups, skills, parts или stat_sets.
+  @$pb.TagNumber(1)
+  $core.String get control => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set control($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasControl() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearControl() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get optionId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set optionId($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasOptionId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOptionId() => $_clearField(2);
+}
+
 enum BuildEdit_Operation {
   level,
   config,
@@ -2934,6 +3004,7 @@ enum BuildEdit_Operation {
   treeNode,
   jewel,
   treeClass,
+  skillChoice,
   notSet
 }
 
@@ -2949,6 +3020,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     TreeNodeEdit? treeNode,
     JewelEdit? jewel,
     TreeClassEdit? treeClass,
+    SkillChoiceEdit? skillChoice,
   }) {
     final result = BuildEdit._();
     if (level != null) result.level = level;
@@ -2961,6 +3033,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     if (treeNode != null) result.treeNode = treeNode;
     if (jewel != null) result.jewel = jewel;
     if (treeClass != null) result.treeClass = treeClass;
+    if (skillChoice != null) result.skillChoice = skillChoice;
     return result;
   }
 
@@ -2985,13 +3058,14 @@ class BuildEdit extends $pb.GeneratedMessage {
     8: BuildEdit_Operation.treeNode,
     9: BuildEdit_Operation.jewel,
     10: BuildEdit_Operation.treeClass,
+    11: BuildEdit_Operation.skillChoice,
     0: BuildEdit_Operation.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BuildEdit',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
       createEmptyInstance: BuildEdit.$_createMessage)
-    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
     ..aOM<LevelEdit>(1, _omitFieldNames ? '' : 'level',
         subBuilder: LevelEdit.$_createMessage)
     ..aOM<ConfigEdit>(2, _omitFieldNames ? '' : 'config',
@@ -3012,6 +3086,8 @@ class BuildEdit extends $pb.GeneratedMessage {
         subBuilder: JewelEdit.$_createMessage)
     ..aOM<TreeClassEdit>(10, _omitFieldNames ? '' : 'treeClass',
         subBuilder: TreeClassEdit.$_createMessage)
+    ..aOM<SkillChoiceEdit>(11, _omitFieldNames ? '' : 'skillChoice',
+        subBuilder: SkillChoiceEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -3044,6 +3120,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   @$pb.TagNumber(9)
   @$pb.TagNumber(10)
+  @$pb.TagNumber(11)
   BuildEdit_Operation whichOperation() =>
       _BuildEdit_OperationByTag[$_whichOneof(0)]!;
   @$pb.TagNumber(1)
@@ -3056,6 +3133,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   @$pb.TagNumber(9)
   @$pb.TagNumber(10)
+  @$pb.TagNumber(11)
   void clearOperation() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -3167,6 +3245,17 @@ class BuildEdit extends $pb.GeneratedMessage {
   void clearTreeClass() => $_clearField(10);
   @$pb.TagNumber(10)
   TreeClassEdit ensureTreeClass() => $_ensure(9);
+
+  @$pb.TagNumber(11)
+  SkillChoiceEdit get skillChoice => $_getN(10);
+  @$pb.TagNumber(11)
+  set skillChoice(SkillChoiceEdit value) => $_setField(11, value);
+  @$pb.TagNumber(11)
+  $core.bool hasSkillChoice() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearSkillChoice() => $_clearField(11);
+  @$pb.TagNumber(11)
+  SkillChoiceEdit ensureSkillChoice() => $_ensure(10);
 }
 
 class PassiveChange extends $pb.GeneratedMessage {

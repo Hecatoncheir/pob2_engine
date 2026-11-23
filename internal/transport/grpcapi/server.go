@@ -183,6 +183,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	if editor, ok := s.commands.(interface{ SupportsTreeClass() bool }); ok && editor.SupportsTreeClass() {
 		capabilities = append(capabilities, "build.tree_class")
 	}
+	if editor, ok := s.commands.(interface{ SupportsSkillChoice() bool }); ok && editor.SupportsSkillChoice() {
+		capabilities = append(capabilities, "build.skill_choice")
+	}
 	if reader, ok := s.commands.(interface{ SupportsTreeGeometry() bool }); ok && reader.SupportsTreeGeometry() {
 		capabilities = append(capabilities, "build.tree_geometry")
 	}

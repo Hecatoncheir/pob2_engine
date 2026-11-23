@@ -256,6 +256,12 @@ message GetBuildReportResponse {
   bytes report_json = 2;
 }
 
+message SkillChoiceEdit {
+  // groups, skills, parts или stat_sets.
+  string control = 1;
+  uint32 option_id = 2;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;
@@ -268,6 +274,7 @@ message BuildEdit {
     TreeNodeEdit tree_node = 8;
     JewelEdit jewel = 9;
     TreeClassEdit tree_class = 10;
+    SkillChoiceEdit skill_choice = 11;
   }
 }
 
