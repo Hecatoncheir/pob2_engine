@@ -29,7 +29,7 @@ MCP_TOOLS = {'get_snapshot', 'rename_build', 'import_build', 'edit_build', 'calc
              'pob_editor_status', 'pob_editor_ui', 'pob_editor_app', 'pob_editor_components',
              'pob_editor_library', 'pob_editor_history', 'pob_editor_notes', 'pob_editor_files',
              'pob_editor_progression', 'pob_editor_job', 'get_tree_geometry', 'get_tree_node_tooltip',
-             'get_build_report', 'get_tree_power', 'get_equipment_details'}
+             'get_build_report', 'get_tree_power', 'get_equipment_details', 'get_tree_texture'}
 
 
 def require(condition, message):

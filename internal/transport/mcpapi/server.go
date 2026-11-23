@@ -64,5 +64,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	if reader, ok := commands.(application.EquipmentDetailsCommands); ok {
 		addEquipmentDetailsTool(server, reader, sessionID)
 	}
+	if reader, ok := commands.(application.TreeTextureCommands); ok {
+		addTreeTextureTool(server, reader)
+	}
 	return server
 }

@@ -39,6 +39,7 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   tree-geometry              Получить узлы и связи активного дерева
   tree-node-tooltip          Прочитать подсказку и путь узла дерева
   tree-power                 Найти влияние узлов на показатели сборки
+  tree-texture               Прочитать текстуру дерева в формате PNG
   calculate                 Рассчитать --file XML либо выбранную --session
   catalog                   Поиск данных текущего набора: --kind gems|classes|items|passives
   preview-support           Сравнить поддержку в --session без записи
@@ -108,6 +109,8 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.treeNodeTooltip(ctx, args[1:])
 	case "tree-power":
 		return r.treePower(ctx, args[1:])
+	case "tree-texture":
+		return r.treeTexture(ctx, args[1:])
 	case "calculate":
 		return r.calculate(ctx, args[1:])
 	case "catalog":

@@ -999,6 +999,7 @@ const TreeScene$json = {
       '6': '.pob2.v1.TreeDrawCommand',
       '10': 'commands'
     },
+    {'1': 'asset_id', '3': 7, '4': 1, '5': 9, '10': 'assetId'},
   ],
 };
 
@@ -1007,7 +1008,7 @@ final $typed_data.Uint8List treeSceneDescriptor = $convert.base64Decode(
     'CglUcmVlU2NlbmUSFAoFd2lkdGgYASABKAFSBXdpZHRoEhYKBmhlaWdodBgCIAEoAVIGaGVpZ2'
     'h0EhQKBXNjYWxlGAMgASgBUgVzY2FsZRIZCghvZmZzZXRfeBgEIAEoAVIHb2Zmc2V0WBIZCghv'
     'ZmZzZXRfeRgFIAEoAVIHb2Zmc2V0WRI0Cghjb21tYW5kcxgGIAMoCzIYLnBvYjIudjEuVHJlZU'
-    'RyYXdDb21tYW5kUghjb21tYW5kcw==');
+    'RyYXdDb21tYW5kUghjb21tYW5kcxIZCghhc3NldF9pZBgHIAEoCVIHYXNzZXRJZA==');
 
 @$core.Deprecated('Use treeDrawCommandDescriptor instead')
 const TreeDrawCommand$json = {
@@ -1029,6 +1030,38 @@ final $typed_data.Uint8List treeDrawCommandDescriptor = $convert.base64Decode(
     '5kZXgSHAoJcG9zaXRpb25zGAMgAygBUglwb3NpdGlvbnMSDgoCdXYYBCADKAFSAnV2EhQKBWNv'
     'bG9yGAUgAygBUgVjb2xvchIUCgVibGVuZBgGIAEoCVIFYmxlbmQSFAoFY2xhbXAYByABKAhSBW'
     'NsYW1w');
+
+@$core.Deprecated('Use getTreeTextureRequestDescriptor instead')
+const GetTreeTextureRequest$json = {
+  '1': 'GetTreeTextureRequest',
+  '2': [
+    {'1': 'file', '3': 1, '4': 1, '5': 9, '10': 'file'},
+    {'1': 'index', '3': 2, '4': 1, '5': 13, '10': 'index'},
+    {'1': 'target_size', '3': 3, '4': 1, '5': 13, '10': 'targetSize'},
+  ],
+};
+
+/// Descriptor for `GetTreeTextureRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeTextureRequestDescriptor = $convert.base64Decode(
+    'ChVHZXRUcmVlVGV4dHVyZVJlcXVlc3QSEgoEZmlsZRgBIAEoCVIEZmlsZRIUCgVpbmRleBgCIA'
+    'EoDVIFaW5kZXgSHwoLdGFyZ2V0X3NpemUYAyABKA1SCnRhcmdldFNpemU=');
+
+@$core.Deprecated('Use getTreeTextureResponseDescriptor instead')
+const GetTreeTextureResponse$json = {
+  '1': 'GetTreeTextureResponse',
+  '2': [
+    {'1': 'width', '3': 1, '4': 1, '5': 13, '10': 'width'},
+    {'1': 'height', '3': 2, '4': 1, '5': 13, '10': 'height'},
+    {'1': 'mip_level', '3': 3, '4': 1, '5': 13, '10': 'mipLevel'},
+    {'1': 'png', '3': 4, '4': 1, '5': 12, '10': 'png'},
+  ],
+};
+
+/// Descriptor for `GetTreeTextureResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeTextureResponseDescriptor = $convert.base64Decode(
+    'ChZHZXRUcmVlVGV4dHVyZVJlc3BvbnNlEhQKBXdpZHRoGAEgASgNUgV3aWR0aBIWCgZoZWlnaH'
+    'QYAiABKA1SBmhlaWdodBIbCgltaXBfbGV2ZWwYAyABKA1SCG1pcExldmVsEhAKA3BuZxgEIAEo'
+    'DFIDcG5n');
 
 @$core.Deprecated('Use getEquipmentDetailsRequestDescriptor instead')
 const GetEquipmentDetailsRequest$json = {

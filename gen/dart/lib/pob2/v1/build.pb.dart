@@ -3476,6 +3476,7 @@ class TreeScene extends $pb.GeneratedMessage {
     $core.double? offsetX,
     $core.double? offsetY,
     $core.Iterable<TreeDrawCommand>? commands,
+    $core.String? assetId,
   }) {
     final result = TreeScene._();
     if (width != null) result.width = width;
@@ -3484,6 +3485,7 @@ class TreeScene extends $pb.GeneratedMessage {
     if (offsetX != null) result.offsetX = offsetX;
     if (offsetY != null) result.offsetY = offsetY;
     if (commands != null) result.commands.addAll(commands);
+    if (assetId != null) result.assetId = assetId;
     return result;
   }
 
@@ -3507,6 +3509,7 @@ class TreeScene extends $pb.GeneratedMessage {
     ..aD(5, _omitFieldNames ? '' : 'offsetY')
     ..pPM<TreeDrawCommand>(6, _omitFieldNames ? '' : 'commands',
         subBuilder: TreeDrawCommand.$_createMessage)
+    ..aOS(7, _omitFieldNames ? '' : 'assetId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -3576,6 +3579,15 @@ class TreeScene extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(6)
   $pb.PbList<TreeDrawCommand> get commands => $_getList(5);
+
+  @$pb.TagNumber(7)
+  $core.String get assetId => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set assetId($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasAssetId() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearAssetId() => $_clearField(7);
 }
 
 class TreeDrawCommand extends $pb.GeneratedMessage {
@@ -3688,6 +3700,187 @@ class TreeDrawCommand extends $pb.GeneratedMessage {
   $core.bool hasClamp() => $_has(6);
   @$pb.TagNumber(7)
   void clearClamp() => $_clearField(7);
+}
+
+class GetTreeTextureRequest extends $pb.GeneratedMessage {
+  factory GetTreeTextureRequest({
+    $core.String? file,
+    $core.int? index,
+    $core.int? targetSize,
+  }) {
+    final result = GetTreeTextureRequest._();
+    if (file != null) result.file = file;
+    if (index != null) result.index = index;
+    if (targetSize != null) result.targetSize = targetSize;
+    return result;
+  }
+
+  GetTreeTextureRequest._();
+
+  factory GetTreeTextureRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeTextureRequest()..mergeFromBuffer(data, registry);
+  factory GetTreeTextureRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeTextureRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeTextureRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeTextureRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'file')
+    ..aI(2, _omitFieldNames ? '' : 'index', fieldType: $pb.PbFieldType.OU3)
+    ..aI(3, _omitFieldNames ? '' : 'targetSize', fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeTextureRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeTextureRequest copyWith(
+          void Function(GetTreeTextureRequest) updates) =>
+      super.copyWith((message) => updates(message as GetTreeTextureRequest))
+          as GetTreeTextureRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeTextureRequest() / GetTreeTextureRequest.new instead')
+  static GetTreeTextureRequest create() => GetTreeTextureRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreeTextureRequest._();
+  @$core.override
+  GetTreeTextureRequest createEmptyInstance() => GetTreeTextureRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeTextureRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeTextureRequest>(
+          GetTreeTextureRequest.$_createMessage);
+  static GetTreeTextureRequest? _defaultInstance;
+
+  /// Ссылка из команды отрисовки. Пустое поле возвращает белый пиксель.
+  @$pb.TagNumber(1)
+  $core.String get file => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set file($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFile() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFile() => $_clearField(1);
+
+  /// Слой DDS, начиная с единицы.
+  @$pb.TagNumber(2)
+  $core.int get index => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set index($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasIndex() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIndex() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get targetSize => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set targetSize($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasTargetSize() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTargetSize() => $_clearField(3);
+}
+
+class GetTreeTextureResponse extends $pb.GeneratedMessage {
+  factory GetTreeTextureResponse({
+    $core.int? width,
+    $core.int? height,
+    $core.int? mipLevel,
+    $core.List<$core.int>? png,
+  }) {
+    final result = GetTreeTextureResponse._();
+    if (width != null) result.width = width;
+    if (height != null) result.height = height;
+    if (mipLevel != null) result.mipLevel = mipLevel;
+    if (png != null) result.png = png;
+    return result;
+  }
+
+  GetTreeTextureResponse._();
+
+  factory GetTreeTextureResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeTextureResponse()..mergeFromBuffer(data, registry);
+  factory GetTreeTextureResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeTextureResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeTextureResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeTextureResponse.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'width', fieldType: $pb.PbFieldType.OU3)
+    ..aI(2, _omitFieldNames ? '' : 'height', fieldType: $pb.PbFieldType.OU3)
+    ..aI(3, _omitFieldNames ? '' : 'mipLevel', fieldType: $pb.PbFieldType.OU3)
+    ..a<$core.List<$core.int>>(
+        4, _omitFieldNames ? '' : 'png', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeTextureResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeTextureResponse copyWith(
+          void Function(GetTreeTextureResponse) updates) =>
+      super.copyWith((message) => updates(message as GetTreeTextureResponse))
+          as GetTreeTextureResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeTextureResponse() / GetTreeTextureResponse.new instead')
+  static GetTreeTextureResponse create() => GetTreeTextureResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreeTextureResponse._();
+  @$core.override
+  GetTreeTextureResponse createEmptyInstance() => GetTreeTextureResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeTextureResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeTextureResponse>(
+          GetTreeTextureResponse.$_createMessage);
+  static GetTreeTextureResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get width => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set width($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasWidth() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearWidth() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get height => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set height($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasHeight() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearHeight() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get mipLevel => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set mipLevel($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMipLevel() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMipLevel() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<$core.int> get png => $_getN(3);
+  @$pb.TagNumber(4)
+  set png($core.List<$core.int> value) => $_setBytes(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPng() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPng() => $_clearField(4);
 }
 
 enum GetEquipmentDetailsRequest_Item { itemId, raw, notSet }

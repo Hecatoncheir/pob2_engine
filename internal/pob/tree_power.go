@@ -20,6 +20,9 @@ func (c *Calculator) ReadTreePower(ctx context.Context, doc *build.Document, que
 	if answer.Error != "" {
 		return nil, fmt.Errorf("PoB Lua: %s", answer.Error)
 	}
+	if answer.TreePower != nil {
+		c.markTreeAssets(answer.TreePower.Scene)
+	}
 	return answer.TreePower, nil
 }
 

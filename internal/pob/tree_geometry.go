@@ -22,5 +22,6 @@ func (c *Calculator) ReadTreeGeometry(ctx context.Context, doc *build.Document, 
 	if answer.TreeGeometry == nil || len(answer.TreeGeometry.Nodes) == 0 {
 		return build.TreeGeometry{}, fmt.Errorf("PoB не вернул геометрию дерева")
 	}
+	c.markTreeAssets(answer.TreeGeometry.Scene)
 	return *answer.TreeGeometry, nil
 }

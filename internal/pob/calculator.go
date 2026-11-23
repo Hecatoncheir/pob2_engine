@@ -28,6 +28,7 @@ type Calculator struct {
 	layout       Layout
 	gate         chan struct{}
 	powerGate    chan struct{}
+	treeTextures treeTextureCache
 	worker       *worker
 	data         *gamedata.Dataset
 }

@@ -15,6 +15,20 @@
       ]
     },
     {
+      "module": "github.com/kaiser-chris/dds-go",
+      "version": "v1.0.0",
+      "files": [
+        "modules/github.com/kaiser-chris/dds-go/v1.0.0/LICENSE"
+      ]
+    },
+    {
+      "module": "github.com/klauspost/compress",
+      "version": "v1.20.5",
+      "files": [
+        "modules/github.com/klauspost/compress/v1.20.5/LICENSE"
+      ]
+    },
+    {
       "module": "github.com/modelcontextprotocol/go-sdk",
       "version": "v1.8.0",
       "files": [
@@ -123,6 +137,8 @@
   ],
   "files": {
     "modules/github.com/google/jsonschema-go/v0.4.3/LICENSE": "2d56c53449691d85d9aea245eb8dac12713e9075d70d5557b82ae1e94805b357",
+    "modules/github.com/kaiser-chris/dds-go/v1.0.0/LICENSE": "ef9eac65466c97347925dd42abb96c9568a589bb976ded2877bd877eba5b2571",
+    "modules/github.com/klauspost/compress/v1.20.5/LICENSE": "0d9e582ee4bff57bf1189c9e514e6da7ce277f9cd3bc2d488b22fbb39a6d87cf",
     "modules/github.com/modelcontextprotocol/go-sdk/v1.8.0/LICENSE": "af679003d933f045393a6a029f43da113f9ae364eac651d9ae268392985580f5",
     "modules/github.com/segmentio/asm/v1.1.3/LICENSE": "e2a78de21d6d8ded2dff0f3189cd32e011630d785da127ebfbc8949012c0947b",
     "modules/github.com/segmentio/encoding/v0.5.4/LICENSE": "d6d71a1f7dc6539e371120cc7af6e3257e55ca79634d473211f217b8965b0f16",

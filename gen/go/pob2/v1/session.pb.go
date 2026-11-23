@@ -2268,7 +2268,7 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x04R\brevision\x12\x10\n" +
 	"\x03xml\x18\x03 \x01(\tR\x03xml\x12!\n" +
-	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xc3\x10\n" +
+	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\x96\x11\n" +
 	"\x0eSessionService\x12N\n" +
 	"\rGetServerInfo\x12\x1d.pob2.v1.GetServerInfoRequest\x1a\x1e.pob2.v1.GetServerInfoResponse\x129\n" +
 	"\x06Update\x12\x16.pob2.v1.UpdateRequest\x1a\x17.pob2.v1.UpdateResponse\x129\n" +
@@ -2285,7 +2285,8 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\x12GetTreeNodeTooltip\x12\".pob2.v1.GetTreeNodeTooltipRequest\x1a#.pob2.v1.GetTreeNodeTooltipResponse\x12Q\n" +
 	"\x0eGetBuildReport\x12\x1e.pob2.v1.GetBuildReportRequest\x1a\x1f.pob2.v1.GetBuildReportResponse\x12K\n" +
 	"\fGetTreePower\x12\x1c.pob2.v1.GetTreePowerRequest\x1a\x1d.pob2.v1.GetTreePowerResponse\x12`\n" +
-	"\x13GetEquipmentDetails\x12#.pob2.v1.GetEquipmentDetailsRequest\x1a$.pob2.v1.GetEquipmentDetailsResponse\x12E\n" +
+	"\x13GetEquipmentDetails\x12#.pob2.v1.GetEquipmentDetailsRequest\x1a$.pob2.v1.GetEquipmentDetailsResponse\x12Q\n" +
+	"\x0eGetTreeTexture\x12\x1e.pob2.v1.GetTreeTextureRequest\x1a\x1f.pob2.v1.GetTreeTextureResponse\x12E\n" +
 	"\n" +
 	"GetCatalog\x12\x1a.pob2.v1.GetCatalogRequest\x1a\x1b.pob2.v1.GetCatalogResponse\x12Q\n" +
 	"\x0ePreviewSupport\x12\x1e.pob2.v1.PreviewSupportRequest\x1a\x1f.pob2.v1.PreviewSupportResponse\x12H\n" +
@@ -2363,17 +2364,19 @@ var file_pob2_v1_session_proto_goTypes = []any{
 	(*GetBuildReportRequest)(nil),        // 45: pob2.v1.GetBuildReportRequest
 	(*GetTreePowerRequest)(nil),          // 46: pob2.v1.GetTreePowerRequest
 	(*GetEquipmentDetailsRequest)(nil),   // 47: pob2.v1.GetEquipmentDetailsRequest
-	(*GetCatalogRequest)(nil),            // 48: pob2.v1.GetCatalogRequest
-	(*PreviewSupportRequest)(nil),        // 49: pob2.v1.PreviewSupportRequest
-	(*UpdateResponse)(nil),               // 50: pob2.v1.UpdateResponse
-	(*DoctorResponse)(nil),               // 51: pob2.v1.DoctorResponse
-	(*GetTreeGeometryResponse)(nil),      // 52: pob2.v1.GetTreeGeometryResponse
-	(*GetTreeNodeTooltipResponse)(nil),   // 53: pob2.v1.GetTreeNodeTooltipResponse
-	(*GetBuildReportResponse)(nil),       // 54: pob2.v1.GetBuildReportResponse
-	(*GetTreePowerResponse)(nil),         // 55: pob2.v1.GetTreePowerResponse
-	(*GetEquipmentDetailsResponse)(nil),  // 56: pob2.v1.GetEquipmentDetailsResponse
-	(*GetCatalogResponse)(nil),           // 57: pob2.v1.GetCatalogResponse
-	(*PreviewSupportResponse)(nil),       // 58: pob2.v1.PreviewSupportResponse
+	(*GetTreeTextureRequest)(nil),        // 48: pob2.v1.GetTreeTextureRequest
+	(*GetCatalogRequest)(nil),            // 49: pob2.v1.GetCatalogRequest
+	(*PreviewSupportRequest)(nil),        // 50: pob2.v1.PreviewSupportRequest
+	(*UpdateResponse)(nil),               // 51: pob2.v1.UpdateResponse
+	(*DoctorResponse)(nil),               // 52: pob2.v1.DoctorResponse
+	(*GetTreeGeometryResponse)(nil),      // 53: pob2.v1.GetTreeGeometryResponse
+	(*GetTreeNodeTooltipResponse)(nil),   // 54: pob2.v1.GetTreeNodeTooltipResponse
+	(*GetBuildReportResponse)(nil),       // 55: pob2.v1.GetBuildReportResponse
+	(*GetTreePowerResponse)(nil),         // 56: pob2.v1.GetTreePowerResponse
+	(*GetEquipmentDetailsResponse)(nil),  // 57: pob2.v1.GetEquipmentDetailsResponse
+	(*GetTreeTextureResponse)(nil),       // 58: pob2.v1.GetTreeTextureResponse
+	(*GetCatalogResponse)(nil),           // 59: pob2.v1.GetCatalogResponse
+	(*PreviewSupportResponse)(nil),       // 60: pob2.v1.PreviewSupportResponse
 }
 var file_pob2_v1_session_proto_depIdxs = []int32{
 	37, // 0: pob2.v1.SessionSnapshot.build:type_name -> pob2.v1.BuildDocument
@@ -2403,47 +2406,49 @@ var file_pob2_v1_session_proto_depIdxs = []int32{
 	45, // 24: pob2.v1.SessionService.GetBuildReport:input_type -> pob2.v1.GetBuildReportRequest
 	46, // 25: pob2.v1.SessionService.GetTreePower:input_type -> pob2.v1.GetTreePowerRequest
 	47, // 26: pob2.v1.SessionService.GetEquipmentDetails:input_type -> pob2.v1.GetEquipmentDetailsRequest
-	48, // 27: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
-	49, // 28: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
-	35, // 29: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
-	17, // 30: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
-	20, // 31: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
-	0,  // 32: pob2.v1.SessionService.WatchEditor:input_type -> pob2.v1.WatchEditorRequest
-	1,  // 33: pob2.v1.SessionService.CallEditor:input_type -> pob2.v1.CallEditorRequest
-	4,  // 34: pob2.v1.SessionService.ReplyEditor:input_type -> pob2.v1.ReplyEditorRequest
-	19, // 35: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
-	23, // 36: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
-	25, // 37: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
-	27, // 38: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
-	8,  // 39: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
-	50, // 40: pob2.v1.SessionService.Update:output_type -> pob2.v1.UpdateResponse
-	51, // 41: pob2.v1.SessionService.Doctor:output_type -> pob2.v1.DoctorResponse
-	10, // 42: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
-	12, // 43: pob2.v1.SessionService.CreateSessionFromXml:output_type -> pob2.v1.CreateSessionFromXmlResponse
-	14, // 44: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
-	16, // 45: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
-	30, // 46: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
-	32, // 47: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
-	34, // 48: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
-	52, // 49: pob2.v1.SessionService.GetTreeGeometry:output_type -> pob2.v1.GetTreeGeometryResponse
-	53, // 50: pob2.v1.SessionService.GetTreeNodeTooltip:output_type -> pob2.v1.GetTreeNodeTooltipResponse
-	54, // 51: pob2.v1.SessionService.GetBuildReport:output_type -> pob2.v1.GetBuildReportResponse
-	55, // 52: pob2.v1.SessionService.GetTreePower:output_type -> pob2.v1.GetTreePowerResponse
-	56, // 53: pob2.v1.SessionService.GetEquipmentDetails:output_type -> pob2.v1.GetEquipmentDetailsResponse
-	57, // 54: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
-	58, // 55: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
-	36, // 56: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
-	18, // 57: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
-	21, // 58: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
-	2,  // 59: pob2.v1.SessionService.WatchEditor:output_type -> pob2.v1.WatchEditorResponse
-	3,  // 60: pob2.v1.SessionService.CallEditor:output_type -> pob2.v1.CallEditorResponse
-	5,  // 61: pob2.v1.SessionService.ReplyEditor:output_type -> pob2.v1.ReplyEditorResponse
-	22, // 62: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
-	24, // 63: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
-	26, // 64: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
-	28, // 65: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
-	39, // [39:66] is the sub-list for method output_type
-	12, // [12:39] is the sub-list for method input_type
+	48, // 27: pob2.v1.SessionService.GetTreeTexture:input_type -> pob2.v1.GetTreeTextureRequest
+	49, // 28: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
+	50, // 29: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
+	35, // 30: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
+	17, // 31: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
+	20, // 32: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
+	0,  // 33: pob2.v1.SessionService.WatchEditor:input_type -> pob2.v1.WatchEditorRequest
+	1,  // 34: pob2.v1.SessionService.CallEditor:input_type -> pob2.v1.CallEditorRequest
+	4,  // 35: pob2.v1.SessionService.ReplyEditor:input_type -> pob2.v1.ReplyEditorRequest
+	19, // 36: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
+	23, // 37: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
+	25, // 38: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
+	27, // 39: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
+	8,  // 40: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
+	51, // 41: pob2.v1.SessionService.Update:output_type -> pob2.v1.UpdateResponse
+	52, // 42: pob2.v1.SessionService.Doctor:output_type -> pob2.v1.DoctorResponse
+	10, // 43: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
+	12, // 44: pob2.v1.SessionService.CreateSessionFromXml:output_type -> pob2.v1.CreateSessionFromXmlResponse
+	14, // 45: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
+	16, // 46: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
+	30, // 47: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
+	32, // 48: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
+	34, // 49: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
+	53, // 50: pob2.v1.SessionService.GetTreeGeometry:output_type -> pob2.v1.GetTreeGeometryResponse
+	54, // 51: pob2.v1.SessionService.GetTreeNodeTooltip:output_type -> pob2.v1.GetTreeNodeTooltipResponse
+	55, // 52: pob2.v1.SessionService.GetBuildReport:output_type -> pob2.v1.GetBuildReportResponse
+	56, // 53: pob2.v1.SessionService.GetTreePower:output_type -> pob2.v1.GetTreePowerResponse
+	57, // 54: pob2.v1.SessionService.GetEquipmentDetails:output_type -> pob2.v1.GetEquipmentDetailsResponse
+	58, // 55: pob2.v1.SessionService.GetTreeTexture:output_type -> pob2.v1.GetTreeTextureResponse
+	59, // 56: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
+	60, // 57: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
+	36, // 58: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
+	18, // 59: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
+	21, // 60: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
+	2,  // 61: pob2.v1.SessionService.WatchEditor:output_type -> pob2.v1.WatchEditorResponse
+	3,  // 62: pob2.v1.SessionService.CallEditor:output_type -> pob2.v1.CallEditorResponse
+	5,  // 63: pob2.v1.SessionService.ReplyEditor:output_type -> pob2.v1.ReplyEditorResponse
+	22, // 64: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
+	24, // 65: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
+	26, // 66: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
+	28, // 67: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
+	40, // [40:68] is the sub-list for method output_type
+	12, // [12:40] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
 	12, // [12:12] is the sub-list for extension extendee
 	0,  // [0:12] is the sub-list for field type_name

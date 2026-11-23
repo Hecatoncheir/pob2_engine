@@ -25,6 +25,7 @@ service SessionService {
   rpc GetBuildReport(GetBuildReportRequest) returns (GetBuildReportResponse);
   rpc GetTreePower(GetTreePowerRequest) returns (GetTreePowerResponse);
   rpc GetEquipmentDetails(GetEquipmentDetailsRequest) returns (GetEquipmentDetailsResponse);
+  rpc GetTreeTexture(GetTreeTextureRequest) returns (GetTreeTextureResponse);
   rpc GetCatalog(GetCatalogRequest) returns (GetCatalogResponse);
   rpc PreviewSupport(PreviewSupportRequest) returns (PreviewSupportResponse);
   rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);

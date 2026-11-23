@@ -1,9 +1,14 @@
 -- Числа, порядок и подписи вычисляет штатный отчёт Lua PoB.
+local function metricID(stat)
+	return stat.stat or (stat.combinedOffDef and "OffenceDefence")
+end
+
 local function metrics(treeTab)
 	local entries = {}
 	for _, stat in ipairs(treeTab.powerStatList) do
-		if stat.stat and not stat.ignoreForNodes then
-			entries[#entries + 1] = { id = stat.stat, label = stat.label }
+		local id = metricID(stat)
+		if id and not stat.ignoreForNodes then
+			entries[#entries + 1] = { id = id, label = stat.label }
 		end
 	end
 	return entries
@@ -38,9 +43,9 @@ end
 return function(build, request)
 	if not request.metric then return { metrics = metrics(build.treeTab) } end
 	for _, stat in ipairs(build.treeTab.powerStatList) do
-		if stat.stat == request.metric and not stat.ignoreForNodes then
+		if metricID(stat) == request.metric and not stat.ignoreForNodes then
 			calculate(build, stat, request.max_distance)
-			return { metric = { id = stat.stat, label = stat.label },
+			return { metric = { id = request.metric, label = stat.label },
 				entries = filterRows(build, stat, request.max_distance, request.allocation) }
 		end
 	end

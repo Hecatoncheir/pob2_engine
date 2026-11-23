@@ -8,6 +8,7 @@ type TreeScene struct {
 	OffsetX  float64           `json:"offsetX"`
 	OffsetY  float64           `json:"offsetY"`
 	Commands []TreeDrawCommand `json:"commands"`
+	AssetID  string            `json:"assetId"`
 }
 
 type TreeDrawCommand struct {

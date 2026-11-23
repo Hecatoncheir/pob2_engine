@@ -306,6 +306,7 @@ message TreeScene {
   double offset_x = 4;
   double offset_y = 5;
   repeated TreeDrawCommand commands = 6;
+  string asset_id = 7;
 }
 
 message TreeDrawCommand {
@@ -317,6 +318,21 @@ message TreeDrawCommand {
   repeated double color = 5;
   string blend = 6;
   bool clamp = 7;
+}
+
+message GetTreeTextureRequest {
+  // Ссылка из команды отрисовки. Пустое поле возвращает белый пиксель.
+  string file = 1;
+  // Слой DDS, начиная с единицы.
+  uint32 index = 2;
+  uint32 target_size = 3;
+}
+
+message GetTreeTextureResponse {
+  uint32 width = 1;
+  uint32 height = 2;
+  uint32 mip_level = 3;
+  bytes png = 4;
 }
 
 message GetEquipmentDetailsRequest {

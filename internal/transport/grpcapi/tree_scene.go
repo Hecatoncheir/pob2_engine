@@ -11,6 +11,7 @@ func wireTreeScene(scene *build.TreeScene) *pb.TreeScene {
 	}
 	result := &pb.TreeScene{
 		Width: scene.Width, Height: scene.Height, Scale: scene.Scale, OffsetX: scene.OffsetX, OffsetY: scene.OffsetY,
+		AssetId:  scene.AssetID,
 		Commands: make([]*pb.TreeDrawCommand, 0, len(scene.Commands)),
 	}
 	for _, command := range scene.Commands {
@@ -28,6 +29,7 @@ func localTreeScene(scene *pb.TreeScene) *build.TreeScene {
 	}
 	result := &build.TreeScene{
 		Width: scene.GetWidth(), Height: scene.GetHeight(), Scale: scene.GetScale(), OffsetX: scene.GetOffsetX(), OffsetY: scene.GetOffsetY(),
+		AssetID:  scene.GetAssetId(),
 		Commands: make([]build.TreeDrawCommand, 0, len(scene.GetCommands())),
 	}
 	for _, command := range scene.GetCommands() {
