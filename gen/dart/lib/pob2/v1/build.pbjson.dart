@@ -860,6 +860,108 @@ final $typed_data.Uint8List skillChoiceEditDescriptor = $convert.base64Decode(
     'Cg9Ta2lsbENob2ljZUVkaXQSGAoHY29udHJvbBgBIAEoCVIHY29udHJvbBIbCglvcHRpb25faW'
     'QYAiABKA1SCG9wdGlvbklk');
 
+@$core.Deprecated('Use getTreePowerRequestDescriptor instead')
+const GetTreePowerRequest$json = {
+  '1': 'GetTreePowerRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'metric', '3': 3, '4': 1, '5': 9, '10': 'metric'},
+    {'1': 'max_distance', '3': 4, '4': 1, '5': 13, '10': 'maxDistance'},
+    {'1': 'allocation', '3': 5, '4': 1, '5': 9, '10': 'allocation'},
+  ],
+};
+
+/// Descriptor for `GetTreePowerRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreePowerRequestDescriptor = $convert.base64Decode(
+    'ChNHZXRUcmVlUG93ZXJSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIrCh'
+    'FleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbhIWCgZtZXRyaWMYAyAB'
+    'KAlSBm1ldHJpYxIhCgxtYXhfZGlzdGFuY2UYBCABKA1SC21heERpc3RhbmNlEh4KCmFsbG9jYX'
+    'Rpb24YBSABKAlSCmFsbG9jYXRpb24=');
+
+@$core.Deprecated('Use getTreePowerResponseDescriptor instead')
+const GetTreePowerResponse$json = {
+  '1': 'GetTreePowerResponse',
+  '2': [
+    {'1': 'revision', '3': 1, '4': 1, '5': 4, '10': 'revision'},
+    {
+      '1': 'metric',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.TreePowerMetric',
+      '10': 'metric'
+    },
+    {
+      '1': 'metrics',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreePowerMetric',
+      '10': 'metrics'
+    },
+    {
+      '1': 'entries',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreePowerEntry',
+      '10': 'entries'
+    },
+  ],
+};
+
+/// Descriptor for `GetTreePowerResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreePowerResponseDescriptor = $convert.base64Decode(
+    'ChRHZXRUcmVlUG93ZXJSZXNwb25zZRIaCghyZXZpc2lvbhgBIAEoBFIIcmV2aXNpb24SMAoGbW'
+    'V0cmljGAIgASgLMhgucG9iMi52MS5UcmVlUG93ZXJNZXRyaWNSBm1ldHJpYxIyCgdtZXRyaWNz'
+    'GAMgAygLMhgucG9iMi52MS5UcmVlUG93ZXJNZXRyaWNSB21ldHJpY3MSMQoHZW50cmllcxgEIA'
+    'MoCzIXLnBvYjIudjEuVHJlZVBvd2VyRW50cnlSB2VudHJpZXM=');
+
+@$core.Deprecated('Use treePowerMetricDescriptor instead')
+const TreePowerMetric$json = {
+  '1': 'TreePowerMetric',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    {'1': 'label', '3': 2, '4': 1, '5': 9, '10': 'label'},
+  ],
+};
+
+/// Descriptor for `TreePowerMetric`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treePowerMetricDescriptor = $convert.base64Decode(
+    'Cg9UcmVlUG93ZXJNZXRyaWMSDgoCaWQYASABKAlSAmlkEhQKBWxhYmVsGAIgASgJUgVsYWJlbA'
+    '==');
+
+@$core.Deprecated('Use treePowerEntryDescriptor instead')
+const TreePowerEntry$json = {
+  '1': 'TreePowerEntry',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 13, '10': 'id'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'kind', '3': 3, '4': 1, '5': 9, '10': 'kind'},
+    {'1': 'allocated', '3': 4, '4': 1, '5': 8, '10': 'allocated'},
+    {'1': 'distance', '3': 5, '4': 1, '5': 13, '10': 'distance'},
+    {'1': 'power', '3': 6, '4': 1, '5': 1, '10': 'power'},
+    {'1': 'path_power', '3': 7, '4': 1, '5': 1, '10': 'pathPower'},
+    {'1': 'power_text', '3': 8, '4': 1, '5': 9, '10': 'powerText'},
+    {'1': 'path_power_text', '3': 9, '4': 1, '5': 9, '10': 'pathPowerText'},
+  ],
+};
+
+/// Descriptor for `TreePowerEntry`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treePowerEntryDescriptor = $convert.base64Decode(
+    'Cg5UcmVlUG93ZXJFbnRyeRIOCgJpZBgBIAEoDVICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRISCg'
+    'RraW5kGAMgASgJUgRraW5kEhwKCWFsbG9jYXRlZBgEIAEoCFIJYWxsb2NhdGVkEhoKCGRpc3Rh'
+    'bmNlGAUgASgNUghkaXN0YW5jZRIUCgVwb3dlchgGIAEoAVIFcG93ZXISHQoKcGF0aF9wb3dlch'
+    'gHIAEoAVIJcGF0aFBvd2VyEh0KCnBvd2VyX3RleHQYCCABKAlSCXBvd2VyVGV4dBImCg9wYXRo'
+    'X3Bvd2VyX3RleHQYCSABKAlSDXBhdGhQb3dlclRleHQ=');
+
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
   '1': 'BuildEdit',

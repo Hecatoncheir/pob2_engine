@@ -37,6 +37,7 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   build-report               Прочитать подробный отчёт Lua о сборке
   tree-geometry              Получить узлы и связи активного дерева
   tree-node-tooltip          Прочитать подсказку и путь узла дерева
+  tree-power                 Найти влияние узлов на показатели сборки
   calculate                 Рассчитать --file XML либо выбранную --session
   catalog                   Поиск данных текущего набора: --kind gems|classes|items|passives
   preview-support           Сравнить поддержку в --session без записи
@@ -102,6 +103,8 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.treeGeometry(ctx, args[1:])
 	case "tree-node-tooltip":
 		return r.treeNodeTooltip(ctx, args[1:])
+	case "tree-power":
+		return r.treePower(ctx, args[1:])
 	case "calculate":
 		return r.calculate(ctx, args[1:])
 	case "catalog":

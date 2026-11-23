@@ -36,6 +36,7 @@ local readTreeGeometry = dofile(directory .. "/tree_geometry.lua")
 local readTreeNodeTooltip = dofile(directory .. "/tree_node_tooltip.lua")
 local readBuildReport = dofile(directory .. "/build_report.lua")
 local selectSkillChoice = dofile(directory .. "/skill_choice.lua")
+local readTreePower = dofile(directory .. "/tree_power.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -163,6 +164,10 @@ for line in io.lines() do
 		if request.operation == "skill_choice" then
 			loadDocument(assert(request.xml))
 			return { skill_choice = selectSkillChoice(build, request.skill_choice, request.validate) }
+		end
+		if request.operation == "tree_power" then
+			loadDocument(assert(request.xml))
+			return { tree_power = readTreePower(build, request.tree_power) or json.null }
 		end
 		return calculate(assert(request.xml))
 	end)

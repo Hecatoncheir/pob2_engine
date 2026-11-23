@@ -58,5 +58,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	if reader, ok := commands.(application.BuildReportCommands); ok {
 		addBuildReportTool(server, reader, sessionID)
 	}
+	if reader, ok := commands.(application.TreePowerCommands); ok {
+		addTreePowerTool(server, reader, sessionID)
+	}
 	return server
 }

@@ -2993,6 +2993,427 @@ class SkillChoiceEdit extends $pb.GeneratedMessage {
   void clearOptionId() => $_clearField(2);
 }
 
+class GetTreePowerRequest extends $pb.GeneratedMessage {
+  factory GetTreePowerRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+    $core.String? metric,
+    $core.int? maxDistance,
+    $core.String? allocation,
+  }) {
+    final result = GetTreePowerRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    if (metric != null) result.metric = metric;
+    if (maxDistance != null) result.maxDistance = maxDistance;
+    if (allocation != null) result.allocation = allocation;
+    return result;
+  }
+
+  GetTreePowerRequest._();
+
+  factory GetTreePowerRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreePowerRequest()..mergeFromBuffer(data, registry);
+  factory GetTreePowerRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreePowerRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreePowerRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreePowerRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(3, _omitFieldNames ? '' : 'metric')
+    ..aI(4, _omitFieldNames ? '' : 'maxDistance',
+        fieldType: $pb.PbFieldType.OU3)
+    ..aOS(5, _omitFieldNames ? '' : 'allocation')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreePowerRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreePowerRequest copyWith(void Function(GetTreePowerRequest) updates) =>
+      super.copyWith((message) => updates(message as GetTreePowerRequest))
+          as GetTreePowerRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use GetTreePowerRequest() / GetTreePowerRequest.new instead')
+  static GetTreePowerRequest create() => GetTreePowerRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreePowerRequest._();
+  @$core.override
+  GetTreePowerRequest createEmptyInstance() => GetTreePowerRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreePowerRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreePowerRequest>(
+          GetTreePowerRequest.$_createMessage);
+  static GetTreePowerRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+
+  /// Пустая строка запрашивает каталог характеристик.
+  @$pb.TagNumber(3)
+  $core.String get metric => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set metric($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMetric() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMetric() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get maxDistance => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set maxDistance($core.int value) => $_setUnsignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMaxDistance() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMaxDistance() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get allocation => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set allocation($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasAllocation() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAllocation() => $_clearField(5);
+}
+
+class GetTreePowerResponse extends $pb.GeneratedMessage {
+  factory GetTreePowerResponse({
+    $fixnum.Int64? revision,
+    TreePowerMetric? metric,
+    $core.Iterable<TreePowerMetric>? metrics,
+    $core.Iterable<TreePowerEntry>? entries,
+  }) {
+    final result = GetTreePowerResponse._();
+    if (revision != null) result.revision = revision;
+    if (metric != null) result.metric = metric;
+    if (metrics != null) result.metrics.addAll(metrics);
+    if (entries != null) result.entries.addAll(entries);
+    return result;
+  }
+
+  GetTreePowerResponse._();
+
+  factory GetTreePowerResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreePowerResponse()..mergeFromBuffer(data, registry);
+  factory GetTreePowerResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreePowerResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreePowerResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreePowerResponse.$_createMessage)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<TreePowerMetric>(2, _omitFieldNames ? '' : 'metric',
+        subBuilder: TreePowerMetric.$_createMessage)
+    ..pPM<TreePowerMetric>(3, _omitFieldNames ? '' : 'metrics',
+        subBuilder: TreePowerMetric.$_createMessage)
+    ..pPM<TreePowerEntry>(4, _omitFieldNames ? '' : 'entries',
+        subBuilder: TreePowerEntry.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreePowerResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreePowerResponse copyWith(void Function(GetTreePowerResponse) updates) =>
+      super.copyWith((message) => updates(message as GetTreePowerResponse))
+          as GetTreePowerResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreePowerResponse() / GetTreePowerResponse.new instead')
+  static GetTreePowerResponse create() => GetTreePowerResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreePowerResponse._();
+  @$core.override
+  GetTreePowerResponse createEmptyInstance() => GetTreePowerResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreePowerResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreePowerResponse>(
+          GetTreePowerResponse.$_createMessage);
+  static GetTreePowerResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get revision => $_getI64(0);
+  @$pb.TagNumber(1)
+  set revision($fixnum.Int64 value) => $_setInt64(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRevision() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRevision() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  TreePowerMetric get metric => $_getN(1);
+  @$pb.TagNumber(2)
+  set metric(TreePowerMetric value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasMetric() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMetric() => $_clearField(2);
+  @$pb.TagNumber(2)
+  TreePowerMetric ensureMetric() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<TreePowerMetric> get metrics => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<TreePowerEntry> get entries => $_getList(3);
+}
+
+class TreePowerMetric extends $pb.GeneratedMessage {
+  factory TreePowerMetric({
+    $core.String? id,
+    $core.String? label,
+  }) {
+    final result = TreePowerMetric._();
+    if (id != null) result.id = id;
+    if (label != null) result.label = label;
+    return result;
+  }
+
+  TreePowerMetric._();
+
+  factory TreePowerMetric.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreePowerMetric()..mergeFromBuffer(data, registry);
+  factory TreePowerMetric.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreePowerMetric()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreePowerMetric',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreePowerMetric.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aOS(2, _omitFieldNames ? '' : 'label')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreePowerMetric clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreePowerMetric copyWith(void Function(TreePowerMetric) updates) =>
+      super.copyWith((message) => updates(message as TreePowerMetric))
+          as TreePowerMetric;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreePowerMetric() / TreePowerMetric.new instead')
+  static TreePowerMetric create() => TreePowerMetric._();
+  static $pb.GeneratedMessage $_createMessage() => TreePowerMetric._();
+  @$core.override
+  TreePowerMetric createEmptyInstance() => TreePowerMetric._();
+  @$core.pragma('dart2js:noInline')
+  static TreePowerMetric getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreePowerMetric>(
+          TreePowerMetric.$_createMessage);
+  static TreePowerMetric? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get label => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set label($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLabel() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLabel() => $_clearField(2);
+}
+
+class TreePowerEntry extends $pb.GeneratedMessage {
+  factory TreePowerEntry({
+    $core.int? id,
+    $core.String? name,
+    $core.String? kind,
+    $core.bool? allocated,
+    $core.int? distance,
+    $core.double? power,
+    $core.double? pathPower,
+    $core.String? powerText,
+    $core.String? pathPowerText,
+  }) {
+    final result = TreePowerEntry._();
+    if (id != null) result.id = id;
+    if (name != null) result.name = name;
+    if (kind != null) result.kind = kind;
+    if (allocated != null) result.allocated = allocated;
+    if (distance != null) result.distance = distance;
+    if (power != null) result.power = power;
+    if (pathPower != null) result.pathPower = pathPower;
+    if (powerText != null) result.powerText = powerText;
+    if (pathPowerText != null) result.pathPowerText = pathPowerText;
+    return result;
+  }
+
+  TreePowerEntry._();
+
+  factory TreePowerEntry.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreePowerEntry()..mergeFromBuffer(data, registry);
+  factory TreePowerEntry.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreePowerEntry()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreePowerEntry',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreePowerEntry.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'id', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOS(3, _omitFieldNames ? '' : 'kind')
+    ..aOB(4, _omitFieldNames ? '' : 'allocated')
+    ..aI(5, _omitFieldNames ? '' : 'distance', fieldType: $pb.PbFieldType.OU3)
+    ..aD(6, _omitFieldNames ? '' : 'power')
+    ..aD(7, _omitFieldNames ? '' : 'pathPower')
+    ..aOS(8, _omitFieldNames ? '' : 'powerText')
+    ..aOS(9, _omitFieldNames ? '' : 'pathPowerText')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreePowerEntry clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreePowerEntry copyWith(void Function(TreePowerEntry) updates) =>
+      super.copyWith((message) => updates(message as TreePowerEntry))
+          as TreePowerEntry;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreePowerEntry() / TreePowerEntry.new instead')
+  static TreePowerEntry create() => TreePowerEntry._();
+  static $pb.GeneratedMessage $_createMessage() => TreePowerEntry._();
+  @$core.override
+  TreePowerEntry createEmptyInstance() => TreePowerEntry._();
+  @$core.pragma('dart2js:noInline')
+  static TreePowerEntry getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreePowerEntry>(
+          TreePowerEntry.$_createMessage);
+  static TreePowerEntry? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get id => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set id($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get kind => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set kind($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasKind() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearKind() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get allocated => $_getBF(3);
+  @$pb.TagNumber(4)
+  set allocated($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasAllocated() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearAllocated() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get distance => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set distance($core.int value) => $_setUnsignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasDistance() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDistance() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.double get power => $_getN(5);
+  @$pb.TagNumber(6)
+  set power($core.double value) => $_setDouble(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasPower() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearPower() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.double get pathPower => $_getN(6);
+  @$pb.TagNumber(7)
+  set pathPower($core.double value) => $_setDouble(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasPathPower() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearPathPower() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get powerText => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set powerText($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasPowerText() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearPowerText() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get pathPowerText => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set pathPowerText($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasPathPowerText() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearPathPowerText() => $_clearField(9);
+}
+
 enum BuildEdit_Operation {
   level,
   config,

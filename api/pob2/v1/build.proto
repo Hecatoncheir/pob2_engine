@@ -262,6 +262,39 @@ message SkillChoiceEdit {
   uint32 option_id = 2;
 }
 
+message GetTreePowerRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  // Пустая строка запрашивает каталог характеристик.
+  string metric = 3;
+  uint32 max_distance = 4;
+  string allocation = 5;
+}
+
+message GetTreePowerResponse {
+  uint64 revision = 1;
+  TreePowerMetric metric = 2;
+  repeated TreePowerMetric metrics = 3;
+  repeated TreePowerEntry entries = 4;
+}
+
+message TreePowerMetric {
+  string id = 1;
+  string label = 2;
+}
+
+message TreePowerEntry {
+  uint32 id = 1;
+  string name = 2;
+  string kind = 3;
+  bool allocated = 4;
+  uint32 distance = 5;
+  double power = 6;
+  double path_power = 7;
+  string power_text = 8;
+  string path_power_text = 9;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;

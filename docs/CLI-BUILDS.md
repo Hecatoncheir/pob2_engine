@@ -197,6 +197,16 @@ MCP предоставляет `get_build_report`, gRPC — `GetBuildReport`. В
 в `build edit` для записи с ожидаемой ревизией. MCP использует
 `edit.skill_choice`, gRPC — `BuildEdit.skill_choice`.
 
+Поиск влияния узлов использует штатный отчёт PoB. Запрос без `--metric`
+читает каталог характеристик. `--allocation` принимает `unallocated`,
+`allocated` или `all`. Нулевое расстояние снимает ограничение.
+
+```shell
+pob2-engine tree-power --profile main --session build-1 --revision 3 --metric Life --max-distance 8
+```
+
+MCP предоставляет `get_tree_power`, gRPC — `GetTreePower`.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

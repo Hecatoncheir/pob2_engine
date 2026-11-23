@@ -23,6 +23,7 @@ service SessionService {
   rpc GetTreeGeometry(GetTreeGeometryRequest) returns (GetTreeGeometryResponse);
   rpc GetTreeNodeTooltip(GetTreeNodeTooltipRequest) returns (GetTreeNodeTooltipResponse);
   rpc GetBuildReport(GetBuildReportRequest) returns (GetBuildReportResponse);
+  rpc GetTreePower(GetTreePowerRequest) returns (GetTreePowerResponse);
   rpc GetCatalog(GetCatalogRequest) returns (GetCatalogResponse);
   rpc PreviewSupport(PreviewSupportRequest) returns (PreviewSupportResponse);
   rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);
