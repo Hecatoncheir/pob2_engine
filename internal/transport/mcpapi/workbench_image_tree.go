@@ -1,14 +1,14 @@
 package mcpapi
 
 import (
-	"bytes"
+	"cmp"
 	"context"
 	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
-	"image/png"
+	"maps"
 	"math"
+	"slices"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
@@ -64,43 +64,75 @@ func labelTreeNode(canvas *workbenchCanvas, frame image.Rectangle, scene imageSc
 }
 
 func (a *workbenchAssets) applyTreeCommands(ctx context.Context, frame *image.RGBA, commands []drawCommand) error {
-	textures := make(map[build.TreeTextureQuery]*image.NRGBA)
+	textures, err := a.loadSceneTextures(ctx, commands)
+	if err != nil {
+		return err
+	}
 	for _, command := range commands {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		texture, err := a.sceneTexture(ctx, textures, command)
-		if err != nil {
-			return err
-		}
-		paintTreeCommand(frame, texture, command.TreeDrawCommand)
+		paintTreeCommand(frame, textures[commandTexture(command)], command.TreeDrawCommand)
 	}
 	return nil
 }
 
-func (a *workbenchAssets) sceneTexture(ctx context.Context, textures map[build.TreeTextureQuery]*image.NRGBA, command drawCommand) (*image.NRGBA, error) {
-	if len(command.Mask) != 0 && string(command.Mask) != "null" {
-		return nil, fmt.Errorf("маска готовой сцены PoB не поддерживается")
-	}
-	query := build.TreeTextureQuery{File: command.File, Index: command.Index, TargetSize: 512}
-	if loaded := textures[query]; loaded != nil {
-		return loaded, nil
-	}
-	value, err := a.reader.ReadTreeTexture(ctx, query)
+func (a *workbenchAssets) loadSceneTextures(ctx context.Context, commands []drawCommand) (map[build.TreeTextureQuery]*image.NRGBA, error) {
+	keys, err := sceneTextures(commands)
 	if err != nil {
 		return nil, err
 	}
-	decoded, err := png.Decode(bytes.NewReader(value.PNG))
-	if err != nil {
-		return nil, err
+	textures := make(map[build.TreeTextureQuery]*image.NRGBA, len(keys))
+	pixels := 0
+	for _, query := range keys {
+		texture, err := a.reader.ReadTreeImage(ctx, query)
+		if err != nil {
+			return nil, err
+		}
+		pixels += texture.Bounds().Dx() * texture.Bounds().Dy()
+		if pixels > 64<<20 {
+			return nil, fmt.Errorf("текстуры дерева превышают допустимый объём изображения")
+		}
+		textures[query] = texture
 	}
-	texture := image.NewNRGBA(decoded.Bounds())
-	draw.Draw(texture, texture.Bounds(), decoded, decoded.Bounds().Min, draw.Src)
-	if len(textures) == 64 {
-		clear(textures)
+	return textures, nil
+}
+
+func sceneTextures(commands []drawCommand) ([]build.TreeTextureQuery, error) {
+	unique := make(map[build.TreeTextureQuery]struct{})
+	for _, command := range commands {
+		if len(command.Mask) != 0 && string(command.Mask) != "null" {
+			return nil, fmt.Errorf("маска готовой сцены PoB не поддерживается")
+		}
+		unique[commandTexture(command)] = struct{}{}
 	}
-	textures[query] = texture
-	return texture, nil
+	// Все слои одного DDS читаются подряд. Порядок отрисовки остаётся исходным.
+	return slices.SortedFunc(maps.Keys(unique), func(a, b build.TreeTextureQuery) int {
+		return cmp.Compare(a.File, b.File)
+	}), nil
+}
+
+func commandTexture(command drawCommand) build.TreeTextureQuery {
+	return build.TreeTextureQuery{File: command.File, Index: command.Index, TargetSize: textureTarget(command)}
+}
+
+func textureTarget(command drawCommand) uint32 {
+	if len(command.Positions) != 8 || len(command.UV) != 8 {
+		return 512
+	}
+	width := projectedTextureEdge(command, 2)
+	height := projectedTextureEdge(command, 6)
+	desired := min(512, max(4, width, height))
+	return uint32(math.Exp2(math.Ceil(math.Log2(desired))))
+}
+
+func projectedTextureEdge(command drawCommand, corner int) float64 {
+	screen := math.Hypot(command.Positions[corner]-command.Positions[0], command.Positions[corner+1]-command.Positions[1])
+	uv := math.Hypot(command.UV[corner]-command.UV[0], command.UV[corner+1]-command.UV[1])
+	if uv == 0 {
+		return 0
+	}
+	return screen / uv
 }
 
 type textureTriangle struct {
