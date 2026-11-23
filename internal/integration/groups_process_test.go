@@ -42,7 +42,12 @@ func newGroupScenario(t *testing.T) *groupScenario {
 
 func newBuildScenario(t *testing.T, fixture string) *groupScenario {
 	t.Helper()
-	ctx, cancel := context.WithTimeout(t.Context(), 40*time.Second)
+	return newBuildScenarioWithTimeout(t, fixture, 40*time.Second)
+}
+
+func newBuildScenarioWithTimeout(t *testing.T, fixture string, timeout time.Duration) *groupScenario {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(t.Context(), timeout)
 	t.Cleanup(cancel)
 	scenario := &groupScenario{t: t, ctx: ctx, dataDir: t.TempDir(), revision: 2}
 	scenario.process = startServer(t, ctx, "--profile", "groups", "--runtime-dir", t.TempDir(), "--data-dir", scenario.dataDir)

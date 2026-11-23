@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
@@ -19,7 +20,8 @@ func TestLuaTreeAttributesAcrossProcesses(t *testing.T) {
 		t.Skip("для проверки Lua укажите POB2_ENGINE_POB_DIR")
 	}
 	t.Setenv("POB2_ENGINE_CALCULATOR", "lua")
-	s := newBuildScenario(t, "0.0.10/warrior.xml")
+	// Один сценарий включает расчёты через три адаптера и перезапуск сервера.
+	s := newBuildScenarioWithTimeout(t, "0.0.10/warrior.xml", 90*time.Second)
 	checkAttributeCatalog(t, s)
 	before := calculateBeforeEquipment(t, s)
 	checkAttributeRejections(t, s)
