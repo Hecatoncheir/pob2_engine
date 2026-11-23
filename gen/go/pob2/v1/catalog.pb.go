@@ -23,21 +23,22 @@ const (
 
 // Только текущий расчётный набор; наличие записи не означает поддержку всех механик.
 type CatalogEntry struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
-	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Aliases       []string               `protobuf:"bytes,4,rep,name=aliases,proto3" json:"aliases,omitempty"`
-	Levels        []int32                `protobuf:"varint,5,rep,packed,name=levels,proto3" json:"levels,omitempty"`
-	Qualities     []int32                `protobuf:"varint,6,rep,packed,name=qualities,proto3" json:"qualities,omitempty"`
-	Modes         []string               `protobuf:"bytes,7,rep,name=modes,proto3" json:"modes,omitempty"`
-	Support       bool                   `protobuf:"varint,8,opt,name=support,proto3" json:"support,omitempty"`
-	Family        string                 `protobuf:"bytes,9,opt,name=family,proto3" json:"family,omitempty"`
-	Slots         []string               `protobuf:"bytes,10,rep,name=slots,proto3" json:"slots,omitempty"`
-	ClassIds      []int32                `protobuf:"varint,11,rep,packed,name=class_ids,json=classIds,proto3" json:"class_ids,omitempty"`
-	Coverage      []string               `protobuf:"bytes,12,rep,name=coverage,proto3" json:"coverage,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Kind            string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Aliases         []string               `protobuf:"bytes,4,rep,name=aliases,proto3" json:"aliases,omitempty"`
+	Levels          []int32                `protobuf:"varint,5,rep,packed,name=levels,proto3" json:"levels,omitempty"`
+	Qualities       []int32                `protobuf:"varint,6,rep,packed,name=qualities,proto3" json:"qualities,omitempty"`
+	Modes           []string               `protobuf:"bytes,7,rep,name=modes,proto3" json:"modes,omitempty"`
+	Support         bool                   `protobuf:"varint,8,opt,name=support,proto3" json:"support,omitempty"`
+	Family          string                 `protobuf:"bytes,9,opt,name=family,proto3" json:"family,omitempty"`
+	Slots           []string               `protobuf:"bytes,10,rep,name=slots,proto3" json:"slots,omitempty"`
+	ClassIds        []int32                `protobuf:"varint,11,rep,packed,name=class_ids,json=classIds,proto3" json:"class_ids,omitempty"`
+	Coverage        []string               `protobuf:"bytes,12,rep,name=coverage,proto3" json:"coverage,omitempty"`
+	AttributeChoice bool                   `protobuf:"varint,13,opt,name=attribute_choice,json=attributeChoice,proto3" json:"attribute_choice,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *CatalogEntry) Reset() {
@@ -152,6 +153,13 @@ func (x *CatalogEntry) GetCoverage() []string {
 		return x.Coverage
 	}
 	return nil
+}
+
+func (x *CatalogEntry) GetAttributeChoice() bool {
+	if x != nil {
+		return x.AttributeChoice
+	}
+	return false
 }
 
 // kind: gems/classes/items/passives. Поиск по ID, имени и псевдонимам без учёта регистра.
@@ -512,7 +520,7 @@ var File_pob2_v1_catalog_proto protoreflect.FileDescriptor
 
 const file_pob2_v1_catalog_proto_rawDesc = "" +
 	"\n" +
-	"\x15pob2/v1/catalog.proto\x12\apob2.v1\x1a\x13pob2/v1/build.proto\"\xad\x02\n" +
+	"\x15pob2/v1/catalog.proto\x12\apob2.v1\x1a\x13pob2/v1/build.proto\"\xd8\x02\n" +
 	"\fCatalogEntry\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12\x12\n" +
@@ -526,7 +534,8 @@ const file_pob2_v1_catalog_proto_rawDesc = "" +
 	"\x05slots\x18\n" +
 	" \x03(\tR\x05slots\x12\x1b\n" +
 	"\tclass_ids\x18\v \x03(\x05R\bclassIds\x12\x1a\n" +
-	"\bcoverage\x18\f \x03(\tR\bcoverage\"k\n" +
+	"\bcoverage\x18\f \x03(\tR\bcoverage\x12)\n" +
+	"\x10attribute_choice\x18\r \x01(\bR\x0fattributeChoice\"k\n" +
 	"\x11GetCatalogRequest\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x14\n" +
 	"\x05query\x18\x02 \x01(\tR\x05query\x12\x16\n" +

@@ -596,6 +596,7 @@ class BuildModel extends $pb.GeneratedMessage {
     $core.Iterable<$core.int>? nodes,
     $core.Iterable<$core.MapEntry<$core.String, ConfigValue>>? config,
     $core.Iterable<BuildIssue>? issues,
+    $core.Iterable<$core.MapEntry<$core.int, $core.String>>? passiveAttributes,
   }) {
     final result = BuildModel._();
     if (targetVersion != null) result.targetVersion = targetVersion;
@@ -614,6 +615,8 @@ class BuildModel extends $pb.GeneratedMessage {
     if (nodes != null) result.nodes.addAll(nodes);
     if (config != null) result.config.addEntries(config);
     if (issues != null) result.issues.addAll(issues);
+    if (passiveAttributes != null)
+      result.passiveAttributes.addEntries(passiveAttributes);
     return result;
   }
 
@@ -661,6 +664,11 @@ class BuildModel extends $pb.GeneratedMessage {
         packageName: const $pb.PackageName('pob2.v1'))
     ..pPM<BuildIssue>(16, _omitFieldNames ? '' : 'issues',
         subBuilder: BuildIssue.$_createMessage)
+    ..m<$core.int, $core.String>(17, _omitFieldNames ? '' : 'passiveAttributes',
+        entryClassName: 'BuildModel.PassiveAttributesEntry',
+        keyFieldType: $pb.PbFieldType.OU3,
+        valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('pob2.v1'))
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -792,6 +800,10 @@ class BuildModel extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(16)
   $pb.PbList<BuildIssue> get issues => $_getList(15);
+
+  /// Сохранённые атрибуты назначенных узлов активной спецификации.
+  @$pb.TagNumber(17)
+  $pb.PbMap<$core.int, $core.String> get passiveAttributes => $_getMap(16);
 }
 
 class AppliedModifier extends $pb.GeneratedMessage {
@@ -1777,10 +1789,12 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
   factory TreeNodeEdit({
     $core.int? nodeId,
     $core.String? action,
+    $core.String? attribute,
   }) {
     final result = TreeNodeEdit._();
     if (nodeId != null) result.nodeId = nodeId;
     if (action != null) result.action = action;
+    if (attribute != null) result.attribute = attribute;
     return result;
   }
 
@@ -1799,6 +1813,7 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
       createEmptyInstance: TreeNodeEdit.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
     ..aOS(2, _omitFieldNames ? '' : 'action')
+    ..aOS(3, _omitFieldNames ? '' : 'attribute')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1832,7 +1847,7 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearNodeId() => $_clearField(1);
 
-  /// Назначить (allocate) или снять (refund) пассив активного дерева.
+  /// allocate, refund или set_attribute в активной спецификации.
   @$pb.TagNumber(2)
   $core.String get action => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -1841,6 +1856,16 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
   $core.bool hasAction() => $_has(1);
   @$pb.TagNumber(2)
   void clearAction() => $_clearField(2);
+
+  /// strength, dexterity или intelligence. При allocate поле необязательно.
+  @$pb.TagNumber(3)
+  $core.String get attribute => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set attribute($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasAttribute() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAttribute() => $_clearField(3);
 }
 
 enum BuildEdit_Operation {
@@ -2055,10 +2080,12 @@ class PassiveChange extends $pb.GeneratedMessage {
   factory PassiveChange({
     $core.Iterable<$core.int>? added,
     $core.Iterable<$core.int>? removed,
+    $core.Iterable<PassiveAttributeChange>? attributes,
   }) {
     final result = PassiveChange._();
     if (added != null) result.added.addAll(added);
     if (removed != null) result.removed.addAll(removed);
+    if (attributes != null) result.attributes.addAll(attributes);
     return result;
   }
 
@@ -2077,6 +2104,8 @@ class PassiveChange extends $pb.GeneratedMessage {
       createEmptyInstance: PassiveChange.$_createMessage)
     ..p<$core.int>(1, _omitFieldNames ? '' : 'added', $pb.PbFieldType.KU3)
     ..p<$core.int>(2, _omitFieldNames ? '' : 'removed', $pb.PbFieldType.KU3)
+    ..pPM<PassiveAttributeChange>(3, _omitFieldNames ? '' : 'attributes',
+        subBuilder: PassiveAttributeChange.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2106,6 +2135,93 @@ class PassiveChange extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(2)
   $pb.PbList<$core.int> get removed => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<PassiveAttributeChange> get attributes => $_getList(2);
+}
+
+class PassiveAttributeChange extends $pb.GeneratedMessage {
+  factory PassiveAttributeChange({
+    $core.int? nodeId,
+    $core.String? before,
+    $core.String? after,
+  }) {
+    final result = PassiveAttributeChange._();
+    if (nodeId != null) result.nodeId = nodeId;
+    if (before != null) result.before = before;
+    if (after != null) result.after = after;
+    return result;
+  }
+
+  PassiveAttributeChange._();
+
+  factory PassiveAttributeChange.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassiveAttributeChange()..mergeFromBuffer(data, registry);
+  factory PassiveAttributeChange.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassiveAttributeChange()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PassiveAttributeChange',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: PassiveAttributeChange.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(2, _omitFieldNames ? '' : 'before')
+    ..aOS(3, _omitFieldNames ? '' : 'after')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassiveAttributeChange clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassiveAttributeChange copyWith(
+          void Function(PassiveAttributeChange) updates) =>
+      super.copyWith((message) => updates(message as PassiveAttributeChange))
+          as PassiveAttributeChange;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use PassiveAttributeChange() / PassiveAttributeChange.new instead')
+  static PassiveAttributeChange create() => PassiveAttributeChange._();
+  static $pb.GeneratedMessage $_createMessage() => PassiveAttributeChange._();
+  @$core.override
+  PassiveAttributeChange createEmptyInstance() => PassiveAttributeChange._();
+  @$core.pragma('dart2js:noInline')
+  static PassiveAttributeChange getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PassiveAttributeChange>(
+          PassiveAttributeChange.$_createMessage);
+  static PassiveAttributeChange? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get nodeId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set nodeId($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasNodeId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearNodeId() => $_clearField(1);
+
+  /// Пустое значение, если PoB ещё не назначил атрибут.
+  @$pb.TagNumber(2)
+  $core.String get before => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set before($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBefore() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBefore() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get after => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set after($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasAfter() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAfter() => $_clearField(3);
 }
 
 class StatDelta extends $pb.GeneratedMessage {

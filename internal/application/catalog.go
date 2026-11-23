@@ -19,18 +19,19 @@ type CatalogQuery struct {
 
 // CatalogEntry описывает покрытие движка, а не полный игровой объект.
 type CatalogEntry struct {
-	Kind      string   `json:"kind"`
-	ID        string   `json:"id"`
-	Name      string   `json:"name"`
-	Aliases   []string `json:"aliases"`
-	Levels    []int    `json:"levels"`
-	Qualities []int    `json:"qualities"`
-	Modes     []string `json:"modes"`
-	Support   bool     `json:"support"`
-	Family    string   `json:"family"`
-	Slots     []string `json:"slots"`
-	ClassIDs  []int    `json:"class_ids"`
-	Coverage  []string `json:"coverage"`
+	Kind            string   `json:"kind"`
+	ID              string   `json:"id"`
+	Name            string   `json:"name"`
+	Aliases         []string `json:"aliases"`
+	Levels          []int    `json:"levels"`
+	Qualities       []int    `json:"qualities"`
+	Modes           []string `json:"modes"`
+	Support         bool     `json:"support"`
+	Family          string   `json:"family"`
+	Slots           []string `json:"slots"`
+	ClassIDs        []int    `json:"class_ids"`
+	Coverage        []string `json:"coverage"`
+	AttributeChoice bool     `json:"attribute_choice,omitempty"`
 }
 
 type CatalogPage struct {
@@ -194,6 +195,7 @@ func itemEntry(item gamedata.Item) CatalogEntry {
 
 func passiveEntry(data *gamedata.Dataset, node gamedata.Node) CatalogEntry {
 	entry := emptyEntry("passives", strconv.Itoa(node.ID), node.Name)
+	entry.AttributeChoice = node.AttributeChoice
 	for _, class := range data.Classes() {
 		if class.StartNode == node.ID || !data.IsRuntime() && class.ID == 7 && len(node.Neighbors) > 0 {
 			entry.ClassIDs = append(entry.ClassIDs, class.ID)

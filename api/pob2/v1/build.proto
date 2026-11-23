@@ -72,6 +72,8 @@ message BuildModel {
   repeated uint32 nodes = 14;
   map<string, ConfigValue> config = 15;
   repeated BuildIssue issues = 16;
+  // Сохранённые атрибуты назначенных узлов активной спецификации.
+  map<uint32, string> passive_attributes = 17;
 }
 
 enum CalculationStatus {
@@ -162,8 +164,10 @@ message AddSupportEdit {
 
 message TreeNodeEdit {
   uint32 node_id = 1;
-  // Назначить (allocate) или снять (refund) пассив активного дерева.
+  // allocate, refund или set_attribute в активной спецификации.
   string action = 2;
+  // strength, dexterity или intelligence. При allocate поле необязательно.
+  string attribute = 3;
 }
 
 message BuildEdit {
@@ -182,6 +186,14 @@ message BuildEdit {
 message PassiveChange {
   repeated uint32 added = 1;
   repeated uint32 removed = 2;
+  repeated PassiveAttributeChange attributes = 3;
+}
+
+message PassiveAttributeChange {
+  uint32 node_id = 1;
+  // Пустое значение, если PoB ещё не назначил атрибут.
+  string before = 2;
+  string after = 3;
 }
 
 message StatDelta {

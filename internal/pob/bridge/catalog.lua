@@ -65,7 +65,7 @@ local function nodes(tree)
 	for id, node in pairs(tree.nodes) do
 		if type(id) == "number" and not node.isOnlyImage then
 			entries[#entries + 1] = { id = node.id, name = node.dn or node.name or tostring(id),
-				stats = node.sd or {}, neighbors = node.linkedId or {} }
+				stats = node.sd or {}, neighbors = node.linkedId or {}, attribute_choice = not not node.isAttribute }
 		end
 	end
 	return entries

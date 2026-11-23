@@ -20,6 +20,7 @@ message CatalogEntry {
   repeated string slots = 10;
   repeated int32 class_ids = 11;
   repeated string coverage = 12;
+  bool attribute_choice = 13;
 }
 
 // kind: gems/classes/items/passives. Поиск по ID, имени и псевдонимам без учёта регистра.

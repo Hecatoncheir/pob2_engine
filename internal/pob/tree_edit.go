@@ -9,32 +9,41 @@ import (
 )
 
 // ResolveTreeEdit вычисляет изменение пассивов средствами оригинального PoB.
-func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, edit build.TreeNodeEdit) (build.ResolvedTreeEdit, error) {
+func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, edit build.TreeNodeEdit) (build.PassiveChange, error) {
 	model, err := doc.Model()
 	if err != nil {
-		return build.ResolvedTreeEdit{}, err
+		return build.PassiveChange{}, err
 	}
 	xml, err := doc.Export()
 	if err != nil {
-		return build.ResolvedTreeEdit{}, err
+		return build.PassiveChange{}, err
 	}
 	answer, err := c.run(ctx, &request{Operation: "edit_tree", XML: pobXML.Replace(string(xml)),
-		NodeID: edit.NodeID, Action: edit.Action, TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
+		NodeID: edit.NodeID, Action: edit.Action, Attribute: edit.Attribute, TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
 	if err != nil {
-		return build.ResolvedTreeEdit{}, err
+		return build.PassiveChange{}, err
 	}
 	if answer.Error != "" {
-		return build.ResolvedTreeEdit{}, fmt.Errorf("PoB Lua: %s", answer.Error)
+		return build.PassiveChange{}, fmt.Errorf("PoB Lua: %s", answer.Error)
 	}
 	if answer.TreeEdit == nil || !confirmsTreeEdit(*answer.TreeEdit, edit) {
-		return build.ResolvedTreeEdit{}, fmt.Errorf("PoB не подтвердил правку дерева")
+		return build.PassiveChange{}, fmt.Errorf("PoB не подтвердил правку дерева")
 	}
 	return *answer.TreeEdit, nil
 }
 
-func confirmsTreeEdit(change build.ResolvedTreeEdit, edit build.TreeNodeEdit) bool {
-	if edit.Action == "allocate" {
-		return len(change.Removed) == 0 && slices.Contains(change.Added, edit.NodeID)
+func confirmsTreeEdit(change build.PassiveChange, edit build.TreeNodeEdit) bool {
+	attributeMatches := edit.Attribute == "" || slices.ContainsFunc(change.Attributes, func(attribute build.PassiveAttributeChange) bool {
+		return attribute.NodeID == edit.NodeID && attribute.After == edit.Attribute
+	})
+	switch edit.Action {
+	case "allocate":
+		return len(change.Removed) == 0 && slices.Contains(change.Added, edit.NodeID) && attributeMatches
+	case "refund":
+		return len(change.Added) == 0 && slices.Contains(change.Removed, edit.NodeID)
+	case "set_attribute":
+		return len(change.Added)+len(change.Removed) == 0 && len(change.Attributes) == 1 && attributeMatches
+	default:
+		return false
 	}
-	return len(change.Added) == 0 && slices.Contains(change.Removed, edit.NodeID)
 }

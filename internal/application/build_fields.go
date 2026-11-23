@@ -26,16 +26,9 @@ func modelFields(doc *build.Document) (map[string]json.RawMessage, error) {
 }
 
 func changedBuildFields(previous string, current *build.Document) (string, error) {
-	before := map[string]json.RawMessage{}
-	if previous != "" {
-		doc, err := build.Parse([]byte(previous))
-		if err != nil {
-			return "", err
-		}
-		before, err = modelFields(doc)
-		if err != nil {
-			return "", err
-		}
+	before, err := modelFieldsFromXML(previous)
+	if err != nil {
+		return "", err
 	}
 	after, err := modelFields(current)
 	if err != nil {
@@ -47,6 +40,22 @@ func changedBuildFields(previous string, current *build.Document) (string, error
 			fields = append(fields, "build.model."+name)
 		}
 	}
+	for name := range before {
+		if _, present := after[name]; !present {
+			fields = append(fields, "build.model."+name)
+		}
+	}
 	sort.Strings(fields)
 	return strings.Join(fields, ","), nil
+}
+
+func modelFieldsFromXML(xml string) (map[string]json.RawMessage, error) {
+	if xml == "" {
+		return nil, nil
+	}
+	doc, err := build.Parse([]byte(xml))
+	if err != nil {
+		return nil, err
+	}
+	return modelFields(doc)
 }

@@ -8,35 +8,61 @@ import (
 )
 
 type TreeNodeEdit struct {
-	NodeID int    `json:"node_id"`
-	Action string `json:"action"`
+	NodeID    int              `json:"node_id"`
+	Action    string           `json:"action"`
+	Attribute PassiveAttribute `json:"attribute,omitempty"`
 }
 
 func (e TreeNodeEdit) validate() error {
 	if e.NodeID < 1 || e.NodeID > 1000000 {
 		return fmt.Errorf("неверный идентификатор пассива")
 	}
-	if e.Action != "allocate" && e.Action != "refund" {
-		return fmt.Errorf("действие дерева: allocate или refund")
+	switch e.Action {
+	case "allocate":
+		if e.Attribute == "" || e.Attribute.valid() {
+			return nil
+		}
+	case "set_attribute":
+		if e.Attribute.valid() {
+			return nil
+		}
+	case "refund":
+		if e.Attribute == "" {
+			return nil
+		}
+		return fmt.Errorf("при снятии пассива атрибут не указывается")
+	default:
+		return fmt.Errorf("действие дерева: allocate, refund или set_attribute")
 	}
-	return nil
+	return fmt.Errorf("атрибут пассива: strength, dexterity или intelligence")
 }
 
-// PassiveChange описывает узлы, которые оригинальный PoB добавит или снимет.
+type PassiveAttribute string
+
+const (
+	Strength     PassiveAttribute = "strength"
+	Dexterity    PassiveAttribute = "dexterity"
+	Intelligence PassiveAttribute = "intelligence"
+)
+
+func (a PassiveAttribute) valid() bool {
+	return a == Strength || a == Dexterity || a == Intelligence
+}
+
+type PassiveAttributeChange struct {
+	NodeID int              `json:"node_id"`
+	Before PassiveAttribute `json:"before,omitempty"`
+	After  PassiveAttribute `json:"after"`
+}
+
+// PassiveChange описывает изменение активной спецификации, подтверждённое PoB.
 type PassiveChange struct {
-	Added   []int `json:"added,omitempty"`
-	Removed []int `json:"removed,omitempty"`
+	Added      []int                    `json:"added,omitempty"`
+	Removed    []int                    `json:"removed,omitempty"`
+	Attributes []PassiveAttributeChange `json:"attributes,omitempty"`
 }
 
-// ResolvedTreeEdit содержит изменения активной спецификации, подтверждённые Lua.
-type ResolvedTreeEdit struct {
-	PassiveChange
-	Strength     []int `json:"strength,omitempty"`
-	Dexterity    []int `json:"dexterity,omitempty"`
-	Intelligence []int `json:"intelligence,omitempty"`
-}
-
-func (d *Document) WithResolvedTreeEdit(change ResolvedTreeEdit) (*Document, error) {
+func (d *Document) WithResolvedTreeEdit(change PassiveChange) (*Document, error) {
 	updated, err := d.copyForEdit()
 	if err != nil {
 		return nil, err
@@ -51,7 +77,7 @@ func (d *Document) WithResolvedTreeEdit(change ResolvedTreeEdit) (*Document, err
 	return updated, nil
 }
 
-func (d *Document) applyResolvedTreeEdit(change ResolvedTreeEdit) error {
+func (d *Document) applyResolvedTreeEdit(change PassiveChange) error {
 	model, err := d.Model()
 	if err != nil {
 		return err
@@ -69,16 +95,21 @@ func (d *Document) applyResolvedTreeEdit(change ResolvedTreeEdit) error {
 	if err != nil {
 		return err
 	}
-	nodes, err := updatePassiveNodes(previous, change.PassiveChange)
+	nodes, err := updatePassiveNodes(previous, change)
 	if err != nil {
 		return err
 	}
-	spec.set("nodes", formatPassiveNodes(nodes))
+	if len(change.Added)+len(change.Removed) > 0 {
+		spec.set("nodes", formatPassiveNodes(nodes))
+	}
+	if err := validateAttributeChanges(nodes, change.Attributes); err != nil {
+		return err
+	}
 	return updateAttributeOverrides(spec, change)
 }
 
 func updatePassiveNodes(nodes []int, change PassiveChange) ([]int, error) {
-	if len(change.Added)+len(change.Removed) == 0 {
+	if len(change.Added)+len(change.Removed)+len(change.Attributes) == 0 {
 		return nil, fmt.Errorf("PoB не изменил дерево")
 	}
 	for _, id := range change.Removed {
@@ -95,8 +126,17 @@ func updatePassiveNodes(nodes []int, change PassiveChange) ([]int, error) {
 	return append(updated, change.Added...), nil
 }
 
-func updateAttributeOverrides(spec *element, change ResolvedTreeEdit) error {
-	hasNew := len(change.Strength)+len(change.Dexterity)+len(change.Intelligence) > 0
+func validateAttributeChanges(nodes []int, changes []PassiveAttributeChange) error {
+	for _, change := range changes {
+		if !change.After.valid() || !slices.Contains(nodes, change.NodeID) {
+			return fmt.Errorf("PoB вернул неверный атрибут узла %d", change.NodeID)
+		}
+	}
+	return nil
+}
+
+func updateAttributeOverrides(spec *element, change PassiveChange) error {
+	hasNew := len(change.Attributes) > 0
 	overrides, err := spec.child("Overrides")
 	if err != nil || (overrides == nil && !hasNew) {
 		return err
@@ -116,31 +156,80 @@ func updateAttributeOverrides(spec *element, change ResolvedTreeEdit) error {
 	return setAttributeLists(attributes, change)
 }
 
-func setAttributeLists(attributes *element, change ResolvedTreeEdit) error {
-	for _, entry := range []struct {
-		name string
-		ids  []int
-	}{{"strNodes", change.Strength}, {"dexNodes", change.Dexterity}, {"intNodes", change.Intelligence}} {
-		if err := changeAttributeList(attributes, entry.name, entry.ids, change); err != nil {
+var attributeFields = []struct {
+	name  string
+	value PassiveAttribute
+}{{"strNodes", Strength}, {"dexNodes", Dexterity}, {"intNodes", Intelligence}}
+
+func setAttributeLists(attributes *element, change PassiveChange) error {
+	updated := map[PassiveAttribute][]int{}
+	clear := slices.Concat(change.Added, change.Removed)
+	for _, attribute := range change.Attributes {
+		clear = append(clear, attribute.NodeID)
+		updated[attribute.After] = append(updated[attribute.After], attribute.NodeID)
+	}
+	for _, field := range attributeFields {
+		if err := changeAttributeList(attributes, field.name, clear, updated[field.value]); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func changeAttributeList(node *element, name string, added []int, change ResolvedTreeEdit) error {
+func changeAttributeList(node *element, name string, clear, added []int) error {
 	old, err := parsePassiveNodes(node.attr(name, ""))
 	if err != nil {
 		return err
 	}
 	current := slices.DeleteFunc(slices.Clone(old), func(id int) bool {
-		return slices.Contains(change.Removed, id) || slices.Contains(change.Added, id)
+		return slices.Contains(clear, id)
 	})
 	current = append(current, added...)
 	if len(added) > 0 || !slices.Equal(old, current) || node.attr(name, "") == "" {
 		node.set(name, formatPassiveNodes(current))
 	}
 	return nil
+}
+
+// readTreeAttributes показывает сохранённые выборы назначенных узлов.
+func readTreeAttributes(spec *element, nodes []int) map[string]PassiveAttribute {
+	overrides, err := spec.child("Overrides")
+	if err != nil || overrides == nil {
+		return nil
+	}
+	attributes, err := overrides.child("AttributeOverride")
+	if err != nil || attributes == nil {
+		return nil
+	}
+	return attributeSelections(attributes, nodes)
+}
+
+func attributeSelections(attributes *element, nodes []int) map[string]PassiveAttribute {
+	result := make(map[string]PassiveAttribute)
+	for _, field := range attributeFields {
+		ids, err := parsePassiveNodes(attributes.attr(field.name, ""))
+		if err != nil || !addAttributeSelections(result, nodes, ids, field.value) {
+			return nil
+		}
+	}
+	if len(result) == 0 {
+		return nil
+	}
+	return result
+}
+
+func addAttributeSelections(result map[string]PassiveAttribute, nodes, ids []int, value PassiveAttribute) bool {
+	for _, id := range ids {
+		if !slices.Contains(nodes, id) {
+			continue
+		}
+		key := strconv.Itoa(id)
+		if result[key] != "" {
+			return false
+		}
+		result[key] = value
+	}
+	return true
 }
 
 func formatPassiveNodes(nodes []int) string {

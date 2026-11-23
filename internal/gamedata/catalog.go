@@ -67,10 +67,11 @@ type Item struct {
 }
 
 type Node struct {
-	ID        int      `json:"id"`
-	Name      string   `json:"name"`
-	Stats     []string `json:"stats"`
-	Neighbors []int    `json:"neighbors"`
+	ID              int      `json:"id"`
+	Name            string   `json:"name"`
+	Stats           []string `json:"stats"`
+	Neighbors       []int    `json:"neighbors"`
+	AttributeChoice bool     `json:"attribute_choice,omitempty"`
 }
 
 type Constants struct {

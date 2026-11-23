@@ -551,11 +551,42 @@ def check_lua_tree(scenario, fixtures):
     require(after['Str'] == before['Str'] + 5 and after['TotalDPS'] > before['TotalDPS'],
             'PoB не учёл силу и урон после назначения пассивов')
     return dict(added=[3936, 13397], removed=[3936, 13397], strength_gain=5,
-                dps=[before['TotalDPS'], after['TotalDPS']], restored_xml=True)
+                dps=[before['TotalDPS'], after['TotalDPS']], restored_xml=True,
+                attributes=check_tree_attributes(scenario, refunded))
 
 
-def commit_tree_edit(scenario, snapshot, node_id, action, change):
-    edit = dict(tree_node=dict(node_id=node_id, action=action))
+def check_tree_attributes(scenario, baseline):
+    path = [1207, 3936, 13397]
+    choices = [dict(node_id=node_id, after='dexterity') for node_id in (1207, 13397)]
+    allocated, preview = commit_tree_edit(scenario, baseline, 1207, 'allocate',
+                                         dict(added=path, attributes=choices), 'dexterity')
+    verify_attribute_stats(preview, {'Dex': 10})
+    changes = [dict(node_id=13397, before='dexterity', after='intelligence')]
+    switched, preview = commit_tree_edit(scenario, allocated, 13397, 'set_attribute',
+                                         dict(attributes=changes), 'intelligence')
+    verify_attribute_stats(preview, {'Dex': -5, 'Int': 5})
+    before = allocated['build']['model']
+    after = switched['build']['model']
+    require(after['nodes'] == before['nodes'], 'Смена атрибута изменила назначенные узлы')
+    require(after['passive_attributes'].get('1207') == 'dexterity'
+            and after['passive_attributes'].get('13397') == 'intelligence',
+            'Состояние атрибутов не совпало с предпросмотром')
+    return dict(allocated=choices, switched=changes, dexterity_gain=10, intelligence_gain=5)
+
+
+def verify_attribute_stats(preview, expected):
+    comparison = preview['comparison']
+    before, after = comparison['before']['stats'], comparison['after']['stats']
+    for stat in ('Str', 'Dex', 'Int'):
+        require(after[stat] - before[stat] == expected.get(stat, 0),
+                f'PoB вернул неожиданное изменение {stat}')
+
+
+def commit_tree_edit(scenario, snapshot, node_id, action, change, attribute=None):
+    tree = dict(node_id=node_id, action=action)
+    if attribute is not None:
+        tree['attribute'] = attribute
+    edit = dict(tree_node=tree)
     revision = snapshot['revision']
     path = scenario.root / 'tree-edit.json'
     path.write_text(json.dumps(edit), encoding='utf-8')
@@ -565,7 +596,7 @@ def commit_tree_edit(scenario, snapshot, node_id, action, change):
     mcp, = scenario.mcp_tools('tree', [('compare_build', arguments)])
     require(preview == mcp and preview['passive_change'] == change, 'CLI/gRPC и MCP должны показать ожидаемый путь')
     require(scenario.snapshot('tree') == snapshot, 'Предпросмотр изменил сессию')
-    applied, = scenario.mcp_tools('tree', [('edit_build', dict(arguments, request_id=action))])
+    applied, = scenario.mcp_tools('tree', [('edit_build', dict(arguments, request_id=f'{action}-{node_id}'))])
     require(applied['revision'] == revision + 1 and
             applied['build']['input_sha256'] == preview['comparison']['after']['input_sha256'],
             'Правка дерева разошлась с предпросмотром')

@@ -31,6 +31,7 @@ const CatalogEntry$json = {
     {'1': 'slots', '3': 10, '4': 3, '5': 9, '10': 'slots'},
     {'1': 'class_ids', '3': 11, '4': 3, '5': 5, '10': 'classIds'},
     {'1': 'coverage', '3': 12, '4': 3, '5': 9, '10': 'coverage'},
+    {'1': 'attribute_choice', '3': 13, '4': 1, '5': 8, '10': 'attributeChoice'},
   ],
 };
 
@@ -41,7 +42,8 @@ final $typed_data.Uint8List catalogEntryDescriptor = $convert.base64Decode(
     'BVIGbGV2ZWxzEhwKCXF1YWxpdGllcxgGIAMoBVIJcXVhbGl0aWVzEhQKBW1vZGVzGAcgAygJUg'
     'Vtb2RlcxIYCgdzdXBwb3J0GAggASgIUgdzdXBwb3J0EhYKBmZhbWlseRgJIAEoCVIGZmFtaWx5'
     'EhQKBXNsb3RzGAogAygJUgVzbG90cxIbCgljbGFzc19pZHMYCyADKAVSCGNsYXNzSWRzEhoKCG'
-    'NvdmVyYWdlGAwgAygJUghjb3ZlcmFnZQ==');
+    'NvdmVyYWdlGAwgAygJUghjb3ZlcmFnZRIpChBhdHRyaWJ1dGVfY2hvaWNlGA0gASgIUg9hdHRy'
+    'aWJ1dGVDaG9pY2U=');
 
 @$core.Deprecated('Use getCatalogRequestDescriptor instead')
 const GetCatalogRequest$json = {

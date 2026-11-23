@@ -17,7 +17,7 @@ type equipmentValidator interface {
 }
 
 type treeEditor interface {
-	ResolveTreeEdit(context.Context, *build.Document, build.TreeNodeEdit) (build.ResolvedTreeEdit, error)
+	ResolveTreeEdit(context.Context, *build.Document, build.TreeNodeEdit) (build.PassiveChange, error)
 }
 
 // SupportsTreePreview сообщает, что движок может править дерево через PoB.
@@ -65,7 +65,10 @@ func (s *Service) editTree(ctx context.Context, doc *build.Document, edit build.
 		return nil, nil, err
 	}
 	updated, err := doc.WithResolvedTreeEdit(change)
-	return updated, &change.PassiveChange, err
+	if edit.TreeNode.Attribute == "" {
+		change.Attributes = nil
+	}
+	return updated, &change, err
 }
 
 func (s *Service) editData(ctx context.Context) (*gamedata.Dataset, error) {

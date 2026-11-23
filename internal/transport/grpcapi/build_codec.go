@@ -57,6 +57,7 @@ func wireModel(m build.Model) *pb.BuildModel {
 	for _, id := range m.Nodes {
 		result.Nodes = append(result.Nodes, uint32(id))
 	}
+	result.PassiveAttributes = wirePassiveAttributes(m.Nodes, m.PassiveAttributes)
 	for name, value := range m.Config {
 		result.Config[name] = wireConfig(value)
 	}
@@ -184,7 +185,7 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 		}}
 	case value.TreeNode != nil:
 		node := value.TreeNode
-		result.Operation = &pb.BuildEdit_TreeNode{TreeNode: &pb.TreeNodeEdit{NodeId: uint32(node.NodeID), Action: node.Action}}
+		result.Operation = &pb.BuildEdit_TreeNode{TreeNode: &pb.TreeNodeEdit{NodeId: uint32(node.NodeID), Action: node.Action, Attribute: string(node.Attribute)}}
 	}
 	return result, nil
 }
@@ -264,7 +265,7 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 		}
 	case *pb.BuildEdit_TreeNode:
 		node := operation.TreeNode
-		result.TreeNode = &build.TreeNodeEdit{NodeID: int(node.GetNodeId()), Action: node.GetAction()}
+		result.TreeNode = &build.TreeNodeEdit{NodeID: int(node.GetNodeId()), Action: node.GetAction(), Attribute: build.PassiveAttribute(node.GetAttribute())}
 	default:
 		return nil, fmt.Errorf("не указана операция правки")
 	}

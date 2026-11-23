@@ -135,6 +135,13 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 В MCP передайте `edit.tree_node` в `compare_build` или `edit_build`.
 В gRPC передайте `TreeNodeEdit` в `CompareBuild` или `ApplyBuild`.
 
+Для назначения узла с ловкостью запишите в `passive.json`
+`{"tree_node":{"node_id":13397,"action":"allocate","attribute":"dexterity"}}`.
+Чтобы заменить ловкость на интеллект у назначенного узла, после
+назначения возьмите новую ревизию и передайте
+`{"tree_node":{"node_id":13397,"action":"set_attribute","attribute":"intelligence"}}`.
+Ход назначения и изменения атрибутов указаны в `passive_change`.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

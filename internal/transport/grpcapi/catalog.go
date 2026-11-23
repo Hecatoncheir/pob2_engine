@@ -80,12 +80,12 @@ func (c *Client) PreviewSupport(ctx context.Context, cmd application.PreviewSupp
 
 func wireCatalogEntry(entry application.CatalogEntry) *pb.CatalogEntry {
 	return &pb.CatalogEntry{Kind: entry.Kind, Id: entry.ID, Name: entry.Name, Aliases: entry.Aliases, Levels: wireInts(entry.Levels), Qualities: wireInts(entry.Qualities),
-		Modes: entry.Modes, Support: entry.Support, Family: entry.Family, Slots: entry.Slots, ClassIds: wireInts(entry.ClassIDs), Coverage: entry.Coverage}
+		Modes: entry.Modes, Support: entry.Support, Family: entry.Family, Slots: entry.Slots, ClassIds: wireInts(entry.ClassIDs), Coverage: entry.Coverage, AttributeChoice: entry.AttributeChoice}
 }
 
 func localCatalogEntry(entry *pb.CatalogEntry) application.CatalogEntry {
 	return application.CatalogEntry{Kind: entry.GetKind(), ID: entry.GetId(), Name: entry.GetName(), Aliases: append([]string{}, entry.GetAliases()...), Levels: localInts(entry.GetLevels()), Qualities: localInts(entry.GetQualities()),
-		Modes: append([]string{}, entry.GetModes()...), Support: entry.GetSupport(), Family: entry.GetFamily(), Slots: append([]string{}, entry.GetSlots()...), ClassIDs: localInts(entry.GetClassIds()), Coverage: append([]string{}, entry.GetCoverage()...)}
+		Modes: append([]string{}, entry.GetModes()...), Support: entry.GetSupport(), Family: entry.GetFamily(), Slots: append([]string{}, entry.GetSlots()...), ClassIDs: localInts(entry.GetClassIds()), Coverage: append([]string{}, entry.GetCoverage()...), AttributeChoice: entry.GetAttributeChoice()}
 }
 
 func wireInts(values []int) []int32 {

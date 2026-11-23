@@ -34,6 +34,7 @@ class CatalogEntry extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? slots,
     $core.Iterable<$core.int>? classIds,
     $core.Iterable<$core.String>? coverage,
+    $core.bool? attributeChoice,
   }) {
     final result = CatalogEntry._();
     if (kind != null) result.kind = kind;
@@ -48,6 +49,7 @@ class CatalogEntry extends $pb.GeneratedMessage {
     if (slots != null) result.slots.addAll(slots);
     if (classIds != null) result.classIds.addAll(classIds);
     if (coverage != null) result.coverage.addAll(coverage);
+    if (attributeChoice != null) result.attributeChoice = attributeChoice;
     return result;
   }
 
@@ -76,6 +78,7 @@ class CatalogEntry extends $pb.GeneratedMessage {
     ..pPS(10, _omitFieldNames ? '' : 'slots')
     ..p<$core.int>(11, _omitFieldNames ? '' : 'classIds', $pb.PbFieldType.K3)
     ..pPS(12, _omitFieldNames ? '' : 'coverage')
+    ..aOB(13, _omitFieldNames ? '' : 'attributeChoice')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -165,6 +168,15 @@ class CatalogEntry extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(12)
   $pb.PbList<$core.String> get coverage => $_getList(11);
+
+  @$pb.TagNumber(13)
+  $core.bool get attributeChoice => $_getBF(12);
+  @$pb.TagNumber(13)
+  set attributeChoice($core.bool value) => $_setBool(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasAttributeChoice() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearAttributeChoice() => $_clearField(13);
 }
 
 /// kind: gems/classes/items/passives. Поиск по ID, имени и псевдонимам без учёта регистра.

@@ -12,7 +12,7 @@ local function checkAllocation(build, node)
 		"Условия доступа к узлу не выполнены")
 end
 
-local function allocate(build, node)
+local function allocate(build, node, attribute)
 	checkAllocation(build, node)
 	local spec = build.spec
 	assert(not node.alloc, "Пассив уже назначен")
@@ -22,6 +22,11 @@ local function allocate(build, node)
 		for _, step in ipairs(path) do
 			checkAllocation(build, step)
 		end
+	end
+	if attribute then
+		assert(node.isAttribute, "Выберите узел с выбором атрибута")
+		spec:SwitchAttributeNode(node.id, attribute)
+		spec.attributeIndex = attribute
 	end
 	spec:AllocNode(node)
 	assert(node.alloc, "PoB не назначил выбранный пассив")
@@ -37,23 +42,42 @@ local function refund(build, node)
 end
 
 local attributeNames = { Strength = "strength", Dexterity = "dexterity", Intelligence = "intelligence" }
+local attributeIndices = { strength = 1, dexterity = 2, intelligence = 3 }
 
-local function addNode(change, spec, node)
-	checkNode(node)
-	change.added[#change.added + 1] = node.id
-	if node.isAttribute then
-		local override = assert(spec.hashOverrides[node.id], "PoB не выбрал атрибут узла")
-		local list = change[assert(attributeNames[override.dn], "Неизвестный атрибут узла")]
-		list[#list + 1] = node.id
-	end
+local function chosenAttribute(spec, node)
+	return attributeNames[(spec.hashOverrides[node.id] or node).dn]
 end
 
-local function collectChange(build, before)
-	local spec = build.spec
-	local change = { added = {}, removed = {}, strength = {}, dexterity = {}, intelligence = {} }
+local function setAttribute(spec, node, attribute, index)
+	assert(node.isAttribute, "Выберите узел с выбором атрибута")
+	assert(node.alloc, "Сначала назначьте пассив")
+	local before = chosenAttribute(spec, node)
+	assert(before ~= attribute, "Этот атрибут уже выбран")
+	spec:SwitchAttributeNode(node.id, index)
+	spec:BuildAllDependsAndPaths()
+	local after = chosenAttribute(spec, spec.nodes[node.id])
+	assert(after == attribute, "PoB не подтвердил новый атрибут узла")
+	return { node_id = node.id, before = before, after = after }
+end
+
+local function allocatedAttributes(spec, nodes)
+	local attributes = {}
+	for _, id in ipairs(nodes) do
+		local node = spec.allocNodes[id]
+		if node.isAttribute then
+			local after = assert(chosenAttribute(spec, node), "PoB не выбрал атрибут узла")
+			attributes[#attributes + 1] = { node_id = id, after = after }
+		end
+	end
+	return attributes
+end
+
+local function collectChange(spec, before)
+	local change = { added = {}, removed = {} }
 	for id, node in pairs(spec.allocNodes) do
 		if before[id] == nil then
-			addNode(change, spec, node)
+			checkNode(node)
+			change.added[#change.added + 1] = id
 		else
 			assert(node.allocMode == before[id], "Правка меняет ветвь комплекта оружия")
 		end
@@ -64,7 +88,9 @@ local function collectChange(build, before)
 			change.removed[#change.removed + 1] = id
 		end
 	end
-	for _, ids in pairs(change) do table.sort(ids) end
+	table.sort(change.added)
+	table.sort(change.removed)
+	change.attributes = allocatedAttributes(spec, change.added)
 	return change
 end
 
@@ -74,14 +100,20 @@ return function(build, request)
 		"PoB загрузил другую спецификацию или версию дерева")
 	local node = spec.nodes[request.node_id]
 	checkNode(node)
+	local index = request.attribute and assert(attributeIndices[request.attribute], "Неизвестный атрибут узла")
 	local before = {}
 	for id, allocated in pairs(spec.allocNodes) do before[id] = allocated.allocMode end
 	spec.allocMode = 0
+	local attributeChange
 	if request.action == "allocate" then
-		allocate(build, node)
+		allocate(build, node, index)
+	elseif request.action == "set_attribute" then
+		attributeChange = setAttribute(spec, node, request.attribute, assert(index))
 	else
 		assert(request.action == "refund", "Неизвестное действие дерева")
 		refund(build, node)
 	end
-	return collectChange(build, before)
+	local change = collectChange(spec, before)
+	if attributeChange then change.attributes[#change.attributes + 1] = attributeChange end
+	return change
 end
