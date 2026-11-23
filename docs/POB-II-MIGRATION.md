@@ -13,6 +13,9 @@
 [Сценарии PoB II](https://github.com/Hecatoncheir/pob2_ui/blob/5b3f2119e52aa9761ac3d29302cebf4904527002/README.md#что-работает) ·
 [Приёмка движка](../testdata/releases/0.0.11/README.md).
 
+Ветви оружия выпущены в `pob2_engine v0.0.12` и приняты в общей сборке
+PoB II на трёх ОС. [Отчёт этапа 1](../testdata/releases/0.0.12/README.md).
+
 ## Этапы
 
 | Этап | Что переносим | Проверяемый результат |
