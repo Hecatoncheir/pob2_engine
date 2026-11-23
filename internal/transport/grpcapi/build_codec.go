@@ -213,6 +213,8 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 		result.Operation = &pb.BuildEdit_SkillChoice{SkillChoice: &pb.SkillChoiceEdit{
 			Control: choice.Control, OptionId: uint32(choice.OptionID),
 		}}
+	case value.SkillGroup != nil:
+		result.Operation = &pb.BuildEdit_SkillGroup{SkillGroup: wireSkillGroup(*value.SkillGroup)}
 	}
 	return result, nil
 }
@@ -311,6 +313,8 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 	case *pb.BuildEdit_SkillChoice:
 		choice := operation.SkillChoice
 		result.SkillChoice = &build.SkillChoiceEdit{Control: choice.GetControl(), OptionID: int(choice.GetOptionId())}
+	case *pb.BuildEdit_SkillGroup:
+		result.SkillGroup = localSkillGroup(operation.SkillGroup)
 	default:
 		return nil, fmt.Errorf("не указана операция правки")
 	}

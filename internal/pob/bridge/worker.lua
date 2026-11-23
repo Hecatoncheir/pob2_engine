@@ -36,6 +36,7 @@ local readTreeGeometry = dofile(directory .. "/tree_geometry.lua")
 local readTreeNodeTooltip = dofile(directory .. "/tree_node_tooltip.lua")
 local readBuildReport = dofile(directory .. "/build_report.lua")
 local selectSkillChoice = dofile(directory .. "/skill_choice.lua")
+local editSkillGroup = dofile(directory .. "/skill_group.lua")
 local readTreePower = dofile(directory .. "/tree_power.lua")
 local drawTreeScene = dofile(directory .. "/tree_scene.lua")
 local readEquipmentDetails = dofile(directory .. "/equipment_details.lua")
@@ -196,6 +197,10 @@ for line in io.lines() do
 		if request.operation == "skill_choice" then
 			loadDocument(assert(request.xml))
 			return { skill_choice = selectSkillChoice(build, request.skill_choice, request.validate) }
+		end
+		if request.operation == "skill_group" then
+			loadDocument(assert(request.xml))
+			return { skill_group_xml = editSkillGroup(request.skill_group) }
 		end
 		if request.operation == "tree_power" then
 			loadDocument(assert(request.xml))
