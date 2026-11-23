@@ -36,7 +36,7 @@ func TestAddSupportAcrossProcessesAndRestart(t *testing.T) {
 	checkAddSupportConflicts(t, s, command, added)
 	updated := addSupportMCP(t, s, added.Revision)
 	s.expectEvent(added.Revision+1, "build.model.groups")
-	checkSupportRestart(t, s, command, added, updated)
+	checkBuildEditRestart(t, s, command, added, updated)
 }
 
 func addSupportCLI(t *testing.T, s *groupScenario, command application.ApplyBuild) application.SnapshotView {
@@ -106,7 +106,7 @@ func checkSupportRetry(t *testing.T, s *groupScenario, command application.Apply
 	}
 }
 
-func checkSupportRestart(t *testing.T, s *groupScenario, command application.ApplyBuild, added, updated application.SnapshotView) {
+func checkBuildEditRestart(t *testing.T, s *groupScenario, command application.ApplyBuild, added, updated application.SnapshotView) {
 	t.Helper()
 	_ = s.mcp.Close()
 	_ = s.client.Close()

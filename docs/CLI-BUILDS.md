@@ -103,6 +103,23 @@ pob2-engine calculate --profile main --session ice-nova --revision 2 --request-i
 
 В MCP передайте тот же объект в поле `edit` инструмента `edit_build`.
 
+### Примерка предмета
+
+Сохраните правку `equipment` в `equipment.json`. Пример имени слота PoB —
+`Body Armour` или `Ring 1`. Вставьте текст из игры или PoB. Чтобы снять предмет,
+передайте пустую строку в `raw`. Сначала сравните, затем примените к той же
+ревизии, если вариант подходит:
+
+```shell
+pob2-engine build compare --profile main --session build-1 --revision 3 --edit --file equipment.json
+pob2-engine build edit --profile main --session build-1 --revision 3 --request-id equip-1 --file equipment.json
+```
+
+Неизвестная база или несовместимый слот приводят к отказу. Если PoB вернул
+числа с предупреждениями, CLI печатает результат и завершает сравнение
+с кодом `4`. Через MCP передавайте `edit.equipment` в `compare_build` и
+`edit_build`, через gRPC — `EquipmentEdit` в `CompareBuild` и `ApplyBuild`.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

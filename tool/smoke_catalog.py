@@ -1,5 +1,6 @@
 """Проверить полный каталог оригинального PoB и правки через нативный бинарник."""
 
+import json
 import math
 
 
@@ -52,7 +53,11 @@ def check_new_skill(scenario, lock, verify):
 
 def check_equipment_and_passives(scenario, snapshot, lock):
     raw = 'Rarity: NORMAL\nRusted Cuirass'
-    equipped = apply_edit(scenario, snapshot, 'body-armour', dict(equipment=dict(slot='Body Armour', raw=raw)))
+    edit = dict(equipment=dict(slot='Body Armour', raw=raw))
+    preview = preview_equipment(scenario, snapshot, edit)
+    equipped = apply_edit(scenario, snapshot, 'body-armour', edit)
+    require(equipped['build']['input_sha256'] == preview['comparison']['after']['input_sha256'],
+            'Применённая экипировка отличается от примерки')
     levelled = apply_edit(scenario, equipped, 'level-ten', dict(level=dict(level=10)))
     nodes = [4739, 18845, 55807, 6686, 51184, 41965]
     allocated = apply_edit(scenario, levelled, 'new-passive', dict(passives=dict(nodes=nodes)))
@@ -63,6 +68,18 @@ def check_equipment_and_passives(scenario, snapshot, lock):
     require(calculation['stats']['Armour'] > 0 and math.isfinite(calculation['stats']['TotalDPS']), 'Броня или урон не рассчитаны')
     require(any(item['raw'] == raw for item in result['build']['model']['items']), 'Изменён исходный текст предмета')
     return result
+
+
+def preview_equipment(scenario, snapshot, edit):
+    revision = snapshot['revision']
+    path = scenario.root / 'equipment-edit.json'
+    path.write_text(json.dumps(edit), encoding='utf-8')
+    cli = scenario.run('build', 'compare', *scenario.connection, '--session', 'catalog',
+                       '--revision', revision, '--edit', '--file', path)
+    mcp, = scenario.mcp_tools('catalog', [('compare_build', dict(expected_revision=revision, edit=edit))])
+    require(cli == mcp and scenario.snapshot('catalog') == snapshot,
+            'Ответы о примерке различаются либо снимок изменился')
+    return cli
 
 
 def apply_previewed_support(scenario, snapshot, preview, lock, verify):
@@ -94,4 +111,4 @@ def check_full_catalog(scenario, lock, verify):
             'После перезапуска потерян ответ или изменена сессия')
     return dict(counts=counts, new_skill_dps=7.84, supported_dps=10.08, support_quality=20,
                 incompatible_support_reported=True, applied_preview_matches=True,
-                equipment_and_passives=True, restart_exact_retry=True)
+                equipment_and_passives=True, equipment_preview_matches=True, restart_exact_retry=True)

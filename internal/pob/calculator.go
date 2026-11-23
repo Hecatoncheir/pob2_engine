@@ -68,6 +68,35 @@ func (c *Calculator) Compare(ctx context.Context, before, after *build.Document)
 	return calculation.Compare(ctx, c, before, after)
 }
 
+// ValidateEquipment проверяет слот и предмет в изменённом документе через Lua PoB.
+func (c *Calculator) ValidateEquipment(ctx context.Context, doc *build.Document, slot string) error {
+	model, err := doc.Model()
+	if err != nil {
+		return err
+	}
+	id, ok := model.Slots[slot]
+	if !ok {
+		return fmt.Errorf("слот %s отсутствует в выбранном наборе", slot)
+	}
+	xml, err := doc.Export()
+	if err != nil {
+		return err
+	}
+	answer, err := c.run(ctx, &request{
+		Operation: "validate_equipment", XML: pobXML.Replace(string(xml)), Slot: slot, ItemID: id,
+	})
+	if err != nil {
+		return err
+	}
+	if answer.Error != "" {
+		return fmt.Errorf("PoB Lua: %s", answer.Error)
+	}
+	if !answer.EquipmentValid {
+		return fmt.Errorf("PoB Lua не подтвердил правку экипировки")
+	}
+	return nil
+}
+
 func (c *Calculator) result(answer response, digest string) (calculation.Result, error) {
 	if answer.Error != "" {
 		return calculation.Result{}, fmt.Errorf("PoB Lua: %s", answer.Error)
@@ -193,20 +222,23 @@ func (c *Calculator) stop() {
 }
 
 type response struct {
-	Ready       bool                     `json:"ready"`
-	Skill       string                   `json:"skill"`
-	Mode        string                   `json:"mode"`
-	Stats       map[string]float64       `json:"stats"`
-	Warnings    []string                 `json:"warnings"`
-	Unsupported []string                 `json:"unsupported"`
-	Error       string                   `json:"error"`
-	Catalog     *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
-	Issues      []build.Issue            `json:"issues,omitempty"`
+	Ready          bool                     `json:"ready"`
+	EquipmentValid bool                     `json:"equipment_valid"`
+	Skill          string                   `json:"skill"`
+	Mode           string                   `json:"mode"`
+	Stats          map[string]float64       `json:"stats"`
+	Warnings       []string                 `json:"warnings"`
+	Unsupported    []string                 `json:"unsupported"`
+	Error          string                   `json:"error"`
+	Catalog        *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
+	Issues         []build.Issue            `json:"issues,omitempty"`
 }
 
 type request struct {
 	XML       string `json:"xml,omitempty"`
 	Operation string `json:"operation,omitempty"`
+	Slot      string `json:"slot,omitempty"`
+	ItemID    int    `json:"item_id,omitempty"`
 }
 
 type workerReply struct {

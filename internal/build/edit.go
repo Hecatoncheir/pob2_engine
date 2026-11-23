@@ -153,7 +153,7 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 	case edit.Gems != nil:
 		return d.editGems(*edit.Gems, data)
 	case edit.Equipment != nil:
-		return d.editEquipment(*edit.Equipment)
+		return d.editEquipment(*edit.Equipment, data.IsRuntime())
 	case edit.Passives != nil:
 		return d.editPassives(*edit.Passives, data)
 	case edit.Selection != nil:
@@ -333,48 +333,6 @@ func validGemInput(input GemInput, gem gamedata.Gem, runtime bool) bool {
 	}
 	return slices.ContainsFunc(gem.Levels, func(level gamedata.GemLevel) bool { return level.Level == input.Level }) &&
 		slices.Contains(gem.Qualities, input.Quality)
-}
-
-func (d *Document) editEquipment(edit EquipmentEdit) error {
-	if edit.Slot == "" || len(edit.Slot) > 128 || len(edit.Raw) > 65536 || !utf8.ValidString(edit.Raw) {
-		return fmt.Errorf("неверный слот или текст предмета")
-	}
-	set, err := d.active("Items", "ItemSet", "activeItemSet")
-	if err != nil {
-		return err
-	}
-	var slot *element
-	for _, node := range set.children("Slot") {
-		if node.attr("name", "") == edit.Slot {
-			slot = node
-			break
-		}
-	}
-	if slot == nil {
-		return fmt.Errorf("слот %s отсутствует в выбранном наборе", edit.Slot)
-	}
-	if strings.TrimSpace(edit.Raw) == "" {
-		slot.set("itemId", "0")
-		return nil
-	}
-	items, _ := d.root.child("Items")
-	maximum := 0
-	for _, node := range items.children("Item") {
-		id, err := integer(node.attr("id", ""), "Item/id", 1, 1000000)
-		if err != nil {
-			return err
-		}
-		maximum = max(maximum, id)
-	}
-	if maximum >= 1000000 || len(items.children("Item")) >= 512 {
-		return fmt.Errorf("слишком много предметов")
-	}
-	node := newElement("Item")
-	node.set("id", strconv.Itoa(maximum+1))
-	node.parts = []part{{text: strings.TrimSpace(edit.Raw)}}
-	items.parts = append(items.parts, part{element: node})
-	slot.set("itemId", strconv.Itoa(maximum+1))
-	return nil
 }
 
 func (d *Document) editPassives(edit PassivesEdit, data *gamedata.Dataset) error {

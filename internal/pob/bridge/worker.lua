@@ -57,11 +57,35 @@ local function unsupportedModifiers()
 	return unsupported
 end
 
-local function calculate(xml)
+local function loadDocument(xml)
 	local parsed = common.xml.ParseXML(xml)
 	assert(parsed and parsed[1] and parsed[1].elem == "PathOfBuilding2", "Ожидался XML PathOfBuilding2")
 	loadBuildFromXML(xml, "PoB2Engine")
 	assert(not launch.promptMsg, tostring(launch.promptMsg))
+end
+
+local function validateEquipment(request)
+	loadDocument(assert(request.xml))
+	local tab, name, id = build.itemsTab, request.slot, request.item_id or 0
+	local slot = tab.slots[name]
+	if not slot or not tab.activeItemSet[name] then
+		return { error = "PoB не распознал слот экипировки " .. name }
+	end
+	local item = tab.items[id]
+	if id ~= 0 and (not item or not item.base) then
+		return { error = "PoB не распознал базу предмета" }
+	end
+	if id ~= 0 and not tab:IsItemValidForSlot(item, name) then
+		return { error = "Предмет несовместим со слотом " .. name }
+	end
+	if (slot.selItemId or 0) ~= id then
+		return { error = "PoB не применил правку слота " .. name }
+	end
+	return { equipment_valid = true }
+end
+
+local function calculate(xml)
+	loadDocument(xml)
 	local output = assert(build.calcsTab.mainOutput)
 	local stats, warnings = {}, {}
 	for key, value in pairs(output) do
@@ -88,6 +112,7 @@ for line in io.lines() do
 	local ok, result = pcall(function()
 		local request = assert(json.decode(line))
 		if request.operation == "catalog" then return { catalog = catalog.read() } end
+		if request.operation == "validate_equipment" then return validateEquipment(request) end
 		return calculate(assert(request.xml))
 	end)
 	if ok then reply(result) else reply({ error = clean(result) }) end

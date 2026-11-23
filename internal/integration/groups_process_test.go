@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"path/filepath"
 	"reflect"
 	"slices"
 	"testing"
@@ -36,6 +37,11 @@ type groupScenario struct {
 
 func newGroupScenario(t *testing.T) *groupScenario {
 	t.Helper()
+	return newBuildScenario(t, "0.0.2/groups/cases/druid-group-1.xml")
+}
+
+func newBuildScenario(t *testing.T, fixture string) *groupScenario {
+	t.Helper()
 	ctx, cancel := context.WithTimeout(t.Context(), 40*time.Second)
 	t.Cleanup(cancel)
 	scenario := &groupScenario{t: t, ctx: ctx, dataDir: t.TempDir(), revision: 2}
@@ -47,7 +53,8 @@ func newGroupScenario(t *testing.T) *groupScenario {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cli(t, ctx, 0, append([]string{"build", "import", "--session", "main", "--revision", "1", "--request-id", "import", "--file", "../../testdata/reference/0.0.2/groups/cases/druid-group-1.xml"}, scenario.connection...)...)
+	file := filepath.Join("..", "..", "testdata", "reference", fixture)
+	cli(t, ctx, 0, append([]string{"build", "import", "--session", "main", "--revision", "1", "--request-id", "import", "--file", file}, scenario.connection...)...)
 	scenario.expectEvent(2, "build.model.groups")
 	scenario.mcp = connectMCP(t, ctx, append([]string{"--attach", "main"}, scenario.connection...)...)
 	return scenario

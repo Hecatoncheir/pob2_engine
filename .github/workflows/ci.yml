@@ -132,11 +132,11 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - name: Проверить LuaJIT в Go, MCP и gRPC
+      - name: Проверить LuaJIT в Go, CLI, MCP и gRPC
         env:
           POB2_ENGINE_POB_DIR: ${{ github.workspace }}/.reference/pob
           POB2_ENGINE_POB_NATIVE_DIR: ${{ github.workspace }}/.reference/linux-x86_64/native
-        run: go test ./internal/pob ./internal/transport/grpcapi -run 'Test(LocalLuaJITCalculationAcrossGRPCAndMCP|Lua.*)' -count=1
+        run: go test ./internal/pob ./internal/transport/grpcapi ./internal/integration -run 'Test(LocalLuaJITCalculationAcrossGRPCAndMCP|Lua.*)' -count=1
       - name: Проверить воспроизводимость встроенных данных
         run: python3 tool/export_data.py
       - name: Воспроизвести матрицу расчётов и диагностики
