@@ -10,6 +10,7 @@ import (
 
 type treeGeometryInput struct {
 	ExpectedRevision uint64 `json:"expected_revision,omitempty" jsonschema:"Ноль читает последний снимок сессии"`
+	IncludeScene     bool   `json:"include_scene,omitempty" jsonschema:"Включить команды отрисовки PoB"`
 }
 
 func addTreeGeometryTool(server *mcp.Server, reader application.TreeGeometryCommands, id string) {
@@ -21,7 +22,7 @@ func addTreeGeometryTool(server *mcp.Server, reader application.TreeGeometryComm
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, input treeGeometryInput) (*mcp.CallToolResult, application.TreeGeometryView, error) {
 		ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 		defer cancel()
-		tree, err := reader.TreeGeometry(ctx, id, input.ExpectedRevision)
+		tree, err := reader.TreeGeometry(ctx, id, input.ExpectedRevision, input.IncludeScene)
 		return nil, tree, err
 	})
 }

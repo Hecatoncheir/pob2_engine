@@ -16,6 +16,7 @@ func (r runner) treePower(ctx context.Context, args []string) error {
 	metric := fs.String("metric", "", "характеристика; пустая строка выводит каталог")
 	distance := fs.Uint("max-distance", 0, "расстояние от 1 до 200; ноль без ограничения")
 	allocation := fs.String("allocation", "unallocated", "all, allocated или unallocated")
+	scene := fs.Bool("scene", false, "включить команды отрисовки тепловой карты")
 	if err := parse(fs, args); err != nil {
 		return err
 	}
@@ -29,7 +30,7 @@ func (r runner) treePower(ctx context.Context, args []string) error {
 		return err
 	}
 	defer client.Close()
-	query := build.TreePowerQuery{Metric: *metric, MaxDistance: uint32(*distance), Allocation: *allocation}
+	query := build.TreePowerQuery{Metric: *metric, MaxDistance: uint32(*distance), Allocation: *allocation, IncludeScene: *scene}
 	view, err := client.TreePower(ctx, *id, *revision, query)
 	if err != nil {
 		return err

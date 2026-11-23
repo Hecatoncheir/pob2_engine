@@ -139,6 +139,20 @@ local function namedSets(build)
 	return result
 end
 
+local function conditions(clean)
+	local result = {}
+	for _, definition in ipairs(require("Modules.ConfigOptions")) do
+		if definition.var then
+			local choices = {}
+			for _, choice in ipairs(definition.list or {}) do
+				choices[#choices + 1] = { value = choice.val, label = clean(choice.label) }
+			end
+			result[#result + 1] = { id = definition.var, name = clean(definition.label), type = definition.type, choices = choices }
+		end
+	end
+	return result
+end
+
 local function snapshot(build, clean, stats)
 	local values = {}
 	for _, key in ipairs({ "TotalDPS", "Life", "Mana", "EnergyShield", "Spirit", "FireResist", "ColdResist", "LightningResist", "ChaosResist" }) do
@@ -156,6 +170,7 @@ return function(build, clean)
 	table.sort(allocated)
 	return { source = "original-lua", snapshot = snapshot(build, clean, stats), stats = stats,
 		config = scalars(build.configTab.input), configPlaceholders = scalars(build.configTab.placeholder),
+		conditionDefinitions = conditions(clean),
 		groups = skillGroups(build, clean), items = items, slots = slots, warnings = warnings, allocatedNodes = allocated,
 		pointDisplay = clean(build.controls.pointDisplay.str), notes = build.notesTab.controls.edit.buf,
 		customMods = customMods(build.configTab), sets = namedSets(build),

@@ -5,6 +5,7 @@ type TreeGeometry struct {
 	Version string             `json:"version"`
 	Nodes   []TreeGeometryNode `json:"nodes"`
 	Edges   []TreeGeometryEdge `json:"edges"`
+	Scene   *TreeScene         `json:"scene,omitempty"`
 }
 
 type TreeGeometryNode struct {

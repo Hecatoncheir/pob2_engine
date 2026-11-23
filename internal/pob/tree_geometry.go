@@ -7,12 +7,12 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
 
-func (c *Calculator) ReadTreeGeometry(ctx context.Context, doc *build.Document) (build.TreeGeometry, error) {
+func (c *Calculator) ReadTreeGeometry(ctx context.Context, doc *build.Document, scene bool) (build.TreeGeometry, error) {
 	xml, err := doc.ExportWithoutProgression()
 	if err != nil {
 		return build.TreeGeometry{}, err
 	}
-	answer, err := c.run(ctx, &request{Operation: "tree_geometry", XML: pobXML.Replace(string(xml))})
+	answer, err := c.run(ctx, &request{Operation: "tree_geometry", XML: pobXML.Replace(string(xml)), IncludeScene: scene})
 	if err != nil {
 		return build.TreeGeometry{}, err
 	}

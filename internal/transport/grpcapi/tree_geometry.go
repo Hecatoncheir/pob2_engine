@@ -15,11 +15,11 @@ func (s *Server) GetTreeGeometry(ctx context.Context, req *pb.GetTreeGeometryReq
 	if !ok {
 		return nil, status.Error(codes.Unimplemented, "сервис не поддерживает чтение дерева")
 	}
-	tree, err := reader.TreeGeometry(ctx, req.GetSessionId(), req.GetExpectedRevision())
+	tree, err := reader.TreeGeometry(ctx, req.GetSessionId(), req.GetExpectedRevision(), req.GetIncludeScene())
 	if err != nil {
 		return nil, rpcError(err)
 	}
-	result := &pb.GetTreeGeometryResponse{Revision: tree.Revision, Version: tree.Version}
+	result := &pb.GetTreeGeometryResponse{Revision: tree.Revision, Version: tree.Version, Scene: wireTreeScene(tree.Scene)}
 	for _, node := range tree.Nodes {
 		result.Nodes = append(result.Nodes, &pb.TreeGeometryNode{
 			Id: uint32(node.ID), X: node.X, Y: node.Y, Name: node.Name, Kind: node.Kind, Icon: node.Icon,
@@ -34,13 +34,14 @@ func (s *Server) GetTreeGeometry(ctx context.Context, req *pb.GetTreeGeometryReq
 	return result, nil
 }
 
-func (c *Client) TreeGeometry(ctx context.Context, id string, expected uint64) (application.TreeGeometryView, error) {
-	reply, err := c.rpc.GetTreeGeometry(ctx, &pb.GetTreeGeometryRequest{SessionId: id, ExpectedRevision: expected})
+func (c *Client) TreeGeometry(ctx context.Context, id string, expected uint64, scene bool) (application.TreeGeometryView, error) {
+	reply, err := c.rpc.GetTreeGeometry(ctx, &pb.GetTreeGeometryRequest{SessionId: id, ExpectedRevision: expected, IncludeScene: scene})
 	if err != nil {
 		return application.TreeGeometryView{}, err
 	}
 	tree := application.TreeGeometryView{Revision: reply.GetRevision()}
 	tree.Version = reply.GetVersion()
+	tree.Scene = localTreeScene(reply.GetScene())
 	tree.Nodes = make([]build.TreeGeometryNode, 0, len(reply.GetNodes()))
 	for _, node := range reply.GetNodes() {
 		tree.Nodes = append(tree.Nodes, build.TreeGeometryNode{

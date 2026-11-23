@@ -15,7 +15,9 @@ func (s *Server) GetTreePower(ctx context.Context, req *pb.GetTreePowerRequest) 
 	if !ok {
 		return nil, status.Error(codes.Unimplemented, "сервис не поддерживает расчёт влияния узлов")
 	}
-	query := build.TreePowerQuery{Metric: req.GetMetric(), MaxDistance: req.GetMaxDistance(), Allocation: req.GetAllocation()}
+	query := build.TreePowerQuery{
+		Metric: req.GetMetric(), MaxDistance: req.GetMaxDistance(), Allocation: req.GetAllocation(), IncludeScene: req.GetIncludeScene(),
+	}
 	view, err := reader.TreePower(ctx, req.GetSessionId(), req.GetExpectedRevision(), query)
 	if err != nil {
 		if ctx.Err() != nil {
@@ -27,7 +29,7 @@ func (s *Server) GetTreePower(ctx context.Context, req *pb.GetTreePowerRequest) 
 }
 
 func wireTreePower(view application.TreePowerView) *pb.GetTreePowerResponse {
-	result := &pb.GetTreePowerResponse{Revision: view.Revision}
+	result := &pb.GetTreePowerResponse{Revision: view.Revision, Scene: wireTreeScene(view.Scene)}
 	if view.Metric != nil {
 		result.Metric = &pb.TreePowerMetric{Id: view.Metric.ID, Label: view.Metric.Label}
 	}
@@ -45,7 +47,8 @@ func wireTreePower(view application.TreePowerView) *pb.GetTreePowerResponse {
 
 func (c *Client) TreePower(ctx context.Context, id string, expected uint64, query build.TreePowerQuery) (application.TreePowerView, error) {
 	reply, err := c.rpc.GetTreePower(ctx, &pb.GetTreePowerRequest{
-		SessionId: id, ExpectedRevision: expected, Metric: query.Metric, MaxDistance: query.MaxDistance, Allocation: query.Allocation,
+		SessionId: id, ExpectedRevision: expected, Metric: query.Metric, MaxDistance: query.MaxDistance,
+		Allocation: query.Allocation, IncludeScene: query.IncludeScene,
 	})
 	if err != nil {
 		return application.TreePowerView{}, err
@@ -55,6 +58,7 @@ func (c *Client) TreePower(ctx context.Context, id string, expected uint64, quer
 
 func localTreePower(reply *pb.GetTreePowerResponse) application.TreePowerView {
 	view := application.TreePowerView{Revision: reply.GetRevision()}
+	view.Scene = localTreeScene(reply.GetScene())
 	if metric := reply.GetMetric(); metric != nil {
 		view.Metric = &build.TreePowerMetric{ID: metric.GetId(), Label: metric.GetLabel()}
 	}

@@ -37,6 +37,8 @@ local readTreeNodeTooltip = dofile(directory .. "/tree_node_tooltip.lua")
 local readBuildReport = dofile(directory .. "/build_report.lua")
 local selectSkillChoice = dofile(directory .. "/skill_choice.lua")
 local readTreePower = dofile(directory .. "/tree_power.lua")
+local drawTreeScene = dofile(directory .. "/tree_scene.lua")
+local readEquipmentDetails = dofile(directory .. "/equipment_details.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -151,7 +153,9 @@ for line in io.lines() do
 		end
 		if request.operation == "tree_geometry" then
 			loadDocument(assert(request.xml))
-			return { tree_geometry = readTreeGeometry(build.spec) }
+			local geometry = readTreeGeometry(build.spec)
+			if request.include_scene then geometry.scene = drawTreeScene(build, false) end
+			return { tree_geometry = geometry }
 		end
 		if request.operation == "tree_node_tooltip" then
 			loadDocument(assert(request.xml))
@@ -167,7 +171,13 @@ for line in io.lines() do
 		end
 		if request.operation == "tree_power" then
 			loadDocument(assert(request.xml))
-			return { tree_power = readTreePower(build, request.tree_power) or json.null }
+			local power = readTreePower(build, request.tree_power)
+			if power and power.metric and request.tree_power.include_scene then power.scene = drawTreeScene(build, true) end
+			return { tree_power = power or json.null }
+		end
+		if request.operation == "equipment_details" then
+			loadDocument(assert(request.xml))
+			return { equipment_details = readEquipmentDetails(build, request.equipment_details) or json.null }
 		end
 		return calculate(assert(request.xml))
 	end)

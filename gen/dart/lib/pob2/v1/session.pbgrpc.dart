@@ -136,6 +136,13 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getTreePower, request, options: options);
   }
 
+  $grpc.ResponseFuture<$2.GetEquipmentDetailsResponse> getEquipmentDetails(
+    $2.GetEquipmentDetailsRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getEquipmentDetails, request, options: options);
+  }
+
   $grpc.ResponseFuture<$3.GetCatalogResponse> getCatalog(
     $3.GetCatalogRequest request, {
     $grpc.CallOptions? options,
@@ -298,6 +305,11 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/GetTreePower',
           ($2.GetTreePowerRequest value) => value.writeToBuffer(),
           $2.GetTreePowerResponse.fromBuffer);
+  static final _$getEquipmentDetails = $grpc.ClientMethod<
+          $2.GetEquipmentDetailsRequest, $2.GetEquipmentDetailsResponse>(
+      '/pob2.v1.SessionService/GetEquipmentDetails',
+      ($2.GetEquipmentDetailsRequest value) => value.writeToBuffer(),
+      $2.GetEquipmentDetailsResponse.fromBuffer);
   static final _$getCatalog =
       $grpc.ClientMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
           '/pob2.v1.SessionService/GetCatalog',
@@ -485,6 +497,15 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $2.GetTreePowerRequest.fromBuffer(value),
             ($2.GetTreePowerResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.GetEquipmentDetailsRequest,
+            $2.GetEquipmentDetailsResponse>(
+        'GetEquipmentDetails',
+        getEquipmentDetails_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetEquipmentDetailsRequest.fromBuffer(value),
+        ($2.GetEquipmentDetailsResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
         'GetCatalog',
         getCatalog_Pre,
@@ -707,6 +728,15 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$2.GetTreePowerResponse> getTreePower(
       $grpc.ServiceCall call, $2.GetTreePowerRequest request);
+
+  $async.Future<$2.GetEquipmentDetailsResponse> getEquipmentDetails_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetEquipmentDetailsRequest> $request) async {
+    return getEquipmentDetails($call, await $request);
+  }
+
+  $async.Future<$2.GetEquipmentDetailsResponse> getEquipmentDetails(
+      $grpc.ServiceCall call, $2.GetEquipmentDetailsRequest request);
 
   $async.Future<$3.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
       $async.Future<$3.GetCatalogRequest> $request) async {

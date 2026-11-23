@@ -36,6 +36,12 @@ func TestLuaTreePowerAcrossProcesses(t *testing.T) {
 			t.Fatalf("в отчёт попал узел вне фильтра: %+v", entry)
 		}
 	}
+	query.IncludeScene = true
+	colored, err := s.client.TreePower(s.ctx, "main", s.revision, query)
+	if err != nil || !reflect.DeepEqual(colored.Entries, view.Entries) {
+		t.Fatal("отрисовка изменила расчёт влияния", err)
+	}
+	checkTreeScene(t, colored.Scene)
 	checkTreePowerCancellation(t, s)
 	if !reflect.DeepEqual(supportSnapshot(t, s), before) {
 		t.Fatal("расчёт влияния изменил состояние сборки")

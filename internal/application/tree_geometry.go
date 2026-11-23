@@ -13,11 +13,11 @@ type TreeGeometryView struct {
 }
 
 type TreeGeometryCommands interface {
-	TreeGeometry(context.Context, string, uint64) (TreeGeometryView, error)
+	TreeGeometry(context.Context, string, uint64, bool) (TreeGeometryView, error)
 }
 
 type treeGeometryReader interface {
-	ReadTreeGeometry(context.Context, *build.Document) (build.TreeGeometry, error)
+	ReadTreeGeometry(context.Context, *build.Document, bool) (build.TreeGeometry, error)
 }
 
 func (s *Service) SupportsTreeGeometry() bool {
@@ -25,7 +25,7 @@ func (s *Service) SupportsTreeGeometry() bool {
 	return ok
 }
 
-func (s *Service) TreeGeometry(ctx context.Context, id string, expected uint64) (TreeGeometryView, error) {
+func (s *Service) TreeGeometry(ctx context.Context, id string, expected uint64, scene bool) (TreeGeometryView, error) {
 	doc, snapshot, err := s.buildDocumentAtRevision(ctx, id, expected)
 	if err != nil {
 		return TreeGeometryView{}, err
@@ -34,7 +34,7 @@ func (s *Service) TreeGeometry(ctx context.Context, id string, expected uint64) 
 	if !ok {
 		return TreeGeometryView{}, failure(InvalidArgument, "геометрия дерева доступна с исходным Lua PoB")
 	}
-	tree, err := reader.ReadTreeGeometry(ctx, doc)
+	tree, err := reader.ReadTreeGeometry(ctx, doc, scene)
 	if err != nil {
 		return TreeGeometryView{}, failure(CalculationFailure, err.Error())
 	}

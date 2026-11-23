@@ -3,9 +3,10 @@ package build
 import "fmt"
 
 type TreePowerQuery struct {
-	Metric      string `json:"metric,omitempty"`
-	MaxDistance uint32 `json:"max_distance,omitempty"`
-	Allocation  string `json:"allocation,omitempty"`
+	Metric       string `json:"metric,omitempty"`
+	MaxDistance  uint32 `json:"max_distance,omitempty"`
+	Allocation   string `json:"allocation,omitempty"`
+	IncludeScene bool   `json:"include_scene,omitempty"`
 }
 
 func (query TreePowerQuery) Validate() error {
@@ -24,6 +25,7 @@ type TreePower struct {
 	Metric  *TreePowerMetric  `json:"metric,omitempty"`
 	Metrics []TreePowerMetric `json:"metrics,omitempty"`
 	Entries []TreePowerEntry  `json:"entries,omitempty"`
+	Scene   *TreeScene        `json:"scene,omitempty"`
 }
 
 type TreePowerMetric struct {

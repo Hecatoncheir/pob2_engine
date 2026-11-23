@@ -171,6 +171,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	if preview, ok := s.commands.(interface{ SupportsEquipmentPreview() bool }); ok && preview.SupportsEquipmentPreview() {
 		capabilities = append(capabilities, "build.equipment_preview", "build.equipment_existing")
 	}
+	if reader, ok := s.commands.(interface{ SupportsEquipmentDetails() bool }); ok && reader.SupportsEquipmentDetails() {
+		capabilities = append(capabilities, "build.equipment_details")
+	}
 	if preview, ok := s.commands.(interface{ SupportsTreePreview() bool }); ok && preview.SupportsTreePreview() {
 		capabilities = append(capabilities, "build.tree_preview", "build.tree_attributes", "build.tree_allocation_modes", "build.tree_sockets")
 	}
