@@ -16,6 +16,10 @@ type equipmentValidator interface {
 	ValidateEquipment(context.Context, *build.Document, string) error
 }
 
+type jewelValidator interface {
+	ValidateJewel(context.Context, *build.Document, int) error
+}
+
 type treeEditor interface {
 	ResolveTreeEdit(context.Context, *build.Document, build.TreeNodeEdit) (build.PassiveChange, error)
 }
@@ -32,9 +36,19 @@ func (s *Service) SupportsEquipmentPreview() bool {
 	return ok
 }
 
+// SupportsJewelPreview сообщает, что оригинальный PoB проверяет самоцветы в гнёздах.
+func (s *Service) SupportsJewelPreview() bool {
+	_, ok := s.calculator.(jewelValidator)
+	return ok
+}
+
 func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, *build.PassiveChange, error) {
 	if edit.TreeNode != nil {
 		return s.editTree(ctx, doc, edit)
+	}
+	if edit.Jewel != nil {
+		updated, err := s.editJewel(ctx, doc, edit)
+		return updated, nil, err
 	}
 	data, err := s.editData(ctx)
 	if err != nil {
@@ -50,6 +64,25 @@ func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit bu
 		}
 	}
 	return updated, nil, nil
+}
+
+func (s *Service) editJewel(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, error) {
+	validator, ok := s.calculator.(jewelValidator)
+	if !ok {
+		return nil, fmt.Errorf("правка самоцвета доступна с оригинальным Lua PoB")
+	}
+	data, err := s.editData(ctx)
+	if err != nil {
+		return nil, err
+	}
+	updated, err := doc.Edited(edit, data)
+	if err != nil {
+		return nil, err
+	}
+	if err := validator.ValidateJewel(ctx, updated, edit.Jewel.NodeID); err != nil {
+		return nil, err
+	}
+	return updated, nil
 }
 
 func (s *Service) editTree(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, *build.PassiveChange, error) {

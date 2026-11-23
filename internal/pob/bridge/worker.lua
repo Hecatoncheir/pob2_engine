@@ -69,7 +69,19 @@ local function validateEquipment(request)
 	loadDocument(assert(request.xml))
 	local tab, name, id = build.itemsTab, request.slot, request.item_id or 0
 	local slot = tab.slots[name]
-	if not slot or not tab.activeItemSet[name] then
+	if request.node_id then
+		local node = build.spec.nodes[request.node_id]
+		if not node or node.type ~= "Socket" or node.ascendancyName or node.expansionJewel then
+			return { error = "Выберите обычное гнездо самоцвета" }
+		end
+		if not node.alloc then
+			return { error = "Сначала назначьте гнездо самоцвета" }
+		end
+		slot = tab:GetSocketAndJewelForNodeID(node.id)
+	elseif not tab.activeItemSet[name] then
+		slot = nil
+	end
+	if not slot then
 		return { error = "PoB не распознал слот экипировки " .. name }
 	end
 	local item = tab.items[id]

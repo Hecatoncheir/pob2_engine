@@ -598,6 +598,7 @@ class BuildModel extends $pb.GeneratedMessage {
     $core.Iterable<BuildIssue>? issues,
     $core.Iterable<$core.MapEntry<$core.int, $core.String>>? passiveAttributes,
     $core.Iterable<$core.MapEntry<$core.int, $core.String>>? passiveAllocations,
+    $core.Iterable<$core.MapEntry<$core.int, $core.int>>? passiveJewels,
   }) {
     final result = BuildModel._();
     if (targetVersion != null) result.targetVersion = targetVersion;
@@ -620,6 +621,7 @@ class BuildModel extends $pb.GeneratedMessage {
       result.passiveAttributes.addEntries(passiveAttributes);
     if (passiveAllocations != null)
       result.passiveAllocations.addEntries(passiveAllocations);
+    if (passiveJewels != null) result.passiveJewels.addEntries(passiveJewels);
     return result;
   }
 
@@ -677,6 +679,11 @@ class BuildModel extends $pb.GeneratedMessage {
         entryClassName: 'BuildModel.PassiveAllocationsEntry',
         keyFieldType: $pb.PbFieldType.OU3,
         valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('pob2.v1'))
+    ..m<$core.int, $core.int>(19, _omitFieldNames ? '' : 'passiveJewels',
+        entryClassName: 'BuildModel.PassiveJewelsEntry',
+        keyFieldType: $pb.PbFieldType.OU3,
+        valueFieldType: $pb.PbFieldType.OU3,
         packageName: const $pb.PackageName('pob2.v1'))
     ..hasRequiredFields = false;
 
@@ -817,6 +824,10 @@ class BuildModel extends $pb.GeneratedMessage {
   /// Режимы назначенных узлов в ветвях оружия активной спецификации.
   @$pb.TagNumber(18)
   $pb.PbMap<$core.int, $core.String> get passiveAllocations => $_getMap(17);
+
+  /// ID предметов в гнёздах активной спецификации по ID узлов.
+  @$pb.TagNumber(19)
+  $pb.PbMap<$core.int, $core.int> get passiveJewels => $_getMap(18);
 }
 
 class AppliedModifier extends $pb.GeneratedMessage {
@@ -1631,6 +1642,86 @@ class PassivesEdit extends $pb.GeneratedMessage {
   $pb.PbList<$core.int> get nodes => $_getList(0);
 }
 
+class JewelEdit extends $pb.GeneratedMessage {
+  factory JewelEdit({
+    $core.int? nodeId,
+    $core.int? itemId,
+    $core.String? raw,
+  }) {
+    final result = JewelEdit._();
+    if (nodeId != null) result.nodeId = nodeId;
+    if (itemId != null) result.itemId = itemId;
+    if (raw != null) result.raw = raw;
+    return result;
+  }
+
+  JewelEdit._();
+
+  factory JewelEdit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      JewelEdit()..mergeFromBuffer(data, registry);
+  factory JewelEdit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      JewelEdit()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'JewelEdit',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: JewelEdit.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
+    ..aI(2, _omitFieldNames ? '' : 'itemId', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(3, _omitFieldNames ? '' : 'raw')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  JewelEdit clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  JewelEdit copyWith(void Function(JewelEdit) updates) =>
+      super.copyWith((message) => updates(message as JewelEdit)) as JewelEdit;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use JewelEdit() / JewelEdit.new instead')
+  static JewelEdit create() => JewelEdit._();
+  static $pb.GeneratedMessage $_createMessage() => JewelEdit._();
+  @$core.override
+  JewelEdit createEmptyInstance() => JewelEdit._();
+  @$core.pragma('dart2js:noInline')
+  static JewelEdit getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<JewelEdit>(JewelEdit.$_createMessage);
+  static JewelEdit? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get nodeId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set nodeId($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasNodeId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearNodeId() => $_clearField(1);
+
+  /// Выберите предмет из сборки либо передайте его текст. Без обоих полей самоцвет снимается.
+  @$pb.TagNumber(2)
+  $core.int get itemId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set itemId($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasItemId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearItemId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get raw => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set raw($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasRaw() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRaw() => $_clearField(3);
+}
+
 class SelectionEdit extends $pb.GeneratedMessage {
   factory SelectionEdit({
     ActiveSets? sets,
@@ -1903,6 +1994,7 @@ enum BuildEdit_Operation {
   selection,
   addSupport,
   treeNode,
+  jewel,
   notSet
 }
 
@@ -1916,6 +2008,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     SelectionEdit? selection,
     AddSupportEdit? addSupport,
     TreeNodeEdit? treeNode,
+    JewelEdit? jewel,
   }) {
     final result = BuildEdit._();
     if (level != null) result.level = level;
@@ -1926,6 +2019,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     if (selection != null) result.selection = selection;
     if (addSupport != null) result.addSupport = addSupport;
     if (treeNode != null) result.treeNode = treeNode;
+    if (jewel != null) result.jewel = jewel;
     return result;
   }
 
@@ -1948,13 +2042,14 @@ class BuildEdit extends $pb.GeneratedMessage {
     6: BuildEdit_Operation.selection,
     7: BuildEdit_Operation.addSupport,
     8: BuildEdit_Operation.treeNode,
+    9: BuildEdit_Operation.jewel,
     0: BuildEdit_Operation.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BuildEdit',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
       createEmptyInstance: BuildEdit.$_createMessage)
-    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8])
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9])
     ..aOM<LevelEdit>(1, _omitFieldNames ? '' : 'level',
         subBuilder: LevelEdit.$_createMessage)
     ..aOM<ConfigEdit>(2, _omitFieldNames ? '' : 'config',
@@ -1971,6 +2066,8 @@ class BuildEdit extends $pb.GeneratedMessage {
         subBuilder: AddSupportEdit.$_createMessage)
     ..aOM<TreeNodeEdit>(8, _omitFieldNames ? '' : 'treeNode',
         subBuilder: TreeNodeEdit.$_createMessage)
+    ..aOM<JewelEdit>(9, _omitFieldNames ? '' : 'jewel',
+        subBuilder: JewelEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2001,6 +2098,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   @$pb.TagNumber(7)
   @$pb.TagNumber(8)
+  @$pb.TagNumber(9)
   BuildEdit_Operation whichOperation() =>
       _BuildEdit_OperationByTag[$_whichOneof(0)]!;
   @$pb.TagNumber(1)
@@ -2011,6 +2109,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   @$pb.TagNumber(7)
   @$pb.TagNumber(8)
+  @$pb.TagNumber(9)
   void clearOperation() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -2100,6 +2199,17 @@ class BuildEdit extends $pb.GeneratedMessage {
   void clearTreeNode() => $_clearField(8);
   @$pb.TagNumber(8)
   TreeNodeEdit ensureTreeNode() => $_ensure(7);
+
+  @$pb.TagNumber(9)
+  JewelEdit get jewel => $_getN(8);
+  @$pb.TagNumber(9)
+  set jewel(JewelEdit value) => $_setField(9, value);
+  @$pb.TagNumber(9)
+  $core.bool hasJewel() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearJewel() => $_clearField(9);
+  @$pb.TagNumber(9)
+  JewelEdit ensureJewel() => $_ensure(8);
 }
 
 class PassiveChange extends $pb.GeneratedMessage {

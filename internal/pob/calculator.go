@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
@@ -78,13 +79,27 @@ func (c *Calculator) ValidateEquipment(ctx context.Context, doc *build.Document,
 	if !ok {
 		return fmt.Errorf("слот %s отсутствует в выбранном наборе", slot)
 	}
+	return c.validateEquipment(ctx, doc, request{Slot: slot, ItemID: id})
+}
+
+// ValidateJewel проверяет выбранное гнездо и самоцвет через Lua PoB.
+func (c *Calculator) ValidateJewel(ctx context.Context, doc *build.Document, nodeID int) error {
+	model, err := doc.Model()
+	if err != nil {
+		return err
+	}
+	key := strconv.Itoa(nodeID)
+	return c.validateEquipment(ctx, doc, request{Slot: "Jewel " + key, NodeID: nodeID, ItemID: model.PassiveJewels[key]})
+}
+
+func (c *Calculator) validateEquipment(ctx context.Context, doc *build.Document, input request) error {
 	xml, err := doc.Export()
 	if err != nil {
 		return err
 	}
-	answer, err := c.run(ctx, &request{
-		Operation: "validate_equipment", XML: pobXML.Replace(string(xml)), Slot: slot, ItemID: id,
-	})
+	input.Operation = "validate_equipment"
+	input.XML = pobXML.Replace(string(xml))
+	answer, err := c.run(ctx, &input)
 	if err != nil {
 		return err
 	}

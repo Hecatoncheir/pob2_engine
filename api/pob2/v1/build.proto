@@ -76,6 +76,8 @@ message BuildModel {
   map<uint32, string> passive_attributes = 17;
   // Режимы назначенных узлов в ветвях оружия активной спецификации.
   map<uint32, string> passive_allocations = 18;
+  // ID предметов в гнёздах активной спецификации по ID узлов.
+  map<uint32, uint32> passive_jewels = 19;
 }
 
 enum CalculationStatus {
@@ -150,6 +152,13 @@ message PassivesEdit {
   repeated uint32 nodes = 1;
 }
 
+message JewelEdit {
+  uint32 node_id = 1;
+  // Выберите предмет из сборки либо передайте его текст. Без обоих полей самоцвет снимается.
+  uint32 item_id = 2;
+  string raw = 3;
+}
+
 message SelectionEdit {
   ActiveSets sets = 1;
   uint32 main_group = 2;
@@ -184,6 +193,7 @@ message BuildEdit {
     SelectionEdit selection = 6;
     AddSupportEdit add_support = 7;
     TreeNodeEdit tree_node = 8;
+    JewelEdit jewel = 9;
   }
 }
 

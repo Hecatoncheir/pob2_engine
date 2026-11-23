@@ -241,12 +241,21 @@ const BuildModel$json = {
       '6': '.pob2.v1.BuildModel.PassiveAllocationsEntry',
       '10': 'passiveAllocations'
     },
+    {
+      '1': 'passive_jewels',
+      '3': 19,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.BuildModel.PassiveJewelsEntry',
+      '10': 'passiveJewels'
+    },
   ],
   '3': [
     BuildModel_SlotsEntry$json,
     BuildModel_ConfigEntry$json,
     BuildModel_PassiveAttributesEntry$json,
-    BuildModel_PassiveAllocationsEntry$json
+    BuildModel_PassiveAllocationsEntry$json,
+    BuildModel_PassiveJewelsEntry$json
   ],
 };
 
@@ -297,6 +306,16 @@ const BuildModel_PassiveAllocationsEntry$json = {
   '7': {'7': true},
 };
 
+@$core.Deprecated('Use buildModelDescriptor instead')
+const BuildModel_PassiveJewelsEntry$json = {
+  '1': 'PassiveJewelsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 13, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
+  ],
+  '7': {'7': true},
+};
+
 /// Descriptor for `BuildModel`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List buildModelDescriptor = $convert.base64Decode(
     'CgpCdWlsZE1vZGVsEiUKDnRhcmdldF92ZXJzaW9uGAEgASgJUg10YXJnZXRWZXJzaW9uEiEKDH'
@@ -313,12 +332,15 @@ final $typed_data.Uint8List buildModelDescriptor = $convert.base64Decode(
     'lzc3VlcxJZChJwYXNzaXZlX2F0dHJpYnV0ZXMYESADKAsyKi5wb2IyLnYxLkJ1aWxkTW9kZWwu'
     'UGFzc2l2ZUF0dHJpYnV0ZXNFbnRyeVIRcGFzc2l2ZUF0dHJpYnV0ZXMSXAoTcGFzc2l2ZV9hbG'
     'xvY2F0aW9ucxgSIAMoCzIrLnBvYjIudjEuQnVpbGRNb2RlbC5QYXNzaXZlQWxsb2NhdGlvbnNF'
-    'bnRyeVIScGFzc2l2ZUFsbG9jYXRpb25zGjgKClNsb3RzRW50cnkSEAoDa2V5GAEgASgJUgNrZX'
-    'kSFAoFdmFsdWUYAiABKA1SBXZhbHVlOgI4ARpPCgtDb25maWdFbnRyeRIQCgNrZXkYASABKAlS'
-    'A2tleRIqCgV2YWx1ZRgCIAEoCzIULnBvYjIudjEuQ29uZmlnVmFsdWVSBXZhbHVlOgI4ARpECh'
-    'ZQYXNzaXZlQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoDVIDa2V5EhQKBXZhbHVlGAIgASgJ'
-    'UgV2YWx1ZToCOAEaRQoXUGFzc2l2ZUFsbG9jYXRpb25zRW50cnkSEAoDa2V5GAEgASgNUgNrZX'
-    'kSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AQ==');
+    'bnRyeVIScGFzc2l2ZUFsbG9jYXRpb25zEk0KDnBhc3NpdmVfamV3ZWxzGBMgAygLMiYucG9iMi'
+    '52MS5CdWlsZE1vZGVsLlBhc3NpdmVKZXdlbHNFbnRyeVINcGFzc2l2ZUpld2Vscxo4CgpTbG90'
+    'c0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgNUgV2YWx1ZToCOAEaTwoLQ2'
+    '9uZmlnRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSKgoFdmFsdWUYAiABKAsyFC5wb2IyLnYxLkNv'
+    'bmZpZ1ZhbHVlUgV2YWx1ZToCOAEaRAoWUGFzc2l2ZUF0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYAS'
+    'ABKA1SA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBGkUKF1Bhc3NpdmVBbGxvY2F0aW9u'
+    'c0VudHJ5EhAKA2tleRgBIAEoDVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAEaQAoSUG'
+    'Fzc2l2ZUpld2Vsc0VudHJ5EhAKA2tleRgBIAEoDVIDa2V5EhQKBXZhbHVlGAIgASgNUgV2YWx1'
+    'ZToCOAE=');
 
 @$core.Deprecated('Use appliedModifierDescriptor instead')
 const AppliedModifier$json = {
@@ -544,6 +566,21 @@ const PassivesEdit$json = {
 final $typed_data.Uint8List passivesEditDescriptor =
     $convert.base64Decode('CgxQYXNzaXZlc0VkaXQSFAoFbm9kZXMYASADKA1SBW5vZGVz');
 
+@$core.Deprecated('Use jewelEditDescriptor instead')
+const JewelEdit$json = {
+  '1': 'JewelEdit',
+  '2': [
+    {'1': 'node_id', '3': 1, '4': 1, '5': 13, '10': 'nodeId'},
+    {'1': 'item_id', '3': 2, '4': 1, '5': 13, '10': 'itemId'},
+    {'1': 'raw', '3': 3, '4': 1, '5': 9, '10': 'raw'},
+  ],
+};
+
+/// Descriptor for `JewelEdit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List jewelEditDescriptor = $convert.base64Decode(
+    'CglKZXdlbEVkaXQSFwoHbm9kZV9pZBgBIAEoDVIGbm9kZUlkEhcKB2l0ZW1faWQYAiABKA1SBm'
+    'l0ZW1JZBIQCgNyYXcYAyABKAlSA3Jhdw==');
+
 @$core.Deprecated('Use selectionEditDescriptor instead')
 const SelectionEdit$json = {
   '1': 'SelectionEdit',
@@ -675,6 +712,15 @@ const BuildEdit$json = {
       '9': 0,
       '10': 'treeNode'
     },
+    {
+      '1': 'jewel',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.JewelEdit',
+      '9': 0,
+      '10': 'jewel'
+    },
   ],
   '8': [
     {'1': 'operation'},
@@ -690,7 +736,8 @@ final $typed_data.Uint8List buildEditDescriptor = $convert.base64Decode(
     'YjIudjEuUGFzc2l2ZXNFZGl0SABSCHBhc3NpdmVzEjYKCXNlbGVjdGlvbhgGIAEoCzIWLnBvYj'
     'IudjEuU2VsZWN0aW9uRWRpdEgAUglzZWxlY3Rpb24SOgoLYWRkX3N1cHBvcnQYByABKAsyFy5w'
     'b2IyLnYxLkFkZFN1cHBvcnRFZGl0SABSCmFkZFN1cHBvcnQSNAoJdHJlZV9ub2RlGAggASgLMh'
-    'UucG9iMi52MS5UcmVlTm9kZUVkaXRIAFIIdHJlZU5vZGVCCwoJb3BlcmF0aW9u');
+    'UucG9iMi52MS5UcmVlTm9kZUVkaXRIAFIIdHJlZU5vZGUSKgoFamV3ZWwYCSABKAsyEi5wb2Iy'
+    'LnYxLkpld2VsRWRpdEgAUgVqZXdlbEILCglvcGVyYXRpb24=');
 
 @$core.Deprecated('Use passiveChangeDescriptor instead')
 const PassiveChange$json = {
