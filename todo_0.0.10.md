@@ -31,5 +31,8 @@
 
 ## Выпуск
 
-- [ ] Опубликовать кандидата и закрепить его Dart API в PoB II.
-- [ ] Провести приёмку кандидата на Windows, Linux и macOS.
+- [x] Опубликовать [v0.0.10-rc.1](https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.10-rc.1)
+  и закрепить его Dart API в PoB II.
+- [x] Провести [приёмку кандидата](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45104449521)
+  на Windows, Linux и macOS.
+- [ ] Выпустить стабильную версию и проверить скачанные бинарники.
