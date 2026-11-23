@@ -129,6 +129,27 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getBuildReport, request, options: options);
   }
 
+  $grpc.ResponseFuture<$2.GetTreePowerResponse> getTreePower(
+    $2.GetTreePowerRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getTreePower, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.GetEquipmentDetailsResponse> getEquipmentDetails(
+    $2.GetEquipmentDetailsRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getEquipmentDetails, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.GetTreeTextureResponse> getTreeTexture(
+    $2.GetTreeTextureRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getTreeTexture, request, options: options);
+  }
+
   $grpc.ResponseFuture<$3.GetCatalogResponse> getCatalog(
     $3.GetCatalogRequest request, {
     $grpc.CallOptions? options,
@@ -286,6 +307,21 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/GetBuildReport',
           ($2.GetBuildReportRequest value) => value.writeToBuffer(),
           $2.GetBuildReportResponse.fromBuffer);
+  static final _$getTreePower =
+      $grpc.ClientMethod<$2.GetTreePowerRequest, $2.GetTreePowerResponse>(
+          '/pob2.v1.SessionService/GetTreePower',
+          ($2.GetTreePowerRequest value) => value.writeToBuffer(),
+          $2.GetTreePowerResponse.fromBuffer);
+  static final _$getEquipmentDetails = $grpc.ClientMethod<
+          $2.GetEquipmentDetailsRequest, $2.GetEquipmentDetailsResponse>(
+      '/pob2.v1.SessionService/GetEquipmentDetails',
+      ($2.GetEquipmentDetailsRequest value) => value.writeToBuffer(),
+      $2.GetEquipmentDetailsResponse.fromBuffer);
+  static final _$getTreeTexture =
+      $grpc.ClientMethod<$2.GetTreeTextureRequest, $2.GetTreeTextureResponse>(
+          '/pob2.v1.SessionService/GetTreeTexture',
+          ($2.GetTreeTextureRequest value) => value.writeToBuffer(),
+          $2.GetTreeTextureResponse.fromBuffer);
   static final _$getCatalog =
       $grpc.ClientMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
           '/pob2.v1.SessionService/GetCatalog',
@@ -464,6 +500,33 @@ abstract class SessionServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $2.GetBuildReportRequest.fromBuffer(value),
         ($2.GetBuildReportResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$2.GetTreePowerRequest, $2.GetTreePowerResponse>(
+            'GetTreePower',
+            getTreePower_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $2.GetTreePowerRequest.fromBuffer(value),
+            ($2.GetTreePowerResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.GetEquipmentDetailsRequest,
+            $2.GetEquipmentDetailsResponse>(
+        'GetEquipmentDetails',
+        getEquipmentDetails_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetEquipmentDetailsRequest.fromBuffer(value),
+        ($2.GetEquipmentDetailsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.GetTreeTextureRequest,
+            $2.GetTreeTextureResponse>(
+        'GetTreeTexture',
+        getTreeTexture_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetTreeTextureRequest.fromBuffer(value),
+        ($2.GetTreeTextureResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
         'GetCatalog',
         getCatalog_Pre,
@@ -677,6 +740,33 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$2.GetBuildReportResponse> getBuildReport(
       $grpc.ServiceCall call, $2.GetBuildReportRequest request);
+
+  $async.Future<$2.GetTreePowerResponse> getTreePower_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetTreePowerRequest> $request) async {
+    return getTreePower($call, await $request);
+  }
+
+  $async.Future<$2.GetTreePowerResponse> getTreePower(
+      $grpc.ServiceCall call, $2.GetTreePowerRequest request);
+
+  $async.Future<$2.GetEquipmentDetailsResponse> getEquipmentDetails_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetEquipmentDetailsRequest> $request) async {
+    return getEquipmentDetails($call, await $request);
+  }
+
+  $async.Future<$2.GetEquipmentDetailsResponse> getEquipmentDetails(
+      $grpc.ServiceCall call, $2.GetEquipmentDetailsRequest request);
+
+  $async.Future<$2.GetTreeTextureResponse> getTreeTexture_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetTreeTextureRequest> $request) async {
+    return getTreeTexture($call, await $request);
+  }
+
+  $async.Future<$2.GetTreeTextureResponse> getTreeTexture(
+      $grpc.ServiceCall call, $2.GetTreeTextureRequest request);
 
   $async.Future<$3.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
       $async.Future<$3.GetCatalogRequest> $request) async {

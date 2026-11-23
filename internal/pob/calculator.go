@@ -27,6 +27,8 @@ type Calculator struct {
 	installation Installation
 	layout       Layout
 	gate         chan struct{}
+	powerGate    chan struct{}
+	treeTextures treeTextureCache
 	worker       *worker
 	data         *gamedata.Dataset
 }
@@ -39,7 +41,7 @@ func NewCalculator(installation Installation) (*Calculator, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Calculator{installation: installation, layout: layout, gate: make(chan struct{}, 1)}, nil
+	return &Calculator{installation: installation, layout: layout, gate: make(chan struct{}, 1), powerGate: make(chan struct{}, 1)}, nil
 }
 
 func (c *Calculator) Close() error {
@@ -145,12 +147,16 @@ func (i Installation) dataID() string {
 }
 
 func (c *Calculator) acquire(ctx context.Context) (func(), error) {
+	return acquireSlot(ctx, c.gate)
+}
+
+func acquireSlot(ctx context.Context, slot chan struct{}) (func(), error) {
 	select {
 	case <-ctx.Done():
 		return nil, ctx.Err()
-	case c.gate <- struct{}{}:
+	case slot <- struct{}{}:
 	}
-	return func() { <-c.gate }, nil
+	return func() { <-slot }, nil
 }
 
 func (c *Calculator) run(ctx context.Context, value *request) (response, error) {
@@ -237,41 +243,46 @@ func (c *Calculator) stop() {
 }
 
 type response struct {
-	Ready          bool                     `json:"ready"`
-	EquipmentValid bool                     `json:"equipment_valid"`
-	Skill          string                   `json:"skill"`
-	Mode           string                   `json:"mode"`
-	Stats          map[string]float64       `json:"stats"`
-	Warnings       []string                 `json:"warnings"`
-	Unsupported    []string                 `json:"unsupported"`
-	Error          string                   `json:"error"`
-	Catalog        *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
-	Issues         []build.Issue            `json:"issues,omitempty"`
-	TreeEdit       *build.PassiveChange     `json:"tree_edit,omitempty"`
-	TreeIdentity   *build.TreeIdentity      `json:"tree_identity,omitempty"`
-	TreeClass      *build.TreeClassChange   `json:"tree_class,omitempty"`
-	TreeGeometry   *build.TreeGeometry      `json:"tree_geometry,omitempty"`
-	TreeTooltip    *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
-	BuildReport    json.RawMessage          `json:"build_report,omitempty"`
-	SkillChoice    *build.SkillChoiceChange `json:"skill_choice,omitempty"`
+	Ready            bool                     `json:"ready"`
+	EquipmentValid   bool                     `json:"equipment_valid"`
+	Skill            string                   `json:"skill"`
+	Mode             string                   `json:"mode"`
+	Stats            map[string]float64       `json:"stats"`
+	Warnings         []string                 `json:"warnings"`
+	Unsupported      []string                 `json:"unsupported"`
+	Error            string                   `json:"error"`
+	Catalog          *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
+	Issues           []build.Issue            `json:"issues,omitempty"`
+	TreeEdit         *build.PassiveChange     `json:"tree_edit,omitempty"`
+	TreeIdentity     *build.TreeIdentity      `json:"tree_identity,omitempty"`
+	TreeClass        *build.TreeClassChange   `json:"tree_class,omitempty"`
+	TreeGeometry     *build.TreeGeometry      `json:"tree_geometry,omitempty"`
+	TreeTooltip      *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
+	BuildReport      json.RawMessage          `json:"build_report,omitempty"`
+	SkillChoice      *build.SkillChoiceChange `json:"skill_choice,omitempty"`
+	TreePower        *build.TreePower         `json:"tree_power,omitempty"`
+	EquipmentDetails json.RawMessage          `json:"equipment_details,omitempty"`
 }
 
 type request struct {
-	XML            string                   `json:"xml,omitempty"`
-	BuildName      string                   `json:"build_name,omitempty"`
-	Operation      string                   `json:"operation,omitempty"`
-	Slot           string                   `json:"slot,omitempty"`
-	ItemID         int                      `json:"item_id,omitempty"`
-	NodeID         int                      `json:"node_id,omitempty"`
-	Compare        bool                     `json:"compare,omitempty"`
-	Validate       bool                     `json:"validate,omitempty"`
-	Action         string                   `json:"action,omitempty"`
-	Attribute      build.PassiveAttribute   `json:"attribute,omitempty"`
-	AllocationMode build.TreeAllocationMode `json:"allocation_mode,omitempty"`
-	TreeSpec       int                      `json:"tree_spec,omitempty"`
-	TreeVersion    string                   `json:"tree_version,omitempty"`
-	TreeClass      *build.TreeClassEdit     `json:"tree_class,omitempty"`
-	SkillChoice    *build.SkillChoiceEdit   `json:"skill_choice,omitempty"`
+	XML              string                       `json:"xml,omitempty"`
+	BuildName        string                       `json:"build_name,omitempty"`
+	Operation        string                       `json:"operation,omitempty"`
+	Slot             string                       `json:"slot,omitempty"`
+	ItemID           int                          `json:"item_id,omitempty"`
+	NodeID           int                          `json:"node_id,omitempty"`
+	Compare          bool                         `json:"compare,omitempty"`
+	Validate         bool                         `json:"validate,omitempty"`
+	IncludeScene     bool                         `json:"include_scene,omitempty"`
+	Action           string                       `json:"action,omitempty"`
+	Attribute        build.PassiveAttribute       `json:"attribute,omitempty"`
+	AllocationMode   build.TreeAllocationMode     `json:"allocation_mode,omitempty"`
+	TreeSpec         int                          `json:"tree_spec,omitempty"`
+	TreeVersion      string                       `json:"tree_version,omitempty"`
+	TreeClass        *build.TreeClassEdit         `json:"tree_class,omitempty"`
+	SkillChoice      *build.SkillChoiceEdit       `json:"skill_choice,omitempty"`
+	TreePower        *build.TreePowerQuery        `json:"tree_power,omitempty"`
+	EquipmentDetails *build.EquipmentDetailsQuery `json:"equipment_details,omitempty"`
 }
 
 type workerReply struct {

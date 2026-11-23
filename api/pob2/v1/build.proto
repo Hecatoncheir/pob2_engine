@@ -195,6 +195,7 @@ message GetTreeGeometryRequest {
   string session_id = 1;
   // Ноль читает дерево последнего снимка сессии.
   uint64 expected_revision = 2;
+  bool include_scene = 3;
 }
 
 message GetTreeGeometryResponse {
@@ -202,6 +203,7 @@ message GetTreeGeometryResponse {
   string version = 2;
   repeated TreeGeometryNode nodes = 3;
   repeated TreeGeometryEdge edges = 4;
+  TreeScene scene = 5;
 }
 
 message TreeGeometryNode {
@@ -260,6 +262,94 @@ message SkillChoiceEdit {
   // groups, skills, parts или stat_sets.
   string control = 1;
   uint32 option_id = 2;
+}
+
+message GetTreePowerRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  // Пустая строка запрашивает каталог характеристик.
+  string metric = 3;
+  uint32 max_distance = 4;
+  string allocation = 5;
+  bool include_scene = 6;
+}
+
+message GetTreePowerResponse {
+  uint64 revision = 1;
+  TreePowerMetric metric = 2;
+  repeated TreePowerMetric metrics = 3;
+  repeated TreePowerEntry entries = 4;
+  TreeScene scene = 5;
+}
+
+message TreePowerMetric {
+  string id = 1;
+  string label = 2;
+}
+
+message TreePowerEntry {
+  uint32 id = 1;
+  string name = 2;
+  string kind = 3;
+  bool allocated = 4;
+  uint32 distance = 5;
+  double power = 6;
+  double path_power = 7;
+  string power_text = 8;
+  string path_power_text = 9;
+}
+
+message TreeScene {
+  double width = 1;
+  double height = 2;
+  double scale = 3;
+  double offset_x = 4;
+  double offset_y = 5;
+  repeated TreeDrawCommand commands = 6;
+  string asset_id = 7;
+}
+
+message TreeDrawCommand {
+  // Путь текстуры внутри установки PoB. Пустой путь задаёт однотонный цвет.
+  string file = 1;
+  uint32 index = 2;
+  repeated double positions = 3;
+  repeated double uv = 4;
+  repeated double color = 5;
+  string blend = 6;
+  bool clamp = 7;
+}
+
+message GetTreeTextureRequest {
+  // Ссылка из команды отрисовки. Пустое поле возвращает белый пиксель.
+  string file = 1;
+  // Слой DDS, начиная с единицы.
+  uint32 index = 2;
+  uint32 target_size = 3;
+}
+
+message GetTreeTextureResponse {
+  uint32 width = 1;
+  uint32 height = 2;
+  uint32 mip_level = 3;
+  bytes png = 4;
+}
+
+message GetEquipmentDetailsRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  string slot = 3;
+  oneof item {
+    uint32 item_id = 4;
+    string raw = 5;
+  }
+  bool compare = 6;
+}
+
+message GetEquipmentDetailsResponse {
+  uint64 revision = 1;
+  // UTF-8 JSON с подсказкой, подходящими слотами и строками сравнения PoB.
+  bytes details_json = 2;
 }
 
 message BuildEdit {

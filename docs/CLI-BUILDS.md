@@ -121,6 +121,16 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 с кодом `4`. Через MCP передавайте `edit.equipment` в `compare_build` и
 `edit_build`, через gRPC — `EquipmentEdit` в `CompareBuild` и `ApplyBuild`.
 
+Штатные подсказки предмета, совместимые слоты и строки сравнения Lua можно
+прочитать по ID из сборки или тексту из `--file`. Для `--compare` нужен
+слот активного комплекта оружия.
+
+```shell
+pob2-engine equipment-details --profile main --session build-1 --revision 3 --slot 'Weapon 1' --item-id 1 --compare
+```
+
+MCP предоставляет `get_equipment_details`, gRPC — `GetEquipmentDetails`.
+
 ### Правка пассива
 
 Получите ID из каталога `passives`. Сохраните, например,
@@ -169,6 +179,13 @@ pob2-engine tree-geometry --profile main --session build-1 --revision 3
 ```
 
 MCP предоставляет `get_tree_geometry`, gRPC — `GetTreeGeometry`.
+Флаг `--scene` или поле `include_scene` добавляет команды исходной
+отрисовки с координатами, слоями текстур и цветами.
+
+Ссылку `file` и слой `index` из команды отрисовки можно передать в
+`tree-texture`. Целевой размер выбирает подходящий уровень DDS. CLI
+возвращает PNG в Base64, MCP `get_tree_texture` — изображение, gRPC
+`GetTreeTexture` — байты PNG и размеры.
 
 Текст подсказки, путь и стоимость узла доступны по его ID. Флаг
 `--compare` добавляет изменение характеристик по расчёту PoB.
@@ -179,8 +196,9 @@ pob2-engine tree-node-tooltip --profile main --session build-1 --revision 3 --no
 
 MCP предоставляет `get_tree_node_tooltip`, gRPC — `GetTreeNodeTooltip`.
 
-Штатный отчёт Lua включает группы умений, предметы и слоты, условия,
-характеристики, предупреждения, заметки и варианты дерева.
+Штатный отчёт Lua включает группы умений, предметы и слоты, условия
+с описаниями и вариантами выбора, характеристики, предупреждения, заметки
+и варианты дерева.
 
 ```shell
 pob2-engine build-report --profile main --session build-1 --revision 3
@@ -196,6 +214,17 @@ MCP предоставляет `get_build_report`, gRPC — `GetBuildReport`. В
 `parts`. Передайте правку в `build compare --edit` для предпросмотра или
 в `build edit` для записи с ожидаемой ревизией. MCP использует
 `edit.skill_choice`, gRPC — `BuildEdit.skill_choice`.
+
+Поиск влияния узлов использует штатный отчёт PoB. Запрос без `--metric`
+читает каталог характеристик. `--allocation` принимает `unallocated`,
+`allocated` или `all`. Нулевое расстояние снимает ограничение.
+
+```shell
+pob2-engine tree-power --profile main --session build-1 --revision 3 --metric Life --max-distance 8
+```
+
+MCP предоставляет `get_tree_power`, gRPC — `GetTreePower`.
+Флаг `--scene` или поле `include_scene` добавляет команды тепловой карты.
 
 ## Резервные копии
 

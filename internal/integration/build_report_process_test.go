@@ -61,4 +61,8 @@ func checkWorkshopReport(t *testing.T, report map[string]any) {
 	if !strings.Contains(fmt.Sprint(report["config"]), "enemyLevel:40") || !strings.Contains(fmt.Sprint(report["sets"]), "Ведьма") {
 		t.Fatal("из отчёта пропали условия или спецификация дерева")
 	}
+	definitions, ok := report["conditionDefinitions"].([]any)
+	if !ok || len(definitions) < 20 || !strings.Contains(fmt.Sprint(definitions), "id:enemyLevel") {
+		t.Fatal("в отчёте нет каталога условий Lua")
+	}
 }

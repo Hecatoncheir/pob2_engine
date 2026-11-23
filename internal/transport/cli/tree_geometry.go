@@ -10,6 +10,7 @@ func (r runner) treeGeometry(ctx context.Context, args []string) error {
 	connection := connectFlagsWithTimeout(fs, buildTimeout)
 	id := fs.String("session", "", "явно выбранный session_id")
 	revision := fs.Uint64("revision", 0, "ожидаемая ревизия сессии")
+	scene := fs.Bool("scene", false, "включить команды отрисовки PoB")
 	if err := parse(fs, args); err != nil {
 		return err
 	}
@@ -23,7 +24,7 @@ func (r runner) treeGeometry(ctx context.Context, args []string) error {
 		return err
 	}
 	defer client.Close()
-	view, err := client.TreeGeometry(ctx, *id, *revision)
+	view, err := client.TreeGeometry(ctx, *id, *revision, *scene)
 	if err != nil {
 		return err
 	}

@@ -32,6 +32,9 @@ const (
 	SessionService_GetTreeGeometry_FullMethodName      = "/pob2.v1.SessionService/GetTreeGeometry"
 	SessionService_GetTreeNodeTooltip_FullMethodName   = "/pob2.v1.SessionService/GetTreeNodeTooltip"
 	SessionService_GetBuildReport_FullMethodName       = "/pob2.v1.SessionService/GetBuildReport"
+	SessionService_GetTreePower_FullMethodName         = "/pob2.v1.SessionService/GetTreePower"
+	SessionService_GetEquipmentDetails_FullMethodName  = "/pob2.v1.SessionService/GetEquipmentDetails"
+	SessionService_GetTreeTexture_FullMethodName       = "/pob2.v1.SessionService/GetTreeTexture"
 	SessionService_GetCatalog_FullMethodName           = "/pob2.v1.SessionService/GetCatalog"
 	SessionService_PreviewSupport_FullMethodName       = "/pob2.v1.SessionService/PreviewSupport"
 	SessionService_ExportBuild_FullMethodName          = "/pob2.v1.SessionService/ExportBuild"
@@ -65,6 +68,9 @@ type SessionServiceClient interface {
 	GetTreeGeometry(ctx context.Context, in *GetTreeGeometryRequest, opts ...grpc.CallOption) (*GetTreeGeometryResponse, error)
 	GetTreeNodeTooltip(ctx context.Context, in *GetTreeNodeTooltipRequest, opts ...grpc.CallOption) (*GetTreeNodeTooltipResponse, error)
 	GetBuildReport(ctx context.Context, in *GetBuildReportRequest, opts ...grpc.CallOption) (*GetBuildReportResponse, error)
+	GetTreePower(ctx context.Context, in *GetTreePowerRequest, opts ...grpc.CallOption) (*GetTreePowerResponse, error)
+	GetEquipmentDetails(ctx context.Context, in *GetEquipmentDetailsRequest, opts ...grpc.CallOption) (*GetEquipmentDetailsResponse, error)
+	GetTreeTexture(ctx context.Context, in *GetTreeTextureRequest, opts ...grpc.CallOption) (*GetTreeTextureResponse, error)
 	GetCatalog(ctx context.Context, in *GetCatalogRequest, opts ...grpc.CallOption) (*GetCatalogResponse, error)
 	PreviewSupport(ctx context.Context, in *PreviewSupportRequest, opts ...grpc.CallOption) (*PreviewSupportResponse, error)
 	ExportBuild(ctx context.Context, in *ExportBuildRequest, opts ...grpc.CallOption) (*ExportBuildResponse, error)
@@ -220,6 +226,36 @@ func (c *sessionServiceClient) GetBuildReport(ctx context.Context, in *GetBuildR
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetBuildReportResponse)
 	err := c.cc.Invoke(ctx, SessionService_GetBuildReport_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) GetTreePower(ctx context.Context, in *GetTreePowerRequest, opts ...grpc.CallOption) (*GetTreePowerResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTreePowerResponse)
+	err := c.cc.Invoke(ctx, SessionService_GetTreePower_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) GetEquipmentDetails(ctx context.Context, in *GetEquipmentDetailsRequest, opts ...grpc.CallOption) (*GetEquipmentDetailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEquipmentDetailsResponse)
+	err := c.cc.Invoke(ctx, SessionService_GetEquipmentDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) GetTreeTexture(ctx context.Context, in *GetTreeTextureRequest, opts ...grpc.CallOption) (*GetTreeTextureResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTreeTextureResponse)
+	err := c.cc.Invoke(ctx, SessionService_GetTreeTexture_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -392,6 +428,9 @@ type SessionServiceServer interface {
 	GetTreeGeometry(context.Context, *GetTreeGeometryRequest) (*GetTreeGeometryResponse, error)
 	GetTreeNodeTooltip(context.Context, *GetTreeNodeTooltipRequest) (*GetTreeNodeTooltipResponse, error)
 	GetBuildReport(context.Context, *GetBuildReportRequest) (*GetBuildReportResponse, error)
+	GetTreePower(context.Context, *GetTreePowerRequest) (*GetTreePowerResponse, error)
+	GetEquipmentDetails(context.Context, *GetEquipmentDetailsRequest) (*GetEquipmentDetailsResponse, error)
+	GetTreeTexture(context.Context, *GetTreeTextureRequest) (*GetTreeTextureResponse, error)
 	GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error)
 	PreviewSupport(context.Context, *PreviewSupportRequest) (*PreviewSupportResponse, error)
 	ExportBuild(context.Context, *ExportBuildRequest) (*ExportBuildResponse, error)
@@ -452,6 +491,15 @@ func (UnimplementedSessionServiceServer) GetTreeNodeTooltip(context.Context, *Ge
 }
 func (UnimplementedSessionServiceServer) GetBuildReport(context.Context, *GetBuildReportRequest) (*GetBuildReportResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetBuildReport not implemented")
+}
+func (UnimplementedSessionServiceServer) GetTreePower(context.Context, *GetTreePowerRequest) (*GetTreePowerResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTreePower not implemented")
+}
+func (UnimplementedSessionServiceServer) GetEquipmentDetails(context.Context, *GetEquipmentDetailsRequest) (*GetEquipmentDetailsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEquipmentDetails not implemented")
+}
+func (UnimplementedSessionServiceServer) GetTreeTexture(context.Context, *GetTreeTextureRequest) (*GetTreeTextureResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTreeTexture not implemented")
 }
 func (UnimplementedSessionServiceServer) GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCatalog not implemented")
@@ -737,6 +785,60 @@ func _SessionService_GetBuildReport_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SessionService_GetTreePower_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTreePowerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).GetTreePower(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_GetTreePower_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).GetTreePower(ctx, req.(*GetTreePowerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_GetEquipmentDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEquipmentDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).GetEquipmentDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_GetEquipmentDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).GetEquipmentDetails(ctx, req.(*GetEquipmentDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionService_GetTreeTexture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTreeTextureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).GetTreeTexture(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_GetTreeTexture_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).GetTreeTexture(ctx, req.(*GetTreeTextureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SessionService_GetCatalog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCatalogRequest)
 	if err := dec(in); err != nil {
@@ -986,6 +1088,18 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBuildReport",
 			Handler:    _SessionService_GetBuildReport_Handler,
+		},
+		{
+			MethodName: "GetTreePower",
+			Handler:    _SessionService_GetTreePower_Handler,
+		},
+		{
+			MethodName: "GetEquipmentDetails",
+			Handler:    _SessionService_GetEquipmentDetails_Handler,
+		},
+		{
+			MethodName: "GetTreeTexture",
+			Handler:    _SessionService_GetTreeTexture_Handler,
 		},
 		{
 			MethodName: "GetCatalog",

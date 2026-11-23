@@ -665,14 +665,15 @@ const GetTreeGeometryRequest$json = {
       '5': 4,
       '10': 'expectedRevision'
     },
+    {'1': 'include_scene', '3': 3, '4': 1, '5': 8, '10': 'includeScene'},
   ],
 };
 
 /// Descriptor for `GetTreeGeometryRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getTreeGeometryRequestDescriptor =
-    $convert.base64Decode(
-        'ChZHZXRUcmVlR2VvbWV0cnlSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZB'
-        'IrChFleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbg==');
+final $typed_data.Uint8List getTreeGeometryRequestDescriptor = $convert.base64Decode(
+    'ChZHZXRUcmVlR2VvbWV0cnlSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZB'
+    'IrChFleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbhIjCg1pbmNsdWRl'
+    'X3NjZW5lGAMgASgIUgxpbmNsdWRlU2NlbmU=');
 
 @$core.Deprecated('Use getTreeGeometryResponseDescriptor instead')
 const GetTreeGeometryResponse$json = {
@@ -696,6 +697,14 @@ const GetTreeGeometryResponse$json = {
       '6': '.pob2.v1.TreeGeometryEdge',
       '10': 'edges'
     },
+    {
+      '1': 'scene',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.TreeScene',
+      '10': 'scene'
+    },
   ],
 };
 
@@ -704,7 +713,7 @@ final $typed_data.Uint8List getTreeGeometryResponseDescriptor = $convert.base64D
     'ChdHZXRUcmVlR2VvbWV0cnlSZXNwb25zZRIaCghyZXZpc2lvbhgBIAEoBFIIcmV2aXNpb24SGA'
     'oHdmVyc2lvbhgCIAEoCVIHdmVyc2lvbhIvCgVub2RlcxgDIAMoCzIZLnBvYjIudjEuVHJlZUdl'
     'b21ldHJ5Tm9kZVIFbm9kZXMSLwoFZWRnZXMYBCADKAsyGS5wb2IyLnYxLlRyZWVHZW9tZXRyeU'
-    'VkZ2VSBWVkZ2Vz');
+    'VkZ2VSBWVkZ2VzEigKBXNjZW5lGAUgASgLMhIucG9iMi52MS5UcmVlU2NlbmVSBXNjZW5l');
 
 @$core.Deprecated('Use treeGeometryNodeDescriptor instead')
 const TreeGeometryNode$json = {
@@ -859,6 +868,244 @@ const SkillChoiceEdit$json = {
 final $typed_data.Uint8List skillChoiceEditDescriptor = $convert.base64Decode(
     'Cg9Ta2lsbENob2ljZUVkaXQSGAoHY29udHJvbBgBIAEoCVIHY29udHJvbBIbCglvcHRpb25faW'
     'QYAiABKA1SCG9wdGlvbklk');
+
+@$core.Deprecated('Use getTreePowerRequestDescriptor instead')
+const GetTreePowerRequest$json = {
+  '1': 'GetTreePowerRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'metric', '3': 3, '4': 1, '5': 9, '10': 'metric'},
+    {'1': 'max_distance', '3': 4, '4': 1, '5': 13, '10': 'maxDistance'},
+    {'1': 'allocation', '3': 5, '4': 1, '5': 9, '10': 'allocation'},
+    {'1': 'include_scene', '3': 6, '4': 1, '5': 8, '10': 'includeScene'},
+  ],
+};
+
+/// Descriptor for `GetTreePowerRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreePowerRequestDescriptor = $convert.base64Decode(
+    'ChNHZXRUcmVlUG93ZXJSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIrCh'
+    'FleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbhIWCgZtZXRyaWMYAyAB'
+    'KAlSBm1ldHJpYxIhCgxtYXhfZGlzdGFuY2UYBCABKA1SC21heERpc3RhbmNlEh4KCmFsbG9jYX'
+    'Rpb24YBSABKAlSCmFsbG9jYXRpb24SIwoNaW5jbHVkZV9zY2VuZRgGIAEoCFIMaW5jbHVkZVNj'
+    'ZW5l');
+
+@$core.Deprecated('Use getTreePowerResponseDescriptor instead')
+const GetTreePowerResponse$json = {
+  '1': 'GetTreePowerResponse',
+  '2': [
+    {'1': 'revision', '3': 1, '4': 1, '5': 4, '10': 'revision'},
+    {
+      '1': 'metric',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.TreePowerMetric',
+      '10': 'metric'
+    },
+    {
+      '1': 'metrics',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreePowerMetric',
+      '10': 'metrics'
+    },
+    {
+      '1': 'entries',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreePowerEntry',
+      '10': 'entries'
+    },
+    {
+      '1': 'scene',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.TreeScene',
+      '10': 'scene'
+    },
+  ],
+};
+
+/// Descriptor for `GetTreePowerResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreePowerResponseDescriptor = $convert.base64Decode(
+    'ChRHZXRUcmVlUG93ZXJSZXNwb25zZRIaCghyZXZpc2lvbhgBIAEoBFIIcmV2aXNpb24SMAoGbW'
+    'V0cmljGAIgASgLMhgucG9iMi52MS5UcmVlUG93ZXJNZXRyaWNSBm1ldHJpYxIyCgdtZXRyaWNz'
+    'GAMgAygLMhgucG9iMi52MS5UcmVlUG93ZXJNZXRyaWNSB21ldHJpY3MSMQoHZW50cmllcxgEIA'
+    'MoCzIXLnBvYjIudjEuVHJlZVBvd2VyRW50cnlSB2VudHJpZXMSKAoFc2NlbmUYBSABKAsyEi5w'
+    'b2IyLnYxLlRyZWVTY2VuZVIFc2NlbmU=');
+
+@$core.Deprecated('Use treePowerMetricDescriptor instead')
+const TreePowerMetric$json = {
+  '1': 'TreePowerMetric',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    {'1': 'label', '3': 2, '4': 1, '5': 9, '10': 'label'},
+  ],
+};
+
+/// Descriptor for `TreePowerMetric`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treePowerMetricDescriptor = $convert.base64Decode(
+    'Cg9UcmVlUG93ZXJNZXRyaWMSDgoCaWQYASABKAlSAmlkEhQKBWxhYmVsGAIgASgJUgVsYWJlbA'
+    '==');
+
+@$core.Deprecated('Use treePowerEntryDescriptor instead')
+const TreePowerEntry$json = {
+  '1': 'TreePowerEntry',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 13, '10': 'id'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'kind', '3': 3, '4': 1, '5': 9, '10': 'kind'},
+    {'1': 'allocated', '3': 4, '4': 1, '5': 8, '10': 'allocated'},
+    {'1': 'distance', '3': 5, '4': 1, '5': 13, '10': 'distance'},
+    {'1': 'power', '3': 6, '4': 1, '5': 1, '10': 'power'},
+    {'1': 'path_power', '3': 7, '4': 1, '5': 1, '10': 'pathPower'},
+    {'1': 'power_text', '3': 8, '4': 1, '5': 9, '10': 'powerText'},
+    {'1': 'path_power_text', '3': 9, '4': 1, '5': 9, '10': 'pathPowerText'},
+  ],
+};
+
+/// Descriptor for `TreePowerEntry`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treePowerEntryDescriptor = $convert.base64Decode(
+    'Cg5UcmVlUG93ZXJFbnRyeRIOCgJpZBgBIAEoDVICaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRISCg'
+    'RraW5kGAMgASgJUgRraW5kEhwKCWFsbG9jYXRlZBgEIAEoCFIJYWxsb2NhdGVkEhoKCGRpc3Rh'
+    'bmNlGAUgASgNUghkaXN0YW5jZRIUCgVwb3dlchgGIAEoAVIFcG93ZXISHQoKcGF0aF9wb3dlch'
+    'gHIAEoAVIJcGF0aFBvd2VyEh0KCnBvd2VyX3RleHQYCCABKAlSCXBvd2VyVGV4dBImCg9wYXRo'
+    'X3Bvd2VyX3RleHQYCSABKAlSDXBhdGhQb3dlclRleHQ=');
+
+@$core.Deprecated('Use treeSceneDescriptor instead')
+const TreeScene$json = {
+  '1': 'TreeScene',
+  '2': [
+    {'1': 'width', '3': 1, '4': 1, '5': 1, '10': 'width'},
+    {'1': 'height', '3': 2, '4': 1, '5': 1, '10': 'height'},
+    {'1': 'scale', '3': 3, '4': 1, '5': 1, '10': 'scale'},
+    {'1': 'offset_x', '3': 4, '4': 1, '5': 1, '10': 'offsetX'},
+    {'1': 'offset_y', '3': 5, '4': 1, '5': 1, '10': 'offsetY'},
+    {
+      '1': 'commands',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreeDrawCommand',
+      '10': 'commands'
+    },
+    {'1': 'asset_id', '3': 7, '4': 1, '5': 9, '10': 'assetId'},
+  ],
+};
+
+/// Descriptor for `TreeScene`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treeSceneDescriptor = $convert.base64Decode(
+    'CglUcmVlU2NlbmUSFAoFd2lkdGgYASABKAFSBXdpZHRoEhYKBmhlaWdodBgCIAEoAVIGaGVpZ2'
+    'h0EhQKBXNjYWxlGAMgASgBUgVzY2FsZRIZCghvZmZzZXRfeBgEIAEoAVIHb2Zmc2V0WBIZCghv'
+    'ZmZzZXRfeRgFIAEoAVIHb2Zmc2V0WRI0Cghjb21tYW5kcxgGIAMoCzIYLnBvYjIudjEuVHJlZU'
+    'RyYXdDb21tYW5kUghjb21tYW5kcxIZCghhc3NldF9pZBgHIAEoCVIHYXNzZXRJZA==');
+
+@$core.Deprecated('Use treeDrawCommandDescriptor instead')
+const TreeDrawCommand$json = {
+  '1': 'TreeDrawCommand',
+  '2': [
+    {'1': 'file', '3': 1, '4': 1, '5': 9, '10': 'file'},
+    {'1': 'index', '3': 2, '4': 1, '5': 13, '10': 'index'},
+    {'1': 'positions', '3': 3, '4': 3, '5': 1, '10': 'positions'},
+    {'1': 'uv', '3': 4, '4': 3, '5': 1, '10': 'uv'},
+    {'1': 'color', '3': 5, '4': 3, '5': 1, '10': 'color'},
+    {'1': 'blend', '3': 6, '4': 1, '5': 9, '10': 'blend'},
+    {'1': 'clamp', '3': 7, '4': 1, '5': 8, '10': 'clamp'},
+  ],
+};
+
+/// Descriptor for `TreeDrawCommand`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treeDrawCommandDescriptor = $convert.base64Decode(
+    'Cg9UcmVlRHJhd0NvbW1hbmQSEgoEZmlsZRgBIAEoCVIEZmlsZRIUCgVpbmRleBgCIAEoDVIFaW'
+    '5kZXgSHAoJcG9zaXRpb25zGAMgAygBUglwb3NpdGlvbnMSDgoCdXYYBCADKAFSAnV2EhQKBWNv'
+    'bG9yGAUgAygBUgVjb2xvchIUCgVibGVuZBgGIAEoCVIFYmxlbmQSFAoFY2xhbXAYByABKAhSBW'
+    'NsYW1w');
+
+@$core.Deprecated('Use getTreeTextureRequestDescriptor instead')
+const GetTreeTextureRequest$json = {
+  '1': 'GetTreeTextureRequest',
+  '2': [
+    {'1': 'file', '3': 1, '4': 1, '5': 9, '10': 'file'},
+    {'1': 'index', '3': 2, '4': 1, '5': 13, '10': 'index'},
+    {'1': 'target_size', '3': 3, '4': 1, '5': 13, '10': 'targetSize'},
+  ],
+};
+
+/// Descriptor for `GetTreeTextureRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeTextureRequestDescriptor = $convert.base64Decode(
+    'ChVHZXRUcmVlVGV4dHVyZVJlcXVlc3QSEgoEZmlsZRgBIAEoCVIEZmlsZRIUCgVpbmRleBgCIA'
+    'EoDVIFaW5kZXgSHwoLdGFyZ2V0X3NpemUYAyABKA1SCnRhcmdldFNpemU=');
+
+@$core.Deprecated('Use getTreeTextureResponseDescriptor instead')
+const GetTreeTextureResponse$json = {
+  '1': 'GetTreeTextureResponse',
+  '2': [
+    {'1': 'width', '3': 1, '4': 1, '5': 13, '10': 'width'},
+    {'1': 'height', '3': 2, '4': 1, '5': 13, '10': 'height'},
+    {'1': 'mip_level', '3': 3, '4': 1, '5': 13, '10': 'mipLevel'},
+    {'1': 'png', '3': 4, '4': 1, '5': 12, '10': 'png'},
+  ],
+};
+
+/// Descriptor for `GetTreeTextureResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeTextureResponseDescriptor = $convert.base64Decode(
+    'ChZHZXRUcmVlVGV4dHVyZVJlc3BvbnNlEhQKBXdpZHRoGAEgASgNUgV3aWR0aBIWCgZoZWlnaH'
+    'QYAiABKA1SBmhlaWdodBIbCgltaXBfbGV2ZWwYAyABKA1SCG1pcExldmVsEhAKA3BuZxgEIAEo'
+    'DFIDcG5n');
+
+@$core.Deprecated('Use getEquipmentDetailsRequestDescriptor instead')
+const GetEquipmentDetailsRequest$json = {
+  '1': 'GetEquipmentDetailsRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'slot', '3': 3, '4': 1, '5': 9, '10': 'slot'},
+    {'1': 'item_id', '3': 4, '4': 1, '5': 13, '9': 0, '10': 'itemId'},
+    {'1': 'raw', '3': 5, '4': 1, '5': 9, '9': 0, '10': 'raw'},
+    {'1': 'compare', '3': 6, '4': 1, '5': 8, '10': 'compare'},
+  ],
+  '8': [
+    {'1': 'item'},
+  ],
+};
+
+/// Descriptor for `GetEquipmentDetailsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getEquipmentDetailsRequestDescriptor = $convert.base64Decode(
+    'ChpHZXRFcXVpcG1lbnREZXRhaWxzUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW'
+    '9uSWQSKwoRZXhwZWN0ZWRfcmV2aXNpb24YAiABKARSEGV4cGVjdGVkUmV2aXNpb24SEgoEc2xv'
+    'dBgDIAEoCVIEc2xvdBIZCgdpdGVtX2lkGAQgASgNSABSBml0ZW1JZBISCgNyYXcYBSABKAlIAF'
+    'IDcmF3EhgKB2NvbXBhcmUYBiABKAhSB2NvbXBhcmVCBgoEaXRlbQ==');
+
+@$core.Deprecated('Use getEquipmentDetailsResponseDescriptor instead')
+const GetEquipmentDetailsResponse$json = {
+  '1': 'GetEquipmentDetailsResponse',
+  '2': [
+    {'1': 'revision', '3': 1, '4': 1, '5': 4, '10': 'revision'},
+    {'1': 'details_json', '3': 2, '4': 1, '5': 12, '10': 'detailsJson'},
+  ],
+};
+
+/// Descriptor for `GetEquipmentDetailsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getEquipmentDetailsResponseDescriptor =
+    $convert.base64Decode(
+        'ChtHZXRFcXVpcG1lbnREZXRhaWxzUmVzcG9uc2USGgoIcmV2aXNpb24YASABKARSCHJldmlzaW'
+        '9uEiEKDGRldGFpbHNfanNvbhgCIAEoDFILZGV0YWlsc0pzb24=');
 
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
