@@ -438,6 +438,7 @@ def check_native_lua(scenario):
         catalog = check_full_catalog(scenario, lock, assert_lua_result)
         selection = check_lua_selection(scenario, fixtures, lock)
         tree = check_lua_tree(scenario, fixtures)
+        weapon_tree = check_lua_weapon_tree(scenario, fixtures)
         scenario.stop()
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
         upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
@@ -461,7 +462,7 @@ def check_native_lua(scenario):
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
                 upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
-                multigroup=multigroup, catalog=catalog, tree=tree, timings=timings,
+                multigroup=multigroup, catalog=catalog, tree=tree, weapon_tree=weapon_tree, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
 
 
@@ -582,21 +583,58 @@ def verify_attribute_stats(preview, expected):
                 f'PoB вернул неожиданное изменение {stat}')
 
 
-def commit_tree_edit(scenario, snapshot, node_id, action, change, attribute=None):
+def check_lua_weapon_tree(scenario, fixtures):
+    session = 'tree-weapons'
+    fixture = fixtures / 'testdata/reference/0.0.12/witch-weapon-paths.xml'
+    open_build_session(scenario, session, 'Witch', fixture)
+    initial = scenario.snapshot(session)
+    selected, = scenario.mcp_tools(session, [('edit_build', dict(
+        expected_revision=initial['revision'], request_id='activate-weapon-two',
+        edit={'selection': {'weapon_set': 2}},
+    ))])
+    mode = 'weapon_set_2'
+    path = [1755, 18845, 41965, 51184]
+    before_points = dict(passives=1, weapon_set_1=1, weapon_set_2=1)
+    after_points = dict(passives=5, weapon_set_1=1, weapon_set_2=5)
+    allocated, preview = commit_tree_edit(
+        scenario, selected, 51184, 'allocate',
+        dict(added=path, allocations=[dict(node_id=node_id, after=mode) for node_id in path],
+             points=dict(before=before_points, after=after_points)),
+        allocation_mode=mode, session=session, compare_exit=4,
+    )
+    restored, _ = commit_tree_edit(
+        scenario, allocated, 18845, 'refund',
+        dict(removed=path, allocations=[dict(node_id=node_id, before=mode) for node_id in path],
+             points=dict(before=after_points, after=before_points)),
+        allocation_mode=mode, session=session, compare_exit=4,
+    )
+    before, after = preview['comparison']['before'], preview['comparison']['after']
+    require(abs(before['stats']['TotalDPS'] - 19.482916666667) < 1e-5 and abs(after['stats']['TotalDPS'] - 24.61) < 1e-5,
+            'PoB не учёл ветвь второго комплекта оружия')
+    require(restored['build']['input_sha256'] == selected['build']['input_sha256'],
+            'Снятие ветви второго комплекта не восстановило исходный XML')
+    return dict(mode=mode, active_weapon=2, path=path, points=preview['passive_change']['points'],
+                dps=[before['stats']['TotalDPS'], after['stats']['TotalDPS']], restored_xml=True)
+
+
+def commit_tree_edit(scenario, snapshot, node_id, action, change, attribute=None, *,
+                     allocation_mode=None, session='tree', compare_exit=0):
     tree = dict(node_id=node_id, action=action)
     if attribute is not None:
         tree['attribute'] = attribute
+    if allocation_mode is not None:
+        tree['allocation_mode'] = allocation_mode
     edit = dict(tree_node=tree)
     revision = snapshot['revision']
     path = scenario.root / 'tree-edit.json'
     path.write_text(json.dumps(edit), encoding='utf-8')
-    preview = scenario.run('build', 'compare', *scenario.connection, '--session', 'tree',
-                           '--revision', revision, '--edit', '--file', path)
+    preview = scenario.run('build', 'compare', *scenario.connection, '--session', session,
+                           '--revision', revision, '--edit', '--file', path, code=compare_exit)
     arguments = dict(expected_revision=revision, edit=edit)
-    mcp, = scenario.mcp_tools('tree', [('compare_build', arguments)])
+    mcp, = scenario.mcp_tools(session, [('compare_build', arguments)])
     require(preview == mcp and preview['passive_change'] == change, 'CLI/gRPC и MCP должны показать ожидаемый путь')
-    require(scenario.snapshot('tree') == snapshot, 'Предпросмотр изменил сессию')
-    applied, = scenario.mcp_tools('tree', [('edit_build', dict(arguments, request_id=f'{action}-{node_id}'))])
+    require(scenario.snapshot(session) == snapshot, 'Предпросмотр изменил сессию')
+    applied, = scenario.mcp_tools(session, [('edit_build', dict(arguments, request_id=f'{action}-{node_id}'))])
     require(applied['revision'] == revision + 1 and
             applied['build']['input_sha256'] == preview['comparison']['after']['input_sha256'],
             'Правка дерева разошлась с предпросмотром')

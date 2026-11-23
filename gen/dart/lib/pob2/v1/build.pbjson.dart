@@ -233,11 +233,20 @@ const BuildModel$json = {
       '6': '.pob2.v1.BuildModel.PassiveAttributesEntry',
       '10': 'passiveAttributes'
     },
+    {
+      '1': 'passive_allocations',
+      '3': 18,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.BuildModel.PassiveAllocationsEntry',
+      '10': 'passiveAllocations'
+    },
   ],
   '3': [
     BuildModel_SlotsEntry$json,
     BuildModel_ConfigEntry$json,
-    BuildModel_PassiveAttributesEntry$json
+    BuildModel_PassiveAttributesEntry$json,
+    BuildModel_PassiveAllocationsEntry$json
   ],
 };
 
@@ -278,6 +287,16 @@ const BuildModel_PassiveAttributesEntry$json = {
   '7': {'7': true},
 };
 
+@$core.Deprecated('Use buildModelDescriptor instead')
+const BuildModel_PassiveAllocationsEntry$json = {
+  '1': 'PassiveAllocationsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 13, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
+};
+
 /// Descriptor for `BuildModel`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List buildModelDescriptor = $convert.base64Decode(
     'CgpCdWlsZE1vZGVsEiUKDnRhcmdldF92ZXJzaW9uGAEgASgJUg10YXJnZXRWZXJzaW9uEiEKDH'
@@ -292,11 +311,14 @@ final $typed_data.Uint8List buildModelDescriptor = $convert.base64Decode(
     'VzGA4gAygNUgVub2RlcxI3CgZjb25maWcYDyADKAsyHy5wb2IyLnYxLkJ1aWxkTW9kZWwuQ29u'
     'ZmlnRW50cnlSBmNvbmZpZxIrCgZpc3N1ZXMYECADKAsyEy5wb2IyLnYxLkJ1aWxkSXNzdWVSBm'
     'lzc3VlcxJZChJwYXNzaXZlX2F0dHJpYnV0ZXMYESADKAsyKi5wb2IyLnYxLkJ1aWxkTW9kZWwu'
-    'UGFzc2l2ZUF0dHJpYnV0ZXNFbnRyeVIRcGFzc2l2ZUF0dHJpYnV0ZXMaOAoKU2xvdHNFbnRyeR'
-    'IQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoDVIFdmFsdWU6AjgBGk8KC0NvbmZpZ0Vu'
-    'dHJ5EhAKA2tleRgBIAEoCVIDa2V5EioKBXZhbHVlGAIgASgLMhQucG9iMi52MS5Db25maWdWYW'
-    'x1ZVIFdmFsdWU6AjgBGkQKFlBhc3NpdmVBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgNUgNr'
-    'ZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AQ==');
+    'UGFzc2l2ZUF0dHJpYnV0ZXNFbnRyeVIRcGFzc2l2ZUF0dHJpYnV0ZXMSXAoTcGFzc2l2ZV9hbG'
+    'xvY2F0aW9ucxgSIAMoCzIrLnBvYjIudjEuQnVpbGRNb2RlbC5QYXNzaXZlQWxsb2NhdGlvbnNF'
+    'bnRyeVIScGFzc2l2ZUFsbG9jYXRpb25zGjgKClNsb3RzRW50cnkSEAoDa2V5GAEgASgJUgNrZX'
+    'kSFAoFdmFsdWUYAiABKA1SBXZhbHVlOgI4ARpPCgtDb25maWdFbnRyeRIQCgNrZXkYASABKAlS'
+    'A2tleRIqCgV2YWx1ZRgCIAEoCzIULnBvYjIudjEuQ29uZmlnVmFsdWVSBXZhbHVlOgI4ARpECh'
+    'ZQYXNzaXZlQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoDVIDa2V5EhQKBXZhbHVlGAIgASgJ'
+    'UgV2YWx1ZToCOAEaRQoXUGFzc2l2ZUFsbG9jYXRpb25zRW50cnkSEAoDa2V5GAEgASgNUgNrZX'
+    'kSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AQ==');
 
 @$core.Deprecated('Use appliedModifierDescriptor instead')
 const AppliedModifier$json = {
@@ -567,13 +589,15 @@ const TreeNodeEdit$json = {
     {'1': 'node_id', '3': 1, '4': 1, '5': 13, '10': 'nodeId'},
     {'1': 'action', '3': 2, '4': 1, '5': 9, '10': 'action'},
     {'1': 'attribute', '3': 3, '4': 1, '5': 9, '10': 'attribute'},
+    {'1': 'allocation_mode', '3': 4, '4': 1, '5': 9, '10': 'allocationMode'},
   ],
 };
 
 /// Descriptor for `TreeNodeEdit`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List treeNodeEditDescriptor = $convert.base64Decode(
     'CgxUcmVlTm9kZUVkaXQSFwoHbm9kZV9pZBgBIAEoDVIGbm9kZUlkEhYKBmFjdGlvbhgCIAEoCV'
-    'IGYWN0aW9uEhwKCWF0dHJpYnV0ZRgDIAEoCVIJYXR0cmlidXRl');
+    'IGYWN0aW9uEhwKCWF0dHJpYnV0ZRgDIAEoCVIJYXR0cmlidXRlEicKD2FsbG9jYXRpb25fbW9k'
+    'ZRgEIAEoCVIOYWxsb2NhdGlvbk1vZGU=');
 
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
@@ -682,6 +706,22 @@ const PassiveChange$json = {
       '6': '.pob2.v1.PassiveAttributeChange',
       '10': 'attributes'
     },
+    {
+      '1': 'allocations',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.PassiveAllocationChange',
+      '10': 'allocations'
+    },
+    {
+      '1': 'points',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.PassivePointsChange',
+      '10': 'points'
+    },
   ],
 };
 
@@ -689,7 +729,69 @@ const PassiveChange$json = {
 final $typed_data.Uint8List passiveChangeDescriptor = $convert.base64Decode(
     'Cg1QYXNzaXZlQ2hhbmdlEhQKBWFkZGVkGAEgAygNUgVhZGRlZBIYCgdyZW1vdmVkGAIgAygNUg'
     'dyZW1vdmVkEj8KCmF0dHJpYnV0ZXMYAyADKAsyHy5wb2IyLnYxLlBhc3NpdmVBdHRyaWJ1dGVD'
-    'aGFuZ2VSCmF0dHJpYnV0ZXM=');
+    'aGFuZ2VSCmF0dHJpYnV0ZXMSQgoLYWxsb2NhdGlvbnMYBCADKAsyIC5wb2IyLnYxLlBhc3Npdm'
+    'VBbGxvY2F0aW9uQ2hhbmdlUgthbGxvY2F0aW9ucxI0CgZwb2ludHMYBSABKAsyHC5wb2IyLnYx'
+    'LlBhc3NpdmVQb2ludHNDaGFuZ2VSBnBvaW50cw==');
+
+@$core.Deprecated('Use passiveAllocationChangeDescriptor instead')
+const PassiveAllocationChange$json = {
+  '1': 'PassiveAllocationChange',
+  '2': [
+    {'1': 'node_id', '3': 1, '4': 1, '5': 13, '10': 'nodeId'},
+    {'1': 'before', '3': 2, '4': 1, '5': 9, '10': 'before'},
+    {'1': 'after', '3': 3, '4': 1, '5': 9, '10': 'after'},
+  ],
+};
+
+/// Descriptor for `PassiveAllocationChange`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passiveAllocationChangeDescriptor =
+    $convert.base64Decode(
+        'ChdQYXNzaXZlQWxsb2NhdGlvbkNoYW5nZRIXCgdub2RlX2lkGAEgASgNUgZub2RlSWQSFgoGYm'
+        'Vmb3JlGAIgASgJUgZiZWZvcmUSFAoFYWZ0ZXIYAyABKAlSBWFmdGVy');
+
+@$core.Deprecated('Use passivePointsDescriptor instead')
+const PassivePoints$json = {
+  '1': 'PassivePoints',
+  '2': [
+    {'1': 'passives', '3': 1, '4': 1, '5': 13, '10': 'passives'},
+    {'1': 'weapon_set_1', '3': 2, '4': 1, '5': 13, '10': 'weaponSet1'},
+    {'1': 'weapon_set_2', '3': 3, '4': 1, '5': 13, '10': 'weaponSet2'},
+  ],
+};
+
+/// Descriptor for `PassivePoints`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passivePointsDescriptor = $convert.base64Decode(
+    'Cg1QYXNzaXZlUG9pbnRzEhoKCHBhc3NpdmVzGAEgASgNUghwYXNzaXZlcxIgCgx3ZWFwb25fc2'
+    'V0XzEYAiABKA1SCndlYXBvblNldDESIAoMd2VhcG9uX3NldF8yGAMgASgNUgp3ZWFwb25TZXQy');
+
+@$core.Deprecated('Use passivePointsChangeDescriptor instead')
+const PassivePointsChange$json = {
+  '1': 'PassivePointsChange',
+  '2': [
+    {
+      '1': 'before',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.PassivePoints',
+      '10': 'before'
+    },
+    {
+      '1': 'after',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.PassivePoints',
+      '10': 'after'
+    },
+  ],
+};
+
+/// Descriptor for `PassivePointsChange`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passivePointsChangeDescriptor = $convert.base64Decode(
+    'ChNQYXNzaXZlUG9pbnRzQ2hhbmdlEi4KBmJlZm9yZRgBIAEoCzIWLnBvYjIudjEuUGFzc2l2ZV'
+    'BvaW50c1IGYmVmb3JlEiwKBWFmdGVyGAIgASgLMhYucG9iMi52MS5QYXNzaXZlUG9pbnRzUgVh'
+    'ZnRlcg==');
 
 @$core.Deprecated('Use passiveAttributeChangeDescriptor instead')
 const PassiveAttributeChange$json = {

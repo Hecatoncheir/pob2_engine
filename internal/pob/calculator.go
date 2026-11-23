@@ -236,15 +236,16 @@ type response struct {
 }
 
 type request struct {
-	XML         string                 `json:"xml,omitempty"`
-	Operation   string                 `json:"operation,omitempty"`
-	Slot        string                 `json:"slot,omitempty"`
-	ItemID      int                    `json:"item_id,omitempty"`
-	NodeID      int                    `json:"node_id,omitempty"`
-	Action      string                 `json:"action,omitempty"`
-	Attribute   build.PassiveAttribute `json:"attribute,omitempty"`
-	TreeSpec    int                    `json:"tree_spec,omitempty"`
-	TreeVersion string                 `json:"tree_version,omitempty"`
+	XML            string                   `json:"xml,omitempty"`
+	Operation      string                   `json:"operation,omitempty"`
+	Slot           string                   `json:"slot,omitempty"`
+	ItemID         int                      `json:"item_id,omitempty"`
+	NodeID         int                      `json:"node_id,omitempty"`
+	Action         string                   `json:"action,omitempty"`
+	Attribute      build.PassiveAttribute   `json:"attribute,omitempty"`
+	AllocationMode build.TreeAllocationMode `json:"allocation_mode,omitempty"`
+	TreeSpec       int                      `json:"tree_spec,omitempty"`
+	TreeVersion    string                   `json:"tree_version,omitempty"`
 }
 
 type workerReply struct {

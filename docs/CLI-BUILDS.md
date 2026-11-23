@@ -142,6 +142,11 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 `{"tree_node":{"node_id":13397,"action":"set_attribute","attribute":"intelligence"}}`.
 Ход назначения и изменения атрибутов указаны в `passive_change`.
 
+Для назначения в ветвь второго комплекта передайте
+`{"tree_node":{"node_id":51184,"action":"allocate","allocation_mode":"weapon_set_2"}}`.
+Для снятия узла из этой ветви передайте `action: "refund"` с тем же режимом.
+При предупреждениях Lua сравнение выводит JSON и код 4.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

@@ -7,7 +7,7 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
 
-func wirePassiveAttributes(nodes []int, values map[string]build.PassiveAttribute) map[uint32]string {
+func wirePassiveChoices[T ~string](nodes []int, values map[string]T) map[uint32]string {
 	if len(values) == 0 {
 		return nil
 	}
@@ -36,6 +36,16 @@ func wirePassiveChange(change *build.PassiveChange) *pb.PassiveChange {
 			NodeId: uint32(attribute.NodeID), Before: string(attribute.Before), After: string(attribute.After),
 		})
 	}
+	for _, allocation := range change.Allocations {
+		result.Allocations = append(result.Allocations, &pb.PassiveAllocationChange{
+			NodeId: uint32(allocation.NodeID), Before: string(allocation.Before), After: string(allocation.After),
+		})
+	}
+	if change.Points != nil {
+		result.Points = &pb.PassivePointsChange{
+			Before: wirePassivePoints(change.Points.Before), After: wirePassivePoints(change.Points.After),
+		}
+	}
 	return result
 }
 
@@ -55,5 +65,28 @@ func localPassiveChange(change *pb.PassiveChange) *build.PassiveChange {
 			NodeID: int(attribute.GetNodeId()), Before: build.PassiveAttribute(attribute.GetBefore()), After: build.PassiveAttribute(attribute.GetAfter()),
 		})
 	}
+	for _, allocation := range change.GetAllocations() {
+		result.Allocations = append(result.Allocations, build.PassiveAllocationChange{
+			NodeID: int(allocation.GetNodeId()), Before: build.TreeAllocationMode(allocation.GetBefore()),
+			After: build.TreeAllocationMode(allocation.GetAfter()),
+		})
+	}
+	if points := change.GetPoints(); points != nil {
+		result.Points = &build.PassivePointsChange{
+			Before: localPassivePoints(points.GetBefore()), After: localPassivePoints(points.GetAfter()),
+		}
+	}
 	return result
+}
+
+func wirePassivePoints(points build.PassivePoints) *pb.PassivePoints {
+	return &pb.PassivePoints{
+		Passives: uint32(points.Passives), WeaponSet_1: uint32(points.WeaponSet1), WeaponSet_2: uint32(points.WeaponSet2),
+	}
+}
+
+func localPassivePoints(points *pb.PassivePoints) build.PassivePoints {
+	return build.PassivePoints{
+		Passives: int(points.GetPassives()), WeaponSet1: int(points.GetWeaponSet_1()), WeaponSet2: int(points.GetWeaponSet_2()),
+	}
 }

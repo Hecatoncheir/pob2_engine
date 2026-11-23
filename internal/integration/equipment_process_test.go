@@ -47,7 +47,12 @@ func TestLuaEquipmentAcrossProcesses(t *testing.T) {
 
 func calculateBeforeEquipment(t *testing.T, s *groupScenario) application.SnapshotView {
 	t.Helper()
-	snapshot, err := s.client.Calculate(s.ctx, application.CalculateBuild{SessionID: "main", ExpectedRevision: s.revision, RequestID: "before-armour"})
+	return calculateRecordedBuild(t, s, "before-armour")
+}
+
+func calculateRecordedBuild(t *testing.T, s *groupScenario, requestID string) application.SnapshotView {
+	t.Helper()
+	snapshot, err := s.client.Calculate(s.ctx, application.CalculateBuild{SessionID: "main", ExpectedRevision: s.revision, RequestID: requestID})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -63,7 +68,8 @@ func compareEquipment(t *testing.T, s *groupScenario, edit *build.Edit) applicat
 	if err != nil {
 		t.Fatal(err)
 	}
-	fromCLI := compareEquipmentCLI(t, s, edit)
+	// У эталонного предмета есть предупреждение о требовании силы.
+	fromCLI := compareBuildCLI(t, s, edit, 4)
 	answer := call(t, s.ctx, s.mcp, "compare_build", map[string]any{"expected_revision": s.revision, "edit": edit}, false)
 	fromMCP := structuredCatalogJSON[application.BuildComparison](t, answer.StructuredContent)
 	if !reflect.DeepEqual(preview, fromCLI) || !reflect.DeepEqual(preview, fromMCP) {
@@ -89,7 +95,7 @@ func checkArmourReference(t *testing.T, comparison calculation.Comparison) {
 	}
 }
 
-func compareEquipmentCLI(t *testing.T, s *groupScenario, edit *build.Edit) application.BuildComparison {
+func compareBuildCLI(t *testing.T, s *groupScenario, edit *build.Edit, exitCode int) application.BuildComparison {
 	t.Helper()
 	args := []string{"build", "compare", "--session", "main", "--revision", fmt.Sprint(s.revision),
 		"--edit", "--file", equipmentEditFile(t, edit)}
@@ -97,8 +103,7 @@ func compareEquipmentCLI(t *testing.T, s *groupScenario, edit *build.Edit) appli
 	var stdout, stderr bytes.Buffer
 	command.Stdout, command.Stderr = &stdout, &stderr
 	err := command.Run()
-	// У эталонного предмета есть предупреждение о требовании силы.
-	if command.ProcessState == nil || command.ProcessState.ExitCode() != 4 {
+	if command.ProcessState == nil || command.ProcessState.ExitCode() != exitCode {
 		t.Fatalf("CLI: %v, %s", err, &stderr)
 	}
 	return decodeCatalogJSON[application.BuildComparison](t, stdout.Bytes())

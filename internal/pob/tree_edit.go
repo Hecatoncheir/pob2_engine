@@ -19,7 +19,8 @@ func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, e
 		return build.PassiveChange{}, err
 	}
 	answer, err := c.run(ctx, &request{Operation: "edit_tree", XML: pobXML.Replace(string(xml)),
-		NodeID: edit.NodeID, Action: edit.Action, Attribute: edit.Attribute, TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
+		NodeID: edit.NodeID, Action: edit.Action, Attribute: edit.Attribute, AllocationMode: edit.AllocationMode,
+		TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
 	if err != nil {
 		return build.PassiveChange{}, err
 	}
@@ -33,6 +34,13 @@ func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, e
 }
 
 func confirmsTreeEdit(change build.PassiveChange, edit build.TreeNodeEdit) bool {
+	if !confirmsTreeMode(change, edit) {
+		return false
+	}
+	return confirmsTreeAction(change, edit)
+}
+
+func confirmsTreeAction(change build.PassiveChange, edit build.TreeNodeEdit) bool {
 	attributeMatches := edit.Attribute == "" || slices.ContainsFunc(change.Attributes, func(attribute build.PassiveAttributeChange) bool {
 		return attribute.NodeID == edit.NodeID && attribute.After == edit.Attribute
 	})
@@ -42,8 +50,25 @@ func confirmsTreeEdit(change build.PassiveChange, edit build.TreeNodeEdit) bool 
 	case "refund":
 		return len(change.Added) == 0 && slices.Contains(change.Removed, edit.NodeID)
 	case "set_attribute":
-		return len(change.Added)+len(change.Removed) == 0 && len(change.Attributes) == 1 && attributeMatches
+		return len(change.Added)+len(change.Removed)+len(change.Allocations) == 0 && len(change.Attributes) == 1 && attributeMatches
 	default:
 		return false
 	}
+}
+
+func confirmsTreeMode(change build.PassiveChange, edit build.TreeNodeEdit) bool {
+	if edit.AllocationMode == "" {
+		return len(change.Allocations) == 0 && change.Points == nil
+	}
+	if change.Points == nil {
+		return false
+	}
+	if edit.Action == "set_attribute" {
+		return true
+	}
+	allocation := build.PassiveAllocationChange{NodeID: edit.NodeID, After: edit.AllocationMode}
+	if edit.Action == "refund" {
+		allocation.Before, allocation.After = edit.AllocationMode, ""
+	}
+	return slices.Contains(change.Allocations, allocation)
 }

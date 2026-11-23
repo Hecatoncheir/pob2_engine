@@ -597,6 +597,7 @@ class BuildModel extends $pb.GeneratedMessage {
     $core.Iterable<$core.MapEntry<$core.String, ConfigValue>>? config,
     $core.Iterable<BuildIssue>? issues,
     $core.Iterable<$core.MapEntry<$core.int, $core.String>>? passiveAttributes,
+    $core.Iterable<$core.MapEntry<$core.int, $core.String>>? passiveAllocations,
   }) {
     final result = BuildModel._();
     if (targetVersion != null) result.targetVersion = targetVersion;
@@ -617,6 +618,8 @@ class BuildModel extends $pb.GeneratedMessage {
     if (issues != null) result.issues.addAll(issues);
     if (passiveAttributes != null)
       result.passiveAttributes.addEntries(passiveAttributes);
+    if (passiveAllocations != null)
+      result.passiveAllocations.addEntries(passiveAllocations);
     return result;
   }
 
@@ -666,6 +669,12 @@ class BuildModel extends $pb.GeneratedMessage {
         subBuilder: BuildIssue.$_createMessage)
     ..m<$core.int, $core.String>(17, _omitFieldNames ? '' : 'passiveAttributes',
         entryClassName: 'BuildModel.PassiveAttributesEntry',
+        keyFieldType: $pb.PbFieldType.OU3,
+        valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('pob2.v1'))
+    ..m<$core.int, $core.String>(
+        18, _omitFieldNames ? '' : 'passiveAllocations',
+        entryClassName: 'BuildModel.PassiveAllocationsEntry',
         keyFieldType: $pb.PbFieldType.OU3,
         valueFieldType: $pb.PbFieldType.OS,
         packageName: const $pb.PackageName('pob2.v1'))
@@ -804,6 +813,10 @@ class BuildModel extends $pb.GeneratedMessage {
   /// Сохранённые атрибуты назначенных узлов активной спецификации.
   @$pb.TagNumber(17)
   $pb.PbMap<$core.int, $core.String> get passiveAttributes => $_getMap(16);
+
+  /// Режимы назначенных узлов в ветвях оружия активной спецификации.
+  @$pb.TagNumber(18)
+  $pb.PbMap<$core.int, $core.String> get passiveAllocations => $_getMap(17);
 }
 
 class AppliedModifier extends $pb.GeneratedMessage {
@@ -1790,11 +1803,13 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
     $core.int? nodeId,
     $core.String? action,
     $core.String? attribute,
+    $core.String? allocationMode,
   }) {
     final result = TreeNodeEdit._();
     if (nodeId != null) result.nodeId = nodeId;
     if (action != null) result.action = action;
     if (attribute != null) result.attribute = attribute;
+    if (allocationMode != null) result.allocationMode = allocationMode;
     return result;
   }
 
@@ -1814,6 +1829,7 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
     ..aI(1, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
     ..aOS(2, _omitFieldNames ? '' : 'action')
     ..aOS(3, _omitFieldNames ? '' : 'attribute')
+    ..aOS(4, _omitFieldNames ? '' : 'allocationMode')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1866,6 +1882,16 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
   $core.bool hasAttribute() => $_has(2);
   @$pb.TagNumber(3)
   void clearAttribute() => $_clearField(3);
+
+  /// common, weapon_set_1 или weapon_set_2. Отсутствие сохраняет поведение 0.0.11.
+  @$pb.TagNumber(4)
+  $core.String get allocationMode => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set allocationMode($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasAllocationMode() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearAllocationMode() => $_clearField(4);
 }
 
 enum BuildEdit_Operation {
@@ -2081,11 +2107,15 @@ class PassiveChange extends $pb.GeneratedMessage {
     $core.Iterable<$core.int>? added,
     $core.Iterable<$core.int>? removed,
     $core.Iterable<PassiveAttributeChange>? attributes,
+    $core.Iterable<PassiveAllocationChange>? allocations,
+    PassivePointsChange? points,
   }) {
     final result = PassiveChange._();
     if (added != null) result.added.addAll(added);
     if (removed != null) result.removed.addAll(removed);
     if (attributes != null) result.attributes.addAll(attributes);
+    if (allocations != null) result.allocations.addAll(allocations);
+    if (points != null) result.points = points;
     return result;
   }
 
@@ -2106,6 +2136,10 @@ class PassiveChange extends $pb.GeneratedMessage {
     ..p<$core.int>(2, _omitFieldNames ? '' : 'removed', $pb.PbFieldType.KU3)
     ..pPM<PassiveAttributeChange>(3, _omitFieldNames ? '' : 'attributes',
         subBuilder: PassiveAttributeChange.$_createMessage)
+    ..pPM<PassiveAllocationChange>(4, _omitFieldNames ? '' : 'allocations',
+        subBuilder: PassiveAllocationChange.$_createMessage)
+    ..aOM<PassivePointsChange>(5, _omitFieldNames ? '' : 'points',
+        subBuilder: PassivePointsChange.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2138,6 +2172,263 @@ class PassiveChange extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $pb.PbList<PassiveAttributeChange> get attributes => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<PassiveAllocationChange> get allocations => $_getList(3);
+
+  @$pb.TagNumber(5)
+  PassivePointsChange get points => $_getN(4);
+  @$pb.TagNumber(5)
+  set points(PassivePointsChange value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasPoints() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPoints() => $_clearField(5);
+  @$pb.TagNumber(5)
+  PassivePointsChange ensurePoints() => $_ensure(4);
+}
+
+class PassiveAllocationChange extends $pb.GeneratedMessage {
+  factory PassiveAllocationChange({
+    $core.int? nodeId,
+    $core.String? before,
+    $core.String? after,
+  }) {
+    final result = PassiveAllocationChange._();
+    if (nodeId != null) result.nodeId = nodeId;
+    if (before != null) result.before = before;
+    if (after != null) result.after = after;
+    return result;
+  }
+
+  PassiveAllocationChange._();
+
+  factory PassiveAllocationChange.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassiveAllocationChange()..mergeFromBuffer(data, registry);
+  factory PassiveAllocationChange.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassiveAllocationChange()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PassiveAllocationChange',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: PassiveAllocationChange.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(2, _omitFieldNames ? '' : 'before')
+    ..aOS(3, _omitFieldNames ? '' : 'after')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassiveAllocationChange clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassiveAllocationChange copyWith(
+          void Function(PassiveAllocationChange) updates) =>
+      super.copyWith((message) => updates(message as PassiveAllocationChange))
+          as PassiveAllocationChange;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use PassiveAllocationChange() / PassiveAllocationChange.new instead')
+  static PassiveAllocationChange create() => PassiveAllocationChange._();
+  static $pb.GeneratedMessage $_createMessage() => PassiveAllocationChange._();
+  @$core.override
+  PassiveAllocationChange createEmptyInstance() => PassiveAllocationChange._();
+  @$core.pragma('dart2js:noInline')
+  static PassiveAllocationChange getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PassiveAllocationChange>(
+          PassiveAllocationChange.$_createMessage);
+  static PassiveAllocationChange? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get nodeId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set nodeId($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasNodeId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearNodeId() => $_clearField(1);
+
+  /// Пустой режим означает, что узел не был назначен.
+  @$pb.TagNumber(2)
+  $core.String get before => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set before($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBefore() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBefore() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get after => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set after($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasAfter() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAfter() => $_clearField(3);
+}
+
+class PassivePoints extends $pb.GeneratedMessage {
+  factory PassivePoints({
+    $core.int? passives,
+    $core.int? weaponSet1,
+    $core.int? weaponSet2,
+  }) {
+    final result = PassivePoints._();
+    if (passives != null) result.passives = passives;
+    if (weaponSet1 != null) result.weaponSet1 = weaponSet1;
+    if (weaponSet2 != null) result.weaponSet2 = weaponSet2;
+    return result;
+  }
+
+  PassivePoints._();
+
+  factory PassivePoints.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassivePoints()..mergeFromBuffer(data, registry);
+  factory PassivePoints.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassivePoints()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PassivePoints',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: PassivePoints.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'passives', fieldType: $pb.PbFieldType.OU3)
+    ..aI(2, _omitFieldNames ? '' : 'weaponSet1',
+        protoName: 'weapon_set_1', fieldType: $pb.PbFieldType.OU3)
+    ..aI(3, _omitFieldNames ? '' : 'weaponSet2',
+        protoName: 'weapon_set_2', fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassivePoints clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassivePoints copyWith(void Function(PassivePoints) updates) =>
+      super.copyWith((message) => updates(message as PassivePoints))
+          as PassivePoints;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use PassivePoints() / PassivePoints.new instead')
+  static PassivePoints create() => PassivePoints._();
+  static $pb.GeneratedMessage $_createMessage() => PassivePoints._();
+  @$core.override
+  PassivePoints createEmptyInstance() => PassivePoints._();
+  @$core.pragma('dart2js:noInline')
+  static PassivePoints getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PassivePoints>(
+          PassivePoints.$_createMessage);
+  static PassivePoints? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get passives => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set passives($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPassives() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPassives() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get weaponSet1 => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set weaponSet1($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasWeaponSet1() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearWeaponSet1() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get weaponSet2 => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set weaponSet2($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasWeaponSet2() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearWeaponSet2() => $_clearField(3);
+}
+
+class PassivePointsChange extends $pb.GeneratedMessage {
+  factory PassivePointsChange({
+    PassivePoints? before,
+    PassivePoints? after,
+  }) {
+    final result = PassivePointsChange._();
+    if (before != null) result.before = before;
+    if (after != null) result.after = after;
+    return result;
+  }
+
+  PassivePointsChange._();
+
+  factory PassivePointsChange.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassivePointsChange()..mergeFromBuffer(data, registry);
+  factory PassivePointsChange.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassivePointsChange()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PassivePointsChange',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: PassivePointsChange.$_createMessage)
+    ..aOM<PassivePoints>(1, _omitFieldNames ? '' : 'before',
+        subBuilder: PassivePoints.$_createMessage)
+    ..aOM<PassivePoints>(2, _omitFieldNames ? '' : 'after',
+        subBuilder: PassivePoints.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassivePointsChange clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassivePointsChange copyWith(void Function(PassivePointsChange) updates) =>
+      super.copyWith((message) => updates(message as PassivePointsChange))
+          as PassivePointsChange;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use PassivePointsChange() / PassivePointsChange.new instead')
+  static PassivePointsChange create() => PassivePointsChange._();
+  static $pb.GeneratedMessage $_createMessage() => PassivePointsChange._();
+  @$core.override
+  PassivePointsChange createEmptyInstance() => PassivePointsChange._();
+  @$core.pragma('dart2js:noInline')
+  static PassivePointsChange getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PassivePointsChange>(
+          PassivePointsChange.$_createMessage);
+  static PassivePointsChange? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PassivePoints get before => $_getN(0);
+  @$pb.TagNumber(1)
+  set before(PassivePoints value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasBefore() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBefore() => $_clearField(1);
+  @$pb.TagNumber(1)
+  PassivePoints ensureBefore() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  PassivePoints get after => $_getN(1);
+  @$pb.TagNumber(2)
+  set after(PassivePoints value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasAfter() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAfter() => $_clearField(2);
+  @$pb.TagNumber(2)
+  PassivePoints ensureAfter() => $_ensure(1);
 }
 
 class PassiveAttributeChange extends $pb.GeneratedMessage {

@@ -8,15 +8,23 @@ import (
 )
 
 type TreeNodeEdit struct {
-	NodeID    int              `json:"node_id"`
-	Action    string           `json:"action"`
-	Attribute PassiveAttribute `json:"attribute,omitempty"`
+	NodeID         int                `json:"node_id"`
+	Action         string             `json:"action"`
+	Attribute      PassiveAttribute   `json:"attribute,omitempty"`
+	AllocationMode TreeAllocationMode `json:"allocation_mode,omitempty"`
 }
 
 func (e TreeNodeEdit) validate() error {
 	if e.NodeID < 1 || e.NodeID > 1000000 {
 		return fmt.Errorf("неверный идентификатор пассива")
 	}
+	if e.AllocationMode != "" && !e.AllocationMode.valid() {
+		return fmt.Errorf("режим дерева: common, weapon_set_1 или weapon_set_2")
+	}
+	return e.validateAction()
+}
+
+func (e TreeNodeEdit) validateAction() error {
 	switch e.Action {
 	case "allocate":
 		if e.Attribute == "" || e.Attribute.valid() {
@@ -57,9 +65,11 @@ type PassiveAttributeChange struct {
 
 // PassiveChange описывает изменение активной спецификации, подтверждённое PoB.
 type PassiveChange struct {
-	Added      []int                    `json:"added,omitempty"`
-	Removed    []int                    `json:"removed,omitempty"`
-	Attributes []PassiveAttributeChange `json:"attributes,omitempty"`
+	Added       []int                     `json:"added,omitempty"`
+	Removed     []int                     `json:"removed,omitempty"`
+	Attributes  []PassiveAttributeChange  `json:"attributes,omitempty"`
+	Allocations []PassiveAllocationChange `json:"allocations,omitempty"`
+	Points      *PassivePointsChange      `json:"points,omitempty"`
 }
 
 func (d *Document) WithResolvedTreeEdit(change PassiveChange) (*Document, error) {
@@ -105,11 +115,14 @@ func (d *Document) applyResolvedTreeEdit(change PassiveChange) error {
 	if err := validateAttributeChanges(nodes, change.Attributes); err != nil {
 		return err
 	}
+	if err := updateTreeAllocations(spec, previous, nodes, change); err != nil {
+		return err
+	}
 	return updateAttributeOverrides(spec, change)
 }
 
 func updatePassiveNodes(nodes []int, change PassiveChange) ([]int, error) {
-	if len(change.Added)+len(change.Removed)+len(change.Attributes) == 0 {
+	if len(change.Added)+len(change.Removed)+len(change.Attributes)+len(change.Allocations) == 0 {
 		return nil, fmt.Errorf("PoB не изменил дерево")
 	}
 	for _, id := range change.Removed {

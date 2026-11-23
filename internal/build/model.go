@@ -53,23 +53,24 @@ type ActiveSets struct {
 
 // Model содержит выбранные входы; остальные наборы сохраняются в Document.
 type Model struct {
-	TargetVersion     string                      `json:"target_version"`
-	TreeVersion       string                      `json:"tree_version"`
-	Class             string                      `json:"class"`
-	ClassID           int                         `json:"class_id"`
-	Ascendancy        string                      `json:"ascendancy"`
-	AscendancyID      int                         `json:"ascendancy_id"`
-	Level             int                         `json:"level"`
-	MainGroup         int                         `json:"main_group"`
-	WeaponSet         int                         `json:"weapon_set"`
-	ActiveSets        ActiveSets                  `json:"active_sets"`
-	Groups            []Group                     `json:"groups"`
-	Items             []Item                      `json:"items"`
-	Slots             map[string]int              `json:"slots"`
-	Nodes             []int                       `json:"nodes"`
-	PassiveAttributes map[string]PassiveAttribute `json:"passive_attributes,omitempty"`
-	Config            map[string]ConfigValue      `json:"config"`
-	Issues            []Issue                     `json:"issues"`
+	TargetVersion      string                        `json:"target_version"`
+	TreeVersion        string                        `json:"tree_version"`
+	Class              string                        `json:"class"`
+	ClassID            int                           `json:"class_id"`
+	Ascendancy         string                        `json:"ascendancy"`
+	AscendancyID       int                           `json:"ascendancy_id"`
+	Level              int                           `json:"level"`
+	MainGroup          int                           `json:"main_group"`
+	WeaponSet          int                           `json:"weapon_set"`
+	ActiveSets         ActiveSets                    `json:"active_sets"`
+	Groups             []Group                       `json:"groups"`
+	Items              []Item                        `json:"items"`
+	Slots              map[string]int                `json:"slots"`
+	Nodes              []int                         `json:"nodes"`
+	PassiveAttributes  map[string]PassiveAttribute   `json:"passive_attributes,omitempty"`
+	PassiveAllocations map[string]TreeAllocationMode `json:"passive_allocations,omitempty"`
+	Config             map[string]ConfigValue        `json:"config"`
+	Issues             []Issue                       `json:"issues"`
 }
 
 func integer(value, path string, minimum, maximum int) (int, error) {
@@ -203,6 +204,7 @@ func (m *Model) readTree(tree *element) error {
 	m.Nodes, err = readPassiveNodes(node.attr("nodes", ""))
 	if err == nil {
 		m.PassiveAttributes = readTreeAttributes(node, m.Nodes)
+		m.PassiveAllocations, _ = readTreeAllocations(node, m.Nodes)
 	}
 	return err
 }

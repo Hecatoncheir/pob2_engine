@@ -48,8 +48,12 @@ func treeNodeEdit(id int, action string) *build.Edit {
 
 func compareTreeNode(t *testing.T, s *groupScenario, edit *build.Edit) application.BuildComparison {
 	t.Helper()
-	args := []string{"build", "compare", "--session", "main", "--revision", fmt.Sprint(s.revision), "--edit", "--file", equipmentEditFile(t, edit)}
-	fromCLI := decodeCatalogJSON[application.BuildComparison](t, cli(t, s.ctx, 0, append(args, s.connection...)...))
+	return compareTreeNodeStatus(t, s, edit, 0)
+}
+
+func compareTreeNodeStatus(t *testing.T, s *groupScenario, edit *build.Edit, exitCode int) application.BuildComparison {
+	t.Helper()
+	fromCLI := compareBuildCLI(t, s, edit, exitCode)
 	answer := call(t, s.ctx, s.mcp, "compare_build", map[string]any{"edit": edit, "expected_revision": s.revision}, false)
 	fromMCP := structuredCatalogJSON[application.BuildComparison](t, answer.StructuredContent)
 	fromGRPC, err := s.client.Compare(s.ctx, application.CompareBuild{SessionID: "main", ExpectedRevision: s.revision, Edit: edit})

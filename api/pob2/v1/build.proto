@@ -74,6 +74,8 @@ message BuildModel {
   repeated BuildIssue issues = 16;
   // Сохранённые атрибуты назначенных узлов активной спецификации.
   map<uint32, string> passive_attributes = 17;
+  // Режимы назначенных узлов в ветвях оружия активной спецификации.
+  map<uint32, string> passive_allocations = 18;
 }
 
 enum CalculationStatus {
@@ -168,6 +170,8 @@ message TreeNodeEdit {
   string action = 2;
   // strength, dexterity или intelligence. При allocate поле необязательно.
   string attribute = 3;
+  // common, weapon_set_1 или weapon_set_2. Отсутствие сохраняет поведение 0.0.11.
+  string allocation_mode = 4;
 }
 
 message BuildEdit {
@@ -187,6 +191,26 @@ message PassiveChange {
   repeated uint32 added = 1;
   repeated uint32 removed = 2;
   repeated PassiveAttributeChange attributes = 3;
+  repeated PassiveAllocationChange allocations = 4;
+  PassivePointsChange points = 5;
+}
+
+message PassiveAllocationChange {
+  uint32 node_id = 1;
+  // Пустой режим означает, что узел не был назначен.
+  string before = 2;
+  string after = 3;
+}
+
+message PassivePoints {
+  uint32 passives = 1;
+  uint32 weapon_set_1 = 2;
+  uint32 weapon_set_2 = 3;
+}
+
+message PassivePointsChange {
+  PassivePoints before = 1;
+  PassivePoints after = 2;
 }
 
 message PassiveAttributeChange {
