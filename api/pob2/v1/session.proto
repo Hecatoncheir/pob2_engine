@@ -191,6 +191,8 @@ message CompareBuildResponse {
   string session_id = 1;
   uint64 revision = 2;
   BuildComparison comparison = 3;
+  // Заполняется для правки отдельного узла оригинального PoB.
+  PassiveChange passive_change = 4;
 }
 
 message ExportBuildRequest {

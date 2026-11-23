@@ -1435,6 +1435,59 @@ func (x *AddSupportEdit) GetQuality() uint32 {
 	return 0
 }
 
+type TreeNodeEdit struct {
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	NodeId uint32                 `protobuf:"varint,1,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	// Назначить (allocate) или снять (refund) пассив активного дерева.
+	Action        string `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TreeNodeEdit) Reset() {
+	*x = TreeNodeEdit{}
+	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TreeNodeEdit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TreeNodeEdit) ProtoMessage() {}
+
+func (x *TreeNodeEdit) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TreeNodeEdit.ProtoReflect.Descriptor instead.
+func (*TreeNodeEdit) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *TreeNodeEdit) GetNodeId() uint32 {
+	if x != nil {
+		return x.NodeId
+	}
+	return 0
+}
+
+func (x *TreeNodeEdit) GetAction() string {
+	if x != nil {
+		return x.Action
+	}
+	return ""
+}
+
 type BuildEdit struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Operation:
@@ -1446,6 +1499,7 @@ type BuildEdit struct {
 	//	*BuildEdit_Passives
 	//	*BuildEdit_Selection
 	//	*BuildEdit_AddSupport
+	//	*BuildEdit_TreeNode
 	Operation     isBuildEdit_Operation `protobuf_oneof:"operation"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1453,7 +1507,7 @@ type BuildEdit struct {
 
 func (x *BuildEdit) Reset() {
 	*x = BuildEdit{}
-	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	mi := &file_pob2_v1_build_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1465,7 +1519,7 @@ func (x *BuildEdit) String() string {
 func (*BuildEdit) ProtoMessage() {}
 
 func (x *BuildEdit) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	mi := &file_pob2_v1_build_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1478,7 +1532,7 @@ func (x *BuildEdit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildEdit.ProtoReflect.Descriptor instead.
 func (*BuildEdit) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{18}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *BuildEdit) GetOperation() isBuildEdit_Operation {
@@ -1551,6 +1605,15 @@ func (x *BuildEdit) GetAddSupport() *AddSupportEdit {
 	return nil
 }
 
+func (x *BuildEdit) GetTreeNode() *TreeNodeEdit {
+	if x != nil {
+		if x, ok := x.Operation.(*BuildEdit_TreeNode); ok {
+			return x.TreeNode
+		}
+	}
+	return nil
+}
+
 type isBuildEdit_Operation interface {
 	isBuildEdit_Operation()
 }
@@ -1583,6 +1646,10 @@ type BuildEdit_AddSupport struct {
 	AddSupport *AddSupportEdit `protobuf:"bytes,7,opt,name=add_support,json=addSupport,proto3,oneof"`
 }
 
+type BuildEdit_TreeNode struct {
+	TreeNode *TreeNodeEdit `protobuf:"bytes,8,opt,name=tree_node,json=treeNode,proto3,oneof"`
+}
+
 func (*BuildEdit_Level) isBuildEdit_Operation() {}
 
 func (*BuildEdit_Config) isBuildEdit_Operation() {}
@@ -1597,6 +1664,60 @@ func (*BuildEdit_Selection) isBuildEdit_Operation() {}
 
 func (*BuildEdit_AddSupport) isBuildEdit_Operation() {}
 
+func (*BuildEdit_TreeNode) isBuildEdit_Operation() {}
+
+type PassiveChange struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Added         []uint32               `protobuf:"varint,1,rep,packed,name=added,proto3" json:"added,omitempty"`
+	Removed       []uint32               `protobuf:"varint,2,rep,packed,name=removed,proto3" json:"removed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PassiveChange) Reset() {
+	*x = PassiveChange{}
+	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PassiveChange) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PassiveChange) ProtoMessage() {}
+
+func (x *PassiveChange) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PassiveChange.ProtoReflect.Descriptor instead.
+func (*PassiveChange) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *PassiveChange) GetAdded() []uint32 {
+	if x != nil {
+		return x.Added
+	}
+	return nil
+}
+
+func (x *PassiveChange) GetRemoved() []uint32 {
+	if x != nil {
+		return x.Removed
+	}
+	return nil
+}
+
 type StatDelta struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Stat          string                 `protobuf:"bytes,1,opt,name=stat,proto3" json:"stat,omitempty"`
@@ -1609,7 +1730,7 @@ type StatDelta struct {
 
 func (x *StatDelta) Reset() {
 	*x = StatDelta{}
-	mi := &file_pob2_v1_build_proto_msgTypes[19]
+	mi := &file_pob2_v1_build_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1621,7 +1742,7 @@ func (x *StatDelta) String() string {
 func (*StatDelta) ProtoMessage() {}
 
 func (x *StatDelta) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[19]
+	mi := &file_pob2_v1_build_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1634,7 +1755,7 @@ func (x *StatDelta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatDelta.ProtoReflect.Descriptor instead.
 func (*StatDelta) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{19}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *StatDelta) GetStat() string {
@@ -1677,7 +1798,7 @@ type BuildComparison struct {
 
 func (x *BuildComparison) Reset() {
 	*x = BuildComparison{}
-	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	mi := &file_pob2_v1_build_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1689,7 +1810,7 @@ func (x *BuildComparison) String() string {
 func (*BuildComparison) ProtoMessage() {}
 
 func (x *BuildComparison) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	mi := &file_pob2_v1_build_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1702,7 +1823,7 @@ func (x *BuildComparison) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildComparison.ProtoReflect.Descriptor instead.
 func (*BuildComparison) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{20}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *BuildComparison) GetBefore() *CalculationResult {
@@ -1861,7 +1982,10 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\n" +
 	"support_id\x18\x01 \x01(\tR\tsupportId\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\rR\x05level\x12\x18\n" +
-	"\aquality\x18\x03 \x01(\rR\aquality\"\xfd\x02\n" +
+	"\aquality\x18\x03 \x01(\rR\aquality\"?\n" +
+	"\fTreeNodeEdit\x12\x17\n" +
+	"\anode_id\x18\x01 \x01(\rR\x06nodeId\x12\x16\n" +
+	"\x06action\x18\x02 \x01(\tR\x06action\"\xb3\x03\n" +
 	"\tBuildEdit\x12*\n" +
 	"\x05level\x18\x01 \x01(\v2\x12.pob2.v1.LevelEditH\x00R\x05level\x12-\n" +
 	"\x06config\x18\x02 \x01(\v2\x13.pob2.v1.ConfigEditH\x00R\x06config\x12'\n" +
@@ -1870,8 +1994,12 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\bpassives\x18\x05 \x01(\v2\x15.pob2.v1.PassivesEditH\x00R\bpassives\x126\n" +
 	"\tselection\x18\x06 \x01(\v2\x16.pob2.v1.SelectionEditH\x00R\tselection\x12:\n" +
 	"\vadd_support\x18\a \x01(\v2\x17.pob2.v1.AddSupportEditH\x00R\n" +
-	"addSupportB\v\n" +
-	"\toperation\"m\n" +
+	"addSupport\x124\n" +
+	"\ttree_node\x18\b \x01(\v2\x15.pob2.v1.TreeNodeEditH\x00R\btreeNodeB\v\n" +
+	"\toperation\"?\n" +
+	"\rPassiveChange\x12\x14\n" +
+	"\x05added\x18\x01 \x03(\rR\x05added\x12\x18\n" +
+	"\aremoved\x18\x02 \x03(\rR\aremoved\"m\n" +
 	"\tStatDelta\x12\x12\n" +
 	"\x04stat\x18\x01 \x01(\tR\x04stat\x12\x16\n" +
 	"\x06before\x18\x02 \x01(\x01R\x06before\x12\x14\n" +
@@ -1907,7 +2035,7 @@ func file_pob2_v1_build_proto_rawDescGZIP() []byte {
 }
 
 var file_pob2_v1_build_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_pob2_v1_build_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_pob2_v1_build_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_pob2_v1_build_proto_goTypes = []any{
 	(ConfigValueType)(0),      // 0: pob2.v1.ConfigValueType
 	(CalculationStatus)(0),    // 1: pob2.v1.CalculationStatus
@@ -1929,12 +2057,14 @@ var file_pob2_v1_build_proto_goTypes = []any{
 	(*PassivesEdit)(nil),      // 17: pob2.v1.PassivesEdit
 	(*SelectionEdit)(nil),     // 18: pob2.v1.SelectionEdit
 	(*AddSupportEdit)(nil),    // 19: pob2.v1.AddSupportEdit
-	(*BuildEdit)(nil),         // 20: pob2.v1.BuildEdit
-	(*StatDelta)(nil),         // 21: pob2.v1.StatDelta
-	(*BuildComparison)(nil),   // 22: pob2.v1.BuildComparison
-	nil,                       // 23: pob2.v1.BuildModel.SlotsEntry
-	nil,                       // 24: pob2.v1.BuildModel.ConfigEntry
-	nil,                       // 25: pob2.v1.CalculationResult.StatsEntry
+	(*TreeNodeEdit)(nil),      // 20: pob2.v1.TreeNodeEdit
+	(*BuildEdit)(nil),         // 21: pob2.v1.BuildEdit
+	(*PassiveChange)(nil),     // 22: pob2.v1.PassiveChange
+	(*StatDelta)(nil),         // 23: pob2.v1.StatDelta
+	(*BuildComparison)(nil),   // 24: pob2.v1.BuildComparison
+	nil,                       // 25: pob2.v1.BuildModel.SlotsEntry
+	nil,                       // 26: pob2.v1.BuildModel.ConfigEntry
+	nil,                       // 27: pob2.v1.CalculationResult.StatsEntry
 }
 var file_pob2_v1_build_proto_depIdxs = []int32{
 	0,  // 0: pob2.v1.ConfigValue.type:type_name -> pob2.v1.ConfigValueType
@@ -1942,11 +2072,11 @@ var file_pob2_v1_build_proto_depIdxs = []int32{
 	4,  // 2: pob2.v1.BuildModel.active_sets:type_name -> pob2.v1.ActiveSets
 	6,  // 3: pob2.v1.BuildModel.groups:type_name -> pob2.v1.SkillGroup
 	7,  // 4: pob2.v1.BuildModel.items:type_name -> pob2.v1.BuildItem
-	23, // 5: pob2.v1.BuildModel.slots:type_name -> pob2.v1.BuildModel.SlotsEntry
-	24, // 6: pob2.v1.BuildModel.config:type_name -> pob2.v1.BuildModel.ConfigEntry
+	25, // 5: pob2.v1.BuildModel.slots:type_name -> pob2.v1.BuildModel.SlotsEntry
+	26, // 6: pob2.v1.BuildModel.config:type_name -> pob2.v1.BuildModel.ConfigEntry
 	3,  // 7: pob2.v1.BuildModel.issues:type_name -> pob2.v1.BuildIssue
 	1,  // 8: pob2.v1.CalculationResult.status:type_name -> pob2.v1.CalculationStatus
-	25, // 9: pob2.v1.CalculationResult.stats:type_name -> pob2.v1.CalculationResult.StatsEntry
+	27, // 9: pob2.v1.CalculationResult.stats:type_name -> pob2.v1.CalculationResult.StatsEntry
 	9,  // 10: pob2.v1.CalculationResult.modifiers:type_name -> pob2.v1.AppliedModifier
 	3,  // 11: pob2.v1.CalculationResult.issues:type_name -> pob2.v1.BuildIssue
 	8,  // 12: pob2.v1.BuildDocument.model:type_name -> pob2.v1.BuildModel
@@ -1961,15 +2091,16 @@ var file_pob2_v1_build_proto_depIdxs = []int32{
 	17, // 21: pob2.v1.BuildEdit.passives:type_name -> pob2.v1.PassivesEdit
 	18, // 22: pob2.v1.BuildEdit.selection:type_name -> pob2.v1.SelectionEdit
 	19, // 23: pob2.v1.BuildEdit.add_support:type_name -> pob2.v1.AddSupportEdit
-	10, // 24: pob2.v1.BuildComparison.before:type_name -> pob2.v1.CalculationResult
-	10, // 25: pob2.v1.BuildComparison.after:type_name -> pob2.v1.CalculationResult
-	21, // 26: pob2.v1.BuildComparison.deltas:type_name -> pob2.v1.StatDelta
-	2,  // 27: pob2.v1.BuildModel.ConfigEntry.value:type_name -> pob2.v1.ConfigValue
-	28, // [28:28] is the sub-list for method output_type
-	28, // [28:28] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	20, // 24: pob2.v1.BuildEdit.tree_node:type_name -> pob2.v1.TreeNodeEdit
+	10, // 25: pob2.v1.BuildComparison.before:type_name -> pob2.v1.CalculationResult
+	10, // 26: pob2.v1.BuildComparison.after:type_name -> pob2.v1.CalculationResult
+	23, // 27: pob2.v1.BuildComparison.deltas:type_name -> pob2.v1.StatDelta
+	2,  // 28: pob2.v1.BuildModel.ConfigEntry.value:type_name -> pob2.v1.ConfigValue
+	29, // [29:29] is the sub-list for method output_type
+	29, // [29:29] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_pob2_v1_build_proto_init() }
@@ -1977,7 +2108,7 @@ func file_pob2_v1_build_proto_init() {
 	if File_pob2_v1_build_proto != nil {
 		return
 	}
-	file_pob2_v1_build_proto_msgTypes[18].OneofWrappers = []any{
+	file_pob2_v1_build_proto_msgTypes[19].OneofWrappers = []any{
 		(*BuildEdit_Level)(nil),
 		(*BuildEdit_Config)(nil),
 		(*BuildEdit_Gems)(nil),
@@ -1985,6 +2116,7 @@ func file_pob2_v1_build_proto_init() {
 		(*BuildEdit_Passives)(nil),
 		(*BuildEdit_Selection)(nil),
 		(*BuildEdit_AddSupport)(nil),
+		(*BuildEdit_TreeNode)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1992,7 +2124,7 @@ func file_pob2_v1_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pob2_v1_build_proto_rawDesc), len(file_pob2_v1_build_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   24,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -120,6 +120,21 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 с кодом `4`. Через MCP передавайте `edit.equipment` в `compare_build` и
 `edit_build`, через gRPC — `EquipmentEdit` в `CompareBuild` и `ApplyBuild`.
 
+### Правка пассива
+
+Получите ID из каталога `passives`. Сохраните, например,
+`{"tree_node":{"node_id":13397,"action":"allocate"}}` в `passive.json`.
+Для снятия укажите `refund`. Предпросмотр возвращает затронутые узлы
+и изменение показателей, а при успешной записи меняется активное дерево.
+
+```shell
+pob2-engine build compare --profile main --session build-1 --revision 3 --edit --file passive.json
+pob2-engine build edit --profile main --session build-1 --revision 3 --request-id tree-1 --file passive.json
+```
+
+В MCP передайте `edit.tree_node` в `compare_build` или `edit_build`.
+В gRPC передайте `TreeNodeEdit` в `CompareBuild` или `ApplyBuild`.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

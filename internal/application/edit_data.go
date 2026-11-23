@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
@@ -15,27 +16,56 @@ type equipmentValidator interface {
 	ValidateEquipment(context.Context, *build.Document, string) error
 }
 
+type treeEditor interface {
+	ResolveTreeEdit(context.Context, *build.Document, build.TreeNodeEdit) (build.ResolvedTreeEdit, error)
+}
+
+// SupportsTreePreview сообщает, что движок может править дерево через PoB.
+func (s *Service) SupportsTreePreview() bool {
+	_, ok := s.calculator.(treeEditor)
+	return ok
+}
+
 // SupportsEquipmentPreview сообщает, что движок проверяет экипировку через PoB.
 func (s *Service) SupportsEquipmentPreview() bool {
 	_, ok := s.calculator.(equipmentValidator)
 	return ok
 }
 
-func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, error) {
+func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, *build.PassiveChange, error) {
+	if edit.TreeNode != nil {
+		return s.editTree(ctx, doc, edit)
+	}
 	data, err := s.editData(ctx)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	updated, err := doc.Edited(edit, data)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	if validator, ok := s.calculator.(equipmentValidator); ok && edit.Equipment != nil {
 		if err := validator.ValidateEquipment(ctx, updated, edit.Equipment.Slot); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
-	return updated, nil
+	return updated, nil, nil
+}
+
+func (s *Service) editTree(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, *build.PassiveChange, error) {
+	if err := build.ValidateEdit(edit); err != nil {
+		return nil, nil, err
+	}
+	editor, ok := s.calculator.(treeEditor)
+	if !ok {
+		return nil, nil, fmt.Errorf("правка узла доступна с оригинальным Lua PoB")
+	}
+	change, err := editor.ResolveTreeEdit(ctx, doc, *edit.TreeNode)
+	if err != nil {
+		return nil, nil, err
+	}
+	updated, err := doc.WithResolvedTreeEdit(change)
+	return updated, &change.PassiveChange, err
 }
 
 func (s *Service) editData(ctx context.Context) (*gamedata.Dataset, error) {

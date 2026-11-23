@@ -1773,6 +1773,76 @@ class AddSupportEdit extends $pb.GeneratedMessage {
   void clearQuality() => $_clearField(3);
 }
 
+class TreeNodeEdit extends $pb.GeneratedMessage {
+  factory TreeNodeEdit({
+    $core.int? nodeId,
+    $core.String? action,
+  }) {
+    final result = TreeNodeEdit._();
+    if (nodeId != null) result.nodeId = nodeId;
+    if (action != null) result.action = action;
+    return result;
+  }
+
+  TreeNodeEdit._();
+
+  factory TreeNodeEdit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeNodeEdit()..mergeFromBuffer(data, registry);
+  factory TreeNodeEdit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeNodeEdit()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreeNodeEdit',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreeNodeEdit.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(2, _omitFieldNames ? '' : 'action')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeNodeEdit clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeNodeEdit copyWith(void Function(TreeNodeEdit) updates) =>
+      super.copyWith((message) => updates(message as TreeNodeEdit))
+          as TreeNodeEdit;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreeNodeEdit() / TreeNodeEdit.new instead')
+  static TreeNodeEdit create() => TreeNodeEdit._();
+  static $pb.GeneratedMessage $_createMessage() => TreeNodeEdit._();
+  @$core.override
+  TreeNodeEdit createEmptyInstance() => TreeNodeEdit._();
+  @$core.pragma('dart2js:noInline')
+  static TreeNodeEdit getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreeNodeEdit>(
+          TreeNodeEdit.$_createMessage);
+  static TreeNodeEdit? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get nodeId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set nodeId($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasNodeId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearNodeId() => $_clearField(1);
+
+  /// Назначить (allocate) или снять (refund) пассив активного дерева.
+  @$pb.TagNumber(2)
+  $core.String get action => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set action($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasAction() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAction() => $_clearField(2);
+}
+
 enum BuildEdit_Operation {
   level,
   config,
@@ -1781,6 +1851,7 @@ enum BuildEdit_Operation {
   passives,
   selection,
   addSupport,
+  treeNode,
   notSet
 }
 
@@ -1793,6 +1864,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     PassivesEdit? passives,
     SelectionEdit? selection,
     AddSupportEdit? addSupport,
+    TreeNodeEdit? treeNode,
   }) {
     final result = BuildEdit._();
     if (level != null) result.level = level;
@@ -1802,6 +1874,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     if (passives != null) result.passives = passives;
     if (selection != null) result.selection = selection;
     if (addSupport != null) result.addSupport = addSupport;
+    if (treeNode != null) result.treeNode = treeNode;
     return result;
   }
 
@@ -1823,13 +1896,14 @@ class BuildEdit extends $pb.GeneratedMessage {
     5: BuildEdit_Operation.passives,
     6: BuildEdit_Operation.selection,
     7: BuildEdit_Operation.addSupport,
+    8: BuildEdit_Operation.treeNode,
     0: BuildEdit_Operation.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BuildEdit',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
       createEmptyInstance: BuildEdit.$_createMessage)
-    ..oo(0, [1, 2, 3, 4, 5, 6, 7])
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8])
     ..aOM<LevelEdit>(1, _omitFieldNames ? '' : 'level',
         subBuilder: LevelEdit.$_createMessage)
     ..aOM<ConfigEdit>(2, _omitFieldNames ? '' : 'config',
@@ -1844,6 +1918,8 @@ class BuildEdit extends $pb.GeneratedMessage {
         subBuilder: SelectionEdit.$_createMessage)
     ..aOM<AddSupportEdit>(7, _omitFieldNames ? '' : 'addSupport',
         subBuilder: AddSupportEdit.$_createMessage)
+    ..aOM<TreeNodeEdit>(8, _omitFieldNames ? '' : 'treeNode',
+        subBuilder: TreeNodeEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1873,6 +1949,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   @$pb.TagNumber(6)
   @$pb.TagNumber(7)
+  @$pb.TagNumber(8)
   BuildEdit_Operation whichOperation() =>
       _BuildEdit_OperationByTag[$_whichOneof(0)]!;
   @$pb.TagNumber(1)
@@ -1882,6 +1959,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   @$pb.TagNumber(6)
   @$pb.TagNumber(7)
+  @$pb.TagNumber(8)
   void clearOperation() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -1960,6 +2038,74 @@ class BuildEdit extends $pb.GeneratedMessage {
   void clearAddSupport() => $_clearField(7);
   @$pb.TagNumber(7)
   AddSupportEdit ensureAddSupport() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  TreeNodeEdit get treeNode => $_getN(7);
+  @$pb.TagNumber(8)
+  set treeNode(TreeNodeEdit value) => $_setField(8, value);
+  @$pb.TagNumber(8)
+  $core.bool hasTreeNode() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearTreeNode() => $_clearField(8);
+  @$pb.TagNumber(8)
+  TreeNodeEdit ensureTreeNode() => $_ensure(7);
+}
+
+class PassiveChange extends $pb.GeneratedMessage {
+  factory PassiveChange({
+    $core.Iterable<$core.int>? added,
+    $core.Iterable<$core.int>? removed,
+  }) {
+    final result = PassiveChange._();
+    if (added != null) result.added.addAll(added);
+    if (removed != null) result.removed.addAll(removed);
+    return result;
+  }
+
+  PassiveChange._();
+
+  factory PassiveChange.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassiveChange()..mergeFromBuffer(data, registry);
+  factory PassiveChange.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      PassiveChange()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PassiveChange',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: PassiveChange.$_createMessage)
+    ..p<$core.int>(1, _omitFieldNames ? '' : 'added', $pb.PbFieldType.KU3)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'removed', $pb.PbFieldType.KU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassiveChange clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PassiveChange copyWith(void Function(PassiveChange) updates) =>
+      super.copyWith((message) => updates(message as PassiveChange))
+          as PassiveChange;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use PassiveChange() / PassiveChange.new instead')
+  static PassiveChange create() => PassiveChange._();
+  static $pb.GeneratedMessage $_createMessage() => PassiveChange._();
+  @$core.override
+  PassiveChange createEmptyInstance() => PassiveChange._();
+  @$core.pragma('dart2js:noInline')
+  static PassiveChange getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PassiveChange>(
+          PassiveChange.$_createMessage);
+  static PassiveChange? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.int> get added => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$core.int> get removed => $_getList(1);
 }
 
 class StatDelta extends $pb.GeneratedMessage {

@@ -30,6 +30,7 @@ local json = require("dkjson")
 dofile(directory .. "/lua/headless_bootstrap.lua")
 local catalog = dofile(directory .. "/catalog.lua")
 local diagnostics = dofile(directory .. "/diagnostics.lua")
+local editTree = dofile(directory .. "/tree_edit.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -113,6 +114,10 @@ for line in io.lines() do
 		local request = assert(json.decode(line))
 		if request.operation == "catalog" then return { catalog = catalog.read() } end
 		if request.operation == "validate_equipment" then return validateEquipment(request) end
+		if request.operation == "edit_tree" then
+			loadDocument(assert(request.xml))
+			return { tree_edit = editTree(build, request) }
+		end
 		return calculate(assert(request.xml))
 	end)
 	if ok then reply(result) else reply({ error = clean(result) }) end

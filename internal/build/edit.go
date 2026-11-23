@@ -54,6 +54,7 @@ type Edit struct {
 	Passives   *PassivesEdit   `json:"passives,omitempty"`
 	Selection  *SelectionEdit  `json:"selection,omitempty"`
 	AddSupport *AddSupportEdit `json:"add_support,omitempty"`
+	TreeNode   *TreeNodeEdit   `json:"tree_node,omitempty"`
 }
 
 func newElement(name string) *element { return &element{name: xml.Name{Local: name}} }
@@ -71,11 +72,7 @@ func (d *Document) Edited(edit Edit, data *gamedata.Dataset) (*Document, error) 
 	if err := validateEdit(edit, data); err != nil {
 		return nil, err
 	}
-	xml, err := d.Export()
-	if err != nil {
-		return nil, err
-	}
-	copy, err := Parse(xml)
+	copy, err := d.copyForEdit()
 	if err != nil {
 		return nil, err
 	}
@@ -96,6 +93,14 @@ func (d *Document) Edited(edit Edit, data *gamedata.Dataset) (*Document, error) 
 	return copy, nil
 }
 
+func (d *Document) copyForEdit() (*Document, error) {
+	xml, err := d.Export()
+	if err != nil {
+		return nil, err
+	}
+	return Parse(xml)
+}
+
 func validateEdit(edit Edit, data *gamedata.Dataset) error {
 	if data == nil {
 		return fmt.Errorf("нет набора данных для правки")
@@ -106,7 +111,7 @@ func validateEdit(edit Edit, data *gamedata.Dataset) error {
 // ValidateEdit проверяет форму команды независимо от изменяемого каталога PoB.
 func ValidateEdit(edit Edit) error {
 	operations := 0
-	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil} {
+	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil, edit.TreeNode != nil} {
 		if present {
 			operations++
 		}
@@ -116,6 +121,9 @@ func ValidateEdit(edit Edit) error {
 	}
 	if edit.AddSupport != nil {
 		return edit.AddSupport.ValidateID()
+	}
+	if edit.TreeNode != nil {
+		return edit.TreeNode.validate()
 	}
 	return nil
 }
@@ -160,6 +168,8 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 		return d.editSelection(*edit.Selection)
 	case edit.AddSupport != nil:
 		return d.editSupport(*edit.AddSupport, data)
+	case edit.TreeNode != nil:
+		return fmt.Errorf("для правки узла требуется путь из оригинального PoB")
 	}
 	return nil
 }

@@ -64,7 +64,8 @@ func (s *Server) CompareBuild(ctx context.Context, req *pb.CompareBuildRequest) 
 	if err != nil {
 		return nil, rpcError(err)
 	}
-	return &pb.CompareBuildResponse{SessionId: value.SessionID, Revision: value.Revision, Comparison: wireComparison(value.Comparison)}, nil
+	return &pb.CompareBuildResponse{SessionId: value.SessionID, Revision: value.Revision,
+		Comparison: wireComparison(value.Comparison), PassiveChange: wirePassiveChange(value.Passives)}, nil
 }
 
 type calculationAnswer struct {

@@ -232,13 +232,18 @@ type response struct {
 	Error          string                   `json:"error"`
 	Catalog        *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
 	Issues         []build.Issue            `json:"issues,omitempty"`
+	TreeEdit       *build.ResolvedTreeEdit  `json:"tree_edit,omitempty"`
 }
 
 type request struct {
-	XML       string `json:"xml,omitempty"`
-	Operation string `json:"operation,omitempty"`
-	Slot      string `json:"slot,omitempty"`
-	ItemID    int    `json:"item_id,omitempty"`
+	XML         string `json:"xml,omitempty"`
+	Operation   string `json:"operation,omitempty"`
+	Slot        string `json:"slot,omitempty"`
+	ItemID      int    `json:"item_id,omitempty"`
+	NodeID      int    `json:"node_id,omitempty"`
+	Action      string `json:"action,omitempty"`
+	TreeSpec    int    `json:"tree_spec,omitempty"`
+	TreeVersion string `json:"tree_version,omitempty"`
 }
 
 type workerReply struct {

@@ -546,6 +546,14 @@ const CompareBuildResponse$json = {
       '6': '.pob2.v1.BuildComparison',
       '10': 'comparison'
     },
+    {
+      '1': 'passive_change',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.PassiveChange',
+      '10': 'passiveChange'
+    },
   ],
 };
 
@@ -553,7 +561,8 @@ const CompareBuildResponse$json = {
 final $typed_data.Uint8List compareBuildResponseDescriptor = $convert.base64Decode(
     'ChRDb21wYXJlQnVpbGRSZXNwb25zZRIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSGg'
     'oIcmV2aXNpb24YAiABKARSCHJldmlzaW9uEjgKCmNvbXBhcmlzb24YAyABKAsyGC5wb2IyLnYx'
-    'LkJ1aWxkQ29tcGFyaXNvblIKY29tcGFyaXNvbg==');
+    'LkJ1aWxkQ29tcGFyaXNvblIKY29tcGFyaXNvbhI9Cg5wYXNzaXZlX2NoYW5nZRgEIAEoCzIWLn'
+    'BvYjIudjEuUGFzc2l2ZUNoYW5nZVINcGFzc2l2ZUNoYW5nZQ==');
 
 @$core.Deprecated('Use exportBuildRequestDescriptor instead')
 const ExportBuildRequest$json = {

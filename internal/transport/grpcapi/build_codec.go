@@ -182,6 +182,9 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 		result.Operation = &pb.BuildEdit_AddSupport{AddSupport: &pb.AddSupportEdit{
 			SupportId: edit.SupportID, Level: uint32(edit.Level), Quality: uint32(edit.Quality),
 		}}
+	case value.TreeNode != nil:
+		node := value.TreeNode
+		result.Operation = &pb.BuildEdit_TreeNode{TreeNode: &pb.TreeNodeEdit{NodeId: uint32(node.NodeID), Action: node.Action}}
 	}
 	return result, nil
 }
@@ -259,6 +262,9 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 		result.AddSupport = &build.AddSupportEdit{
 			SupportID: edit.GetSupportId(), Level: int(edit.GetLevel()), Quality: int(edit.GetQuality()),
 		}
+	case *pb.BuildEdit_TreeNode:
+		node := operation.TreeNode
+		result.TreeNode = &build.TreeNodeEdit{NodeID: int(node.GetNodeId()), Action: node.GetAction()}
 	default:
 		return nil, fmt.Errorf("не указана операция правки")
 	}

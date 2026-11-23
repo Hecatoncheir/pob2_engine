@@ -2147,11 +2147,13 @@ class CompareBuildResponse extends $pb.GeneratedMessage {
     $core.String? sessionId,
     $fixnum.Int64? revision,
     $3.BuildComparison? comparison,
+    $3.PassiveChange? passiveChange,
   }) {
     final result = CompareBuildResponse._();
     if (sessionId != null) result.sessionId = sessionId;
     if (revision != null) result.revision = revision;
     if (comparison != null) result.comparison = comparison;
+    if (passiveChange != null) result.passiveChange = passiveChange;
     return result;
   }
 
@@ -2174,6 +2176,8 @@ class CompareBuildResponse extends $pb.GeneratedMessage {
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOM<$3.BuildComparison>(3, _omitFieldNames ? '' : 'comparison',
         subBuilder: $3.BuildComparison.$_createMessage)
+    ..aOM<$3.PassiveChange>(4, _omitFieldNames ? '' : 'passiveChange',
+        subBuilder: $3.PassiveChange.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2227,6 +2231,18 @@ class CompareBuildResponse extends $pb.GeneratedMessage {
   void clearComparison() => $_clearField(3);
   @$pb.TagNumber(3)
   $3.BuildComparison ensureComparison() => $_ensure(2);
+
+  /// Заполняется для правки отдельного узла оригинального PoB.
+  @$pb.TagNumber(4)
+  $3.PassiveChange get passiveChange => $_getN(3);
+  @$pb.TagNumber(4)
+  set passiveChange($3.PassiveChange value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPassiveChange() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPassiveChange() => $_clearField(4);
+  @$pb.TagNumber(4)
+  $3.PassiveChange ensurePassiveChange() => $_ensure(3);
 }
 
 class ExportBuildRequest extends $pb.GeneratedMessage {

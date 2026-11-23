@@ -1612,10 +1612,12 @@ func (*CompareBuildRequest_Xml) isCompareBuildRequest_Input() {}
 func (*CompareBuildRequest_Edit) isCompareBuildRequest_Input() {}
 
 type CompareBuildResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Revision      uint64                 `protobuf:"varint,2,opt,name=revision,proto3" json:"revision,omitempty"`
-	Comparison    *BuildComparison       `protobuf:"bytes,3,opt,name=comparison,proto3" json:"comparison,omitempty"`
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	SessionId  string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Revision   uint64                 `protobuf:"varint,2,opt,name=revision,proto3" json:"revision,omitempty"`
+	Comparison *BuildComparison       `protobuf:"bytes,3,opt,name=comparison,proto3" json:"comparison,omitempty"`
+	// Заполняется для правки отдельного узла оригинального PoB.
+	PassiveChange *PassiveChange `protobuf:"bytes,4,opt,name=passive_change,json=passiveChange,proto3" json:"passive_change,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1667,6 +1669,13 @@ func (x *CompareBuildResponse) GetRevision() uint64 {
 func (x *CompareBuildResponse) GetComparison() *BuildComparison {
 	if x != nil {
 		return x.Comparison
+	}
+	return nil
+}
+
+func (x *CompareBuildResponse) GetPassiveChange() *PassiveChange {
+	if x != nil {
+		return x.PassiveChange
 	}
 	return nil
 }
@@ -1903,14 +1912,15 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\x11expected_revision\x18\x02 \x01(\x04R\x10expectedRevision\x12\x12\n" +
 	"\x03xml\x18\x03 \x01(\tH\x00R\x03xml\x12(\n" +
 	"\x04edit\x18\x04 \x01(\v2\x12.pob2.v1.BuildEditH\x00R\x04editB\a\n" +
-	"\x05input\"\x8b\x01\n" +
+	"\x05input\"\xca\x01\n" +
 	"\x14CompareBuildResponse\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x04R\brevision\x128\n" +
 	"\n" +
 	"comparison\x18\x03 \x01(\v2\x18.pob2.v1.BuildComparisonR\n" +
-	"comparison\"3\n" +
+	"comparison\x12=\n" +
+	"\x0epassive_change\x18\x04 \x01(\v2\x16.pob2.v1.PassiveChangeR\rpassiveChange\"3\n" +
 	"\x12ExportBuildRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\"\x85\x01\n" +
@@ -1991,14 +2001,15 @@ var file_pob2_v1_session_proto_goTypes = []any{
 	(*BuildDocument)(nil),                // 31: pob2.v1.BuildDocument
 	(*BuildEdit)(nil),                    // 32: pob2.v1.BuildEdit
 	(*BuildComparison)(nil),              // 33: pob2.v1.BuildComparison
-	(*UpdateRequest)(nil),                // 34: pob2.v1.UpdateRequest
-	(*DoctorRequest)(nil),                // 35: pob2.v1.DoctorRequest
-	(*GetCatalogRequest)(nil),            // 36: pob2.v1.GetCatalogRequest
-	(*PreviewSupportRequest)(nil),        // 37: pob2.v1.PreviewSupportRequest
-	(*UpdateResponse)(nil),               // 38: pob2.v1.UpdateResponse
-	(*DoctorResponse)(nil),               // 39: pob2.v1.DoctorResponse
-	(*GetCatalogResponse)(nil),           // 40: pob2.v1.GetCatalogResponse
-	(*PreviewSupportResponse)(nil),       // 41: pob2.v1.PreviewSupportResponse
+	(*PassiveChange)(nil),                // 34: pob2.v1.PassiveChange
+	(*UpdateRequest)(nil),                // 35: pob2.v1.UpdateRequest
+	(*DoctorRequest)(nil),                // 36: pob2.v1.DoctorRequest
+	(*GetCatalogRequest)(nil),            // 37: pob2.v1.GetCatalogRequest
+	(*PreviewSupportRequest)(nil),        // 38: pob2.v1.PreviewSupportRequest
+	(*UpdateResponse)(nil),               // 39: pob2.v1.UpdateResponse
+	(*DoctorResponse)(nil),               // 40: pob2.v1.DoctorResponse
+	(*GetCatalogResponse)(nil),           // 41: pob2.v1.GetCatalogResponse
+	(*PreviewSupportResponse)(nil),       // 42: pob2.v1.PreviewSupportResponse
 }
 var file_pob2_v1_session_proto_depIdxs = []int32{
 	31, // 0: pob2.v1.SessionSnapshot.build:type_name -> pob2.v1.BuildDocument
@@ -2012,49 +2023,50 @@ var file_pob2_v1_session_proto_depIdxs = []int32{
 	0,  // 8: pob2.v1.CalculateBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
 	32, // 9: pob2.v1.CompareBuildRequest.edit:type_name -> pob2.v1.BuildEdit
 	33, // 10: pob2.v1.CompareBuildResponse.comparison:type_name -> pob2.v1.BuildComparison
-	1,  // 11: pob2.v1.SessionService.GetServerInfo:input_type -> pob2.v1.GetServerInfoRequest
-	34, // 12: pob2.v1.SessionService.Update:input_type -> pob2.v1.UpdateRequest
-	35, // 13: pob2.v1.SessionService.Doctor:input_type -> pob2.v1.DoctorRequest
-	3,  // 14: pob2.v1.SessionService.CreateSession:input_type -> pob2.v1.CreateSessionRequest
-	5,  // 15: pob2.v1.SessionService.CreateSessionFromXml:input_type -> pob2.v1.CreateSessionFromXmlRequest
-	7,  // 16: pob2.v1.SessionService.GetSnapshot:input_type -> pob2.v1.GetSnapshotRequest
-	9,  // 17: pob2.v1.SessionService.RenameBuild:input_type -> pob2.v1.RenameBuildRequest
-	23, // 18: pob2.v1.SessionService.ApplyBuild:input_type -> pob2.v1.ApplyBuildRequest
-	25, // 19: pob2.v1.SessionService.CalculateBuild:input_type -> pob2.v1.CalculateBuildRequest
-	27, // 20: pob2.v1.SessionService.CompareBuild:input_type -> pob2.v1.CompareBuildRequest
-	36, // 21: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
-	37, // 22: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
-	29, // 23: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
-	11, // 24: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
-	14, // 25: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
-	13, // 26: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
-	17, // 27: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
-	19, // 28: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
-	21, // 29: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
-	2,  // 30: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
-	38, // 31: pob2.v1.SessionService.Update:output_type -> pob2.v1.UpdateResponse
-	39, // 32: pob2.v1.SessionService.Doctor:output_type -> pob2.v1.DoctorResponse
-	4,  // 33: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
-	6,  // 34: pob2.v1.SessionService.CreateSessionFromXml:output_type -> pob2.v1.CreateSessionFromXmlResponse
-	8,  // 35: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
-	10, // 36: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
-	24, // 37: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
-	26, // 38: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
-	28, // 39: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
-	40, // 40: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
-	41, // 41: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
-	30, // 42: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
-	12, // 43: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
-	15, // 44: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
-	16, // 45: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
-	18, // 46: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
-	20, // 47: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
-	22, // 48: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
-	30, // [30:49] is the sub-list for method output_type
-	11, // [11:30] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	34, // 11: pob2.v1.CompareBuildResponse.passive_change:type_name -> pob2.v1.PassiveChange
+	1,  // 12: pob2.v1.SessionService.GetServerInfo:input_type -> pob2.v1.GetServerInfoRequest
+	35, // 13: pob2.v1.SessionService.Update:input_type -> pob2.v1.UpdateRequest
+	36, // 14: pob2.v1.SessionService.Doctor:input_type -> pob2.v1.DoctorRequest
+	3,  // 15: pob2.v1.SessionService.CreateSession:input_type -> pob2.v1.CreateSessionRequest
+	5,  // 16: pob2.v1.SessionService.CreateSessionFromXml:input_type -> pob2.v1.CreateSessionFromXmlRequest
+	7,  // 17: pob2.v1.SessionService.GetSnapshot:input_type -> pob2.v1.GetSnapshotRequest
+	9,  // 18: pob2.v1.SessionService.RenameBuild:input_type -> pob2.v1.RenameBuildRequest
+	23, // 19: pob2.v1.SessionService.ApplyBuild:input_type -> pob2.v1.ApplyBuildRequest
+	25, // 20: pob2.v1.SessionService.CalculateBuild:input_type -> pob2.v1.CalculateBuildRequest
+	27, // 21: pob2.v1.SessionService.CompareBuild:input_type -> pob2.v1.CompareBuildRequest
+	37, // 22: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
+	38, // 23: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
+	29, // 24: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
+	11, // 25: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
+	14, // 26: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
+	13, // 27: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
+	17, // 28: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
+	19, // 29: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
+	21, // 30: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
+	2,  // 31: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
+	39, // 32: pob2.v1.SessionService.Update:output_type -> pob2.v1.UpdateResponse
+	40, // 33: pob2.v1.SessionService.Doctor:output_type -> pob2.v1.DoctorResponse
+	4,  // 34: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
+	6,  // 35: pob2.v1.SessionService.CreateSessionFromXml:output_type -> pob2.v1.CreateSessionFromXmlResponse
+	8,  // 36: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
+	10, // 37: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
+	24, // 38: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
+	26, // 39: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
+	28, // 40: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
+	41, // 41: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
+	42, // 42: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
+	30, // 43: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
+	12, // 44: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
+	15, // 45: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
+	16, // 46: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
+	18, // 47: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
+	20, // 48: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
+	22, // 49: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
+	31, // [31:50] is the sub-list for method output_type
+	12, // [12:31] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_pob2_v1_session_proto_init() }

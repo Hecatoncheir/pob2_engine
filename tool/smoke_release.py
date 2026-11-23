@@ -437,6 +437,7 @@ def check_native_lua(scenario):
         open_build_session(scenario, 'catalog', 'Полный каталог', fixtures / 'testdata/reference/fireball.xml')
         catalog = check_full_catalog(scenario, lock, assert_lua_result)
         selection = check_lua_selection(scenario, fixtures, lock)
+        tree = check_lua_tree(scenario, fixtures)
         scenario.stop()
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
         upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
@@ -460,7 +461,7 @@ def check_native_lua(scenario):
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
                 upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
-                multigroup=multigroup, catalog=catalog, timings=timings,
+                multigroup=multigroup, catalog=catalog, tree=tree, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
 
 
@@ -536,6 +537,39 @@ def check_lua_selection(scenario, fixtures, lock):
     calculated = scenario.calculate('sets', 3, 'calculate')['build']['calculation']
     assert_lua_result(calculated, 'Spark', 17.1285714285714, lock)
     return calculated
+
+
+def check_lua_tree(scenario, fixtures):
+    fixture = fixtures / 'testdata/reference/0.0.10/warrior.xml'
+    open_build_session(scenario, 'tree', 'Warrior', fixture)
+    baseline = scenario.snapshot('tree')
+    allocated, preview = commit_tree_edit(scenario, baseline, 13397, 'allocate', {'added': [3936, 13397]})
+    refunded, _ = commit_tree_edit(scenario, allocated, 3936, 'refund', {'removed': [3936, 13397]})
+    require(refunded['build']['input_sha256'] == baseline['build']['input_sha256'],
+            'Снятие ветви не восстановило исходный XML')
+    before, after = preview['comparison']['before']['stats'], preview['comparison']['after']['stats']
+    require(after['Str'] == before['Str'] + 5 and after['TotalDPS'] > before['TotalDPS'],
+            'PoB не учёл силу и урон после назначения пассивов')
+    return dict(added=[3936, 13397], removed=[3936, 13397], strength_gain=5,
+                dps=[before['TotalDPS'], after['TotalDPS']], restored_xml=True)
+
+
+def commit_tree_edit(scenario, snapshot, node_id, action, change):
+    edit = dict(tree_node=dict(node_id=node_id, action=action))
+    revision = snapshot['revision']
+    path = scenario.root / 'tree-edit.json'
+    path.write_text(json.dumps(edit), encoding='utf-8')
+    preview = scenario.run('build', 'compare', *scenario.connection, '--session', 'tree',
+                           '--revision', revision, '--edit', '--file', path)
+    arguments = dict(expected_revision=revision, edit=edit)
+    mcp, = scenario.mcp_tools('tree', [('compare_build', arguments)])
+    require(preview == mcp and preview['passive_change'] == change, 'CLI/gRPC и MCP должны показать ожидаемый путь')
+    require(scenario.snapshot('tree') == snapshot, 'Предпросмотр изменил сессию')
+    applied, = scenario.mcp_tools('tree', [('edit_build', dict(arguments, request_id=action))])
+    require(applied['revision'] == revision + 1 and
+            applied['build']['input_sha256'] == preview['comparison']['after']['input_sha256'],
+            'Правка дерева разошлась с предпросмотром')
+    return applied, preview
 
 
 def check_lua_install(scenario, fixtures, lock):

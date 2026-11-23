@@ -160,6 +160,12 @@ message AddSupportEdit {
   uint32 quality = 3;
 }
 
+message TreeNodeEdit {
+  uint32 node_id = 1;
+  // Назначить (allocate) или снять (refund) пассив активного дерева.
+  string action = 2;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;
@@ -169,7 +175,13 @@ message BuildEdit {
     PassivesEdit passives = 5;
     SelectionEdit selection = 6;
     AddSupportEdit add_support = 7;
+    TreeNodeEdit tree_node = 8;
   }
+}
+
+message PassiveChange {
+  repeated uint32 added = 1;
+  repeated uint32 removed = 2;
 }
 
 message StatDelta {

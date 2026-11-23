@@ -33,6 +33,7 @@ type BuildComparison struct {
 	SessionID  string                 `json:"session_id"`
 	Revision   uint64                 `json:"revision"`
 	Comparison calculation.Comparison `json:"comparison"`
+	Passives   *build.PassiveChange   `json:"passive_change,omitempty"`
 }
 type ExportedBuild struct {
 	SessionID   string `json:"session_id"`
@@ -186,7 +187,7 @@ func (s *Service) applyNewBuild(ctx context.Context, value *session, cmd ApplyBu
 		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 	}
 	if cmd.Edit != nil {
-		doc, err = s.editDocument(ctx, doc, *cmd.Edit)
+		doc, _, err = s.editDocument(ctx, doc, *cmd.Edit)
 		if err != nil {
 			return domain.Snapshot{}, failure(InvalidArgument, err.Error())
 		}
@@ -260,8 +261,9 @@ func (s *Service) Compare(ctx context.Context, cmd CompareBuild) (BuildCompariso
 		return BuildComparison{}, failure(InvalidArgument, err.Error())
 	}
 	var after *build.Document
+	var passives *build.PassiveChange
 	if cmd.Edit != nil {
-		after, err = s.editDocument(ctx, before, *cmd.Edit)
+		after, passives, err = s.editDocument(ctx, before, *cmd.Edit)
 	} else {
 		after, err = build.Parse([]byte(cmd.XML))
 	}
@@ -272,5 +274,5 @@ func (s *Service) Compare(ctx context.Context, cmd CompareBuild) (BuildCompariso
 	if err != nil {
 		return BuildComparison{}, err
 	}
-	return BuildComparison{SessionID: cmd.SessionID, Revision: snapshot.Revision, Comparison: result}, nil
+	return BuildComparison{SessionID: cmd.SessionID, Revision: snapshot.Revision, Comparison: result, Passives: passives}, nil
 }

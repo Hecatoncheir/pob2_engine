@@ -1,0 +1,30 @@
+<PathOfBuilding2>
+  <Build className="Warrior" ascendClassName="None" level="20" characterLevelAutoMode="false" targetVersion="0_1" mainSocketGroup="1" />
+  <Items activeItemSet="1">
+    <ItemSet id="1"><Slot name="Weapon 1" itemId="1" /></ItemSet>
+    <Item id="1">Rarity: NORMAL
+Wooden Club</Item>
+  </Items>
+  <Skills activeSkillSet="1">
+    <SkillSet id="1">
+      <Skill label="Attack" enabled="true" includeInFullDPS="true" mainActiveSkill="1" mainActiveSkillCalcs="1" groupCount="1">
+        <Gem nameSpec="Rolling Slam" gemId="Metadata/Items/Gems/SkillGemRollingSlam" variantId="RollingSlam" skillId="RollingSlamPlayer" level="1" quality="0" enabled="true" statSetIndex="1" />
+      </Skill>
+    </SkillSet>
+  </Skills>
+  <Tree activeSpec="2">
+    <Spec title="Сохранённое дерево" treeVersion="0_5" classId="6" classInternalId="6" ascendClassId="0" nodes="47175,3936">
+      <SavedExtension value="keep" />
+    </Spec>
+    <Spec title="Рабочее дерево" treeVersion="0_5" classId="6" classInternalId="6" ascendClassId="0" nodes="47175,38646">
+      <Overrides><AttributeOverride strNodes="" dexNodes="23570" intNodes="" /><LocalExtension value="keep" /></Overrides>
+    </Spec>
+  </Tree>
+  <Config activeConfigSet="1">
+    <ConfigSet id="1">
+      <Input name="resistancePenalty" number="0" />
+      <Input name="enemyIsBoss" string="None" />
+      <Input name="enemyLevel" number="20" />
+    </ConfigSet>
+  </Config>
+</PathOfBuilding2>

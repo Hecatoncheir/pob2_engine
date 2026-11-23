@@ -170,6 +170,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	if preview, ok := s.commands.(interface{ SupportsEquipmentPreview() bool }); ok && preview.SupportsEquipmentPreview() {
 		capabilities = append(capabilities, "build.equipment_preview")
 	}
+	if preview, ok := s.commands.(interface{ SupportsTreePreview() bool }); ok && preview.SupportsTreePreview() {
+		capabilities = append(capabilities, "build.tree_preview")
+	}
 	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: capabilities, State: stats.State,
 		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds()), StorageMode: storageMode, StoragePath: storagePath}, nil
 }

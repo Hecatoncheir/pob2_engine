@@ -204,6 +204,12 @@ func (m *Model) readTree(tree *element) error {
 }
 
 func readPassiveNodes(raw string) ([]int, error) {
+	nodes, err := parsePassiveNodes(raw)
+	sort.Ints(nodes)
+	return nodes, err
+}
+
+func parsePassiveNodes(raw string) ([]int, error) {
 	seen := make(map[int]bool)
 	var nodes []int
 	for _, value := range strings.Split(raw, ",") {
@@ -220,7 +226,6 @@ func readPassiveNodes(raw string) ([]int, error) {
 		seen[id] = true
 		nodes = append(nodes, id)
 	}
-	sort.Ints(nodes)
 	return nodes, nil
 }
 

@@ -83,5 +83,6 @@ func (c *Client) Compare(ctx context.Context, cmd application.CompareBuild) (app
 	if err != nil {
 		return application.BuildComparison{}, err
 	}
-	return application.BuildComparison{SessionID: value.GetSessionId(), Revision: value.GetRevision(), Comparison: comparison}, nil
+	return application.BuildComparison{SessionID: value.GetSessionId(), Revision: value.GetRevision(),
+		Comparison: comparison, Passives: localPassiveChange(value.GetPassiveChange())}, nil
 }
