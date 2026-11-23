@@ -35,4 +35,5 @@
   и закрепить его Dart API в PoB II.
 - [x] Провести [приёмку кандидата](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45104449521)
   на Windows, Linux и macOS.
-- [ ] Выпустить стабильную версию и проверить скачанные бинарники.
+- [x] Выпустить [v0.0.10](https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.10)
+  и проверить скачанные бинарники. [Отчёт приёмки](testdata/releases/0.0.10/README.md).
