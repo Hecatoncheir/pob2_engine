@@ -136,6 +136,32 @@ local function reply(value)
 	io.stdout:flush()
 end
 
+-- Дельта штатной отрисовки по образцу image_data.lua из pob-poe2-mcp (MIT).
+local baseSceneXML, baseSceneKeys
+local function drawCommandKey(command)
+	return json.encode({command.file, command.index, command.positions, command.uv,
+		command.color, command.blend, command.clamp, command.mask, command.layer, command.subLayer})
+end
+
+local function baseTreeScene(xml)
+	local scene = drawTreeScene(build, false)
+	local keys = {}
+	for _, command in ipairs(scene.commands) do keys[drawCommandKey(command)] = true end
+	baseSceneXML, baseSceneKeys = xml, keys
+	return scene
+end
+
+local function hoverTreeScene(xml, nodeID)
+	if baseSceneXML ~= xml then baseTreeScene(xml) end
+	local scene = drawTreeScene(build, false, nodeID)
+	local overlay = {}
+	for _, command in ipairs(scene.commands) do
+		if not baseSceneKeys[drawCommandKey(command)] then overlay[#overlay + 1] = command end
+	end
+	scene.commands = overlay
+	return scene
+end
+
 reply({ ready = true })
 for line in io.lines() do
 	local ok, result = pcall(function()
@@ -154,12 +180,14 @@ for line in io.lines() do
 		if request.operation == "tree_geometry" then
 			loadDocument(assert(request.xml))
 			local geometry = readTreeGeometry(build.spec)
-			if request.include_scene then geometry.scene = drawTreeScene(build, false) end
+			if request.include_scene then geometry.scene = baseTreeScene(request.xml) end
 			return { tree_geometry = geometry }
 		end
 		if request.operation == "tree_node_tooltip" then
 			loadDocument(assert(request.xml))
-			return { tree_tooltip = readTreeNodeTooltip(build, request) or json.null }
+			local tooltip = readTreeNodeTooltip(build, request)
+			if tooltip and request.include_scene then tooltip.scene = hoverTreeScene(request.xml, tooltip.node_id) end
+			return { tree_tooltip = tooltip or json.null }
 		end
 		if request.operation == "build_report" then
 			loadDocument(assert(request.xml), request.build_name)
@@ -171,6 +199,12 @@ for line in io.lines() do
 		end
 		if request.operation == "tree_power" then
 			loadDocument(assert(request.xml))
+			if request.report_progress then
+				GetTime = function() return os.clock() * 1000 end
+				build.powerBuilderProgressCallback = function(percent)
+					reply({ tree_power_progress = percent })
+				end
+			end
 			local power = readTreePower(build, request.tree_power)
 			if power and power.metric and request.tree_power.include_scene then power.scene = drawTreeScene(build, true) end
 			return { tree_power = power or json.null }

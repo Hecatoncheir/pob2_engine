@@ -15,12 +15,12 @@ func (s *Server) GetTreeNodeTooltip(ctx context.Context, req *pb.GetTreeNodeTool
 	if !ok {
 		return nil, status.Error(codes.Unimplemented, "сервис не поддерживает подсказки дерева")
 	}
-	tip, err := reader.TreeNodeTooltip(ctx, req.GetSessionId(), req.GetExpectedRevision(), req.GetNodeId(), req.GetCompare())
+	tip, err := reader.TreeNodeTooltip(ctx, req.GetSessionId(), req.GetExpectedRevision(), req.GetNodeId(), req.GetCompare(), req.GetIncludeScene())
 	if err != nil {
 		return nil, rpcError(err)
 	}
 	result := &pb.GetTreeNodeTooltipResponse{
-		Revision: tip.Revision, NodeId: tip.NodeID, Path: tip.Path, Points: tip.Points, Note: tip.Note, Recipe: tip.Recipe,
+		Revision: tip.Revision, NodeId: tip.NodeID, Path: tip.Path, Points: tip.Points, Note: tip.Note, Recipe: tip.Recipe, Scene: wireTreeScene(tip.Scene),
 	}
 	for _, line := range tip.Lines {
 		result.Lines = append(result.Lines, &pb.TreeTooltipLine{Size: line.Size, Text: line.Text, Separator: line.Separator})
@@ -28,9 +28,9 @@ func (s *Server) GetTreeNodeTooltip(ctx context.Context, req *pb.GetTreeNodeTool
 	return result, nil
 }
 
-func (c *Client) TreeNodeTooltip(ctx context.Context, id string, expected uint64, node uint32, compare bool) (application.TreeNodeTooltipView, error) {
+func (c *Client) TreeNodeTooltip(ctx context.Context, id string, expected uint64, node uint32, compare, scene bool) (application.TreeNodeTooltipView, error) {
 	reply, err := c.rpc.GetTreeNodeTooltip(ctx, &pb.GetTreeNodeTooltipRequest{
-		SessionId: id, ExpectedRevision: expected, NodeId: node, Compare: compare,
+		SessionId: id, ExpectedRevision: expected, NodeId: node, Compare: compare, IncludeScene: scene,
 	})
 	if err != nil {
 		return application.TreeNodeTooltipView{}, err
@@ -39,7 +39,7 @@ func (c *Client) TreeNodeTooltip(ctx context.Context, id string, expected uint64
 		Revision: reply.GetRevision(),
 		TreeNodeTooltip: build.TreeNodeTooltip{
 			NodeID: reply.GetNodeId(), Path: reply.GetPath(), Points: reply.GetPoints(), Note: reply.GetNote(), Recipe: reply.GetRecipe(),
-			Lines: make([]build.TreeTooltipLine, 0, len(reply.GetLines())),
+			Lines: make([]build.TreeTooltipLine, 0, len(reply.GetLines())), Scene: localTreeScene(reply.GetScene()),
 		},
 	}
 	for _, line := range reply.GetLines() {

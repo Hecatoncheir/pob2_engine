@@ -34,6 +34,7 @@ type TreeNodeTooltip struct {
 	Points uint32            `json:"points,omitempty"`
 	Note   string            `json:"note,omitempty"`
 	Recipe []string          `json:"recipe,omitempty"`
+	Scene  *TreeScene        `json:"scene,omitempty"`
 }
 
 type TreeTooltipLine struct {

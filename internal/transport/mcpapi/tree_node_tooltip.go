@@ -12,6 +12,7 @@ type treeNodeTooltipInput struct {
 	ExpectedRevision uint64 `json:"expected_revision,omitempty" jsonschema:"Ноль читает последний снимок сессии"`
 	NodeID           uint32 `json:"node_id" jsonschema:"ID узла активной спецификации"`
 	Compare          bool   `json:"compare,omitempty" jsonschema:"Показать изменение расчёта от узла"`
+	IncludeScene     bool   `json:"include_scene,omitempty" jsonschema:"Вернуть штатную подсветку пути"`
 }
 
 func addTreeTooltipTool(server *mcp.Server, reader application.TreeTooltipCommands, id string) {
@@ -23,7 +24,7 @@ func addTreeTooltipTool(server *mcp.Server, reader application.TreeTooltipComman
 	}, func(ctx context.Context, _ *mcp.CallToolRequest, input treeNodeTooltipInput) (*mcp.CallToolResult, application.TreeNodeTooltipView, error) {
 		ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 		defer cancel()
-		tip, err := reader.TreeNodeTooltip(ctx, id, input.ExpectedRevision, input.NodeID, input.Compare)
+		tip, err := reader.TreeNodeTooltip(ctx, id, input.ExpectedRevision, input.NodeID, input.Compare, input.IncludeScene)
 		return nil, tip, err
 	})
 }

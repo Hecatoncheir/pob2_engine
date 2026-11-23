@@ -768,6 +768,7 @@ const GetTreeNodeTooltipRequest$json = {
     },
     {'1': 'node_id', '3': 3, '4': 1, '5': 13, '10': 'nodeId'},
     {'1': 'compare', '3': 4, '4': 1, '5': 8, '10': 'compare'},
+    {'1': 'include_scene', '3': 5, '4': 1, '5': 8, '10': 'includeScene'},
   ],
 };
 
@@ -775,7 +776,8 @@ const GetTreeNodeTooltipRequest$json = {
 final $typed_data.Uint8List getTreeNodeTooltipRequestDescriptor = $convert.base64Decode(
     'ChlHZXRUcmVlTm9kZVRvb2x0aXBSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb2'
     '5JZBIrChFleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbhIXCgdub2Rl'
-    'X2lkGAMgASgNUgZub2RlSWQSGAoHY29tcGFyZRgEIAEoCFIHY29tcGFyZQ==');
+    'X2lkGAMgASgNUgZub2RlSWQSGAoHY29tcGFyZRgEIAEoCFIHY29tcGFyZRIjCg1pbmNsdWRlX3'
+    'NjZW5lGAUgASgIUgxpbmNsdWRlU2NlbmU=');
 
 @$core.Deprecated('Use getTreeNodeTooltipResponseDescriptor instead')
 const GetTreeNodeTooltipResponse$json = {
@@ -795,6 +797,14 @@ const GetTreeNodeTooltipResponse$json = {
     {'1': 'points', '3': 5, '4': 1, '5': 13, '10': 'points'},
     {'1': 'note', '3': 6, '4': 1, '5': 9, '10': 'note'},
     {'1': 'recipe', '3': 7, '4': 3, '5': 9, '10': 'recipe'},
+    {
+      '1': 'scene',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.TreeScene',
+      '10': 'scene'
+    },
   ],
 };
 
@@ -803,7 +813,8 @@ final $typed_data.Uint8List getTreeNodeTooltipResponseDescriptor = $convert.base
     'ChpHZXRUcmVlTm9kZVRvb2x0aXBSZXNwb25zZRIaCghyZXZpc2lvbhgBIAEoBFIIcmV2aXNpb2'
     '4SFwoHbm9kZV9pZBgCIAEoDVIGbm9kZUlkEi4KBWxpbmVzGAMgAygLMhgucG9iMi52MS5UcmVl'
     'VG9vbHRpcExpbmVSBWxpbmVzEhIKBHBhdGgYBCADKA1SBHBhdGgSFgoGcG9pbnRzGAUgASgNUg'
-    'Zwb2ludHMSEgoEbm90ZRgGIAEoCVIEbm90ZRIWCgZyZWNpcGUYByADKAlSBnJlY2lwZQ==');
+    'Zwb2ludHMSEgoEbm90ZRgGIAEoCVIEbm90ZRIWCgZyZWNpcGUYByADKAlSBnJlY2lwZRIoCgVz'
+    'Y2VuZRgIIAEoCzISLnBvYjIudjEuVHJlZVNjZW5lUgVzY2VuZQ==');
 
 @$core.Deprecated('Use treeTooltipLineDescriptor instead')
 const TreeTooltipLine$json = {
@@ -957,6 +968,52 @@ const TreePowerMetric$json = {
 final $typed_data.Uint8List treePowerMetricDescriptor = $convert.base64Decode(
     'Cg9UcmVlUG93ZXJNZXRyaWMSDgoCaWQYASABKAlSAmlkEhQKBWxhYmVsGAIgASgJUgVsYWJlbA'
     '==');
+
+@$core.Deprecated('Use watchTreePowerRequestDescriptor instead')
+const WatchTreePowerRequest$json = {
+  '1': 'WatchTreePowerRequest',
+  '2': [
+    {
+      '1': 'query',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.GetTreePowerRequest',
+      '10': 'query'
+    },
+  ],
+};
+
+/// Descriptor for `WatchTreePowerRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchTreePowerRequestDescriptor = $convert.base64Decode(
+    'ChVXYXRjaFRyZWVQb3dlclJlcXVlc3QSMgoFcXVlcnkYASABKAsyHC5wb2IyLnYxLkdldFRyZW'
+    'VQb3dlclJlcXVlc3RSBXF1ZXJ5');
+
+@$core.Deprecated('Use watchTreePowerResponseDescriptor instead')
+const WatchTreePowerResponse$json = {
+  '1': 'WatchTreePowerResponse',
+  '2': [
+    {'1': 'progress', '3': 1, '4': 1, '5': 13, '9': 0, '10': 'progress'},
+    {
+      '1': 'result',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.GetTreePowerResponse',
+      '9': 0,
+      '10': 'result'
+    },
+  ],
+  '8': [
+    {'1': 'update'},
+  ],
+};
+
+/// Descriptor for `WatchTreePowerResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchTreePowerResponseDescriptor = $convert.base64Decode(
+    'ChZXYXRjaFRyZWVQb3dlclJlc3BvbnNlEhwKCHByb2dyZXNzGAEgASgNSABSCHByb2dyZXNzEj'
+    'cKBnJlc3VsdBgCIAEoCzIdLnBvYjIudjEuR2V0VHJlZVBvd2VyUmVzcG9uc2VIAFIGcmVzdWx0'
+    'QggKBnVwZGF0ZQ==');
 
 @$core.Deprecated('Use treePowerEntryDescriptor instead')
 const TreePowerEntry$json = {

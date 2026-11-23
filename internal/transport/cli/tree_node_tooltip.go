@@ -13,6 +13,7 @@ func (r runner) treeNodeTooltip(ctx context.Context, args []string) error {
 	revision := fs.Uint64("revision", 0, "ожидаемая ревизия сессии")
 	node := fs.Uint("node", 0, "ID узла")
 	compare := fs.Bool("compare", false, "показать изменение расчёта от узла")
+	scene := fs.Bool("scene", false, "вернуть штатную подсветку пути")
 	if err := parse(fs, args); err != nil {
 		return err
 	}
@@ -26,7 +27,7 @@ func (r runner) treeNodeTooltip(ctx context.Context, args []string) error {
 		return err
 	}
 	defer client.Close()
-	view, err := client.TreeNodeTooltip(ctx, *id, *revision, uint32(*node), *compare)
+	view, err := client.TreeNodeTooltip(ctx, *id, *revision, uint32(*node), *compare, *scene)
 	if err != nil {
 		return err
 	}

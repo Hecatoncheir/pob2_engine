@@ -193,13 +193,13 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 		capabilities = append(capabilities, "build.tree_geometry")
 	}
 	if reader, ok := s.commands.(interface{ SupportsTreeTooltip() bool }); ok && reader.SupportsTreeTooltip() {
-		capabilities = append(capabilities, "build.tree_tooltip")
+		capabilities = append(capabilities, "build.tree_tooltip", "build.tree_hover")
 	}
 	if reader, ok := s.commands.(interface{ SupportsBuildReport() bool }); ok && reader.SupportsBuildReport() {
 		capabilities = append(capabilities, "build.report")
 	}
 	if reader, ok := s.commands.(interface{ SupportsTreePower() bool }); ok && reader.SupportsTreePower() {
-		capabilities = append(capabilities, "build.tree_power")
+		capabilities = append(capabilities, "build.tree_power", "build.tree_power_watch")
 	}
 	if reader, ok := s.commands.(interface{ SupportsTreeTexture() bool }); ok && reader.SupportsTreeTexture() {
 		capabilities = append(capabilities, "build.tree_textures")

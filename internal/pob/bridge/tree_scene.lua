@@ -21,7 +21,7 @@ local function bounds(spec)
 end
 
 -- Записывает штатную отрисовку без нативного окна PoB.
-return function(build, power)
+return function(build, power, hoverID)
     local width, height = 1800, 1800
     local tree, spec = build.spec.tree, build.spec
     local minX, maxX, minY, maxY = bounds(spec)
@@ -65,7 +65,11 @@ return function(build, power)
     replace("SetDrawLayer", function(l, s) layer, subLayer = l or layer, s or 0 end)
     replace("GetDrawLayer", function() return layer, subLayer end)
     replace("SetBlendMode", function(mode) blend = mode end)
-    replace("GetCursorPos", function() return -10000, -10000 end)
+    replace("GetCursorPos", function()
+        local node = hoverID and spec.nodes[hoverID]
+        if node then return node.x * scale + viewer.zoomX + width / 2, node.y * scale + viewer.zoomY + height / 2 end
+        return -10000, -10000
+    end)
     replace("IsKeyDown", function() return false end)
     replace("GetTime", function() return 0 end)
     replace("DrawString", function() end)

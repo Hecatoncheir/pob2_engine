@@ -12,11 +12,11 @@ type TreeNodeTooltipView struct {
 }
 
 type TreeTooltipCommands interface {
-	TreeNodeTooltip(context.Context, string, uint64, uint32, bool) (TreeNodeTooltipView, error)
+	TreeNodeTooltip(ctx context.Context, id string, expected uint64, node uint32, compare, scene bool) (TreeNodeTooltipView, error)
 }
 
 type treeTooltipReader interface {
-	ReadTreeNodeTooltip(context.Context, *build.Document, uint32, bool) (*build.TreeNodeTooltip, error)
+	ReadTreeNodeTooltip(ctx context.Context, doc *build.Document, node uint32, compare, scene bool) (*build.TreeNodeTooltip, error)
 }
 
 func (s *Service) SupportsTreeTooltip() bool {
@@ -24,7 +24,7 @@ func (s *Service) SupportsTreeTooltip() bool {
 	return ok
 }
 
-func (s *Service) TreeNodeTooltip(ctx context.Context, id string, expected uint64, node uint32, compare bool) (TreeNodeTooltipView, error) {
+func (s *Service) TreeNodeTooltip(ctx context.Context, id string, expected uint64, node uint32, compare, scene bool) (TreeNodeTooltipView, error) {
 	doc, snapshot, err := s.buildDocumentAtRevision(ctx, id, expected)
 	if err != nil {
 		return TreeNodeTooltipView{}, err
@@ -33,7 +33,7 @@ func (s *Service) TreeNodeTooltip(ctx context.Context, id string, expected uint6
 	if !ok {
 		return TreeNodeTooltipView{}, failure(InvalidArgument, "подсказки дерева доступны с исходным Lua PoB")
 	}
-	tip, err := reader.ReadTreeNodeTooltip(ctx, doc, node, compare)
+	tip, err := reader.ReadTreeNodeTooltip(ctx, doc, node, compare, scene)
 	if err != nil {
 		return TreeNodeTooltipView{}, failure(CalculationFailure, err.Error())
 	}

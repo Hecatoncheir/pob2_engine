@@ -229,6 +229,7 @@ message GetTreeNodeTooltipRequest {
   uint64 expected_revision = 2;
   uint32 node_id = 3;
   bool compare = 4;
+  bool include_scene = 5;
 }
 
 message GetTreeNodeTooltipResponse {
@@ -239,6 +240,7 @@ message GetTreeNodeTooltipResponse {
   uint32 points = 5;
   string note = 6;
   repeated string recipe = 7;
+  TreeScene scene = 8;
 }
 
 message TreeTooltipLine {
@@ -285,6 +287,17 @@ message GetTreePowerResponse {
 message TreePowerMetric {
   string id = 1;
   string label = 2;
+}
+
+message WatchTreePowerRequest {
+  GetTreePowerRequest query = 1;
+}
+
+message WatchTreePowerResponse {
+  oneof update {
+    uint32 progress = 1;
+    GetTreePowerResponse result = 2;
+  }
 }
 
 message TreePowerEntry {

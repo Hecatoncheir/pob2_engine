@@ -28,7 +28,7 @@ func (s *Server) authorizeStream(srv any, stream grpc.ServerStream, info *grpc.S
 	if err := s.life.CheckLease(leases[0]); err != nil {
 		return lifecycleError(err)
 	}
-	if info.FullMethod == pb.SessionService_CalculateBuild_FullMethodName {
+	if info.FullMethod == pb.SessionService_CalculateBuild_FullMethodName || info.FullMethod == pb.SessionService_WatchTreePower_FullMethodName {
 		finish, err := s.life.BeginTask(leases[0])
 		if err != nil {
 			return lifecycleError(err)
