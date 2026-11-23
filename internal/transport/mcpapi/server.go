@@ -49,5 +49,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	}
 	addMaintenanceTools(server, commands, timeout)
 	addEditorTools(server, commands, sessionID)
+	if reader, ok := commands.(application.TreeGeometryCommands); ok {
+		addTreeGeometryTool(server, reader, sessionID)
+	}
 	return server
 }

@@ -250,6 +250,7 @@ type response struct {
 	TreeEdit       *build.PassiveChange     `json:"tree_edit,omitempty"`
 	TreeIdentity   *build.TreeIdentity      `json:"tree_identity,omitempty"`
 	TreeClass      *build.TreeClassChange   `json:"tree_class,omitempty"`
+	TreeGeometry   *build.TreeGeometry      `json:"tree_geometry,omitempty"`
 }
 
 type request struct {

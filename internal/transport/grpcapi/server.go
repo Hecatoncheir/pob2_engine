@@ -183,6 +183,9 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	if editor, ok := s.commands.(interface{ SupportsTreeClass() bool }); ok && editor.SupportsTreeClass() {
 		capabilities = append(capabilities, "build.tree_class")
 	}
+	if reader, ok := s.commands.(interface{ SupportsTreeGeometry() bool }); ok && reader.SupportsTreeGeometry() {
+		capabilities = append(capabilities, "build.tree_geometry")
+	}
 	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: capabilities, State: stats.State,
 		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds()), StorageMode: storageMode, StoragePath: storagePath}, nil
 }

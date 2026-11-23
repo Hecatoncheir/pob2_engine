@@ -191,6 +191,36 @@ message TreeClassEdit {
   string mode = 3;
 }
 
+message GetTreeGeometryRequest {
+  string session_id = 1;
+  // Ноль читает дерево последнего снимка сессии.
+  uint64 expected_revision = 2;
+}
+
+message GetTreeGeometryResponse {
+  uint64 revision = 1;
+  string version = 2;
+  repeated TreeGeometryNode nodes = 3;
+  repeated TreeGeometryEdge edges = 4;
+}
+
+message TreeGeometryNode {
+  uint32 id = 1;
+  double x = 2;
+  double y = 3;
+  string name = 4;
+  string kind = 5;
+  string icon = 6;
+  bool allocated = 7;
+  bool attribute = 8;
+  uint32 allocation_mode = 9;
+}
+
+message TreeGeometryEdge {
+  uint32 from_node = 1;
+  uint32 to_node = 2;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;

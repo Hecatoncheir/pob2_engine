@@ -653,6 +653,97 @@ final $typed_data.Uint8List treeClassEditDescriptor = $convert.base64Decode(
     'Cg1UcmVlQ2xhc3NFZGl0EhkKCGNsYXNzX2lkGAEgASgNUgdjbGFzc0lkEiMKDWFzY2VuZGFuY3'
     'lfaWQYAiABKA1SDGFzY2VuZGFuY3lJZBISCgRtb2RlGAMgASgJUgRtb2Rl');
 
+@$core.Deprecated('Use getTreeGeometryRequestDescriptor instead')
+const GetTreeGeometryRequest$json = {
+  '1': 'GetTreeGeometryRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+  ],
+};
+
+/// Descriptor for `GetTreeGeometryRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeGeometryRequestDescriptor =
+    $convert.base64Decode(
+        'ChZHZXRUcmVlR2VvbWV0cnlSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZB'
+        'IrChFleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbg==');
+
+@$core.Deprecated('Use getTreeGeometryResponseDescriptor instead')
+const GetTreeGeometryResponse$json = {
+  '1': 'GetTreeGeometryResponse',
+  '2': [
+    {'1': 'revision', '3': 1, '4': 1, '5': 4, '10': 'revision'},
+    {'1': 'version', '3': 2, '4': 1, '5': 9, '10': 'version'},
+    {
+      '1': 'nodes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreeGeometryNode',
+      '10': 'nodes'
+    },
+    {
+      '1': 'edges',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreeGeometryEdge',
+      '10': 'edges'
+    },
+  ],
+};
+
+/// Descriptor for `GetTreeGeometryResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeGeometryResponseDescriptor = $convert.base64Decode(
+    'ChdHZXRUcmVlR2VvbWV0cnlSZXNwb25zZRIaCghyZXZpc2lvbhgBIAEoBFIIcmV2aXNpb24SGA'
+    'oHdmVyc2lvbhgCIAEoCVIHdmVyc2lvbhIvCgVub2RlcxgDIAMoCzIZLnBvYjIudjEuVHJlZUdl'
+    'b21ldHJ5Tm9kZVIFbm9kZXMSLwoFZWRnZXMYBCADKAsyGS5wb2IyLnYxLlRyZWVHZW9tZXRyeU'
+    'VkZ2VSBWVkZ2Vz');
+
+@$core.Deprecated('Use treeGeometryNodeDescriptor instead')
+const TreeGeometryNode$json = {
+  '1': 'TreeGeometryNode',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 13, '10': 'id'},
+    {'1': 'x', '3': 2, '4': 1, '5': 1, '10': 'x'},
+    {'1': 'y', '3': 3, '4': 1, '5': 1, '10': 'y'},
+    {'1': 'name', '3': 4, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'kind', '3': 5, '4': 1, '5': 9, '10': 'kind'},
+    {'1': 'icon', '3': 6, '4': 1, '5': 9, '10': 'icon'},
+    {'1': 'allocated', '3': 7, '4': 1, '5': 8, '10': 'allocated'},
+    {'1': 'attribute', '3': 8, '4': 1, '5': 8, '10': 'attribute'},
+    {'1': 'allocation_mode', '3': 9, '4': 1, '5': 13, '10': 'allocationMode'},
+  ],
+};
+
+/// Descriptor for `TreeGeometryNode`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treeGeometryNodeDescriptor = $convert.base64Decode(
+    'ChBUcmVlR2VvbWV0cnlOb2RlEg4KAmlkGAEgASgNUgJpZBIMCgF4GAIgASgBUgF4EgwKAXkYAy'
+    'ABKAFSAXkSEgoEbmFtZRgEIAEoCVIEbmFtZRISCgRraW5kGAUgASgJUgRraW5kEhIKBGljb24Y'
+    'BiABKAlSBGljb24SHAoJYWxsb2NhdGVkGAcgASgIUglhbGxvY2F0ZWQSHAoJYXR0cmlidXRlGA'
+    'ggASgIUglhdHRyaWJ1dGUSJwoPYWxsb2NhdGlvbl9tb2RlGAkgASgNUg5hbGxvY2F0aW9uTW9k'
+    'ZQ==');
+
+@$core.Deprecated('Use treeGeometryEdgeDescriptor instead')
+const TreeGeometryEdge$json = {
+  '1': 'TreeGeometryEdge',
+  '2': [
+    {'1': 'from_node', '3': 1, '4': 1, '5': 13, '10': 'fromNode'},
+    {'1': 'to_node', '3': 2, '4': 1, '5': 13, '10': 'toNode'},
+  ],
+};
+
+/// Descriptor for `TreeGeometryEdge`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treeGeometryEdgeDescriptor = $convert.base64Decode(
+    'ChBUcmVlR2VvbWV0cnlFZGdlEhsKCWZyb21fbm9kZRgBIAEoDVIIZnJvbU5vZGUSFwoHdG9fbm'
+    '9kZRgCIAEoDVIGdG9Ob2Rl');
+
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
   '1': 'BuildEdit',

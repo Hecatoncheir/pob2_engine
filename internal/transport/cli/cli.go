@@ -34,6 +34,7 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   doctor                    Проверить бинарник, набор данных и состояние выбранного сервера
   session create|get|rename  Создать сессию, получить снимок или переименовать сборку
   build import|edit|export|compare  Операции полной сборки выбранной сессии
+  tree-geometry              Получить узлы и связи активного дерева
   calculate                 Рассчитать --file XML либо выбранную --session
   catalog                   Поиск данных текущего набора: --kind gems|classes|items|passives
   preview-support           Сравнить поддержку в --session без записи
@@ -93,6 +94,8 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.mcp(ctx, args[1:])
 	case "build":
 		return r.build(ctx, args[1:])
+	case "tree-geometry":
+		return r.treeGeometry(ctx, args[1:])
 	case "calculate":
 		return r.calculate(ctx, args[1:])
 	case "catalog":

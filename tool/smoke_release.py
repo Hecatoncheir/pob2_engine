@@ -28,7 +28,7 @@ MCP_TOOLS = {'get_snapshot', 'rename_build', 'import_build', 'edit_build', 'calc
              'compare_build', 'export_build', 'get_catalog', 'preview_support', 'doctor', 'update',
              'pob_editor_status', 'pob_editor_ui', 'pob_editor_app', 'pob_editor_components',
              'pob_editor_library', 'pob_editor_history', 'pob_editor_notes', 'pob_editor_files',
-             'pob_editor_progression', 'pob_editor_job'}
+             'pob_editor_progression', 'pob_editor_job', 'get_tree_geometry'}
 
 
 def require(condition, message):
