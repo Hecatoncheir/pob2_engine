@@ -33,6 +33,7 @@ local diagnostics = dofile(directory .. "/diagnostics.lua")
 local editTree = dofile(directory .. "/tree_edit.lua")
 local editTreeClass = dofile(directory .. "/tree_class.lua")
 local readTreeGeometry = dofile(directory .. "/tree_geometry.lua")
+local readTreeNodeTooltip = dofile(directory .. "/tree_node_tooltip.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -148,6 +149,10 @@ for line in io.lines() do
 		if request.operation == "tree_geometry" then
 			loadDocument(assert(request.xml))
 			return { tree_geometry = readTreeGeometry(build.spec) }
+		end
+		if request.operation == "tree_node_tooltip" then
+			loadDocument(assert(request.xml))
+			return { tree_tooltip = readTreeNodeTooltip(build, request) or json.null }
 		end
 		return calculate(assert(request.xml))
 	end)

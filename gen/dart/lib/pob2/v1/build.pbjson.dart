@@ -744,6 +744,72 @@ final $typed_data.Uint8List treeGeometryEdgeDescriptor = $convert.base64Decode(
     'ChBUcmVlR2VvbWV0cnlFZGdlEhsKCWZyb21fbm9kZRgBIAEoDVIIZnJvbU5vZGUSFwoHdG9fbm'
     '9kZRgCIAEoDVIGdG9Ob2Rl');
 
+@$core.Deprecated('Use getTreeNodeTooltipRequestDescriptor instead')
+const GetTreeNodeTooltipRequest$json = {
+  '1': 'GetTreeNodeTooltipRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+    {'1': 'node_id', '3': 3, '4': 1, '5': 13, '10': 'nodeId'},
+    {'1': 'compare', '3': 4, '4': 1, '5': 8, '10': 'compare'},
+  ],
+};
+
+/// Descriptor for `GetTreeNodeTooltipRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeNodeTooltipRequestDescriptor = $convert.base64Decode(
+    'ChlHZXRUcmVlTm9kZVRvb2x0aXBSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb2'
+    '5JZBIrChFleHBlY3RlZF9yZXZpc2lvbhgCIAEoBFIQZXhwZWN0ZWRSZXZpc2lvbhIXCgdub2Rl'
+    'X2lkGAMgASgNUgZub2RlSWQSGAoHY29tcGFyZRgEIAEoCFIHY29tcGFyZQ==');
+
+@$core.Deprecated('Use getTreeNodeTooltipResponseDescriptor instead')
+const GetTreeNodeTooltipResponse$json = {
+  '1': 'GetTreeNodeTooltipResponse',
+  '2': [
+    {'1': 'revision', '3': 1, '4': 1, '5': 4, '10': 'revision'},
+    {'1': 'node_id', '3': 2, '4': 1, '5': 13, '10': 'nodeId'},
+    {
+      '1': 'lines',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.TreeTooltipLine',
+      '10': 'lines'
+    },
+    {'1': 'path', '3': 4, '4': 3, '5': 13, '10': 'path'},
+    {'1': 'points', '3': 5, '4': 1, '5': 13, '10': 'points'},
+    {'1': 'note', '3': 6, '4': 1, '5': 9, '10': 'note'},
+    {'1': 'recipe', '3': 7, '4': 3, '5': 9, '10': 'recipe'},
+  ],
+};
+
+/// Descriptor for `GetTreeNodeTooltipResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeNodeTooltipResponseDescriptor = $convert.base64Decode(
+    'ChpHZXRUcmVlTm9kZVRvb2x0aXBSZXNwb25zZRIaCghyZXZpc2lvbhgBIAEoBFIIcmV2aXNpb2'
+    '4SFwoHbm9kZV9pZBgCIAEoDVIGbm9kZUlkEi4KBWxpbmVzGAMgAygLMhgucG9iMi52MS5UcmVl'
+    'VG9vbHRpcExpbmVSBWxpbmVzEhIKBHBhdGgYBCADKA1SBHBhdGgSFgoGcG9pbnRzGAUgASgNUg'
+    'Zwb2ludHMSEgoEbm90ZRgGIAEoCVIEbm90ZRIWCgZyZWNpcGUYByADKAlSBnJlY2lwZQ==');
+
+@$core.Deprecated('Use treeTooltipLineDescriptor instead')
+const TreeTooltipLine$json = {
+  '1': 'TreeTooltipLine',
+  '2': [
+    {'1': 'size', '3': 1, '4': 1, '5': 1, '10': 'size'},
+    {'1': 'text', '3': 2, '4': 1, '5': 9, '10': 'text'},
+    {'1': 'separator', '3': 3, '4': 1, '5': 8, '10': 'separator'},
+  ],
+};
+
+/// Descriptor for `TreeTooltipLine`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treeTooltipLineDescriptor = $convert.base64Decode(
+    'Cg9UcmVlVG9vbHRpcExpbmUSEgoEc2l6ZRgBIAEoAVIEc2l6ZRISCgR0ZXh0GAIgASgJUgR0ZX'
+    'h0EhwKCXNlcGFyYXRvchgDIAEoCFIJc2VwYXJhdG9y');
+
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
   '1': 'BuildEdit',

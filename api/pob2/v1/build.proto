@@ -221,6 +221,29 @@ message TreeGeometryEdge {
   uint32 to_node = 2;
 }
 
+message GetTreeNodeTooltipRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+  uint32 node_id = 3;
+  bool compare = 4;
+}
+
+message GetTreeNodeTooltipResponse {
+  uint64 revision = 1;
+  uint32 node_id = 2;
+  repeated TreeTooltipLine lines = 3;
+  repeated uint32 path = 4;
+  uint32 points = 5;
+  string note = 6;
+  repeated string recipe = 7;
+}
+
+message TreeTooltipLine {
+  double size = 1;
+  string text = 2;
+  bool separator = 3;
+}
+
 message BuildEdit {
   oneof operation {
     LevelEdit level = 1;

@@ -21,6 +21,7 @@ service SessionService {
   rpc CalculateBuild(CalculateBuildRequest) returns (stream CalculateBuildResponse);
   rpc CompareBuild(CompareBuildRequest) returns (CompareBuildResponse);
   rpc GetTreeGeometry(GetTreeGeometryRequest) returns (GetTreeGeometryResponse);
+  rpc GetTreeNodeTooltip(GetTreeNodeTooltipRequest) returns (GetTreeNodeTooltipResponse);
   rpc GetCatalog(GetCatalogRequest) returns (GetCatalogResponse);
   rpc PreviewSupport(PreviewSupportRequest) returns (PreviewSupportResponse);
   rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);

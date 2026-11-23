@@ -35,6 +35,7 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   session create|get|rename  Создать сессию, получить снимок или переименовать сборку
   build import|edit|export|compare  Операции полной сборки выбранной сессии
   tree-geometry              Получить узлы и связи активного дерева
+  tree-node-tooltip          Прочитать подсказку и путь узла дерева
   calculate                 Рассчитать --file XML либо выбранную --session
   catalog                   Поиск данных текущего набора: --kind gems|classes|items|passives
   preview-support           Сравнить поддержку в --session без записи
@@ -96,6 +97,8 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.build(ctx, args[1:])
 	case "tree-geometry":
 		return r.treeGeometry(ctx, args[1:])
+	case "tree-node-tooltip":
+		return r.treeNodeTooltip(ctx, args[1:])
 	case "calculate":
 		return r.calculate(ctx, args[1:])
 	case "catalog":

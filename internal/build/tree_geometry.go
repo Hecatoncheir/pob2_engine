@@ -23,3 +23,19 @@ type TreeGeometryEdge struct {
 	FromNode int `json:"from_node"`
 	ToNode   int `json:"to_node"`
 }
+
+// TreeNodeTooltip содержит строки оригинальной подсказки и список узлов пути.
+type TreeNodeTooltip struct {
+	NodeID uint32            `json:"node_id"`
+	Lines  []TreeTooltipLine `json:"lines"`
+	Path   []uint32          `json:"path,omitempty"`
+	Points uint32            `json:"points,omitempty"`
+	Note   string            `json:"note,omitempty"`
+	Recipe []string          `json:"recipe,omitempty"`
+}
+
+type TreeTooltipLine struct {
+	Size      float64 `json:"size,omitempty"`
+	Text      string  `json:"text,omitempty"`
+	Separator bool    `json:"separator,omitempty"`
+}

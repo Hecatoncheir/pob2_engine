@@ -115,6 +115,13 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getTreeGeometry, request, options: options);
   }
 
+  $grpc.ResponseFuture<$2.GetTreeNodeTooltipResponse> getTreeNodeTooltip(
+    $2.GetTreeNodeTooltipRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getTreeNodeTooltip, request, options: options);
+  }
+
   $grpc.ResponseFuture<$3.GetCatalogResponse> getCatalog(
     $3.GetCatalogRequest request, {
     $grpc.CallOptions? options,
@@ -262,6 +269,11 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/GetTreeGeometry',
           ($2.GetTreeGeometryRequest value) => value.writeToBuffer(),
           $2.GetTreeGeometryResponse.fromBuffer);
+  static final _$getTreeNodeTooltip = $grpc.ClientMethod<
+          $2.GetTreeNodeTooltipRequest, $2.GetTreeNodeTooltipResponse>(
+      '/pob2.v1.SessionService/GetTreeNodeTooltip',
+      ($2.GetTreeNodeTooltipRequest value) => value.writeToBuffer(),
+      $2.GetTreeNodeTooltipResponse.fromBuffer);
   static final _$getCatalog =
       $grpc.ClientMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
           '/pob2.v1.SessionService/GetCatalog',
@@ -422,6 +434,15 @@ abstract class SessionServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $2.GetTreeGeometryRequest.fromBuffer(value),
         ($2.GetTreeGeometryResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.GetTreeNodeTooltipRequest,
+            $2.GetTreeNodeTooltipResponse>(
+        'GetTreeNodeTooltip',
+        getTreeNodeTooltip_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetTreeNodeTooltipRequest.fromBuffer(value),
+        ($2.GetTreeNodeTooltipResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$3.GetCatalogRequest, $3.GetCatalogResponse>(
         'GetCatalog',
         getCatalog_Pre,
@@ -617,6 +638,15 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$2.GetTreeGeometryResponse> getTreeGeometry(
       $grpc.ServiceCall call, $2.GetTreeGeometryRequest request);
+
+  $async.Future<$2.GetTreeNodeTooltipResponse> getTreeNodeTooltip_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.GetTreeNodeTooltipRequest> $request) async {
+    return getTreeNodeTooltip($call, await $request);
+  }
+
+  $async.Future<$2.GetTreeNodeTooltipResponse> getTreeNodeTooltip(
+      $grpc.ServiceCall call, $2.GetTreeNodeTooltipRequest request);
 
   $async.Future<$3.GetCatalogResponse> getCatalog_Pre($grpc.ServiceCall $call,
       $async.Future<$3.GetCatalogRequest> $request) async {

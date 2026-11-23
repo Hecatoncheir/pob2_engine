@@ -52,5 +52,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	if reader, ok := commands.(application.TreeGeometryCommands); ok {
 		addTreeGeometryTool(server, reader, sessionID)
 	}
+	if reader, ok := commands.(application.TreeTooltipCommands); ok {
+		addTreeTooltipTool(server, reader, sessionID)
+	}
 	return server
 }

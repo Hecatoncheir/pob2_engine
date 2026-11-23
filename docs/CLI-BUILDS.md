@@ -170,6 +170,15 @@ pob2-engine tree-geometry --profile main --session build-1 --revision 3
 
 MCP предоставляет `get_tree_geometry`, gRPC — `GetTreeGeometry`.
 
+Текст подсказки, путь и стоимость узла доступны по его ID. Флаг
+`--compare` добавляет изменение характеристик по расчёту PoB.
+
+```shell
+pob2-engine tree-node-tooltip --profile main --session build-1 --revision 3 --node 13397 --compare
+```
+
+MCP предоставляет `get_tree_node_tooltip`, gRPC — `GetTreeNodeTooltip`.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:
