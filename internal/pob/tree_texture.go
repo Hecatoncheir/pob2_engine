@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
 	"image/png"
 	"io"
 	"os"
@@ -52,14 +53,35 @@ func (c *Calculator) ReadTreeTexture(ctx context.Context, query build.TreeTextur
 		return build.TreeTexture{}, err
 	}
 	if query.File == "" {
-		pixel := image.NewNRGBA(image.Rect(0, 0, 1, 1))
-		pixel.SetNRGBA(0, 0, color.NRGBA{R: 255, G: 255, B: 255, A: 255})
-		return encodeTreePNG(pixel, 0)
+		return encodeTreePNG(whitePixel(), 0)
 	}
 	if strings.HasSuffix(query.File, ".png") {
 		return c.readTreePNG(query.File)
 	}
 	return c.readTreeDDS(query)
+}
+
+func (c *Calculator) ReadTreeImage(ctx context.Context, query build.TreeTextureQuery) (*image.NRGBA, error) {
+	if err := query.Validate(); err != nil {
+		return nil, err
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if query.File == "" {
+		return whitePixel(), nil
+	}
+	if strings.HasSuffix(query.File, ".png") {
+		return c.decodeTreePNG(query.File)
+	}
+	pixels, _, err := c.decodeTreeDDS(query)
+	return pixels, err
+}
+
+func whitePixel() *image.NRGBA {
+	pixel := image.NewNRGBA(image.Rect(0, 0, 1, 1))
+	pixel.SetNRGBA(0, 0, color.NRGBA{R: 255, G: 255, B: 255, A: 255})
+	return pixel
 }
 
 func (c *Calculator) ReadGemTexture(ctx context.Context, file string, index uint32) (build.TreeTexture, error) {
@@ -94,19 +116,45 @@ func (c *Calculator) readTreePNG(name string) (build.TreeTexture, error) {
 }
 
 func (c *Calculator) readTreeDDS(query build.TreeTextureQuery) (build.TreeTexture, error) {
-	atlas, err := c.treeDDS(query.File)
-	if err != nil {
-		return build.TreeTexture{}, err
-	}
-	level := textureMipLevel(atlas, int(max(1, query.TargetSize)))
-	if !validTextureSize(max(1, atlas.Width>>level), max(1, atlas.Height>>level)) {
-		return build.TreeTexture{}, fmt.Errorf("слой DDS превышает допустимый размер")
-	}
-	pixels, err := atlas.Decode(int(max(1, query.Index))-1, level)
+	pixels, level, err := c.decodeTreeDDS(query)
 	if err != nil {
 		return build.TreeTexture{}, err
 	}
 	return encodeTreePNG(pixels, level)
+}
+
+func (c *Calculator) decodeTreeDDS(query build.TreeTextureQuery) (*image.NRGBA, int, error) {
+	atlas, err := c.treeDDS(query.File)
+	if err != nil {
+		return nil, 0, err
+	}
+	level := textureMipLevel(atlas, int(max(1, query.TargetSize)))
+	if !validTextureSize(max(1, atlas.Width>>level), max(1, atlas.Height>>level)) {
+		return nil, 0, fmt.Errorf("слой DDS превышает допустимый размер")
+	}
+	pixels, err := atlas.Decode(int(max(1, query.Index))-1, level)
+	return pixels, level, err
+}
+
+func (c *Calculator) decodeTreePNG(name string) (*image.NRGBA, error) {
+	texture, err := c.readTreePNG(name)
+	if err != nil {
+		return nil, err
+	}
+	decoded, err := png.Decode(bytes.NewReader(texture.PNG))
+	if err != nil {
+		return nil, err
+	}
+	if pixels, ok := decoded.(*image.NRGBA); ok {
+		return pixels, nil
+	}
+	return copyTreeImage(decoded), nil
+}
+
+func copyTreeImage(source image.Image) *image.NRGBA {
+	pixels := image.NewNRGBA(source.Bounds())
+	draw.Draw(pixels, pixels.Bounds(), source, source.Bounds().Min, draw.Src)
+	return pixels
 }
 
 func validTextureSize(width, height int) bool {

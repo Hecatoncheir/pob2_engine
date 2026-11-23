@@ -381,7 +381,11 @@ def call_mcp(send, messages, request_id, name, arguments):
 
 def tool_reply(send, messages, request_id, name, arguments):
     send({'id': request_id, 'method': 'tools/call', 'params': {'name': name, 'arguments': arguments}})
-    return mcp_result(messages, request_id)
+    try:
+        return mcp_result(messages, request_id)
+    except queue.Empty as error:
+        view = f" ({arguments['view']})" if 'view' in arguments else ''
+        raise TimeoutError(f'MCP не ответил на {name}{view}') from error
 
 
 def damage_edit():
