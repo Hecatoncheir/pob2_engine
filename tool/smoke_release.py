@@ -447,6 +447,7 @@ def check_native_lua(scenario):
         selection = check_lua_selection(scenario, fixtures, lock)
         tree = check_lua_tree(scenario, fixtures)
         weapon_tree = check_lua_weapon_tree(scenario, fixtures)
+        item_skill_group = check_lua_item_skill_group(scenario, fixtures)
         scenario.stop()
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
         upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
@@ -470,7 +471,8 @@ def check_native_lua(scenario):
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
                 upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
-                multigroup=multigroup, catalog=catalog, tree=tree, weapon_tree=weapon_tree, timings=timings,
+                multigroup=multigroup, catalog=catalog, tree=tree, weapon_tree=weapon_tree,
+                item_skill_group=item_skill_group, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
 
 
@@ -623,6 +625,49 @@ def check_lua_weapon_tree(scenario, fixtures):
             'Снятие ветви второго комплекта не восстановило исходный XML')
     return dict(mode=mode, active_weapon=2, path=path, points=preview['passive_change']['points'],
                 dps=[before['stats']['TotalDPS'], after['stats']['TotalDPS']], restored_xml=True)
+
+
+def check_lua_item_skill_group(scenario, fixtures):
+    session = 'item-skill-group'
+    open_build_session(scenario, session, 'Fireball', fixtures / SPELLS[0]['file'])
+    wand = ('Item Class: Wands\nRarity: Normal\nWithered Wand\n--------\n'
+            'Item Level: 1\n--------\nGrants Skill: Level 1 Chaos Bolt\n')
+    equipped, report = scenario.mcp_tools(session, [
+        ('edit_build', dict(expected_revision=2, request_id='equip-wand',
+                            edit={'equipment': {'slot': 'Weapon 1', 'raw': wand}})),
+        ('get_build_report', {}),
+    ])
+    group = chaos_bolt_group(report)
+    gems = [dict(id=group['gems'][0]['skillId'], level=1, quality=0, source_index=1),
+            dict(id='Metadata/Items/Gems/SkillGemRapidCastingSupport', level=1, quality=0)]
+    edit = {'skill_group': {'group_id': group['id'], 'gems': gems}}
+    revision = equipped['revision']
+    path = scenario.root / 'item-skill-group.json'
+    path.write_text(json.dumps(edit), 'utf-8')
+    before = scenario.snapshot(session)
+    preview = scenario.run('build', 'compare', '--session', session, '--revision', revision,
+                           '--edit', '--file', path, *scenario.connection)
+    require(scenario.snapshot(session) == before, 'Предпросмотр группы предмета изменил сессию')
+    mcp_preview, updated, saved = scenario.mcp_tools(session, [
+        ('compare_build', dict(expected_revision=revision, edit=edit)),
+        ('edit_build', dict(expected_revision=revision, request_id='support-chaos-bolt', edit=edit)),
+        ('get_build_report', dict(expected_revision=revision + 1)),
+    ])
+    require(preview == mcp_preview, 'CLI и MCP вернули разные предпросмотры группы предмета')
+    require(updated['build']['input_sha256'] == preview['comparison']['after']['input_sha256'],
+            'Применение группы предмета отличается от предпросмотра')
+    restored = chaos_bolt_group(saved)
+    names = [gem['name'] for gem in restored['gems']]
+    require(names == ['Chaos Bolt', 'Rapid Casting I'] and restored['source'] == group['source'],
+            'Поддержка умения от жезла не восстановилась из XML')
+    return dict(skill=names[0], support=names[1], restored_revision=updated['revision'])
+
+
+def chaos_bolt_group(view):
+    groups = view['report']['groups']
+    group = next((row for row in groups if 'Chaos Bolt' in row['label'] and row.get('source')), None)
+    require(group is not None and group['supportScope'] == 'slot', 'Не найдена группа умения от жезла')
+    return group
 
 
 def commit_tree_edit(scenario, snapshot, node_id, action, change, attribute=None, *,

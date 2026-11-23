@@ -309,25 +309,40 @@ func (m *Model) readSkills(skills *element) error {
 	}
 	m.ActiveSets.Skills = id
 	for i, node := range set.children("Skill") {
-		group := Group{ID: i + 1, Label: node.attr("label", ""), Gems: []Gem{}}
-		group.Enabled, err = boolean(node.attr("enabled", "true"), "Skill/enabled")
+		group, err := readSkillGroup(node, i+1)
 		if err != nil {
 			return err
-		}
-		group.MainSkill, err = integer(node.attr("mainActiveSkill", "1"), "Skill/mainActiveSkill", 1, 100)
-		if err != nil {
-			return err
-		}
-		for _, child := range node.children("Gem") {
-			gem, err := readGem(child)
-			if err != nil {
-				return err
-			}
-			group.Gems = append(group.Gems, gem)
 		}
 		m.Groups = append(m.Groups, group)
 	}
 	return nil
+}
+
+func readSkillGroup(node *element, id int) (Group, error) {
+	group := Group{ID: id, Label: node.attr("label", ""), Gems: []Gem{}}
+	var err error
+	group.Enabled, err = boolean(node.attr("enabled", "true"), "Skill/enabled")
+	if err != nil {
+		return group, err
+	}
+	mainSkill := node.attr("mainActiveSkill", "1")
+	if mainSkill == "nil" {
+		// SkillsTab:Save записывает nil у групп без выбранного активного умения.
+		// SkillsTab:LoadSkill при этом выбирает индекс 1.
+		mainSkill = "1"
+	}
+	group.MainSkill, err = integer(mainSkill, "Skill/mainActiveSkill", 1, 100)
+	if err != nil {
+		return group, err
+	}
+	for _, child := range node.children("Gem") {
+		gem, err := readGem(child)
+		if err != nil {
+			return group, err
+		}
+		group.Gems = append(group.Gems, gem)
+	}
+	return group, nil
 }
 
 func readGem(node *element) (Gem, error) {
