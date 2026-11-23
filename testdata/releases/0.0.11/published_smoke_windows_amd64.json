@@ -1,0 +1,475 @@
+{
+  "schema": 2,
+  "version": {
+    "protocol_version": "pob2.v1",
+    "version": "v0.0.11"
+  },
+  "steps": [
+    "three_spells_standalone_without_runtime",
+    "three_spells_cli_mcp_grpc_shared_calculation",
+    "three_spells_catalog_preview_compare_export",
+    "three_sessions_backup_verify_restore_exact_retry",
+    "atomic_xml_create_and_exact_retry_after_restart",
+    "published_001_session_upgrade_and_restart"
+  ],
+  "spells": [
+    {
+      "session_id": "fireball",
+      "skill": "Fireball",
+      "revision": 4,
+      "total_dps": 17.833333333333336,
+      "input_sha256": "84b5914057027b54d2042a5cd1a71411ce322c67616776ed6a1c8d1d27f89aa8",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "previews": [
+        {
+          "support": "Rapid Casting I",
+          "before_dps": 17.833333333333336,
+          "after_dps": 20.508333333333333,
+          "proposal_sha256": "07334f4f05f970e25f7a104ba2e8c0de7ed74b1d0bbdecb05a830cdf87fa81b4"
+        },
+        {
+          "support": "Controlled Destruction",
+          "before_dps": 17.833333333333336,
+          "after_dps": 20.833333333333336,
+          "proposal_sha256": "fae83736ed0a06a23e2ac28988e7313b5dff9621e891b5233295b932a479280d"
+        }
+      ],
+      "comparison_after_dps": 26.750000000000004,
+      "restored_exact_retry": true,
+      "standalone": {
+        "total_dps": 8.916666666666668,
+        "input_sha256": "c2082aecaa30957d84e2ad031f75fdb1ce909e1f3043b86bfebffb20da87ffbd",
+        "data_id": "pob2-0.0.2-spell-hits-v1"
+      }
+    },
+    {
+      "session_id": "frostbolt",
+      "skill": "Frostbolt",
+      "revision": 4,
+      "total_dps": 18.200000000000003,
+      "input_sha256": "9e14b958b2551348daa6d846b58fa4df6e05a0c31d79a2f4cc818f6c4adb2e7a",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "previews": [
+        {
+          "support": "Rapid Casting I",
+          "before_dps": 18.200000000000003,
+          "after_dps": 20.93,
+          "proposal_sha256": "77a6979d80bc33ad5d8fcb268ddcc2f374b8b118ead89669b90effbeebfe5c80"
+        },
+        {
+          "support": "Controlled Destruction",
+          "before_dps": 18.200000000000003,
+          "after_dps": 20.625,
+          "proposal_sha256": "31e1511d2f76dcdb5c0ed0febb842f2b832c74813c5ac5ebcf28668d285c5566"
+        }
+      ],
+      "comparison_after_dps": 27.300000000000004,
+      "restored_exact_retry": true,
+      "standalone": {
+        "total_dps": 9.100000000000001,
+        "input_sha256": "bc56956df27d3e4fb33da99207b6ea72890a9e9e6cde66fcd5e0390bd58b562f",
+        "data_id": "pob2-0.0.2-spell-hits-v1"
+      }
+    },
+    {
+      "session_id": "spark",
+      "skill": "Spark",
+      "revision": 4,
+      "total_dps": 17.12857142857143,
+      "input_sha256": "f4f9c7aac7b8b070df263cfe0feb2cc284b8fb412ca50a263cc5968aed025d9b",
+      "data_id": "pob2-0.0.2-spell-hits-v1",
+      "previews": [
+        {
+          "support": "Rapid Casting I",
+          "before_dps": 17.12857142857143,
+          "after_dps": 19.697857142857142,
+          "proposal_sha256": "0edb3400930b26faddb7592844b0021d2a56e7a9378769dd901ddd8aac0f80ce"
+        },
+        {
+          "support": "Controlled Destruction",
+          "before_dps": 17.12857142857143,
+          "after_dps": 20,
+          "proposal_sha256": "223d11590a0d2ce1d88da55c4a1688dba13ce14ffe2dc5610b9f57aaf85d9548"
+        }
+      ],
+      "comparison_after_dps": 25.692857142857147,
+      "restored_exact_retry": true,
+      "standalone": {
+        "total_dps": 8.564285714285715,
+        "input_sha256": "80ad182caa67001f148e4f733b792e1878503cafa5b93069ed8c573440ac7648",
+        "data_id": "pob2-0.0.2-spell-hits-v1"
+      }
+    }
+  ],
+  "upgrade": {
+    "source_release": "v0.0.1",
+    "before_data_id": "pob2-0.0.1-fireball-v1",
+    "after_data_id": "pob2-0.0.2-spell-hits-v1",
+    "original_revision": 3,
+    "current_revision": 4,
+    "exact_old_retry": true,
+    "restart_verified": true
+  },
+  "total_dps": 17.833333333333336,
+  "input_sha256": "84b5914057027b54d2042a5cd1a71411ce322c67616776ed6a1c8d1d27f89aa8",
+  "commit": "cf7b2ebe834a85c48b55eb3d6083a7318f6a9947",
+  "doctor": {
+    "status": "ok",
+    "version": "v0.0.11",
+    "protocol_version": "pob2.v1",
+    "os": "windows",
+    "arch": "amd64",
+    "go_version": "go1.27.4",
+    "executable": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pob2-release-2oj_s2d9\\pob2-engine.exe",
+    "commit": "cf7b2ebe834a85c48b55eb3d6083a7318f6a9947",
+    "modified": false,
+    "data_id": "pob2-0.0.2-spell-hits-v1",
+    "data_sha256": "643f9ae31bd18297788fc8746fa621da23f999061404d3007c21c67b2855ca18",
+    "tree_version": "0_5",
+    "pob_commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+    "restart_required": false,
+    "engine_update": {
+      "status": "up_to_date",
+      "installed_version": "v0.0.11",
+      "latest_version": "v0.0.11",
+      "release_url": "https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.11"
+    },
+    "pob": {
+      "status": "available",
+      "latest_version": "v0.23.1",
+      "release_url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/releases/tag/v0.23.1"
+    }
+  },
+  "lua": {
+    "version": "v0.23.1",
+    "commit": "7d6f530cbdab20389ff8bc6ba97a37ac27f74e41",
+    "archive_sha256": "7e190d3b66191b09416a9cd4d12394d37df374d6d6e59ab4f2366f3d9e81baf7",
+    "dps": {
+      "Fireball": 8.9166666666667,
+      "Frostbolt": 9.1,
+      "Spark": 8.5642857142857
+    },
+    "sessions": {
+      "Fireball": {
+        "edited_dps": 17.833333333333,
+        "preview": {
+          "support": "Rapid Casting I",
+          "before_dps": 17.833333333333,
+          "after_dps": 20.508333333333,
+          "proposal_sha256": "07334f4f05f970e25f7a104ba2e8c0de7ed74b1d0bbdecb05a830cdf87fa81b4"
+        },
+        "cli_replayed_mcp_calculation": true
+      },
+      "Frostbolt": {
+        "edited_dps": 18.2,
+        "preview": {
+          "support": "Rapid Casting I",
+          "before_dps": 18.2,
+          "after_dps": 20.93,
+          "proposal_sha256": "77a6979d80bc33ad5d8fcb268ddcc2f374b8b118ead89669b90effbeebfe5c80"
+        },
+        "cli_replayed_mcp_calculation": true
+      },
+      "Spark": {
+        "edited_dps": 17.128571428571,
+        "preview": {
+          "support": "Rapid Casting I",
+          "before_dps": 17.128571428571,
+          "after_dps": 19.697857142857,
+          "proposal_sha256": "0edb3400930b26faddb7592844b0021d2a56e7a9378769dd901ddd8aac0f80ce"
+        },
+        "cli_replayed_mcp_calculation": true
+      }
+    },
+    "diagnostics": {
+      "gem-requirement-warning": "pob_warning",
+      "unparsed-custom-modifier": "unsupported_modifier"
+    },
+    "selected_set_dps": 17.128571428571,
+    "upgrade": {
+      "source_release": "v0.0.2",
+      "before_data_id": "pob2-0.0.2-spell-hits-v1",
+      "after_data_id": "pob-lua-v0.23.1",
+      "original_revision": 3,
+      "current_revision": 4,
+      "exact_old_retry": true,
+      "restart_verified": true
+    },
+    "upgrade003": {
+      "source_release": "v0.0.3",
+      "before_data_id": "pob2-0.0.2-spell-hits-v1",
+      "after_data_id": "pob-lua-v0.23.1",
+      "original_revision": 3,
+      "current_revision": 4,
+      "exact_old_retry": true,
+      "restart_verified": true
+    },
+    "upgrade004": {
+      "source_release": "v0.0.4",
+      "before_data_id": "pob-lua-v0.23.1",
+      "after_data_id": "pob-lua-v0.23.1",
+      "original_revision": 3,
+      "current_revision": 4,
+      "exact_old_retry": true,
+      "restart_verified": true
+    },
+    "upgrade005": {
+      "previous": "v0.23.0",
+      "updated": "v0.23.1",
+      "restored": "v0.23.0",
+      "source_release": "v0.0.5",
+      "input_sha256": "e1c42526f84fd766c8782ce9d932363cbbdc23f1bfeb10a1490e6757b21af4ec",
+      "end_revision": 6,
+      "offline_rollback": true,
+      "exact_retries": true,
+      "rejected_update_preserved_installation": true,
+      "catalogs": {
+        "v0.23.0": {
+          "tree_version": "0_5",
+          "entries": {
+            "gems": [
+              "Ice Nova",
+              "Spark",
+              "Fireball",
+              "Frostbolt",
+              "Concentrated Area",
+              "Rolling Slam",
+              "Earthquake",
+              "Skeletal Arsonist",
+              "Bone Cage"
+            ],
+            "items": [
+              "Wooden Club",
+              "Smithing Hammer",
+              "Rusted Cuirass",
+              "Iron Cuirass"
+            ]
+          }
+        },
+        "v0.23.1": {
+          "tree_version": "0_5",
+          "entries": {
+            "gems": [
+              "Ice Nova",
+              "Spark",
+              "Fireball",
+              "Frostbolt",
+              "Concentrated Area",
+              "Rolling Slam",
+              "Earthquake",
+              "Skeletal Arsonist",
+              "Bone Cage"
+            ],
+            "items": [
+              "Wooden Club",
+              "Smithing Hammer",
+              "Rusted Cuirass",
+              "Iron Cuirass"
+            ]
+          }
+        }
+      }
+    },
+    "upgrade006": {
+      "source_release": "v0.0.6",
+      "before_data_id": "pob-lua-v0.23.1",
+      "after_data_id": "pob-lua-v0.23.1",
+      "original_revision": 3,
+      "current_revision": 4,
+      "exact_old_retry": true,
+      "restart_verified": true
+    },
+    "multigroup": {
+      "cases": [
+        "attacker",
+        "attacker-armour",
+        "attacker-outfit",
+        "attacker-swap",
+        "caster",
+        "caster-alternate",
+        "caster-main",
+        "caster-preview",
+        "minion",
+        "minion-resistant"
+      ],
+      "restarted_revision": 8,
+      "timings": {
+        "caster": {
+          "first_ms": 1860.383799999994,
+          "repeated_ms": [
+            206.93030000001045,
+            190.11400000002254,
+            194.7121999999979,
+            196.02549999999042,
+            195.0813999999923
+          ],
+          "repeated_median_ms": 195.0813999999923
+        },
+        "attacker": {
+          "first_ms": 222.2310999999877,
+          "repeated_ms": [
+            196.9408999999871,
+            211.73400000000697,
+            197.02499999999645,
+            276.1318000000017,
+            263.9310000000137
+          ],
+          "repeated_median_ms": 211.73400000000697
+        },
+        "minion": {
+          "first_ms": 526.6686999999877,
+          "repeated_ms": [
+            244.61339999999154,
+            242.77680000000146,
+            215.1766000000066,
+            240.53870000000188,
+            230.89210000000548
+          ],
+          "repeated_median_ms": 240.53870000000188
+        }
+      },
+      "parallel_preview_and_calculation": true,
+      "no_extra_journal_records": true
+    },
+    "catalog": {
+      "counts": {
+        "gems": 966,
+        "classes": 8,
+        "items": 1504,
+        "passives": 4544
+      },
+      "new_skill_dps": 7.84,
+      "supported_dps": 10.08,
+      "support_quality": 20,
+      "incompatible_support_reported": true,
+      "applied_preview_matches": true,
+      "equipment_and_passives": true,
+      "equipment_preview_matches": true,
+      "restart_exact_retry": true
+    },
+    "tree": {
+      "added": [
+        3936,
+        13397
+      ],
+      "removed": [
+        3936,
+        13397
+      ],
+      "strength_gain": 5,
+      "dps": [
+        2.3287313871353,
+        2.77608788611
+      ],
+      "restored_xml": true,
+      "attributes": {
+        "allocated": [
+          {
+            "node_id": 1207,
+            "after": "dexterity"
+          },
+          {
+            "node_id": 13397,
+            "after": "dexterity"
+          }
+        ],
+        "switched": [
+          {
+            "node_id": 13397,
+            "before": "dexterity",
+            "after": "intelligence"
+          }
+        ],
+        "dexterity_gain": 10,
+        "intelligence_gain": 5
+      }
+    },
+    "timings": {
+      "lua": {
+        "server_ready_ms": 34.54490000001442,
+        "spells": {
+          "fireball": {
+            "first_calculate_ms": 1753.2064000000105,
+            "repeated_calculate_ms": [
+              183.37999999999965,
+              187.82370000002402,
+              193.36380000004283,
+              195.9254999999871,
+              189.82310000001235
+            ],
+            "repeated_median_ms": 189.82310000001235
+          },
+          "frostbolt": {
+            "first_calculate_ms": 191.67579999998452,
+            "repeated_calculate_ms": [
+              188.15319999998792,
+              185.2369000000067,
+              910.2844999999888,
+              210.43729999996685,
+              236.60430000001043
+            ],
+            "repeated_median_ms": 210.43729999996685
+          },
+          "spark": {
+            "first_calculate_ms": 265.3675999999905,
+            "repeated_calculate_ms": [
+              412.007200000005,
+              194.28949999996803,
+              184.7243000000276,
+              192.13860000002114,
+              181.54790000005505
+            ],
+            "repeated_median_ms": 192.13860000002114
+          }
+        }
+      },
+      "go": {
+        "server_ready_ms": 35.197100000004866,
+        "spells": {
+          "fireball": {
+            "first_calculate_ms": 31.1228999999571,
+            "repeated_calculate_ms": [
+              29.577899999992496,
+              35.74750000001359,
+              33.185700000046836,
+              34.91509999997788,
+              31.842299999993884
+            ],
+            "repeated_median_ms": 33.185700000046836
+          },
+          "frostbolt": {
+            "first_calculate_ms": 33.96870000000263,
+            "repeated_calculate_ms": [
+              30.906299999969633,
+              32.62890000002017,
+              33.00930000000335,
+              31.82389999994939,
+              30.998399999987214
+            ],
+            "repeated_median_ms": 31.82389999994939
+          },
+          "spark": {
+            "first_calculate_ms": 32.545099999993,
+            "repeated_calculate_ms": [
+              30.616399999985333,
+              34.11949999997432,
+              32.087099999955626,
+              33.70039999998653,
+              30.88180000003149
+            ],
+            "repeated_median_ms": 32.087099999955626
+          }
+        }
+      }
+    },
+    "parallel_first_start": true,
+    "reused_cache_offline": true
+  },
+  "tag": "v0.0.11",
+  "platform": "Windows-2025Server-10.0.26100-SP0",
+  "machine": "AMD64",
+  "checked_at": "2026-11-23T07:18:26.458358+00:00",
+  "run_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45128833686",
+  "binary_sha256": "b8168e6decc0953d0ade6ef72e0f3c6701aeb243c9748134a4b185ba57dd6ed3",
+  "published_checksum_verified": true
+}
