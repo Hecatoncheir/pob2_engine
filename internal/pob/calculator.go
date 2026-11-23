@@ -253,6 +253,7 @@ type response struct {
 	TreeGeometry   *build.TreeGeometry      `json:"tree_geometry,omitempty"`
 	TreeTooltip    *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
 	BuildReport    json.RawMessage          `json:"build_report,omitempty"`
+	SkillChoice    *build.SkillChoiceChange `json:"skill_choice,omitempty"`
 }
 
 type request struct {
@@ -263,12 +264,14 @@ type request struct {
 	ItemID         int                      `json:"item_id,omitempty"`
 	NodeID         int                      `json:"node_id,omitempty"`
 	Compare        bool                     `json:"compare,omitempty"`
+	Validate       bool                     `json:"validate,omitempty"`
 	Action         string                   `json:"action,omitempty"`
 	Attribute      build.PassiveAttribute   `json:"attribute,omitempty"`
 	AllocationMode build.TreeAllocationMode `json:"allocation_mode,omitempty"`
 	TreeSpec       int                      `json:"tree_spec,omitempty"`
 	TreeVersion    string                   `json:"tree_version,omitempty"`
 	TreeClass      *build.TreeClassEdit     `json:"tree_class,omitempty"`
+	SkillChoice    *build.SkillChoiceEdit   `json:"skill_choice,omitempty"`
 }
 
 type workerReply struct {

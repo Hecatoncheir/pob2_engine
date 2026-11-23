@@ -208,6 +208,11 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 		result.Operation = &pb.BuildEdit_TreeClass{TreeClass: &pb.TreeClassEdit{
 			ClassId: uint32(class.ClassID), AscendancyId: uint32(class.AscendancyID), Mode: class.Mode,
 		}}
+	case value.SkillChoice != nil:
+		choice := value.SkillChoice
+		result.Operation = &pb.BuildEdit_SkillChoice{SkillChoice: &pb.SkillChoiceEdit{
+			Control: choice.Control, OptionId: uint32(choice.OptionID),
+		}}
 	}
 	return result, nil
 }
@@ -228,6 +233,9 @@ func checkWireIntegers(value *build.Edit) error {
 	}
 	if v := value.AddSupport; v != nil {
 		values = append(values, v.Level, v.Quality)
+	}
+	if v := value.SkillChoice; v != nil {
+		values = append(values, v.OptionID)
 	}
 	if v := value.Selection; v != nil {
 		values = append(values, v.MainGroup, v.WeaponSet)
@@ -300,6 +308,9 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 		result.TreeClass = &build.TreeClassEdit{
 			ClassID: int(class.GetClassId()), AscendancyID: int(class.GetAscendancyId()), Mode: class.GetMode(),
 		}
+	case *pb.BuildEdit_SkillChoice:
+		choice := operation.SkillChoice
+		result.SkillChoice = &build.SkillChoiceEdit{Control: choice.GetControl(), OptionID: int(choice.GetOptionId())}
 	default:
 		return nil, fmt.Errorf("не указана операция правки")
 	}

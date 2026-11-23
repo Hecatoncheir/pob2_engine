@@ -70,6 +70,10 @@ func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit bu
 		updated, err := s.editTreeClass(ctx, doc, edit)
 		return updated, nil, err
 	}
+	if edit.SkillChoice != nil {
+		updated, err := s.editSkillChoice(ctx, doc, edit)
+		return updated, nil, err
+	}
 	if edit.Jewel != nil {
 		updated, err := s.editJewel(ctx, doc, edit)
 		return updated, nil, err

@@ -48,16 +48,17 @@ type SelectionEdit struct {
 
 // Edit задаёт ровно одну правку. Пустой Raw снимает предмет, nil Value удаляет условие.
 type Edit struct {
-	Level      *LevelEdit      `json:"level,omitempty"`
-	Config     *ConfigEdit     `json:"config,omitempty"`
-	Gems       *GemsEdit       `json:"gems,omitempty"`
-	Equipment  *EquipmentEdit  `json:"equipment,omitempty"`
-	Passives   *PassivesEdit   `json:"passives,omitempty"`
-	Selection  *SelectionEdit  `json:"selection,omitempty"`
-	AddSupport *AddSupportEdit `json:"add_support,omitempty"`
-	TreeNode   *TreeNodeEdit   `json:"tree_node,omitempty"`
-	Jewel      *JewelEdit      `json:"jewel,omitempty"`
-	TreeClass  *TreeClassEdit  `json:"tree_class,omitempty"`
+	Level       *LevelEdit       `json:"level,omitempty"`
+	Config      *ConfigEdit      `json:"config,omitempty"`
+	Gems        *GemsEdit        `json:"gems,omitempty"`
+	Equipment   *EquipmentEdit   `json:"equipment,omitempty"`
+	Passives    *PassivesEdit    `json:"passives,omitempty"`
+	Selection   *SelectionEdit   `json:"selection,omitempty"`
+	AddSupport  *AddSupportEdit  `json:"add_support,omitempty"`
+	TreeNode    *TreeNodeEdit    `json:"tree_node,omitempty"`
+	Jewel       *JewelEdit       `json:"jewel,omitempty"`
+	TreeClass   *TreeClassEdit   `json:"tree_class,omitempty"`
+	SkillChoice *SkillChoiceEdit `json:"skill_choice,omitempty"`
 }
 
 func newElement(name string) *element { return &element{name: xml.Name{Local: name}} }
@@ -115,7 +116,8 @@ func validateEdit(edit Edit, data *gamedata.Dataset) error {
 func ValidateEdit(edit Edit) error {
 	operations := 0
 	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil,
-		edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil, edit.TreeNode != nil, edit.Jewel != nil, edit.TreeClass != nil} {
+		edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil, edit.TreeNode != nil, edit.Jewel != nil, edit.TreeClass != nil,
+		edit.SkillChoice != nil} {
 		if present {
 			operations++
 		}
@@ -131,6 +133,9 @@ func ValidateEdit(edit Edit) error {
 	}
 	if edit.TreeClass != nil {
 		return edit.TreeClass.validate()
+	}
+	if edit.SkillChoice != nil {
+		return edit.SkillChoice.validate()
 	}
 	if edit.Equipment != nil {
 		return edit.Equipment.validate()
@@ -187,6 +192,8 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 		return fmt.Errorf("для правки узла требуется путь из оригинального PoB")
 	case edit.TreeClass != nil:
 		return fmt.Errorf("для смены класса требуется исходный Lua PoB")
+	case edit.SkillChoice != nil:
+		return fmt.Errorf("для выбора варианта умения требуется исходный Lua PoB")
 	}
 	return nil
 }

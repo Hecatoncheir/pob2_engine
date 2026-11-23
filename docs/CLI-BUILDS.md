@@ -189,6 +189,14 @@ pob2-engine build-report --profile main --session build-1 --revision 3
 MCP предоставляет `get_build_report`, gRPC — `GetBuildReport`. В gRPC
 поле `report_json` содержит отчёт в UTF-8 с целыми ID узлов и вариантов.
 
+Для выбора группы, умения, части или варианта используйте `skill_choice`.
+Например, `{"skill_choice":{"control":"stat_sets","option_id":2}}` выбирает
+вариант из `snapshot.buildInfo.statSets.entries` подробного отчёта.
+Остальные значения `control` соответствуют спискам `groups`, `skills` и
+`parts`. Передайте правку в `build compare --edit` для предпросмотра или
+в `build edit` для записи с ожидаемой ревизией. MCP использует
+`edit.skill_choice`, gRPC — `BuildEdit.skill_choice`.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

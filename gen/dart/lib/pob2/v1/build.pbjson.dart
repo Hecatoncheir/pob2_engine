@@ -846,6 +846,20 @@ final $typed_data.Uint8List getBuildReportResponseDescriptor =
         'ChZHZXRCdWlsZFJlcG9ydFJlc3BvbnNlEhoKCHJldmlzaW9uGAEgASgEUghyZXZpc2lvbhIfCg'
         'tyZXBvcnRfanNvbhgCIAEoDFIKcmVwb3J0SnNvbg==');
 
+@$core.Deprecated('Use skillChoiceEditDescriptor instead')
+const SkillChoiceEdit$json = {
+  '1': 'SkillChoiceEdit',
+  '2': [
+    {'1': 'control', '3': 1, '4': 1, '5': 9, '10': 'control'},
+    {'1': 'option_id', '3': 2, '4': 1, '5': 13, '10': 'optionId'},
+  ],
+};
+
+/// Descriptor for `SkillChoiceEdit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List skillChoiceEditDescriptor = $convert.base64Decode(
+    'Cg9Ta2lsbENob2ljZUVkaXQSGAoHY29udHJvbBgBIAEoCVIHY29udHJvbBIbCglvcHRpb25faW'
+    'QYAiABKA1SCG9wdGlvbklk');
+
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
   '1': 'BuildEdit',
@@ -940,6 +954,15 @@ const BuildEdit$json = {
       '9': 0,
       '10': 'treeClass'
     },
+    {
+      '1': 'skill_choice',
+      '3': 11,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.SkillChoiceEdit',
+      '9': 0,
+      '10': 'skillChoice'
+    },
   ],
   '8': [
     {'1': 'operation'},
@@ -957,7 +980,8 @@ final $typed_data.Uint8List buildEditDescriptor = $convert.base64Decode(
     'b2IyLnYxLkFkZFN1cHBvcnRFZGl0SABSCmFkZFN1cHBvcnQSNAoJdHJlZV9ub2RlGAggASgLMh'
     'UucG9iMi52MS5UcmVlTm9kZUVkaXRIAFIIdHJlZU5vZGUSKgoFamV3ZWwYCSABKAsyEi5wb2Iy'
     'LnYxLkpld2VsRWRpdEgAUgVqZXdlbBI3Cgp0cmVlX2NsYXNzGAogASgLMhYucG9iMi52MS5Ucm'
-    'VlQ2xhc3NFZGl0SABSCXRyZWVDbGFzc0ILCglvcGVyYXRpb24=');
+    'VlQ2xhc3NFZGl0SABSCXRyZWVDbGFzcxI9Cgxza2lsbF9jaG9pY2UYCyABKAsyGC5wb2IyLnYx'
+    'LlNraWxsQ2hvaWNlRWRpdEgAUgtza2lsbENob2ljZUILCglvcGVyYXRpb24=');
 
 @$core.Deprecated('Use passiveChangeDescriptor instead')
 const PassiveChange$json = {
