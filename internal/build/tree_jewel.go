@@ -75,6 +75,9 @@ func readTreeJewels(spec *element) map[string]int {
 			items[strconv.Itoa(nodeID)] = itemID
 		}
 	}
+	if len(items) == 0 {
+		return nil
+	}
 	return items
 }
 
