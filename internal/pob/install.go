@@ -51,6 +51,7 @@ type State struct {
 
 type Manager struct {
 	root, local, localNative string
+	githubToken              string
 	client                   *http.Client
 	probe                    func(context.Context, Installation) error
 	nativeRuntime            asset
@@ -63,7 +64,8 @@ func Local() (*Manager, error) {
 	}
 	return &Manager{root: filepath.Join(cache, "pob2-engine", "pob"),
 		local: os.Getenv("POB2_ENGINE_POB_DIR"), localNative: os.Getenv("POB2_ENGINE_POB_NATIVE_DIR"),
-		client: &http.Client{Timeout: InstallTimeout, CheckRedirect: checkRedirect}, probe: probeInstallation,
+		githubToken: strings.TrimSpace(os.Getenv("POB2_ENGINE_POB_GITHUB_TOKEN")),
+		client:      &http.Client{Timeout: InstallTimeout, CheckRedirect: checkRedirect}, probe: probeInstallation,
 		nativeRuntime: nativeAsset(runtime.GOOS, runtime.GOARCH)}, nil
 }
 

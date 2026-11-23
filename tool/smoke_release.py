@@ -141,6 +141,8 @@ class Scenario:
                                 LOCALAPPDATA=str(root), XDG_CONFIG_HOME=str(root / 'config'),
                                 XDG_CACHE_HOME=str(root / 'cache'),
                                 POB_DIR=str(root / 'missing-pob'), POB2_ENGINE_CALCULATOR='go')
+        if token := os.environ.get('POB2_ENGINE_POB_GITHUB_TOKEN'):
+            self.environment['POB2_ENGINE_POB_GITHUB_TOKEN'] = token
         self.server = None
         self.connection = []
         self.steps = []

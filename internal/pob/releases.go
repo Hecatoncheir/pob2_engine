@@ -40,6 +40,7 @@ func initialRelease() release {
 }
 
 func checkRedirect(req *http.Request, previous []*http.Request) error {
+	req.Header.Del("Authorization")
 	if len(previous) >= 6 || req.URL.Scheme != "https" || req.URL.User != nil || req.URL.Port() != "" {
 		return fmt.Errorf("недопустимое перенаправление GitHub")
 	}
@@ -95,6 +96,9 @@ func (m *Manager) fetch(ctx context.Context, url string) (io.ReadCloser, error) 
 		return nil, err
 	}
 	req.Header.Set("User-Agent", "pob2_engine")
+	if m.githubToken != "" && strings.HasPrefix(url, "https://api.github.com/repos/"+repository+"/") {
+		req.Header.Set("Authorization", "Bearer "+m.githubToken)
+	}
 	response, err := m.client.Do(req)
 	if err != nil {
 		return nil, err

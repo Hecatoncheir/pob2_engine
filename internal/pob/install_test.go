@@ -105,3 +105,33 @@ func TestCheckUpdateToUsesExactOfficialTag(t *testing.T) {
 		t.Fatalf("не найден указанный выпуск: %+v, %v", state, err)
 	}
 }
+
+func TestPoBGitHubTokenOnlyForOfficialMetadata(t *testing.T) {
+	const token = "test-pob-token"
+	t.Setenv("POB2_ENGINE_POB_GITHUB_TOKEN", token)
+	m, err := Local()
+	if err != nil {
+		t.Fatal(err)
+	}
+	archive := downloadURL(repository, "v0.23.0", portableName)
+	redirect := "https://api.github.com/repos/another/project/releases/latest"
+	vectors := map[string]string{latestURL: "Bearer " + token, archive: "", redirect: ""}
+	m.client.Transport = installTransport(func(req *http.Request) (*http.Response, error) {
+		address := req.URL.String()
+		want, ok := vectors[address]
+		if !ok || req.Header.Get("Authorization") != want {
+			t.Fatalf("неверная авторизация запроса %s", address)
+		}
+		if address == latestURL {
+			return &http.Response{StatusCode: http.StatusFound, Header: http.Header{"Location": {redirect}}}, nil
+		}
+		return archiveTransport("{}").RoundTrip(req)
+	})
+	for _, address := range []string{latestURL, archive, redirect} {
+		body, err := m.fetch(t.Context(), address)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_ = body.Close()
+	}
+}
