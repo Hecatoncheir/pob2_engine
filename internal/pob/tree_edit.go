@@ -8,6 +8,30 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
 
+// ResolveTreeSpec подтверждает спецификацию и получает имена её класса из Lua.
+func (c *Calculator) ResolveTreeSpec(ctx context.Context, doc *build.Document) (build.TreeIdentity, error) {
+	model, err := doc.Model()
+	if err != nil {
+		return build.TreeIdentity{}, err
+	}
+	xml, err := doc.Export()
+	if err != nil {
+		return build.TreeIdentity{}, err
+	}
+	answer, err := c.run(ctx, &request{Operation: "select_tree_spec", XML: pobXML.Replace(string(xml)),
+		TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
+	if err != nil {
+		return build.TreeIdentity{}, err
+	}
+	if answer.Error != "" {
+		return build.TreeIdentity{}, fmt.Errorf("PoB Lua: %s", answer.Error)
+	}
+	if answer.TreeIdentity == nil {
+		return build.TreeIdentity{}, fmt.Errorf("PoB не подтвердил спецификацию")
+	}
+	return *answer.TreeIdentity, nil
+}
+
 // ResolveTreeEdit вычисляет изменение пассивов средствами оригинального PoB.
 func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, edit build.TreeNodeEdit) (build.PassiveChange, error) {
 	model, err := doc.Model()

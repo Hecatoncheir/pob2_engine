@@ -248,6 +248,7 @@ type response struct {
 	Catalog        *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
 	Issues         []build.Issue            `json:"issues,omitempty"`
 	TreeEdit       *build.PassiveChange     `json:"tree_edit,omitempty"`
+	TreeIdentity   *build.TreeIdentity      `json:"tree_identity,omitempty"`
 }
 
 type request struct {

@@ -24,6 +24,16 @@ type treeEditor interface {
 	ResolveTreeEdit(context.Context, *build.Document, build.TreeNodeEdit) (build.PassiveChange, error)
 }
 
+type treeSpecResolver interface {
+	ResolveTreeSpec(context.Context, *build.Document) (build.TreeIdentity, error)
+}
+
+// SupportsTreeSpecs сообщает, что выбор спецификации проверяет оригинальный PoB.
+func (s *Service) SupportsTreeSpecs() bool {
+	_, ok := s.calculator.(treeSpecResolver)
+	return ok
+}
+
 // SupportsTreePreview сообщает, что движок может править дерево через PoB.
 func (s *Service) SupportsTreePreview() bool {
 	_, ok := s.calculator.(treeEditor)
@@ -63,7 +73,26 @@ func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit bu
 			return nil, nil, err
 		}
 	}
-	return updated, nil, nil
+	if selectsTreeSpec(edit.Selection) {
+		updated, err = s.resolveTreeSpec(ctx, updated)
+	}
+	return updated, nil, err
+}
+
+func selectsTreeSpec(edit *build.SelectionEdit) bool {
+	return edit != nil && edit.Sets != nil && edit.Sets.Tree != 0
+}
+
+func (s *Service) resolveTreeSpec(ctx context.Context, doc *build.Document) (*build.Document, error) {
+	resolver, ok := s.calculator.(treeSpecResolver)
+	if !ok {
+		return doc, nil
+	}
+	identity, err := resolver.ResolveTreeSpec(ctx, doc)
+	if err != nil {
+		return nil, err
+	}
+	return doc.WithTreeIdentity(identity)
 }
 
 func (s *Service) editJewel(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, error) {

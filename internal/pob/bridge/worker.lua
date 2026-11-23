@@ -115,6 +115,14 @@ local function calculate(xml)
 	return { stats = stats, warnings = warnings, unsupported = unsupportedModifiers(), issues = diagnostics.collect(), skill = clean(skill), mode = "EFFECTIVE" }
 end
 
+local function selectTreeSpec(request)
+	loadDocument(assert(request.xml))
+	local spec = build.spec
+	assert(build.treeTab.activeSpec == request.tree_spec and (not request.tree_version or spec.treeVersion == request.tree_version),
+		"PoB загрузил другую спецификацию или версию дерева")
+	return { tree_identity = { class = spec.curClassName, ascendancy = spec.curAscendClassName or "None" } }
+end
+
 local function reply(value)
 	io.stdout:write(json.encode(value), "\n")
 	io.stdout:flush()
@@ -126,6 +134,7 @@ for line in io.lines() do
 		local request = assert(json.decode(line))
 		if request.operation == "catalog" then return { catalog = catalog.read() } end
 		if request.operation == "validate_equipment" then return validateEquipment(request) end
+		if request.operation == "select_tree_spec" then return selectTreeSpec(request) end
 		if request.operation == "edit_tree" then
 			loadDocument(assert(request.xml))
 			return { tree_edit = editTree(build, request) }

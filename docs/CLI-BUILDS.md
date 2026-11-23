@@ -74,6 +74,7 @@ pob2-engine calculate --profile main --session build-1 --revision 4 --request-id
 {"gems":{"group_id":1,"label":"Fireball","enabled":true,"delete":false,"gems":[{"id":"FireballPlayer","level":1,"quality":0,"enabled":true},{"id":"SupportRapidCastingPlayer","level":1,"quality":0,"enabled":true}]}}
 {"add_support":{"support_id":"SupportRapidCastingPlayer","level":1,"quality":0}}
 {"selection":{"weapon_set":2}}
+{"selection":{"sets":{"tree":2}}}
 ```
 
 Каждая строка примера — отдельный JSON-документ. Пустой `equipment.raw`
