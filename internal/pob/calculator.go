@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
@@ -49,7 +50,7 @@ func (c *Calculator) Close() error {
 }
 
 func (c *Calculator) Calculate(ctx context.Context, doc *build.Document) (calculation.Result, error) {
-	xml, err := doc.Export()
+	xml, err := doc.ExportWithoutProgression()
 	if err != nil {
 		return calculation.Result{}, err
 	}
@@ -78,13 +79,27 @@ func (c *Calculator) ValidateEquipment(ctx context.Context, doc *build.Document,
 	if !ok {
 		return fmt.Errorf("слот %s отсутствует в выбранном наборе", slot)
 	}
-	xml, err := doc.Export()
+	return c.validateEquipment(ctx, doc, request{Slot: slot, ItemID: id})
+}
+
+// ValidateJewel проверяет выбранное гнездо и самоцвет через Lua PoB.
+func (c *Calculator) ValidateJewel(ctx context.Context, doc *build.Document, nodeID int) error {
+	model, err := doc.Model()
 	if err != nil {
 		return err
 	}
-	answer, err := c.run(ctx, &request{
-		Operation: "validate_equipment", XML: pobXML.Replace(string(xml)), Slot: slot, ItemID: id,
-	})
+	key := strconv.Itoa(nodeID)
+	return c.validateEquipment(ctx, doc, request{Slot: "Jewel " + key, NodeID: nodeID, ItemID: model.PassiveJewels[key]})
+}
+
+func (c *Calculator) validateEquipment(ctx context.Context, doc *build.Document, input request) error {
+	xml, err := doc.ExportWithoutProgression()
+	if err != nil {
+		return err
+	}
+	input.Operation = "validate_equipment"
+	input.XML = pobXML.Replace(string(xml))
+	answer, err := c.run(ctx, &input)
 	if err != nil {
 		return err
 	}
@@ -233,6 +248,8 @@ type response struct {
 	Catalog        *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
 	Issues         []build.Issue            `json:"issues,omitempty"`
 	TreeEdit       *build.PassiveChange     `json:"tree_edit,omitempty"`
+	TreeIdentity   *build.TreeIdentity      `json:"tree_identity,omitempty"`
+	TreeClass      *build.TreeClassChange   `json:"tree_class,omitempty"`
 }
 
 type request struct {
@@ -246,6 +263,7 @@ type request struct {
 	AllocationMode build.TreeAllocationMode `json:"allocation_mode,omitempty"`
 	TreeSpec       int                      `json:"tree_spec,omitempty"`
 	TreeVersion    string                   `json:"tree_version,omitempty"`
+	TreeClass      *build.TreeClassEdit     `json:"tree_class,omitempty"`
 }
 
 type workerReply struct {

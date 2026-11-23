@@ -31,6 +31,7 @@ dofile(directory .. "/lua/headless_bootstrap.lua")
 local catalog = dofile(directory .. "/catalog.lua")
 local diagnostics = dofile(directory .. "/diagnostics.lua")
 local editTree = dofile(directory .. "/tree_edit.lua")
+local editTreeClass = dofile(directory .. "/tree_class.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -69,7 +70,19 @@ local function validateEquipment(request)
 	loadDocument(assert(request.xml))
 	local tab, name, id = build.itemsTab, request.slot, request.item_id or 0
 	local slot = tab.slots[name]
-	if not slot or not tab.activeItemSet[name] then
+	if request.node_id then
+		local node = build.spec.nodes[request.node_id]
+		if not node or node.type ~= "Socket" or node.ascendancyName or node.expansionJewel then
+			return { error = "Выберите обычное гнездо самоцвета" }
+		end
+		if not node.alloc then
+			return { error = "Сначала назначьте гнездо самоцвета" }
+		end
+		slot = tab:GetSocketAndJewelForNodeID(node.id)
+	elseif not tab.activeItemSet[name] then
+		slot = nil
+	end
+	if not slot then
 		return { error = "PoB не распознал слот экипировки " .. name }
 	end
 	local item = tab.items[id]
@@ -103,6 +116,14 @@ local function calculate(xml)
 	return { stats = stats, warnings = warnings, unsupported = unsupportedModifiers(), issues = diagnostics.collect(), skill = clean(skill), mode = "EFFECTIVE" }
 end
 
+local function selectTreeSpec(request)
+	loadDocument(assert(request.xml))
+	local spec = build.spec
+	assert(build.treeTab.activeSpec == request.tree_spec and (not request.tree_version or spec.treeVersion == request.tree_version),
+		"PoB загрузил другую спецификацию или версию дерева")
+	return { tree_identity = { class = spec.curClassName, ascendancy = spec.curAscendClassName or "None" } }
+end
+
 local function reply(value)
 	io.stdout:write(json.encode(value), "\n")
 	io.stdout:flush()
@@ -114,9 +135,14 @@ for line in io.lines() do
 		local request = assert(json.decode(line))
 		if request.operation == "catalog" then return { catalog = catalog.read() } end
 		if request.operation == "validate_equipment" then return validateEquipment(request) end
+		if request.operation == "select_tree_spec" then return selectTreeSpec(request) end
 		if request.operation == "edit_tree" then
 			loadDocument(assert(request.xml))
 			return { tree_edit = editTree(build, request) }
+		end
+		if request.operation == "edit_tree_class" then
+			loadDocument(assert(request.xml))
+			return { tree_class = editTreeClass(build, request) }
 		end
 		return calculate(assert(request.xml))
 	end)

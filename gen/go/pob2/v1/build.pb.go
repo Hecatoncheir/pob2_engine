@@ -564,8 +564,10 @@ type BuildModel struct {
 	PassiveAttributes map[uint32]string `protobuf:"bytes,17,rep,name=passive_attributes,json=passiveAttributes,proto3" json:"passive_attributes,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Режимы назначенных узлов в ветвях оружия активной спецификации.
 	PassiveAllocations map[uint32]string `protobuf:"bytes,18,rep,name=passive_allocations,json=passiveAllocations,proto3" json:"passive_allocations,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// ID предметов в гнёздах активной спецификации по ID узлов.
+	PassiveJewels map[uint32]uint32 `protobuf:"bytes,19,rep,name=passive_jewels,json=passiveJewels,proto3" json:"passive_jewels,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *BuildModel) Reset() {
@@ -720,6 +722,13 @@ func (x *BuildModel) GetPassiveAttributes() map[uint32]string {
 func (x *BuildModel) GetPassiveAllocations() map[uint32]string {
 	if x != nil {
 		return x.PassiveAllocations
+	}
+	return nil
+}
+
+func (x *BuildModel) GetPassiveJewels() map[uint32]uint32 {
+	if x != nil {
+		return x.PassiveJewels
 	}
 	return nil
 }
@@ -1237,8 +1246,9 @@ func (x *GemsEdit) GetGems() []*GemInput {
 type EquipmentEdit struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Slot  string                 `protobuf:"bytes,1,opt,name=slot,proto3" json:"slot,omitempty"`
-	// Пустая строка снимает предмет.
+	// Без текста и ID предмет снимается.
 	Raw           string `protobuf:"bytes,2,opt,name=raw,proto3" json:"raw,omitempty"`
+	ItemId        uint32 `protobuf:"varint,3,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1287,6 +1297,13 @@ func (x *EquipmentEdit) GetRaw() string {
 	return ""
 }
 
+func (x *EquipmentEdit) GetItemId() uint32 {
+	if x != nil {
+		return x.ItemId
+	}
+	return 0
+}
+
 type PassivesEdit struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Nodes         []uint32               `protobuf:"varint,1,rep,packed,name=nodes,proto3" json:"nodes,omitempty"`
@@ -1331,6 +1348,67 @@ func (x *PassivesEdit) GetNodes() []uint32 {
 	return nil
 }
 
+type JewelEdit struct {
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	NodeId uint32                 `protobuf:"varint,1,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	// Выберите предмет из сборки либо передайте его текст. Без обоих полей самоцвет снимается.
+	ItemId        uint32 `protobuf:"varint,2,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
+	Raw           string `protobuf:"bytes,3,opt,name=raw,proto3" json:"raw,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JewelEdit) Reset() {
+	*x = JewelEdit{}
+	mi := &file_pob2_v1_build_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JewelEdit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JewelEdit) ProtoMessage() {}
+
+func (x *JewelEdit) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_build_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JewelEdit.ProtoReflect.Descriptor instead.
+func (*JewelEdit) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *JewelEdit) GetNodeId() uint32 {
+	if x != nil {
+		return x.NodeId
+	}
+	return 0
+}
+
+func (x *JewelEdit) GetItemId() uint32 {
+	if x != nil {
+		return x.ItemId
+	}
+	return 0
+}
+
+func (x *JewelEdit) GetRaw() string {
+	if x != nil {
+		return x.Raw
+	}
+	return ""
+}
+
 type SelectionEdit struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Sets          *ActiveSets            `protobuf:"bytes,1,opt,name=sets,proto3" json:"sets,omitempty"`
@@ -1342,7 +1420,7 @@ type SelectionEdit struct {
 
 func (x *SelectionEdit) Reset() {
 	*x = SelectionEdit{}
-	mi := &file_pob2_v1_build_proto_msgTypes[16]
+	mi := &file_pob2_v1_build_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1354,7 +1432,7 @@ func (x *SelectionEdit) String() string {
 func (*SelectionEdit) ProtoMessage() {}
 
 func (x *SelectionEdit) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[16]
+	mi := &file_pob2_v1_build_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1367,7 +1445,7 @@ func (x *SelectionEdit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SelectionEdit.ProtoReflect.Descriptor instead.
 func (*SelectionEdit) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{16}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *SelectionEdit) GetSets() *ActiveSets {
@@ -1404,7 +1482,7 @@ type AddSupportEdit struct {
 
 func (x *AddSupportEdit) Reset() {
 	*x = AddSupportEdit{}
-	mi := &file_pob2_v1_build_proto_msgTypes[17]
+	mi := &file_pob2_v1_build_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1416,7 +1494,7 @@ func (x *AddSupportEdit) String() string {
 func (*AddSupportEdit) ProtoMessage() {}
 
 func (x *AddSupportEdit) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[17]
+	mi := &file_pob2_v1_build_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1429,7 +1507,7 @@ func (x *AddSupportEdit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddSupportEdit.ProtoReflect.Descriptor instead.
 func (*AddSupportEdit) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{17}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *AddSupportEdit) GetSupportId() string {
@@ -1468,7 +1546,7 @@ type TreeNodeEdit struct {
 
 func (x *TreeNodeEdit) Reset() {
 	*x = TreeNodeEdit{}
-	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	mi := &file_pob2_v1_build_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1480,7 +1558,7 @@ func (x *TreeNodeEdit) String() string {
 func (*TreeNodeEdit) ProtoMessage() {}
 
 func (x *TreeNodeEdit) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[18]
+	mi := &file_pob2_v1_build_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1493,7 +1571,7 @@ func (x *TreeNodeEdit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TreeNodeEdit.ProtoReflect.Descriptor instead.
 func (*TreeNodeEdit) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{18}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TreeNodeEdit) GetNodeId() uint32 {
@@ -1524,6 +1602,67 @@ func (x *TreeNodeEdit) GetAllocationMode() string {
 	return ""
 }
 
+type TreeClassEdit struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	ClassId      uint32                 `protobuf:"varint,1,opt,name=class_id,json=classId,proto3" json:"class_id,omitempty"`
+	AscendancyId uint32                 `protobuf:"varint,2,opt,name=ascendancy_id,json=ascendancyId,proto3" json:"ascendancy_id,omitempty"`
+	// Пустой режим сохраняет путь. connect соединяет путь, reset сбрасывает узлы.
+	Mode          string `protobuf:"bytes,3,opt,name=mode,proto3" json:"mode,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TreeClassEdit) Reset() {
+	*x = TreeClassEdit{}
+	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TreeClassEdit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TreeClassEdit) ProtoMessage() {}
+
+func (x *TreeClassEdit) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TreeClassEdit.ProtoReflect.Descriptor instead.
+func (*TreeClassEdit) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *TreeClassEdit) GetClassId() uint32 {
+	if x != nil {
+		return x.ClassId
+	}
+	return 0
+}
+
+func (x *TreeClassEdit) GetAscendancyId() uint32 {
+	if x != nil {
+		return x.AscendancyId
+	}
+	return 0
+}
+
+func (x *TreeClassEdit) GetMode() string {
+	if x != nil {
+		return x.Mode
+	}
+	return ""
+}
+
 type BuildEdit struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Operation:
@@ -1536,6 +1675,8 @@ type BuildEdit struct {
 	//	*BuildEdit_Selection
 	//	*BuildEdit_AddSupport
 	//	*BuildEdit_TreeNode
+	//	*BuildEdit_Jewel
+	//	*BuildEdit_TreeClass
 	Operation     isBuildEdit_Operation `protobuf_oneof:"operation"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1543,7 +1684,7 @@ type BuildEdit struct {
 
 func (x *BuildEdit) Reset() {
 	*x = BuildEdit{}
-	mi := &file_pob2_v1_build_proto_msgTypes[19]
+	mi := &file_pob2_v1_build_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1555,7 +1696,7 @@ func (x *BuildEdit) String() string {
 func (*BuildEdit) ProtoMessage() {}
 
 func (x *BuildEdit) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[19]
+	mi := &file_pob2_v1_build_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1568,7 +1709,7 @@ func (x *BuildEdit) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildEdit.ProtoReflect.Descriptor instead.
 func (*BuildEdit) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{19}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *BuildEdit) GetOperation() isBuildEdit_Operation {
@@ -1650,6 +1791,24 @@ func (x *BuildEdit) GetTreeNode() *TreeNodeEdit {
 	return nil
 }
 
+func (x *BuildEdit) GetJewel() *JewelEdit {
+	if x != nil {
+		if x, ok := x.Operation.(*BuildEdit_Jewel); ok {
+			return x.Jewel
+		}
+	}
+	return nil
+}
+
+func (x *BuildEdit) GetTreeClass() *TreeClassEdit {
+	if x != nil {
+		if x, ok := x.Operation.(*BuildEdit_TreeClass); ok {
+			return x.TreeClass
+		}
+	}
+	return nil
+}
+
 type isBuildEdit_Operation interface {
 	isBuildEdit_Operation()
 }
@@ -1686,6 +1845,14 @@ type BuildEdit_TreeNode struct {
 	TreeNode *TreeNodeEdit `protobuf:"bytes,8,opt,name=tree_node,json=treeNode,proto3,oneof"`
 }
 
+type BuildEdit_Jewel struct {
+	Jewel *JewelEdit `protobuf:"bytes,9,opt,name=jewel,proto3,oneof"`
+}
+
+type BuildEdit_TreeClass struct {
+	TreeClass *TreeClassEdit `protobuf:"bytes,10,opt,name=tree_class,json=treeClass,proto3,oneof"`
+}
+
 func (*BuildEdit_Level) isBuildEdit_Operation() {}
 
 func (*BuildEdit_Config) isBuildEdit_Operation() {}
@@ -1702,6 +1869,10 @@ func (*BuildEdit_AddSupport) isBuildEdit_Operation() {}
 
 func (*BuildEdit_TreeNode) isBuildEdit_Operation() {}
 
+func (*BuildEdit_Jewel) isBuildEdit_Operation() {}
+
+func (*BuildEdit_TreeClass) isBuildEdit_Operation() {}
+
 type PassiveChange struct {
 	state         protoimpl.MessageState     `protogen:"open.v1"`
 	Added         []uint32                   `protobuf:"varint,1,rep,packed,name=added,proto3" json:"added,omitempty"`
@@ -1715,7 +1886,7 @@ type PassiveChange struct {
 
 func (x *PassiveChange) Reset() {
 	*x = PassiveChange{}
-	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	mi := &file_pob2_v1_build_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1727,7 +1898,7 @@ func (x *PassiveChange) String() string {
 func (*PassiveChange) ProtoMessage() {}
 
 func (x *PassiveChange) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[20]
+	mi := &file_pob2_v1_build_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1740,7 +1911,7 @@ func (x *PassiveChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassiveChange.ProtoReflect.Descriptor instead.
 func (*PassiveChange) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{20}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *PassiveChange) GetAdded() []uint32 {
@@ -1790,7 +1961,7 @@ type PassiveAllocationChange struct {
 
 func (x *PassiveAllocationChange) Reset() {
 	*x = PassiveAllocationChange{}
-	mi := &file_pob2_v1_build_proto_msgTypes[21]
+	mi := &file_pob2_v1_build_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1802,7 +1973,7 @@ func (x *PassiveAllocationChange) String() string {
 func (*PassiveAllocationChange) ProtoMessage() {}
 
 func (x *PassiveAllocationChange) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[21]
+	mi := &file_pob2_v1_build_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1815,7 +1986,7 @@ func (x *PassiveAllocationChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassiveAllocationChange.ProtoReflect.Descriptor instead.
 func (*PassiveAllocationChange) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{21}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *PassiveAllocationChange) GetNodeId() uint32 {
@@ -1850,7 +2021,7 @@ type PassivePoints struct {
 
 func (x *PassivePoints) Reset() {
 	*x = PassivePoints{}
-	mi := &file_pob2_v1_build_proto_msgTypes[22]
+	mi := &file_pob2_v1_build_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1862,7 +2033,7 @@ func (x *PassivePoints) String() string {
 func (*PassivePoints) ProtoMessage() {}
 
 func (x *PassivePoints) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[22]
+	mi := &file_pob2_v1_build_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1875,7 +2046,7 @@ func (x *PassivePoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassivePoints.ProtoReflect.Descriptor instead.
 func (*PassivePoints) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{22}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *PassivePoints) GetPassives() uint32 {
@@ -1909,7 +2080,7 @@ type PassivePointsChange struct {
 
 func (x *PassivePointsChange) Reset() {
 	*x = PassivePointsChange{}
-	mi := &file_pob2_v1_build_proto_msgTypes[23]
+	mi := &file_pob2_v1_build_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1921,7 +2092,7 @@ func (x *PassivePointsChange) String() string {
 func (*PassivePointsChange) ProtoMessage() {}
 
 func (x *PassivePointsChange) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[23]
+	mi := &file_pob2_v1_build_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1934,7 +2105,7 @@ func (x *PassivePointsChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassivePointsChange.ProtoReflect.Descriptor instead.
 func (*PassivePointsChange) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{23}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *PassivePointsChange) GetBefore() *PassivePoints {
@@ -1963,7 +2134,7 @@ type PassiveAttributeChange struct {
 
 func (x *PassiveAttributeChange) Reset() {
 	*x = PassiveAttributeChange{}
-	mi := &file_pob2_v1_build_proto_msgTypes[24]
+	mi := &file_pob2_v1_build_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1975,7 +2146,7 @@ func (x *PassiveAttributeChange) String() string {
 func (*PassiveAttributeChange) ProtoMessage() {}
 
 func (x *PassiveAttributeChange) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[24]
+	mi := &file_pob2_v1_build_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1988,7 +2159,7 @@ func (x *PassiveAttributeChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PassiveAttributeChange.ProtoReflect.Descriptor instead.
 func (*PassiveAttributeChange) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{24}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *PassiveAttributeChange) GetNodeId() uint32 {
@@ -2024,7 +2195,7 @@ type StatDelta struct {
 
 func (x *StatDelta) Reset() {
 	*x = StatDelta{}
-	mi := &file_pob2_v1_build_proto_msgTypes[25]
+	mi := &file_pob2_v1_build_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2036,7 +2207,7 @@ func (x *StatDelta) String() string {
 func (*StatDelta) ProtoMessage() {}
 
 func (x *StatDelta) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[25]
+	mi := &file_pob2_v1_build_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2049,7 +2220,7 @@ func (x *StatDelta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatDelta.ProtoReflect.Descriptor instead.
 func (*StatDelta) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{25}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *StatDelta) GetStat() string {
@@ -2092,7 +2263,7 @@ type BuildComparison struct {
 
 func (x *BuildComparison) Reset() {
 	*x = BuildComparison{}
-	mi := &file_pob2_v1_build_proto_msgTypes[26]
+	mi := &file_pob2_v1_build_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2104,7 +2275,7 @@ func (x *BuildComparison) String() string {
 func (*BuildComparison) ProtoMessage() {}
 
 func (x *BuildComparison) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_build_proto_msgTypes[26]
+	mi := &file_pob2_v1_build_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2117,7 +2288,7 @@ func (x *BuildComparison) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildComparison.ProtoReflect.Descriptor instead.
 func (*BuildComparison) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_build_proto_rawDescGZIP(), []int{26}
+	return file_pob2_v1_build_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *BuildComparison) GetBefore() *CalculationResult {
@@ -2181,7 +2352,7 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\x04gems\x18\x05 \x03(\v2\x11.pob2.v1.BuildGemR\x04gems\"-\n" +
 	"\tBuildItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x10\n" +
-	"\x03raw\x18\x02 \x01(\tR\x03raw\"\xb9\b\n" +
+	"\x03raw\x18\x02 \x01(\tR\x03raw\"\xca\t\n" +
 	"\n" +
 	"BuildModel\x12%\n" +
 	"\x0etarget_version\x18\x01 \x01(\tR\rtargetVersion\x12!\n" +
@@ -2208,7 +2379,8 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\x06config\x18\x0f \x03(\v2\x1f.pob2.v1.BuildModel.ConfigEntryR\x06config\x12+\n" +
 	"\x06issues\x18\x10 \x03(\v2\x13.pob2.v1.BuildIssueR\x06issues\x12Y\n" +
 	"\x12passive_attributes\x18\x11 \x03(\v2*.pob2.v1.BuildModel.PassiveAttributesEntryR\x11passiveAttributes\x12\\\n" +
-	"\x13passive_allocations\x18\x12 \x03(\v2+.pob2.v1.BuildModel.PassiveAllocationsEntryR\x12passiveAllocations\x1a8\n" +
+	"\x13passive_allocations\x18\x12 \x03(\v2+.pob2.v1.BuildModel.PassiveAllocationsEntryR\x12passiveAllocations\x12M\n" +
+	"\x0epassive_jewels\x18\x13 \x03(\v2&.pob2.v1.BuildModel.PassiveJewelsEntryR\rpassiveJewels\x1a8\n" +
 	"\n" +
 	"SlotsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -2221,7 +2393,10 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1aE\n" +
 	"\x17PassiveAllocationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\rR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"g\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a@\n" +
+	"\x12PassiveJewelsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\rR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\rR\x05value:\x028\x01\"g\n" +
 	"\x0fAppliedModifier\x12\x12\n" +
 	"\x04stat\x18\x01 \x01(\tR\x04stat\x12\x12\n" +
 	"\x04kind\x18\x02 \x01(\tR\x04kind\x12\x14\n" +
@@ -2268,12 +2443,17 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x18\n" +
 	"\aenabled\x18\x03 \x01(\bR\aenabled\x12\x16\n" +
 	"\x06delete\x18\x04 \x01(\bR\x06delete\x12%\n" +
-	"\x04gems\x18\x05 \x03(\v2\x11.pob2.v1.GemInputR\x04gems\"5\n" +
+	"\x04gems\x18\x05 \x03(\v2\x11.pob2.v1.GemInputR\x04gems\"N\n" +
 	"\rEquipmentEdit\x12\x12\n" +
 	"\x04slot\x18\x01 \x01(\tR\x04slot\x12\x10\n" +
-	"\x03raw\x18\x02 \x01(\tR\x03raw\"$\n" +
+	"\x03raw\x18\x02 \x01(\tR\x03raw\x12\x17\n" +
+	"\aitem_id\x18\x03 \x01(\rR\x06itemId\"$\n" +
 	"\fPassivesEdit\x12\x14\n" +
-	"\x05nodes\x18\x01 \x03(\rR\x05nodes\"v\n" +
+	"\x05nodes\x18\x01 \x03(\rR\x05nodes\"O\n" +
+	"\tJewelEdit\x12\x17\n" +
+	"\anode_id\x18\x01 \x01(\rR\x06nodeId\x12\x17\n" +
+	"\aitem_id\x18\x02 \x01(\rR\x06itemId\x12\x10\n" +
+	"\x03raw\x18\x03 \x01(\tR\x03raw\"v\n" +
 	"\rSelectionEdit\x12'\n" +
 	"\x04sets\x18\x01 \x01(\v2\x13.pob2.v1.ActiveSetsR\x04sets\x12\x1d\n" +
 	"\n" +
@@ -2289,7 +2469,11 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\anode_id\x18\x01 \x01(\rR\x06nodeId\x12\x16\n" +
 	"\x06action\x18\x02 \x01(\tR\x06action\x12\x1c\n" +
 	"\tattribute\x18\x03 \x01(\tR\tattribute\x12'\n" +
-	"\x0fallocation_mode\x18\x04 \x01(\tR\x0eallocationMode\"\xb3\x03\n" +
+	"\x0fallocation_mode\x18\x04 \x01(\tR\x0eallocationMode\"c\n" +
+	"\rTreeClassEdit\x12\x19\n" +
+	"\bclass_id\x18\x01 \x01(\rR\aclassId\x12#\n" +
+	"\rascendancy_id\x18\x02 \x01(\rR\fascendancyId\x12\x12\n" +
+	"\x04mode\x18\x03 \x01(\tR\x04mode\"\x98\x04\n" +
 	"\tBuildEdit\x12*\n" +
 	"\x05level\x18\x01 \x01(\v2\x12.pob2.v1.LevelEditH\x00R\x05level\x12-\n" +
 	"\x06config\x18\x02 \x01(\v2\x13.pob2.v1.ConfigEditH\x00R\x06config\x12'\n" +
@@ -2299,7 +2483,11 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\tselection\x18\x06 \x01(\v2\x16.pob2.v1.SelectionEditH\x00R\tselection\x12:\n" +
 	"\vadd_support\x18\a \x01(\v2\x17.pob2.v1.AddSupportEditH\x00R\n" +
 	"addSupport\x124\n" +
-	"\ttree_node\x18\b \x01(\v2\x15.pob2.v1.TreeNodeEditH\x00R\btreeNodeB\v\n" +
+	"\ttree_node\x18\b \x01(\v2\x15.pob2.v1.TreeNodeEditH\x00R\btreeNode\x12*\n" +
+	"\x05jewel\x18\t \x01(\v2\x12.pob2.v1.JewelEditH\x00R\x05jewel\x127\n" +
+	"\n" +
+	"tree_class\x18\n" +
+	" \x01(\v2\x16.pob2.v1.TreeClassEditH\x00R\ttreeClassB\v\n" +
 	"\toperation\"\xfa\x01\n" +
 	"\rPassiveChange\x12\x14\n" +
 	"\x05added\x18\x01 \x03(\rR\x05added\x12\x18\n" +
@@ -2361,7 +2549,7 @@ func file_pob2_v1_build_proto_rawDescGZIP() []byte {
 }
 
 var file_pob2_v1_build_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_pob2_v1_build_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_pob2_v1_build_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
 var file_pob2_v1_build_proto_goTypes = []any{
 	(ConfigValueType)(0),            // 0: pob2.v1.ConfigValueType
 	(CalculationStatus)(0),          // 1: pob2.v1.CalculationStatus
@@ -2381,22 +2569,25 @@ var file_pob2_v1_build_proto_goTypes = []any{
 	(*GemsEdit)(nil),                // 15: pob2.v1.GemsEdit
 	(*EquipmentEdit)(nil),           // 16: pob2.v1.EquipmentEdit
 	(*PassivesEdit)(nil),            // 17: pob2.v1.PassivesEdit
-	(*SelectionEdit)(nil),           // 18: pob2.v1.SelectionEdit
-	(*AddSupportEdit)(nil),          // 19: pob2.v1.AddSupportEdit
-	(*TreeNodeEdit)(nil),            // 20: pob2.v1.TreeNodeEdit
-	(*BuildEdit)(nil),               // 21: pob2.v1.BuildEdit
-	(*PassiveChange)(nil),           // 22: pob2.v1.PassiveChange
-	(*PassiveAllocationChange)(nil), // 23: pob2.v1.PassiveAllocationChange
-	(*PassivePoints)(nil),           // 24: pob2.v1.PassivePoints
-	(*PassivePointsChange)(nil),     // 25: pob2.v1.PassivePointsChange
-	(*PassiveAttributeChange)(nil),  // 26: pob2.v1.PassiveAttributeChange
-	(*StatDelta)(nil),               // 27: pob2.v1.StatDelta
-	(*BuildComparison)(nil),         // 28: pob2.v1.BuildComparison
-	nil,                             // 29: pob2.v1.BuildModel.SlotsEntry
-	nil,                             // 30: pob2.v1.BuildModel.ConfigEntry
-	nil,                             // 31: pob2.v1.BuildModel.PassiveAttributesEntry
-	nil,                             // 32: pob2.v1.BuildModel.PassiveAllocationsEntry
-	nil,                             // 33: pob2.v1.CalculationResult.StatsEntry
+	(*JewelEdit)(nil),               // 18: pob2.v1.JewelEdit
+	(*SelectionEdit)(nil),           // 19: pob2.v1.SelectionEdit
+	(*AddSupportEdit)(nil),          // 20: pob2.v1.AddSupportEdit
+	(*TreeNodeEdit)(nil),            // 21: pob2.v1.TreeNodeEdit
+	(*TreeClassEdit)(nil),           // 22: pob2.v1.TreeClassEdit
+	(*BuildEdit)(nil),               // 23: pob2.v1.BuildEdit
+	(*PassiveChange)(nil),           // 24: pob2.v1.PassiveChange
+	(*PassiveAllocationChange)(nil), // 25: pob2.v1.PassiveAllocationChange
+	(*PassivePoints)(nil),           // 26: pob2.v1.PassivePoints
+	(*PassivePointsChange)(nil),     // 27: pob2.v1.PassivePointsChange
+	(*PassiveAttributeChange)(nil),  // 28: pob2.v1.PassiveAttributeChange
+	(*StatDelta)(nil),               // 29: pob2.v1.StatDelta
+	(*BuildComparison)(nil),         // 30: pob2.v1.BuildComparison
+	nil,                             // 31: pob2.v1.BuildModel.SlotsEntry
+	nil,                             // 32: pob2.v1.BuildModel.ConfigEntry
+	nil,                             // 33: pob2.v1.BuildModel.PassiveAttributesEntry
+	nil,                             // 34: pob2.v1.BuildModel.PassiveAllocationsEntry
+	nil,                             // 35: pob2.v1.BuildModel.PassiveJewelsEntry
+	nil,                             // 36: pob2.v1.CalculationResult.StatsEntry
 }
 var file_pob2_v1_build_proto_depIdxs = []int32{
 	0,  // 0: pob2.v1.ConfigValue.type:type_name -> pob2.v1.ConfigValueType
@@ -2404,42 +2595,45 @@ var file_pob2_v1_build_proto_depIdxs = []int32{
 	4,  // 2: pob2.v1.BuildModel.active_sets:type_name -> pob2.v1.ActiveSets
 	6,  // 3: pob2.v1.BuildModel.groups:type_name -> pob2.v1.SkillGroup
 	7,  // 4: pob2.v1.BuildModel.items:type_name -> pob2.v1.BuildItem
-	29, // 5: pob2.v1.BuildModel.slots:type_name -> pob2.v1.BuildModel.SlotsEntry
-	30, // 6: pob2.v1.BuildModel.config:type_name -> pob2.v1.BuildModel.ConfigEntry
+	31, // 5: pob2.v1.BuildModel.slots:type_name -> pob2.v1.BuildModel.SlotsEntry
+	32, // 6: pob2.v1.BuildModel.config:type_name -> pob2.v1.BuildModel.ConfigEntry
 	3,  // 7: pob2.v1.BuildModel.issues:type_name -> pob2.v1.BuildIssue
-	31, // 8: pob2.v1.BuildModel.passive_attributes:type_name -> pob2.v1.BuildModel.PassiveAttributesEntry
-	32, // 9: pob2.v1.BuildModel.passive_allocations:type_name -> pob2.v1.BuildModel.PassiveAllocationsEntry
-	1,  // 10: pob2.v1.CalculationResult.status:type_name -> pob2.v1.CalculationStatus
-	33, // 11: pob2.v1.CalculationResult.stats:type_name -> pob2.v1.CalculationResult.StatsEntry
-	9,  // 12: pob2.v1.CalculationResult.modifiers:type_name -> pob2.v1.AppliedModifier
-	3,  // 13: pob2.v1.CalculationResult.issues:type_name -> pob2.v1.BuildIssue
-	8,  // 14: pob2.v1.BuildDocument.model:type_name -> pob2.v1.BuildModel
-	10, // 15: pob2.v1.BuildDocument.calculation:type_name -> pob2.v1.CalculationResult
-	2,  // 16: pob2.v1.ConfigEdit.value:type_name -> pob2.v1.ConfigValue
-	14, // 17: pob2.v1.GemsEdit.gems:type_name -> pob2.v1.GemInput
-	4,  // 18: pob2.v1.SelectionEdit.sets:type_name -> pob2.v1.ActiveSets
-	12, // 19: pob2.v1.BuildEdit.level:type_name -> pob2.v1.LevelEdit
-	13, // 20: pob2.v1.BuildEdit.config:type_name -> pob2.v1.ConfigEdit
-	15, // 21: pob2.v1.BuildEdit.gems:type_name -> pob2.v1.GemsEdit
-	16, // 22: pob2.v1.BuildEdit.equipment:type_name -> pob2.v1.EquipmentEdit
-	17, // 23: pob2.v1.BuildEdit.passives:type_name -> pob2.v1.PassivesEdit
-	18, // 24: pob2.v1.BuildEdit.selection:type_name -> pob2.v1.SelectionEdit
-	19, // 25: pob2.v1.BuildEdit.add_support:type_name -> pob2.v1.AddSupportEdit
-	20, // 26: pob2.v1.BuildEdit.tree_node:type_name -> pob2.v1.TreeNodeEdit
-	26, // 27: pob2.v1.PassiveChange.attributes:type_name -> pob2.v1.PassiveAttributeChange
-	23, // 28: pob2.v1.PassiveChange.allocations:type_name -> pob2.v1.PassiveAllocationChange
-	25, // 29: pob2.v1.PassiveChange.points:type_name -> pob2.v1.PassivePointsChange
-	24, // 30: pob2.v1.PassivePointsChange.before:type_name -> pob2.v1.PassivePoints
-	24, // 31: pob2.v1.PassivePointsChange.after:type_name -> pob2.v1.PassivePoints
-	10, // 32: pob2.v1.BuildComparison.before:type_name -> pob2.v1.CalculationResult
-	10, // 33: pob2.v1.BuildComparison.after:type_name -> pob2.v1.CalculationResult
-	27, // 34: pob2.v1.BuildComparison.deltas:type_name -> pob2.v1.StatDelta
-	2,  // 35: pob2.v1.BuildModel.ConfigEntry.value:type_name -> pob2.v1.ConfigValue
-	36, // [36:36] is the sub-list for method output_type
-	36, // [36:36] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	33, // 8: pob2.v1.BuildModel.passive_attributes:type_name -> pob2.v1.BuildModel.PassiveAttributesEntry
+	34, // 9: pob2.v1.BuildModel.passive_allocations:type_name -> pob2.v1.BuildModel.PassiveAllocationsEntry
+	35, // 10: pob2.v1.BuildModel.passive_jewels:type_name -> pob2.v1.BuildModel.PassiveJewelsEntry
+	1,  // 11: pob2.v1.CalculationResult.status:type_name -> pob2.v1.CalculationStatus
+	36, // 12: pob2.v1.CalculationResult.stats:type_name -> pob2.v1.CalculationResult.StatsEntry
+	9,  // 13: pob2.v1.CalculationResult.modifiers:type_name -> pob2.v1.AppliedModifier
+	3,  // 14: pob2.v1.CalculationResult.issues:type_name -> pob2.v1.BuildIssue
+	8,  // 15: pob2.v1.BuildDocument.model:type_name -> pob2.v1.BuildModel
+	10, // 16: pob2.v1.BuildDocument.calculation:type_name -> pob2.v1.CalculationResult
+	2,  // 17: pob2.v1.ConfigEdit.value:type_name -> pob2.v1.ConfigValue
+	14, // 18: pob2.v1.GemsEdit.gems:type_name -> pob2.v1.GemInput
+	4,  // 19: pob2.v1.SelectionEdit.sets:type_name -> pob2.v1.ActiveSets
+	12, // 20: pob2.v1.BuildEdit.level:type_name -> pob2.v1.LevelEdit
+	13, // 21: pob2.v1.BuildEdit.config:type_name -> pob2.v1.ConfigEdit
+	15, // 22: pob2.v1.BuildEdit.gems:type_name -> pob2.v1.GemsEdit
+	16, // 23: pob2.v1.BuildEdit.equipment:type_name -> pob2.v1.EquipmentEdit
+	17, // 24: pob2.v1.BuildEdit.passives:type_name -> pob2.v1.PassivesEdit
+	19, // 25: pob2.v1.BuildEdit.selection:type_name -> pob2.v1.SelectionEdit
+	20, // 26: pob2.v1.BuildEdit.add_support:type_name -> pob2.v1.AddSupportEdit
+	21, // 27: pob2.v1.BuildEdit.tree_node:type_name -> pob2.v1.TreeNodeEdit
+	18, // 28: pob2.v1.BuildEdit.jewel:type_name -> pob2.v1.JewelEdit
+	22, // 29: pob2.v1.BuildEdit.tree_class:type_name -> pob2.v1.TreeClassEdit
+	28, // 30: pob2.v1.PassiveChange.attributes:type_name -> pob2.v1.PassiveAttributeChange
+	25, // 31: pob2.v1.PassiveChange.allocations:type_name -> pob2.v1.PassiveAllocationChange
+	27, // 32: pob2.v1.PassiveChange.points:type_name -> pob2.v1.PassivePointsChange
+	26, // 33: pob2.v1.PassivePointsChange.before:type_name -> pob2.v1.PassivePoints
+	26, // 34: pob2.v1.PassivePointsChange.after:type_name -> pob2.v1.PassivePoints
+	10, // 35: pob2.v1.BuildComparison.before:type_name -> pob2.v1.CalculationResult
+	10, // 36: pob2.v1.BuildComparison.after:type_name -> pob2.v1.CalculationResult
+	29, // 37: pob2.v1.BuildComparison.deltas:type_name -> pob2.v1.StatDelta
+	2,  // 38: pob2.v1.BuildModel.ConfigEntry.value:type_name -> pob2.v1.ConfigValue
+	39, // [39:39] is the sub-list for method output_type
+	39, // [39:39] is the sub-list for method input_type
+	39, // [39:39] is the sub-list for extension type_name
+	39, // [39:39] is the sub-list for extension extendee
+	0,  // [0:39] is the sub-list for field type_name
 }
 
 func init() { file_pob2_v1_build_proto_init() }
@@ -2447,7 +2641,7 @@ func file_pob2_v1_build_proto_init() {
 	if File_pob2_v1_build_proto != nil {
 		return
 	}
-	file_pob2_v1_build_proto_msgTypes[19].OneofWrappers = []any{
+	file_pob2_v1_build_proto_msgTypes[21].OneofWrappers = []any{
 		(*BuildEdit_Level)(nil),
 		(*BuildEdit_Config)(nil),
 		(*BuildEdit_Gems)(nil),
@@ -2456,6 +2650,8 @@ func file_pob2_v1_build_proto_init() {
 		(*BuildEdit_Selection)(nil),
 		(*BuildEdit_AddSupport)(nil),
 		(*BuildEdit_TreeNode)(nil),
+		(*BuildEdit_Jewel)(nil),
+		(*BuildEdit_TreeClass)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2463,7 +2659,7 @@ func file_pob2_v1_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pob2_v1_build_proto_rawDesc), len(file_pob2_v1_build_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   32,
+			NumMessages:   35,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

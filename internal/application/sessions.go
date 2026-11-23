@@ -100,6 +100,10 @@ func validate(sessionID, name, requestID string) error {
 }
 
 func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapshot, error) {
+	return s.create(ctx, cmd, cmd.XML)
+}
+
+func (s *Service) create(ctx context.Context, cmd CreateSession, xml string) (domain.Snapshot, error) {
 	if err := validate(cmd.SessionID, cmd.BuildName, cmd.RequestID); err != nil {
 		return domain.Snapshot{}, err
 	}
@@ -120,11 +124,11 @@ func (s *Service) Create(ctx context.Context, cmd CreateSession) (domain.Snapsho
 	if len(s.sessions) >= maxSessions || len(s.requests) >= maxRequests {
 		return domain.Snapshot{}, failure(ResourceExhausted, "достигнут лимит сессий или команд")
 	}
-	return s.commitCreation(ctx, cmd)
+	return s.commitCreation(ctx, cmd, xml)
 }
 
-func (s *Service) commitCreation(ctx context.Context, cmd CreateSession) (domain.Snapshot, error) {
-	event, err := creationEvent(cmd)
+func (s *Service) commitCreation(ctx context.Context, cmd CreateSession, xml string) (domain.Snapshot, error) {
+	event, err := creationEvent(cmd, xml)
 	if err != nil {
 		return domain.Snapshot{}, err
 	}
@@ -144,13 +148,13 @@ func (s *Service) commitCreation(ctx context.Context, cmd CreateSession) (domain
 	return result, nil
 }
 
-func creationEvent(cmd CreateSession) (Event, error) {
+func creationEvent(cmd CreateSession, xml string) (Event, error) {
 	initial := domain.Snapshot{SessionID: cmd.SessionID, BuildName: cmd.BuildName, Revision: 1}
 	event := Event{Snapshot: initial, Kind: "created", RequestID: cmd.RequestID}
-	if cmd.XML == "" {
+	if xml == "" {
 		return event, nil
 	}
-	doc, err := build.Parse([]byte(cmd.XML))
+	doc, err := build.Parse([]byte(xml))
 	if err != nil {
 		return Event{}, failure(InvalidArgument, err.Error())
 	}

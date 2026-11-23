@@ -7,11 +7,15 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 	"unicode/utf8"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
+
+// Первый вызов на сервере может загружать Lua PoB и данные дерева.
+const buildTimeout = 30 * time.Second
 
 type ResultStatusError struct{ Status string }
 
@@ -72,7 +76,7 @@ func parseEdit(data []byte) (*build.Edit, error) {
 
 func (r runner) calculate(ctx context.Context, args []string) error {
 	fs := r.flags("calculate")
-	connection := connectFlags(fs)
+	connection := connectFlagsWithTimeout(fs, buildTimeout)
 	file := fs.String("file", "", "XML-файл либо - для stdin; одноразовый расчёт без сервера")
 	id := fs.String("session", "", "сессия запущенного сервера")
 	revision := fs.Uint64("revision", 0, "ожидаемая ревизия сессии")
@@ -156,7 +160,7 @@ func (r runner) build(ctx context.Context, args []string) error {
 		return &UsageError{Err: fmt.Errorf("неизвестная операция build %q", operation)}
 	}
 	fs := r.flags("build " + operation)
-	connection := connectFlags(fs)
+	connection := connectFlagsWithTimeout(fs, buildTimeout)
 	id := fs.String("session", "", "явно выбранный session_id")
 	file := fs.String("file", "", "XML или JSON-файл правки; - для stdin")
 	revision := fs.Uint64("revision", 0, "ожидаемая ревизия")

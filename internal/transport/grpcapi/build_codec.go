@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"strconv"
 
 	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
@@ -59,6 +60,12 @@ func wireModel(m build.Model) *pb.BuildModel {
 	}
 	result.PassiveAttributes = wirePassiveChoices(m.Nodes, m.PassiveAttributes)
 	result.PassiveAllocations = wirePassiveChoices(m.Nodes, m.PassiveAllocations)
+	result.PassiveJewels = make(map[uint32]uint32, len(m.PassiveJewels))
+	for node, item := range m.PassiveJewels {
+		if id, err := strconv.ParseUint(node, 10, 32); err == nil {
+			result.PassiveJewels[uint32(id)] = uint32(item)
+		}
+	}
 	for name, value := range m.Config {
 		result.Config[name] = wireConfig(value)
 	}
@@ -166,7 +173,13 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 		}
 		result.Operation = &pb.BuildEdit_Gems{Gems: out}
 	case value.Equipment != nil:
-		result.Operation = &pb.BuildEdit_Equipment{Equipment: &pb.EquipmentEdit{Slot: value.Equipment.Slot, Raw: value.Equipment.Raw}}
+		edit := value.Equipment
+		result.Operation = &pb.BuildEdit_Equipment{Equipment: &pb.EquipmentEdit{
+			Slot: edit.Slot, Raw: edit.Raw, ItemId: uint32(edit.ItemID),
+		}}
+	case value.Jewel != nil:
+		jewel := value.Jewel
+		result.Operation = &pb.BuildEdit_Jewel{Jewel: &pb.JewelEdit{NodeId: uint32(jewel.NodeID), ItemId: uint32(jewel.ItemID), Raw: jewel.Raw}}
 	case value.Passives != nil:
 		out := &pb.PassivesEdit{}
 		for _, id := range value.Passives.Nodes {
@@ -189,6 +202,11 @@ func wireEdit(value *build.Edit) (*pb.BuildEdit, error) {
 		result.Operation = &pb.BuildEdit_TreeNode{TreeNode: &pb.TreeNodeEdit{
 			NodeId: uint32(node.NodeID), Action: node.Action, Attribute: string(node.Attribute),
 			AllocationMode: string(node.AllocationMode),
+		}}
+	case value.TreeClass != nil:
+		class := value.TreeClass
+		result.Operation = &pb.BuildEdit_TreeClass{TreeClass: &pb.TreeClassEdit{
+			ClassId: uint32(class.ClassID), AscendancyId: uint32(class.AscendancyID), Mode: class.Mode,
 		}}
 	}
 	return result, nil
@@ -249,7 +267,11 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 			result.Gems.Gems = append(result.Gems.Gems, build.GemInput{ID: gem.GetId(), Level: int(gem.GetLevel()), Quality: int(gem.GetQuality()), Enabled: gem.GetEnabled()})
 		}
 	case *pb.BuildEdit_Equipment:
-		result.Equipment = &build.EquipmentEdit{Slot: operation.Equipment.GetSlot(), Raw: operation.Equipment.GetRaw()}
+		edit := operation.Equipment
+		result.Equipment = &build.EquipmentEdit{Slot: edit.GetSlot(), Raw: edit.GetRaw(), ItemID: int(edit.GetItemId())}
+	case *pb.BuildEdit_Jewel:
+		jewel := operation.Jewel
+		result.Jewel = &build.JewelEdit{NodeID: int(jewel.GetNodeId()), ItemID: int(jewel.GetItemId()), Raw: jewel.GetRaw()}
 	case *pb.BuildEdit_Passives:
 		result.Passives = &build.PassivesEdit{Nodes: []int{}}
 		for _, id := range operation.Passives.GetNodes() {
@@ -272,6 +294,11 @@ func localEdit(value *pb.BuildEdit) (*build.Edit, error) {
 		result.TreeNode = &build.TreeNodeEdit{
 			NodeID: int(node.GetNodeId()), Action: node.GetAction(), Attribute: build.PassiveAttribute(node.GetAttribute()),
 			AllocationMode: build.TreeAllocationMode(node.GetAllocationMode()),
+		}
+	case *pb.BuildEdit_TreeClass:
+		class := operation.TreeClass
+		result.TreeClass = &build.TreeClassEdit{
+			ClassID: int(class.GetClassId()), AscendancyID: int(class.GetAscendancyId()), Mode: class.GetMode(),
 		}
 	default:
 		return nil, fmt.Errorf("не указана операция правки")

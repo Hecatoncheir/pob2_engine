@@ -48,6 +48,7 @@ type Server struct {
 	done        chan struct{}
 	stopped     chan struct{}
 	serveErr    error
+	editors     editorBridge
 }
 
 func Start(address, token string, commands application.Commands) (*Server, error) {
@@ -154,7 +155,7 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 	stats := s.life.Stats()
 	storageMode, storagePath := s.storageInfo()
 	capabilities := buildinfo.Capabilities()
-	capabilities = append(capabilities, "server.events", maintenance.UpdateCapability, maintenance.DoctorCapability)
+	capabilities = append(capabilities, "server.events", "ui.bridge", maintenance.UpdateCapability, maintenance.DoctorCapability)
 	if _, ok := s.commands.(application.Events); ok {
 		capabilities = append(capabilities, "session.events")
 	}
@@ -168,10 +169,19 @@ func (s *Server) GetServerInfo(context.Context, *pb.GetServerInfoRequest) (*pb.G
 		capabilities = append(capabilities, "catalog.search", "build.preview_support")
 	}
 	if preview, ok := s.commands.(interface{ SupportsEquipmentPreview() bool }); ok && preview.SupportsEquipmentPreview() {
-		capabilities = append(capabilities, "build.equipment_preview")
+		capabilities = append(capabilities, "build.equipment_preview", "build.equipment_existing")
 	}
 	if preview, ok := s.commands.(interface{ SupportsTreePreview() bool }); ok && preview.SupportsTreePreview() {
-		capabilities = append(capabilities, "build.tree_preview", "build.tree_attributes", "build.tree_allocation_modes")
+		capabilities = append(capabilities, "build.tree_preview", "build.tree_attributes", "build.tree_allocation_modes", "build.tree_sockets")
+	}
+	if preview, ok := s.commands.(interface{ SupportsJewelPreview() bool }); ok && preview.SupportsJewelPreview() {
+		capabilities = append(capabilities, "build.tree_jewels")
+	}
+	if selector, ok := s.commands.(interface{ SupportsTreeSpecs() bool }); ok && selector.SupportsTreeSpecs() {
+		capabilities = append(capabilities, "build.tree_specs")
+	}
+	if editor, ok := s.commands.(interface{ SupportsTreeClass() bool }); ok && editor.SupportsTreeClass() {
+		capabilities = append(capabilities, "build.tree_class")
 	}
 	return &pb.GetServerInfoResponse{Version: buildinfo.Version, ProtocolVersion: buildinfo.ProtocolVersion, Capabilities: capabilities, State: stats.State,
 		InstanceId: s.instanceID, Mode: s.life.Config().Mode, ClientCount: stats.Clients, ActiveTasks: stats.Tasks, LeaseTimeoutMs: uint64(s.life.Config().LeaseTimeout.Milliseconds()), StorageMode: storageMode, StoragePath: storagePath}, nil

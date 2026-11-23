@@ -25,7 +25,8 @@ var layouts = map[string]layout{
 	"Tree":               {"activeSpec", "Spec"},
 	"Spec":               {"treeVersion secondaryAscendClassId classInternalId classId ascendancyInternalId ascendClassId nodes masteryEffects title", "URL Sockets Overrides"},
 	"URL":                {"", ""},
-	"Sockets":            {"", ""},
+	"Sockets":            {"", "Socket"},
+	"Socket":             {"nodeId itemId", ""},
 	"Overrides":          {"", "AttributeOverride"},
 	"AttributeOverride":  {"strNodes dexNodes intNodes", ""},
 	"Skills":             {"activeSkillSet defaultGemLevel defaultGemQuality sortGemsByDPSField sortGemsByDPS showSupportGemTypes showLegacyGems", "SkillSet"},
@@ -152,6 +153,10 @@ func inspectSpecialValues(node *element, path string, model *Model) {
 		inspectModRange(node, path, model)
 	case "Spec":
 		inspectSpecOptions(node, path, model)
+	case "Socket":
+		if node.attr("itemId", "0") != "0" {
+			model.issue(path, "самоцвет в гнезде требует оригинального Lua PoB")
+		}
 	case "AttributeOverride":
 		inspectAttributeOverride(node, path, model)
 	case "Gem":

@@ -14,6 +14,42 @@ type TreeNodeEdit struct {
 	AllocationMode TreeAllocationMode `json:"allocation_mode,omitempty"`
 }
 
+// TreeIdentity содержит имена класса и восхождения активного дерева PoB.
+type TreeIdentity struct {
+	Class      string `json:"class"`
+	Ascendancy string `json:"ascendancy"`
+}
+
+// WithTreeIdentity согласует метаданные Build с выбранной спецификацией.
+func (d *Document) WithTreeIdentity(identity TreeIdentity) (*Document, error) {
+	updated, err := d.copyForEdit()
+	if err != nil {
+		return nil, err
+	}
+	if err := updated.setTreeIdentity(identity); err != nil {
+		return nil, err
+	}
+	return updated, nil
+}
+
+func (d *Document) setTreeIdentity(identity TreeIdentity) error {
+	if identity.Class == "" || identity.Ascendancy == "" {
+		return fmt.Errorf("PoB не вернул класс активной спецификации")
+	}
+	info, err := d.root.child("Build")
+	if err != nil {
+		return err
+	}
+	if info == nil {
+		return fmt.Errorf("в XML нет Build")
+	}
+	info.set("className", identity.Class)
+	if info.attr("ascendClassName", "None") != identity.Ascendancy {
+		info.set("ascendClassName", identity.Ascendancy)
+	}
+	return nil
+}
+
 func (e TreeNodeEdit) validate() error {
 	if e.NodeID < 1 || e.NodeID > 1000000 {
 		return fmt.Errorf("неверный идентификатор пассива")

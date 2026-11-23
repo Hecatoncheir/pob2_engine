@@ -74,6 +74,7 @@ pob2-engine calculate --profile main --session build-1 --revision 4 --request-id
 {"gems":{"group_id":1,"label":"Fireball","enabled":true,"delete":false,"gems":[{"id":"FireballPlayer","level":1,"quality":0,"enabled":true},{"id":"SupportRapidCastingPlayer","level":1,"quality":0,"enabled":true}]}}
 {"add_support":{"support_id":"SupportRapidCastingPlayer","level":1,"quality":0}}
 {"selection":{"weapon_set":2}}
+{"selection":{"sets":{"tree":2}}}
 ```
 
 Каждая строка примера — отдельный JSON-документ. Пустой `equipment.raw`
@@ -146,6 +147,18 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 `{"tree_node":{"node_id":51184,"action":"allocate","allocation_mode":"weapon_set_2"}}`.
 Для снятия узла из этой ветви передайте `action: "refund"` с тем же режимом.
 При предупреждениях Lua сравнение выводит JSON и код 4.
+
+Пустое гнездо принимает ту же команду с общим режимом, например
+`{"tree_node":{"node_id":26725,"action":"allocate","allocation_mode":"common"}}`.
+Для снятия укажите `refund`. При попытке изменить занятое гнездо Lua
+возвращает ошибку до записи. Контракт доступен через `build.tree_sockets`.
+
+Для назначенного гнезда используйте `{"jewel":{"node_id":26725,"item_id":2}}`.
+Вместо `item_id` можно передать `raw` с текстом нового самоцвета. Укажите
+только `node_id`, чтобы снять самоцвет и сохранить его в списке предметов.
+Передайте файл правки в `build compare --edit --file` для предпросмотра
+или в `build edit --file` для записи. MCP принимает ту же форму в `edit`,
+gRPC использует `BuildEdit.jewel` и объявляет `build.tree_jewels`.
 
 ## Резервные копии
 

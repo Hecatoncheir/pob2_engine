@@ -21,6 +21,320 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Приложение открывает поток только после разрешения на правки через MCP.
+type WatchEditorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchEditorRequest) Reset() {
+	*x = WatchEditorRequest{}
+	mi := &file_pob2_v1_session_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchEditorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchEditorRequest) ProtoMessage() {}
+
+func (x *WatchEditorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchEditorRequest.ProtoReflect.Descriptor instead.
+func (*WatchEditorRequest) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *WatchEditorRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type CallEditorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Tool          string                 `protobuf:"bytes,2,opt,name=tool,proto3" json:"tool,omitempty"`
+	ArgumentsJson string                 `protobuf:"bytes,3,opt,name=arguments_json,json=argumentsJson,proto3" json:"arguments_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CallEditorRequest) Reset() {
+	*x = CallEditorRequest{}
+	mi := &file_pob2_v1_session_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CallEditorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CallEditorRequest) ProtoMessage() {}
+
+func (x *CallEditorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CallEditorRequest.ProtoReflect.Descriptor instead.
+func (*CallEditorRequest) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CallEditorRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *CallEditorRequest) GetTool() string {
+	if x != nil {
+		return x.Tool
+	}
+	return ""
+}
+
+func (x *CallEditorRequest) GetArgumentsJson() string {
+	if x != nil {
+		return x.ArgumentsJson
+	}
+	return ""
+}
+
+type WatchEditorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Tool          string                 `protobuf:"bytes,2,opt,name=tool,proto3" json:"tool,omitempty"`
+	ArgumentsJson string                 `protobuf:"bytes,3,opt,name=arguments_json,json=argumentsJson,proto3" json:"arguments_json,omitempty"`
+	// Первое сообщение подтверждает привязку потока к сессии.
+	Attached      bool `protobuf:"varint,4,opt,name=attached,proto3" json:"attached,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchEditorResponse) Reset() {
+	*x = WatchEditorResponse{}
+	mi := &file_pob2_v1_session_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchEditorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchEditorResponse) ProtoMessage() {}
+
+func (x *WatchEditorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchEditorResponse.ProtoReflect.Descriptor instead.
+func (*WatchEditorResponse) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *WatchEditorResponse) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *WatchEditorResponse) GetTool() string {
+	if x != nil {
+		return x.Tool
+	}
+	return ""
+}
+
+func (x *WatchEditorResponse) GetArgumentsJson() string {
+	if x != nil {
+		return x.ArgumentsJson
+	}
+	return ""
+}
+
+func (x *WatchEditorResponse) GetAttached() bool {
+	if x != nil {
+		return x.Attached
+	}
+	return false
+}
+
+type CallEditorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ResultJson    string                 `protobuf:"bytes,1,opt,name=result_json,json=resultJson,proto3" json:"result_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CallEditorResponse) Reset() {
+	*x = CallEditorResponse{}
+	mi := &file_pob2_v1_session_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CallEditorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CallEditorResponse) ProtoMessage() {}
+
+func (x *CallEditorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CallEditorResponse.ProtoReflect.Descriptor instead.
+func (*CallEditorResponse) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CallEditorResponse) GetResultJson() string {
+	if x != nil {
+		return x.ResultJson
+	}
+	return ""
+}
+
+type ReplyEditorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	ResultJson    string                 `protobuf:"bytes,3,opt,name=result_json,json=resultJson,proto3" json:"result_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplyEditorRequest) Reset() {
+	*x = ReplyEditorRequest{}
+	mi := &file_pob2_v1_session_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyEditorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyEditorRequest) ProtoMessage() {}
+
+func (x *ReplyEditorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyEditorRequest.ProtoReflect.Descriptor instead.
+func (*ReplyEditorRequest) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ReplyEditorRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ReplyEditorRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *ReplyEditorRequest) GetResultJson() string {
+	if x != nil {
+		return x.ResultJson
+	}
+	return ""
+}
+
+type ReplyEditorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplyEditorResponse) Reset() {
+	*x = ReplyEditorResponse{}
+	mi := &file_pob2_v1_session_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyEditorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyEditorResponse) ProtoMessage() {}
+
+func (x *ReplyEditorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pob2_v1_session_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyEditorResponse.ProtoReflect.Descriptor instead.
+func (*ReplyEditorResponse) Descriptor() ([]byte, []int) {
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{5}
+}
+
 type SessionSnapshot struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
@@ -33,7 +347,7 @@ type SessionSnapshot struct {
 
 func (x *SessionSnapshot) Reset() {
 	*x = SessionSnapshot{}
-	mi := &file_pob2_v1_session_proto_msgTypes[0]
+	mi := &file_pob2_v1_session_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +359,7 @@ func (x *SessionSnapshot) String() string {
 func (*SessionSnapshot) ProtoMessage() {}
 
 func (x *SessionSnapshot) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[0]
+	mi := &file_pob2_v1_session_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +372,7 @@ func (x *SessionSnapshot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionSnapshot.ProtoReflect.Descriptor instead.
 func (*SessionSnapshot) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{0}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SessionSnapshot) GetSessionId() string {
@@ -97,7 +411,7 @@ type GetServerInfoRequest struct {
 
 func (x *GetServerInfoRequest) Reset() {
 	*x = GetServerInfoRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[1]
+	mi := &file_pob2_v1_session_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -109,7 +423,7 @@ func (x *GetServerInfoRequest) String() string {
 func (*GetServerInfoRequest) ProtoMessage() {}
 
 func (x *GetServerInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[1]
+	mi := &file_pob2_v1_session_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -122,7 +436,7 @@ func (x *GetServerInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetServerInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetServerInfoRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{1}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{7}
 }
 
 type GetServerInfoResponse struct {
@@ -144,7 +458,7 @@ type GetServerInfoResponse struct {
 
 func (x *GetServerInfoResponse) Reset() {
 	*x = GetServerInfoResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[2]
+	mi := &file_pob2_v1_session_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -156,7 +470,7 @@ func (x *GetServerInfoResponse) String() string {
 func (*GetServerInfoResponse) ProtoMessage() {}
 
 func (x *GetServerInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[2]
+	mi := &file_pob2_v1_session_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +483,7 @@ func (x *GetServerInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetServerInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetServerInfoResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{2}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetServerInfoResponse) GetVersion() string {
@@ -261,7 +575,7 @@ type CreateSessionRequest struct {
 
 func (x *CreateSessionRequest) Reset() {
 	*x = CreateSessionRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[3]
+	mi := &file_pob2_v1_session_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -273,7 +587,7 @@ func (x *CreateSessionRequest) String() string {
 func (*CreateSessionRequest) ProtoMessage() {}
 
 func (x *CreateSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[3]
+	mi := &file_pob2_v1_session_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -286,7 +600,7 @@ func (x *CreateSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSessionRequest.ProtoReflect.Descriptor instead.
 func (*CreateSessionRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{3}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateSessionRequest) GetSessionId() string {
@@ -319,7 +633,7 @@ type CreateSessionResponse struct {
 
 func (x *CreateSessionResponse) Reset() {
 	*x = CreateSessionResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[4]
+	mi := &file_pob2_v1_session_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -331,7 +645,7 @@ func (x *CreateSessionResponse) String() string {
 func (*CreateSessionResponse) ProtoMessage() {}
 
 func (x *CreateSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[4]
+	mi := &file_pob2_v1_session_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -344,7 +658,7 @@ func (x *CreateSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSessionResponse.ProtoReflect.Descriptor instead.
 func (*CreateSessionResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{4}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateSessionResponse) GetSnapshot() *SessionSnapshot {
@@ -367,7 +681,7 @@ type CreateSessionFromXmlRequest struct {
 
 func (x *CreateSessionFromXmlRequest) Reset() {
 	*x = CreateSessionFromXmlRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[5]
+	mi := &file_pob2_v1_session_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +693,7 @@ func (x *CreateSessionFromXmlRequest) String() string {
 func (*CreateSessionFromXmlRequest) ProtoMessage() {}
 
 func (x *CreateSessionFromXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[5]
+	mi := &file_pob2_v1_session_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +706,7 @@ func (x *CreateSessionFromXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSessionFromXmlRequest.ProtoReflect.Descriptor instead.
 func (*CreateSessionFromXmlRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{5}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateSessionFromXmlRequest) GetSessionId() string {
@@ -432,7 +746,7 @@ type CreateSessionFromXmlResponse struct {
 
 func (x *CreateSessionFromXmlResponse) Reset() {
 	*x = CreateSessionFromXmlResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[6]
+	mi := &file_pob2_v1_session_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -444,7 +758,7 @@ func (x *CreateSessionFromXmlResponse) String() string {
 func (*CreateSessionFromXmlResponse) ProtoMessage() {}
 
 func (x *CreateSessionFromXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[6]
+	mi := &file_pob2_v1_session_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -457,7 +771,7 @@ func (x *CreateSessionFromXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSessionFromXmlResponse.ProtoReflect.Descriptor instead.
 func (*CreateSessionFromXmlResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{6}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateSessionFromXmlResponse) GetSnapshot() *SessionSnapshot {
@@ -476,7 +790,7 @@ type GetSnapshotRequest struct {
 
 func (x *GetSnapshotRequest) Reset() {
 	*x = GetSnapshotRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[7]
+	mi := &file_pob2_v1_session_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -488,7 +802,7 @@ func (x *GetSnapshotRequest) String() string {
 func (*GetSnapshotRequest) ProtoMessage() {}
 
 func (x *GetSnapshotRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[7]
+	mi := &file_pob2_v1_session_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -501,7 +815,7 @@ func (x *GetSnapshotRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSnapshotRequest.ProtoReflect.Descriptor instead.
 func (*GetSnapshotRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{7}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetSnapshotRequest) GetSessionId() string {
@@ -520,7 +834,7 @@ type GetSnapshotResponse struct {
 
 func (x *GetSnapshotResponse) Reset() {
 	*x = GetSnapshotResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[8]
+	mi := &file_pob2_v1_session_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -532,7 +846,7 @@ func (x *GetSnapshotResponse) String() string {
 func (*GetSnapshotResponse) ProtoMessage() {}
 
 func (x *GetSnapshotResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[8]
+	mi := &file_pob2_v1_session_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -545,7 +859,7 @@ func (x *GetSnapshotResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSnapshotResponse.ProtoReflect.Descriptor instead.
 func (*GetSnapshotResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{8}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *GetSnapshotResponse) GetSnapshot() *SessionSnapshot {
@@ -568,7 +882,7 @@ type RenameBuildRequest struct {
 
 func (x *RenameBuildRequest) Reset() {
 	*x = RenameBuildRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[9]
+	mi := &file_pob2_v1_session_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -580,7 +894,7 @@ func (x *RenameBuildRequest) String() string {
 func (*RenameBuildRequest) ProtoMessage() {}
 
 func (x *RenameBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[9]
+	mi := &file_pob2_v1_session_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -593,7 +907,7 @@ func (x *RenameBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RenameBuildRequest.ProtoReflect.Descriptor instead.
 func (*RenameBuildRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{9}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *RenameBuildRequest) GetSessionId() string {
@@ -633,7 +947,7 @@ type RenameBuildResponse struct {
 
 func (x *RenameBuildResponse) Reset() {
 	*x = RenameBuildResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[10]
+	mi := &file_pob2_v1_session_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -645,7 +959,7 @@ func (x *RenameBuildResponse) String() string {
 func (*RenameBuildResponse) ProtoMessage() {}
 
 func (x *RenameBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[10]
+	mi := &file_pob2_v1_session_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -658,7 +972,7 @@ func (x *RenameBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RenameBuildResponse.ProtoReflect.Descriptor instead.
 func (*RenameBuildResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{10}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *RenameBuildResponse) GetSnapshot() *SessionSnapshot {
@@ -679,7 +993,7 @@ type WatchSessionRequest struct {
 
 func (x *WatchSessionRequest) Reset() {
 	*x = WatchSessionRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[11]
+	mi := &file_pob2_v1_session_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -691,7 +1005,7 @@ func (x *WatchSessionRequest) String() string {
 func (*WatchSessionRequest) ProtoMessage() {}
 
 func (x *WatchSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[11]
+	mi := &file_pob2_v1_session_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,7 +1018,7 @@ func (x *WatchSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchSessionRequest.ProtoReflect.Descriptor instead.
 func (*WatchSessionRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{11}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *WatchSessionRequest) GetSessionId() string {
@@ -734,7 +1048,7 @@ type WatchSessionResponse struct {
 
 func (x *WatchSessionResponse) Reset() {
 	*x = WatchSessionResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[12]
+	mi := &file_pob2_v1_session_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -746,7 +1060,7 @@ func (x *WatchSessionResponse) String() string {
 func (*WatchSessionResponse) ProtoMessage() {}
 
 func (x *WatchSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[12]
+	mi := &file_pob2_v1_session_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -759,7 +1073,7 @@ func (x *WatchSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchSessionResponse.ProtoReflect.Descriptor instead.
 func (*WatchSessionResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{12}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *WatchSessionResponse) GetSnapshot() *SessionSnapshot {
@@ -805,7 +1119,7 @@ type ShutdownRequest struct {
 
 func (x *ShutdownRequest) Reset() {
 	*x = ShutdownRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[13]
+	mi := &file_pob2_v1_session_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -817,7 +1131,7 @@ func (x *ShutdownRequest) String() string {
 func (*ShutdownRequest) ProtoMessage() {}
 
 func (x *ShutdownRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[13]
+	mi := &file_pob2_v1_session_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -830,7 +1144,7 @@ func (x *ShutdownRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShutdownRequest.ProtoReflect.Descriptor instead.
 func (*ShutdownRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{13}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{19}
 }
 
 // Поток не продлевает аренду и не считается вычислительной задачей.
@@ -842,7 +1156,7 @@ type WatchServerRequest struct {
 
 func (x *WatchServerRequest) Reset() {
 	*x = WatchServerRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[14]
+	mi := &file_pob2_v1_session_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -854,7 +1168,7 @@ func (x *WatchServerRequest) String() string {
 func (*WatchServerRequest) ProtoMessage() {}
 
 func (x *WatchServerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[14]
+	mi := &file_pob2_v1_session_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -867,7 +1181,7 @@ func (x *WatchServerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchServerRequest.ProtoReflect.Descriptor instead.
 func (*WatchServerRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{14}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{20}
 }
 
 // Сначала текущая фаза, затем переход в draining и штатный конец потока.
@@ -885,7 +1199,7 @@ type WatchServerResponse struct {
 
 func (x *WatchServerResponse) Reset() {
 	*x = WatchServerResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[15]
+	mi := &file_pob2_v1_session_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -897,7 +1211,7 @@ func (x *WatchServerResponse) String() string {
 func (*WatchServerResponse) ProtoMessage() {}
 
 func (x *WatchServerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[15]
+	mi := &file_pob2_v1_session_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -910,7 +1224,7 @@ func (x *WatchServerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchServerResponse.ProtoReflect.Descriptor instead.
 func (*WatchServerResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{15}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *WatchServerResponse) GetInstanceId() string {
@@ -956,7 +1270,7 @@ type ShutdownResponse struct {
 
 func (x *ShutdownResponse) Reset() {
 	*x = ShutdownResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[16]
+	mi := &file_pob2_v1_session_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -968,7 +1282,7 @@ func (x *ShutdownResponse) String() string {
 func (*ShutdownResponse) ProtoMessage() {}
 
 func (x *ShutdownResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[16]
+	mi := &file_pob2_v1_session_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -981,7 +1295,7 @@ func (x *ShutdownResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShutdownResponse.ProtoReflect.Descriptor instead.
 func (*ShutdownResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{16}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{22}
 }
 
 // client_id обозначает приложение, а не TCP-соединение или отдельный RPC.
@@ -995,7 +1309,7 @@ type RegisterClientRequest struct {
 
 func (x *RegisterClientRequest) Reset() {
 	*x = RegisterClientRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[17]
+	mi := &file_pob2_v1_session_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1007,7 +1321,7 @@ func (x *RegisterClientRequest) String() string {
 func (*RegisterClientRequest) ProtoMessage() {}
 
 func (x *RegisterClientRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[17]
+	mi := &file_pob2_v1_session_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1020,7 +1334,7 @@ func (x *RegisterClientRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterClientRequest.ProtoReflect.Descriptor instead.
 func (*RegisterClientRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{17}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *RegisterClientRequest) GetClientId() string {
@@ -1047,7 +1361,7 @@ type RegisterClientResponse struct {
 
 func (x *RegisterClientResponse) Reset() {
 	*x = RegisterClientResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[18]
+	mi := &file_pob2_v1_session_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1059,7 +1373,7 @@ func (x *RegisterClientResponse) String() string {
 func (*RegisterClientResponse) ProtoMessage() {}
 
 func (x *RegisterClientResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[18]
+	mi := &file_pob2_v1_session_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1072,7 +1386,7 @@ func (x *RegisterClientResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterClientResponse.ProtoReflect.Descriptor instead.
 func (*RegisterClientResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{18}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *RegisterClientResponse) GetLeaseId() string {
@@ -1098,7 +1412,7 @@ type HeartbeatRequest struct {
 
 func (x *HeartbeatRequest) Reset() {
 	*x = HeartbeatRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[19]
+	mi := &file_pob2_v1_session_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1110,7 +1424,7 @@ func (x *HeartbeatRequest) String() string {
 func (*HeartbeatRequest) ProtoMessage() {}
 
 func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[19]
+	mi := &file_pob2_v1_session_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1123,7 +1437,7 @@ func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeartbeatRequest.ProtoReflect.Descriptor instead.
 func (*HeartbeatRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{19}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *HeartbeatRequest) GetLeaseId() string {
@@ -1141,7 +1455,7 @@ type HeartbeatResponse struct {
 
 func (x *HeartbeatResponse) Reset() {
 	*x = HeartbeatResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[20]
+	mi := &file_pob2_v1_session_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1153,7 +1467,7 @@ func (x *HeartbeatResponse) String() string {
 func (*HeartbeatResponse) ProtoMessage() {}
 
 func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[20]
+	mi := &file_pob2_v1_session_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1166,7 +1480,7 @@ func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeartbeatResponse.ProtoReflect.Descriptor instead.
 func (*HeartbeatResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{20}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{26}
 }
 
 // Освобождение уже отсутствующей аренды безопасно.
@@ -1179,7 +1493,7 @@ type ReleaseClientRequest struct {
 
 func (x *ReleaseClientRequest) Reset() {
 	*x = ReleaseClientRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[21]
+	mi := &file_pob2_v1_session_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1191,7 +1505,7 @@ func (x *ReleaseClientRequest) String() string {
 func (*ReleaseClientRequest) ProtoMessage() {}
 
 func (x *ReleaseClientRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[21]
+	mi := &file_pob2_v1_session_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1204,7 +1518,7 @@ func (x *ReleaseClientRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReleaseClientRequest.ProtoReflect.Descriptor instead.
 func (*ReleaseClientRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{21}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ReleaseClientRequest) GetLeaseId() string {
@@ -1222,7 +1536,7 @@ type ReleaseClientResponse struct {
 
 func (x *ReleaseClientResponse) Reset() {
 	*x = ReleaseClientResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[22]
+	mi := &file_pob2_v1_session_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1234,7 +1548,7 @@ func (x *ReleaseClientResponse) String() string {
 func (*ReleaseClientResponse) ProtoMessage() {}
 
 func (x *ReleaseClientResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[22]
+	mi := &file_pob2_v1_session_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1247,7 +1561,7 @@ func (x *ReleaseClientResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReleaseClientResponse.ProtoReflect.Descriptor instead.
 func (*ReleaseClientResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{22}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{28}
 }
 
 type ApplyBuildRequest struct {
@@ -1266,7 +1580,7 @@ type ApplyBuildRequest struct {
 
 func (x *ApplyBuildRequest) Reset() {
 	*x = ApplyBuildRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[23]
+	mi := &file_pob2_v1_session_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1278,7 +1592,7 @@ func (x *ApplyBuildRequest) String() string {
 func (*ApplyBuildRequest) ProtoMessage() {}
 
 func (x *ApplyBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[23]
+	mi := &file_pob2_v1_session_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1291,7 +1605,7 @@ func (x *ApplyBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyBuildRequest.ProtoReflect.Descriptor instead.
 func (*ApplyBuildRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{23}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ApplyBuildRequest) GetSessionId() string {
@@ -1365,7 +1679,7 @@ type ApplyBuildResponse struct {
 
 func (x *ApplyBuildResponse) Reset() {
 	*x = ApplyBuildResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[24]
+	mi := &file_pob2_v1_session_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1377,7 +1691,7 @@ func (x *ApplyBuildResponse) String() string {
 func (*ApplyBuildResponse) ProtoMessage() {}
 
 func (x *ApplyBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[24]
+	mi := &file_pob2_v1_session_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1390,7 +1704,7 @@ func (x *ApplyBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyBuildResponse.ProtoReflect.Descriptor instead.
 func (*ApplyBuildResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{24}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ApplyBuildResponse) GetSnapshot() *SessionSnapshot {
@@ -1411,7 +1725,7 @@ type CalculateBuildRequest struct {
 
 func (x *CalculateBuildRequest) Reset() {
 	*x = CalculateBuildRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[25]
+	mi := &file_pob2_v1_session_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1423,7 +1737,7 @@ func (x *CalculateBuildRequest) String() string {
 func (*CalculateBuildRequest) ProtoMessage() {}
 
 func (x *CalculateBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[25]
+	mi := &file_pob2_v1_session_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1436,7 +1750,7 @@ func (x *CalculateBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CalculateBuildRequest.ProtoReflect.Descriptor instead.
 func (*CalculateBuildRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{25}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *CalculateBuildRequest) GetSessionId() string {
@@ -1471,7 +1785,7 @@ type CalculateBuildResponse struct {
 
 func (x *CalculateBuildResponse) Reset() {
 	*x = CalculateBuildResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[26]
+	mi := &file_pob2_v1_session_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1483,7 +1797,7 @@ func (x *CalculateBuildResponse) String() string {
 func (*CalculateBuildResponse) ProtoMessage() {}
 
 func (x *CalculateBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[26]
+	mi := &file_pob2_v1_session_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1496,7 +1810,7 @@ func (x *CalculateBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CalculateBuildResponse.ProtoReflect.Descriptor instead.
 func (*CalculateBuildResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{26}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *CalculateBuildResponse) GetStage() string {
@@ -1528,7 +1842,7 @@ type CompareBuildRequest struct {
 
 func (x *CompareBuildRequest) Reset() {
 	*x = CompareBuildRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[27]
+	mi := &file_pob2_v1_session_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1540,7 +1854,7 @@ func (x *CompareBuildRequest) String() string {
 func (*CompareBuildRequest) ProtoMessage() {}
 
 func (x *CompareBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[27]
+	mi := &file_pob2_v1_session_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1553,7 +1867,7 @@ func (x *CompareBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompareBuildRequest.ProtoReflect.Descriptor instead.
 func (*CompareBuildRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{27}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *CompareBuildRequest) GetSessionId() string {
@@ -1624,7 +1938,7 @@ type CompareBuildResponse struct {
 
 func (x *CompareBuildResponse) Reset() {
 	*x = CompareBuildResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[28]
+	mi := &file_pob2_v1_session_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1636,7 +1950,7 @@ func (x *CompareBuildResponse) String() string {
 func (*CompareBuildResponse) ProtoMessage() {}
 
 func (x *CompareBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[28]
+	mi := &file_pob2_v1_session_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1649,7 +1963,7 @@ func (x *CompareBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompareBuildResponse.ProtoReflect.Descriptor instead.
 func (*CompareBuildResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{28}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *CompareBuildResponse) GetSessionId() string {
@@ -1689,7 +2003,7 @@ type ExportBuildRequest struct {
 
 func (x *ExportBuildRequest) Reset() {
 	*x = ExportBuildRequest{}
-	mi := &file_pob2_v1_session_proto_msgTypes[29]
+	mi := &file_pob2_v1_session_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1701,7 +2015,7 @@ func (x *ExportBuildRequest) String() string {
 func (*ExportBuildRequest) ProtoMessage() {}
 
 func (x *ExportBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[29]
+	mi := &file_pob2_v1_session_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1714,7 +2028,7 @@ func (x *ExportBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportBuildRequest.ProtoReflect.Descriptor instead.
 func (*ExportBuildRequest) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{29}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ExportBuildRequest) GetSessionId() string {
@@ -1736,7 +2050,7 @@ type ExportBuildResponse struct {
 
 func (x *ExportBuildResponse) Reset() {
 	*x = ExportBuildResponse{}
-	mi := &file_pob2_v1_session_proto_msgTypes[30]
+	mi := &file_pob2_v1_session_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1748,7 +2062,7 @@ func (x *ExportBuildResponse) String() string {
 func (*ExportBuildResponse) ProtoMessage() {}
 
 func (x *ExportBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pob2_v1_session_proto_msgTypes[30]
+	mi := &file_pob2_v1_session_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1761,7 +2075,7 @@ func (x *ExportBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportBuildResponse.ProtoReflect.Descriptor instead.
 func (*ExportBuildResponse) Descriptor() ([]byte, []int) {
-	return file_pob2_v1_session_proto_rawDescGZIP(), []int{30}
+	return file_pob2_v1_session_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ExportBuildResponse) GetSessionId() string {
@@ -1796,7 +2110,32 @@ var File_pob2_v1_session_proto protoreflect.FileDescriptor
 
 const file_pob2_v1_session_proto_rawDesc = "" +
 	"\n" +
-	"\x15pob2/v1/session.proto\x12\apob2.v1\x1a\x13pob2/v1/build.proto\x1a\x15pob2/v1/catalog.proto\x1a\x19pob2/v1/maintenance.proto\"\x99\x01\n" +
+	"\x15pob2/v1/session.proto\x12\apob2.v1\x1a\x13pob2/v1/build.proto\x1a\x15pob2/v1/catalog.proto\x1a\x19pob2/v1/maintenance.proto\"3\n" +
+	"\x12WatchEditorRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"m\n" +
+	"\x11CallEditorRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x12\n" +
+	"\x04tool\x18\x02 \x01(\tR\x04tool\x12%\n" +
+	"\x0earguments_json\x18\x03 \x01(\tR\rargumentsJson\"\x8b\x01\n" +
+	"\x13WatchEditorResponse\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x12\n" +
+	"\x04tool\x18\x02 \x01(\tR\x04tool\x12%\n" +
+	"\x0earguments_json\x18\x03 \x01(\tR\rargumentsJson\x12\x1a\n" +
+	"\battached\x18\x04 \x01(\bR\battached\"5\n" +
+	"\x12CallEditorResponse\x12\x1f\n" +
+	"\vresult_json\x18\x01 \x01(\tR\n" +
+	"resultJson\"s\n" +
+	"\x12ReplyEditorRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\x12\x1f\n" +
+	"\vresult_json\x18\x03 \x01(\tR\n" +
+	"resultJson\"\x15\n" +
+	"\x13ReplyEditorResponse\"\x99\x01\n" +
 	"\x0fSessionSnapshot\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
@@ -1929,7 +2268,7 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x04R\brevision\x12\x10\n" +
 	"\x03xml\x18\x03 \x01(\tR\x03xml\x12!\n" +
-	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xaf\v\n" +
+	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\x8c\r\n" +
 	"\x0eSessionService\x12N\n" +
 	"\rGetServerInfo\x12\x1d.pob2.v1.GetServerInfoRequest\x1a\x1e.pob2.v1.GetServerInfoResponse\x129\n" +
 	"\x06Update\x12\x16.pob2.v1.UpdateRequest\x1a\x17.pob2.v1.UpdateResponse\x129\n" +
@@ -1947,7 +2286,11 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\x0ePreviewSupport\x12\x1e.pob2.v1.PreviewSupportRequest\x1a\x1f.pob2.v1.PreviewSupportResponse\x12H\n" +
 	"\vExportBuild\x12\x1b.pob2.v1.ExportBuildRequest\x1a\x1c.pob2.v1.ExportBuildResponse\x12M\n" +
 	"\fWatchSession\x12\x1c.pob2.v1.WatchSessionRequest\x1a\x1d.pob2.v1.WatchSessionResponse0\x01\x12J\n" +
-	"\vWatchServer\x12\x1b.pob2.v1.WatchServerRequest\x1a\x1c.pob2.v1.WatchServerResponse0\x01\x12?\n" +
+	"\vWatchServer\x12\x1b.pob2.v1.WatchServerRequest\x1a\x1c.pob2.v1.WatchServerResponse0\x01\x12J\n" +
+	"\vWatchEditor\x12\x1b.pob2.v1.WatchEditorRequest\x1a\x1c.pob2.v1.WatchEditorResponse0\x01\x12E\n" +
+	"\n" +
+	"CallEditor\x12\x1a.pob2.v1.CallEditorRequest\x1a\x1b.pob2.v1.CallEditorResponse\x12H\n" +
+	"\vReplyEditor\x12\x1b.pob2.v1.ReplyEditorRequest\x1a\x1c.pob2.v1.ReplyEditorResponse\x12?\n" +
 	"\bShutdown\x12\x18.pob2.v1.ShutdownRequest\x1a\x19.pob2.v1.ShutdownResponse\x12Q\n" +
 	"\x0eRegisterClient\x12\x1e.pob2.v1.RegisterClientRequest\x1a\x1f.pob2.v1.RegisterClientResponse\x12B\n" +
 	"\tHeartbeat\x12\x19.pob2.v1.HeartbeatRequest\x1a\x1a.pob2.v1.HeartbeatResponse\x12N\n" +
@@ -1965,105 +2308,117 @@ func file_pob2_v1_session_proto_rawDescGZIP() []byte {
 	return file_pob2_v1_session_proto_rawDescData
 }
 
-var file_pob2_v1_session_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
+var file_pob2_v1_session_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_pob2_v1_session_proto_goTypes = []any{
-	(*SessionSnapshot)(nil),              // 0: pob2.v1.SessionSnapshot
-	(*GetServerInfoRequest)(nil),         // 1: pob2.v1.GetServerInfoRequest
-	(*GetServerInfoResponse)(nil),        // 2: pob2.v1.GetServerInfoResponse
-	(*CreateSessionRequest)(nil),         // 3: pob2.v1.CreateSessionRequest
-	(*CreateSessionResponse)(nil),        // 4: pob2.v1.CreateSessionResponse
-	(*CreateSessionFromXmlRequest)(nil),  // 5: pob2.v1.CreateSessionFromXmlRequest
-	(*CreateSessionFromXmlResponse)(nil), // 6: pob2.v1.CreateSessionFromXmlResponse
-	(*GetSnapshotRequest)(nil),           // 7: pob2.v1.GetSnapshotRequest
-	(*GetSnapshotResponse)(nil),          // 8: pob2.v1.GetSnapshotResponse
-	(*RenameBuildRequest)(nil),           // 9: pob2.v1.RenameBuildRequest
-	(*RenameBuildResponse)(nil),          // 10: pob2.v1.RenameBuildResponse
-	(*WatchSessionRequest)(nil),          // 11: pob2.v1.WatchSessionRequest
-	(*WatchSessionResponse)(nil),         // 12: pob2.v1.WatchSessionResponse
-	(*ShutdownRequest)(nil),              // 13: pob2.v1.ShutdownRequest
-	(*WatchServerRequest)(nil),           // 14: pob2.v1.WatchServerRequest
-	(*WatchServerResponse)(nil),          // 15: pob2.v1.WatchServerResponse
-	(*ShutdownResponse)(nil),             // 16: pob2.v1.ShutdownResponse
-	(*RegisterClientRequest)(nil),        // 17: pob2.v1.RegisterClientRequest
-	(*RegisterClientResponse)(nil),       // 18: pob2.v1.RegisterClientResponse
-	(*HeartbeatRequest)(nil),             // 19: pob2.v1.HeartbeatRequest
-	(*HeartbeatResponse)(nil),            // 20: pob2.v1.HeartbeatResponse
-	(*ReleaseClientRequest)(nil),         // 21: pob2.v1.ReleaseClientRequest
-	(*ReleaseClientResponse)(nil),        // 22: pob2.v1.ReleaseClientResponse
-	(*ApplyBuildRequest)(nil),            // 23: pob2.v1.ApplyBuildRequest
-	(*ApplyBuildResponse)(nil),           // 24: pob2.v1.ApplyBuildResponse
-	(*CalculateBuildRequest)(nil),        // 25: pob2.v1.CalculateBuildRequest
-	(*CalculateBuildResponse)(nil),       // 26: pob2.v1.CalculateBuildResponse
-	(*CompareBuildRequest)(nil),          // 27: pob2.v1.CompareBuildRequest
-	(*CompareBuildResponse)(nil),         // 28: pob2.v1.CompareBuildResponse
-	(*ExportBuildRequest)(nil),           // 29: pob2.v1.ExportBuildRequest
-	(*ExportBuildResponse)(nil),          // 30: pob2.v1.ExportBuildResponse
-	(*BuildDocument)(nil),                // 31: pob2.v1.BuildDocument
-	(*BuildEdit)(nil),                    // 32: pob2.v1.BuildEdit
-	(*BuildComparison)(nil),              // 33: pob2.v1.BuildComparison
-	(*PassiveChange)(nil),                // 34: pob2.v1.PassiveChange
-	(*UpdateRequest)(nil),                // 35: pob2.v1.UpdateRequest
-	(*DoctorRequest)(nil),                // 36: pob2.v1.DoctorRequest
-	(*GetCatalogRequest)(nil),            // 37: pob2.v1.GetCatalogRequest
-	(*PreviewSupportRequest)(nil),        // 38: pob2.v1.PreviewSupportRequest
-	(*UpdateResponse)(nil),               // 39: pob2.v1.UpdateResponse
-	(*DoctorResponse)(nil),               // 40: pob2.v1.DoctorResponse
-	(*GetCatalogResponse)(nil),           // 41: pob2.v1.GetCatalogResponse
-	(*PreviewSupportResponse)(nil),       // 42: pob2.v1.PreviewSupportResponse
+	(*WatchEditorRequest)(nil),           // 0: pob2.v1.WatchEditorRequest
+	(*CallEditorRequest)(nil),            // 1: pob2.v1.CallEditorRequest
+	(*WatchEditorResponse)(nil),          // 2: pob2.v1.WatchEditorResponse
+	(*CallEditorResponse)(nil),           // 3: pob2.v1.CallEditorResponse
+	(*ReplyEditorRequest)(nil),           // 4: pob2.v1.ReplyEditorRequest
+	(*ReplyEditorResponse)(nil),          // 5: pob2.v1.ReplyEditorResponse
+	(*SessionSnapshot)(nil),              // 6: pob2.v1.SessionSnapshot
+	(*GetServerInfoRequest)(nil),         // 7: pob2.v1.GetServerInfoRequest
+	(*GetServerInfoResponse)(nil),        // 8: pob2.v1.GetServerInfoResponse
+	(*CreateSessionRequest)(nil),         // 9: pob2.v1.CreateSessionRequest
+	(*CreateSessionResponse)(nil),        // 10: pob2.v1.CreateSessionResponse
+	(*CreateSessionFromXmlRequest)(nil),  // 11: pob2.v1.CreateSessionFromXmlRequest
+	(*CreateSessionFromXmlResponse)(nil), // 12: pob2.v1.CreateSessionFromXmlResponse
+	(*GetSnapshotRequest)(nil),           // 13: pob2.v1.GetSnapshotRequest
+	(*GetSnapshotResponse)(nil),          // 14: pob2.v1.GetSnapshotResponse
+	(*RenameBuildRequest)(nil),           // 15: pob2.v1.RenameBuildRequest
+	(*RenameBuildResponse)(nil),          // 16: pob2.v1.RenameBuildResponse
+	(*WatchSessionRequest)(nil),          // 17: pob2.v1.WatchSessionRequest
+	(*WatchSessionResponse)(nil),         // 18: pob2.v1.WatchSessionResponse
+	(*ShutdownRequest)(nil),              // 19: pob2.v1.ShutdownRequest
+	(*WatchServerRequest)(nil),           // 20: pob2.v1.WatchServerRequest
+	(*WatchServerResponse)(nil),          // 21: pob2.v1.WatchServerResponse
+	(*ShutdownResponse)(nil),             // 22: pob2.v1.ShutdownResponse
+	(*RegisterClientRequest)(nil),        // 23: pob2.v1.RegisterClientRequest
+	(*RegisterClientResponse)(nil),       // 24: pob2.v1.RegisterClientResponse
+	(*HeartbeatRequest)(nil),             // 25: pob2.v1.HeartbeatRequest
+	(*HeartbeatResponse)(nil),            // 26: pob2.v1.HeartbeatResponse
+	(*ReleaseClientRequest)(nil),         // 27: pob2.v1.ReleaseClientRequest
+	(*ReleaseClientResponse)(nil),        // 28: pob2.v1.ReleaseClientResponse
+	(*ApplyBuildRequest)(nil),            // 29: pob2.v1.ApplyBuildRequest
+	(*ApplyBuildResponse)(nil),           // 30: pob2.v1.ApplyBuildResponse
+	(*CalculateBuildRequest)(nil),        // 31: pob2.v1.CalculateBuildRequest
+	(*CalculateBuildResponse)(nil),       // 32: pob2.v1.CalculateBuildResponse
+	(*CompareBuildRequest)(nil),          // 33: pob2.v1.CompareBuildRequest
+	(*CompareBuildResponse)(nil),         // 34: pob2.v1.CompareBuildResponse
+	(*ExportBuildRequest)(nil),           // 35: pob2.v1.ExportBuildRequest
+	(*ExportBuildResponse)(nil),          // 36: pob2.v1.ExportBuildResponse
+	(*BuildDocument)(nil),                // 37: pob2.v1.BuildDocument
+	(*BuildEdit)(nil),                    // 38: pob2.v1.BuildEdit
+	(*BuildComparison)(nil),              // 39: pob2.v1.BuildComparison
+	(*PassiveChange)(nil),                // 40: pob2.v1.PassiveChange
+	(*UpdateRequest)(nil),                // 41: pob2.v1.UpdateRequest
+	(*DoctorRequest)(nil),                // 42: pob2.v1.DoctorRequest
+	(*GetCatalogRequest)(nil),            // 43: pob2.v1.GetCatalogRequest
+	(*PreviewSupportRequest)(nil),        // 44: pob2.v1.PreviewSupportRequest
+	(*UpdateResponse)(nil),               // 45: pob2.v1.UpdateResponse
+	(*DoctorResponse)(nil),               // 46: pob2.v1.DoctorResponse
+	(*GetCatalogResponse)(nil),           // 47: pob2.v1.GetCatalogResponse
+	(*PreviewSupportResponse)(nil),       // 48: pob2.v1.PreviewSupportResponse
 }
 var file_pob2_v1_session_proto_depIdxs = []int32{
-	31, // 0: pob2.v1.SessionSnapshot.build:type_name -> pob2.v1.BuildDocument
-	0,  // 1: pob2.v1.CreateSessionResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	0,  // 2: pob2.v1.CreateSessionFromXmlResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	0,  // 3: pob2.v1.GetSnapshotResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	0,  // 4: pob2.v1.RenameBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	0,  // 5: pob2.v1.WatchSessionResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	32, // 6: pob2.v1.ApplyBuildRequest.edit:type_name -> pob2.v1.BuildEdit
-	0,  // 7: pob2.v1.ApplyBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	0,  // 8: pob2.v1.CalculateBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
-	32, // 9: pob2.v1.CompareBuildRequest.edit:type_name -> pob2.v1.BuildEdit
-	33, // 10: pob2.v1.CompareBuildResponse.comparison:type_name -> pob2.v1.BuildComparison
-	34, // 11: pob2.v1.CompareBuildResponse.passive_change:type_name -> pob2.v1.PassiveChange
-	1,  // 12: pob2.v1.SessionService.GetServerInfo:input_type -> pob2.v1.GetServerInfoRequest
-	35, // 13: pob2.v1.SessionService.Update:input_type -> pob2.v1.UpdateRequest
-	36, // 14: pob2.v1.SessionService.Doctor:input_type -> pob2.v1.DoctorRequest
-	3,  // 15: pob2.v1.SessionService.CreateSession:input_type -> pob2.v1.CreateSessionRequest
-	5,  // 16: pob2.v1.SessionService.CreateSessionFromXml:input_type -> pob2.v1.CreateSessionFromXmlRequest
-	7,  // 17: pob2.v1.SessionService.GetSnapshot:input_type -> pob2.v1.GetSnapshotRequest
-	9,  // 18: pob2.v1.SessionService.RenameBuild:input_type -> pob2.v1.RenameBuildRequest
-	23, // 19: pob2.v1.SessionService.ApplyBuild:input_type -> pob2.v1.ApplyBuildRequest
-	25, // 20: pob2.v1.SessionService.CalculateBuild:input_type -> pob2.v1.CalculateBuildRequest
-	27, // 21: pob2.v1.SessionService.CompareBuild:input_type -> pob2.v1.CompareBuildRequest
-	37, // 22: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
-	38, // 23: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
-	29, // 24: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
-	11, // 25: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
-	14, // 26: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
-	13, // 27: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
-	17, // 28: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
-	19, // 29: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
-	21, // 30: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
-	2,  // 31: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
-	39, // 32: pob2.v1.SessionService.Update:output_type -> pob2.v1.UpdateResponse
-	40, // 33: pob2.v1.SessionService.Doctor:output_type -> pob2.v1.DoctorResponse
-	4,  // 34: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
-	6,  // 35: pob2.v1.SessionService.CreateSessionFromXml:output_type -> pob2.v1.CreateSessionFromXmlResponse
-	8,  // 36: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
-	10, // 37: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
-	24, // 38: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
-	26, // 39: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
-	28, // 40: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
-	41, // 41: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
-	42, // 42: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
-	30, // 43: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
-	12, // 44: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
-	15, // 45: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
-	16, // 46: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
-	18, // 47: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
-	20, // 48: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
-	22, // 49: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
-	31, // [31:50] is the sub-list for method output_type
-	12, // [12:31] is the sub-list for method input_type
+	37, // 0: pob2.v1.SessionSnapshot.build:type_name -> pob2.v1.BuildDocument
+	6,  // 1: pob2.v1.CreateSessionResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	6,  // 2: pob2.v1.CreateSessionFromXmlResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	6,  // 3: pob2.v1.GetSnapshotResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	6,  // 4: pob2.v1.RenameBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	6,  // 5: pob2.v1.WatchSessionResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	38, // 6: pob2.v1.ApplyBuildRequest.edit:type_name -> pob2.v1.BuildEdit
+	6,  // 7: pob2.v1.ApplyBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	6,  // 8: pob2.v1.CalculateBuildResponse.snapshot:type_name -> pob2.v1.SessionSnapshot
+	38, // 9: pob2.v1.CompareBuildRequest.edit:type_name -> pob2.v1.BuildEdit
+	39, // 10: pob2.v1.CompareBuildResponse.comparison:type_name -> pob2.v1.BuildComparison
+	40, // 11: pob2.v1.CompareBuildResponse.passive_change:type_name -> pob2.v1.PassiveChange
+	7,  // 12: pob2.v1.SessionService.GetServerInfo:input_type -> pob2.v1.GetServerInfoRequest
+	41, // 13: pob2.v1.SessionService.Update:input_type -> pob2.v1.UpdateRequest
+	42, // 14: pob2.v1.SessionService.Doctor:input_type -> pob2.v1.DoctorRequest
+	9,  // 15: pob2.v1.SessionService.CreateSession:input_type -> pob2.v1.CreateSessionRequest
+	11, // 16: pob2.v1.SessionService.CreateSessionFromXml:input_type -> pob2.v1.CreateSessionFromXmlRequest
+	13, // 17: pob2.v1.SessionService.GetSnapshot:input_type -> pob2.v1.GetSnapshotRequest
+	15, // 18: pob2.v1.SessionService.RenameBuild:input_type -> pob2.v1.RenameBuildRequest
+	29, // 19: pob2.v1.SessionService.ApplyBuild:input_type -> pob2.v1.ApplyBuildRequest
+	31, // 20: pob2.v1.SessionService.CalculateBuild:input_type -> pob2.v1.CalculateBuildRequest
+	33, // 21: pob2.v1.SessionService.CompareBuild:input_type -> pob2.v1.CompareBuildRequest
+	43, // 22: pob2.v1.SessionService.GetCatalog:input_type -> pob2.v1.GetCatalogRequest
+	44, // 23: pob2.v1.SessionService.PreviewSupport:input_type -> pob2.v1.PreviewSupportRequest
+	35, // 24: pob2.v1.SessionService.ExportBuild:input_type -> pob2.v1.ExportBuildRequest
+	17, // 25: pob2.v1.SessionService.WatchSession:input_type -> pob2.v1.WatchSessionRequest
+	20, // 26: pob2.v1.SessionService.WatchServer:input_type -> pob2.v1.WatchServerRequest
+	0,  // 27: pob2.v1.SessionService.WatchEditor:input_type -> pob2.v1.WatchEditorRequest
+	1,  // 28: pob2.v1.SessionService.CallEditor:input_type -> pob2.v1.CallEditorRequest
+	4,  // 29: pob2.v1.SessionService.ReplyEditor:input_type -> pob2.v1.ReplyEditorRequest
+	19, // 30: pob2.v1.SessionService.Shutdown:input_type -> pob2.v1.ShutdownRequest
+	23, // 31: pob2.v1.SessionService.RegisterClient:input_type -> pob2.v1.RegisterClientRequest
+	25, // 32: pob2.v1.SessionService.Heartbeat:input_type -> pob2.v1.HeartbeatRequest
+	27, // 33: pob2.v1.SessionService.ReleaseClient:input_type -> pob2.v1.ReleaseClientRequest
+	8,  // 34: pob2.v1.SessionService.GetServerInfo:output_type -> pob2.v1.GetServerInfoResponse
+	45, // 35: pob2.v1.SessionService.Update:output_type -> pob2.v1.UpdateResponse
+	46, // 36: pob2.v1.SessionService.Doctor:output_type -> pob2.v1.DoctorResponse
+	10, // 37: pob2.v1.SessionService.CreateSession:output_type -> pob2.v1.CreateSessionResponse
+	12, // 38: pob2.v1.SessionService.CreateSessionFromXml:output_type -> pob2.v1.CreateSessionFromXmlResponse
+	14, // 39: pob2.v1.SessionService.GetSnapshot:output_type -> pob2.v1.GetSnapshotResponse
+	16, // 40: pob2.v1.SessionService.RenameBuild:output_type -> pob2.v1.RenameBuildResponse
+	30, // 41: pob2.v1.SessionService.ApplyBuild:output_type -> pob2.v1.ApplyBuildResponse
+	32, // 42: pob2.v1.SessionService.CalculateBuild:output_type -> pob2.v1.CalculateBuildResponse
+	34, // 43: pob2.v1.SessionService.CompareBuild:output_type -> pob2.v1.CompareBuildResponse
+	47, // 44: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
+	48, // 45: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
+	36, // 46: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
+	18, // 47: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
+	21, // 48: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
+	2,  // 49: pob2.v1.SessionService.WatchEditor:output_type -> pob2.v1.WatchEditorResponse
+	3,  // 50: pob2.v1.SessionService.CallEditor:output_type -> pob2.v1.CallEditorResponse
+	5,  // 51: pob2.v1.SessionService.ReplyEditor:output_type -> pob2.v1.ReplyEditorResponse
+	22, // 52: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
+	24, // 53: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse
+	26, // 54: pob2.v1.SessionService.Heartbeat:output_type -> pob2.v1.HeartbeatResponse
+	28, // 55: pob2.v1.SessionService.ReleaseClient:output_type -> pob2.v1.ReleaseClientResponse
+	34, // [34:56] is the sub-list for method output_type
+	12, // [12:34] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
 	12, // [12:12] is the sub-list for extension extendee
 	0,  // [0:12] is the sub-list for field type_name
@@ -2077,11 +2432,11 @@ func file_pob2_v1_session_proto_init() {
 	file_pob2_v1_build_proto_init()
 	file_pob2_v1_catalog_proto_init()
 	file_pob2_v1_maintenance_proto_init()
-	file_pob2_v1_session_proto_msgTypes[23].OneofWrappers = []any{
+	file_pob2_v1_session_proto_msgTypes[29].OneofWrappers = []any{
 		(*ApplyBuildRequest_Xml)(nil),
 		(*ApplyBuildRequest_Edit)(nil),
 	}
-	file_pob2_v1_session_proto_msgTypes[27].OneofWrappers = []any{
+	file_pob2_v1_session_proto_msgTypes[33].OneofWrappers = []any{
 		(*CompareBuildRequest_Xml)(nil),
 		(*CompareBuildRequest_Edit)(nil),
 	}
@@ -2091,7 +2446,7 @@ func file_pob2_v1_session_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pob2_v1_session_proto_rawDesc), len(file_pob2_v1_session_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   31,
+			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

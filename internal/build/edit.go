@@ -33,8 +33,9 @@ type GemsEdit struct {
 	Gems    []GemInput `json:"gems,omitempty"`
 }
 type EquipmentEdit struct {
-	Slot string `json:"slot"`
-	Raw  string `json:"raw"`
+	Slot   string `json:"slot"`
+	Raw    string `json:"raw"`
+	ItemID int    `json:"item_id,omitempty"`
 }
 type PassivesEdit struct {
 	Nodes []int `json:"nodes"`
@@ -55,6 +56,8 @@ type Edit struct {
 	Selection  *SelectionEdit  `json:"selection,omitempty"`
 	AddSupport *AddSupportEdit `json:"add_support,omitempty"`
 	TreeNode   *TreeNodeEdit   `json:"tree_node,omitempty"`
+	Jewel      *JewelEdit      `json:"jewel,omitempty"`
+	TreeClass  *TreeClassEdit  `json:"tree_class,omitempty"`
 }
 
 func newElement(name string) *element { return &element{name: xml.Name{Local: name}} }
@@ -111,7 +114,8 @@ func validateEdit(edit Edit, data *gamedata.Dataset) error {
 // ValidateEdit проверяет форму команды независимо от изменяемого каталога PoB.
 func ValidateEdit(edit Edit) error {
 	operations := 0
-	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil, edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil, edit.TreeNode != nil} {
+	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil,
+		edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil, edit.TreeNode != nil, edit.Jewel != nil, edit.TreeClass != nil} {
 		if present {
 			operations++
 		}
@@ -124,6 +128,15 @@ func ValidateEdit(edit Edit) error {
 	}
 	if edit.TreeNode != nil {
 		return edit.TreeNode.validate()
+	}
+	if edit.TreeClass != nil {
+		return edit.TreeClass.validate()
+	}
+	if edit.Equipment != nil {
+		return edit.Equipment.validate()
+	}
+	if edit.Jewel != nil {
+		return edit.Jewel.validate()
 	}
 	return nil
 }
@@ -162,6 +175,8 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 		return d.editGems(*edit.Gems, data)
 	case edit.Equipment != nil:
 		return d.editEquipment(*edit.Equipment, data.IsRuntime())
+	case edit.Jewel != nil:
+		return d.editJewel(*edit.Jewel, data.IsRuntime())
 	case edit.Passives != nil:
 		return d.editPassives(*edit.Passives, data)
 	case edit.Selection != nil:
@@ -170,6 +185,8 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 		return d.editSupport(*edit.AddSupport, data)
 	case edit.TreeNode != nil:
 		return fmt.Errorf("для правки узла требуется путь из оригинального PoB")
+	case edit.TreeClass != nil:
+		return fmt.Errorf("для смены класса требуется исходный Lua PoB")
 	}
 	return nil
 }

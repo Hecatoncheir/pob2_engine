@@ -7,10 +7,17 @@ import (
 	"unicode/utf8"
 )
 
-func (d *Document) editEquipment(edit EquipmentEdit, runtime bool) error {
+func (edit EquipmentEdit) validate() error {
 	if edit.Slot == "" || len(edit.Slot) > 128 || !utf8.ValidString(edit.Slot) || len(edit.Raw) > 65536 || !utf8.ValidString(edit.Raw) {
 		return fmt.Errorf("неверный слот или текст предмета")
 	}
+	if edit.ItemID < 0 || edit.ItemID > 1000000 || (edit.ItemID > 0 && edit.Raw != "") {
+		return fmt.Errorf("укажите либо текст предмета, либо его ID")
+	}
+	return nil
+}
+
+func (d *Document) editEquipment(edit EquipmentEdit, runtime bool) error {
 	items, set, err := d.equipmentSet(runtime)
 	if err != nil {
 		return err
@@ -19,12 +26,25 @@ func (d *Document) editEquipment(edit EquipmentEdit, runtime bool) error {
 	if err != nil {
 		return err
 	}
-	id, err := newEquipmentItem(items, strings.TrimSpace(edit.Raw))
+	id, err := equipmentItemID(items, edit.ItemID, edit.Raw)
 	if err != nil {
 		return err
 	}
 	slot.set("itemId", id)
 	return nil
+}
+
+func equipmentItemID(items *element, itemID int, raw string) (string, error) {
+	if itemID == 0 {
+		return newEquipmentItem(items, strings.TrimSpace(raw))
+	}
+	value := strconv.Itoa(itemID)
+	for _, item := range items.children("Item") {
+		if existing, _ := strconv.Atoi(item.attr("id", "")); existing == itemID {
+			return value, nil
+		}
+	}
+	return "", fmt.Errorf("предмет %d отсутствует в сборке", itemID)
 }
 
 func (d *Document) equipmentSet(runtime bool) (*element, *element, error) {

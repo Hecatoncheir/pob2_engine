@@ -8,13 +8,61 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
 
+// ResolveTreeClass получает состояние спецификации после смены класса в Lua.
+func (c *Calculator) ResolveTreeClass(ctx context.Context, doc *build.Document, edit build.TreeClassEdit) (build.TreeClassChange, error) {
+	model, err := doc.Model()
+	if err != nil {
+		return build.TreeClassChange{}, err
+	}
+	xml, err := doc.ExportWithoutProgression()
+	if err != nil {
+		return build.TreeClassChange{}, err
+	}
+	answer, err := c.run(ctx, &request{Operation: "edit_tree_class", XML: pobXML.Replace(string(xml)),
+		TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion, TreeClass: &edit})
+	if err != nil {
+		return build.TreeClassChange{}, err
+	}
+	if answer.Error != "" {
+		return build.TreeClassChange{}, fmt.Errorf("PoB Lua: %s", answer.Error)
+	}
+	if answer.TreeClass == nil {
+		return build.TreeClassChange{}, fmt.Errorf("PoB не подтвердил смену класса")
+	}
+	return *answer.TreeClass, nil
+}
+
+// ResolveTreeSpec подтверждает спецификацию и получает имена её класса из Lua.
+func (c *Calculator) ResolveTreeSpec(ctx context.Context, doc *build.Document) (build.TreeIdentity, error) {
+	model, err := doc.Model()
+	if err != nil {
+		return build.TreeIdentity{}, err
+	}
+	xml, err := doc.ExportWithoutProgression()
+	if err != nil {
+		return build.TreeIdentity{}, err
+	}
+	answer, err := c.run(ctx, &request{Operation: "select_tree_spec", XML: pobXML.Replace(string(xml)),
+		TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
+	if err != nil {
+		return build.TreeIdentity{}, err
+	}
+	if answer.Error != "" {
+		return build.TreeIdentity{}, fmt.Errorf("PoB Lua: %s", answer.Error)
+	}
+	if answer.TreeIdentity == nil {
+		return build.TreeIdentity{}, fmt.Errorf("PoB не подтвердил спецификацию")
+	}
+	return *answer.TreeIdentity, nil
+}
+
 // ResolveTreeEdit вычисляет изменение пассивов средствами оригинального PoB.
 func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, edit build.TreeNodeEdit) (build.PassiveChange, error) {
 	model, err := doc.Model()
 	if err != nil {
 		return build.PassiveChange{}, err
 	}
-	xml, err := doc.Export()
+	xml, err := doc.ExportWithoutProgression()
 	if err != nil {
 		return build.PassiveChange{}, err
 	}

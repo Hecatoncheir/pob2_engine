@@ -42,7 +42,27 @@ func TestLuaEquipmentAcrossProcesses(t *testing.T) {
 	command := application.ApplyBuild{SessionID: "main", ExpectedRevision: s.revision, RequestID: "armour", Edit: edit}
 	applied := applyPreviewedEquipment(t, s, command, before, preview)
 	removed := removeEquipment(t, s, applied)
-	checkBuildEditRestart(t, s, command, applied, removed)
+	restored := reapplyExistingEquipment(t, s, applied, removed)
+	checkBuildEditRestart(t, s, command, applied, restored)
+}
+
+func reapplyExistingEquipment(t *testing.T, s *groupScenario, applied, removed application.SnapshotView) application.SnapshotView {
+	t.Helper()
+	s.revision = removed.Revision
+	id := applied.Build.Model.Slots["Body Armour"]
+	edit := &build.Edit{Equipment: &build.EquipmentEdit{Slot: "Body Armour", ItemID: id}}
+	preview := compareTreeNodeStatus(t, s, edit, 4)
+	command := application.ApplyBuild{SessionID: "main", ExpectedRevision: s.revision, RequestID: "restore-existing-armour", Edit: edit}
+	if _, err := s.client.Apply(s.ctx, command); err != nil {
+		t.Fatal(err)
+	}
+	s.revision++
+	s.expectEvent(s.revision, "build.model.slots")
+	restored := supportSnapshot(t, s)
+	if restored.Build.InputSHA256 != preview.Comparison.After.InputSHA256 || restored.Build.XML != applied.Build.XML {
+		t.Fatal("установка существующего предмета изменила его запись или расходится с примеркой")
+	}
+	return restored
 }
 
 func calculateBeforeEquipment(t *testing.T, s *groupScenario) application.SnapshotView {

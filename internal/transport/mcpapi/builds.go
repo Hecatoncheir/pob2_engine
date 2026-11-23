@@ -16,7 +16,7 @@ type importInput struct {
 	RequestID        string `json:"request_id"`
 }
 type editInput struct {
-	Edit             build.Edit `json:"edit" jsonschema:"Ровно одна правка: level, config, gems, equipment, passives, selection, add_support или tree_node"`
+	Edit             build.Edit `json:"edit" jsonschema:"Ровно одна правка: level, config, gems, equipment, passives, selection, add_support, tree_node или jewel"`
 	ExpectedRevision uint64     `json:"expected_revision"`
 	RequestID        string     `json:"request_id"`
 }

@@ -69,6 +69,7 @@ type Model struct {
 	Nodes              []int                         `json:"nodes"`
 	PassiveAttributes  map[string]PassiveAttribute   `json:"passive_attributes,omitempty"`
 	PassiveAllocations map[string]TreeAllocationMode `json:"passive_allocations,omitempty"`
+	PassiveJewels      map[string]int                `json:"passive_jewels,omitempty"`
 	Config             map[string]ConfigValue        `json:"config"`
 	Issues             []Issue                       `json:"issues"`
 }
@@ -179,16 +180,23 @@ func selectedByID(parent *element, child, attribute string) (*element, int, erro
 	return selected, id, nil
 }
 
-func (m *Model) readTree(tree *element) error {
+func activeTreeSpec(tree *element) (*element, int, error) {
 	id, err := integer(tree.attr("activeSpec", "1"), "Tree/activeSpec", 1, 1000)
 	if err != nil {
-		return err
+		return nil, 0, err
 	}
 	specs := tree.children("Spec")
 	if id > len(specs) {
-		return fmt.Errorf("не найдена выбранная спецификация дерева")
+		return nil, 0, fmt.Errorf("не найдена выбранная спецификация дерева")
 	}
-	node := specs[id-1]
+	return specs[id-1], id, nil
+}
+
+func (m *Model) readTree(tree *element) error {
+	node, id, err := activeTreeSpec(tree)
+	if err != nil {
+		return err
+	}
 	m.ActiveSets.Tree, m.TreeVersion = id, node.attr("treeVersion", "")
 	m.ClassID, err = integer(node.attr("classId", ""), "Spec/classId", 1, 100)
 	if err != nil {
@@ -205,6 +213,7 @@ func (m *Model) readTree(tree *element) error {
 	if err == nil {
 		m.PassiveAttributes = readTreeAttributes(node, m.Nodes)
 		m.PassiveAllocations, _ = readTreeAllocations(node, m.Nodes)
+		m.PassiveJewels = readTreeJewels(node)
 	}
 	return err
 }
