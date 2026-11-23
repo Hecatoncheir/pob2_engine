@@ -43,8 +43,12 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   calculate                 Рассчитать --file XML либо выбранную --session
   catalog                   Поиск данных текущего набора: --kind gems|classes|items|passives
   preview-support           Сравнить поддержку в --session без записи
+  pob-window                Прочитать открытую сборку и данные оригинального окна PoB
+  pob-data                  Проверить, установить, обновить или откатить данные PoB
   storage backup|verify|restore  Резервные копии остановленного профиля
   mcp                       MCP stdio: --attach СЕССИЯ или --standalone --session СЕССИЯ
+  workbench                 MCP stdio для форм мастерской и рабочих копий XML
+  editor                    MCP stdio для разрешённого окна PoB II: --endpoint ФАЙЛ
   shutdown                  Корректно завершить сервер
 
 Подключение: --address 127.0.0.1:ПОРТ --token ТОКЕН
@@ -97,6 +101,10 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.session(ctx, args[1:])
 	case "mcp":
 		return r.mcp(ctx, args[1:])
+	case "workbench":
+		return r.workbench(ctx, args[1:])
+	case "editor":
+		return r.localEditor(ctx, args[1:])
 	case "build":
 		return r.build(ctx, args[1:])
 	case "build-report":
@@ -117,6 +125,12 @@ func (r runner) run(ctx context.Context, args []string) error {
 		return r.catalog(ctx, args[1:])
 	case "preview-support":
 		return r.previewSupport(ctx, args[1:])
+	case "pob-window":
+		return r.pobWindow(ctx, args[1:])
+	case "pob-window-control":
+		return r.pobWindowControl(args[1:])
+	case "pob-data":
+		return r.pobData(ctx, args[1:])
 	case "storage":
 		return r.storage(ctx, args[1:])
 	default:
@@ -131,11 +145,18 @@ func (r runner) flags(name string) *flag.FlagSet {
 }
 
 func parse(fs *flag.FlagSet, args []string) error {
-	if err := fs.Parse(args); err != nil {
-		return &UsageError{Err: err}
+	if err := parseFlags(fs, args); err != nil {
+		return err
 	}
 	if fs.NArg() != 0 {
 		return &UsageError{Err: fmt.Errorf("неожиданные аргументы: %v", fs.Args())}
+	}
+	return nil
+}
+
+func parseFlags(fs *flag.FlagSet, args []string) error {
+	if err := fs.Parse(args); err != nil {
+		return &UsageError{Err: err}
 	}
 	return nil
 }

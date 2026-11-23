@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/Hecatoncheir/pob2_engine/internal/poblegacy"
 )
 
 //go:embed all:bridge
@@ -16,6 +18,26 @@ const requireLuaJIT = `assert(type(jit) == "table" and type(jit.version) == "str
 
 // RunWorker запускает LuaJIT в отдельном процессе PoB2Engine.
 func RunWorker(args []string) error {
+	program, err := bridge.ReadFile("bridge/worker.lua")
+	if err != nil {
+		return err
+	}
+	return runWorkerProgram(args, string(program))
+}
+
+func RunWorkbenchWorker(args []string) error {
+	setup, err := bridge.ReadFile("bridge/workbench.lua")
+	if err != nil {
+		return err
+	}
+	program, err := poblegacy.Read("lua/headless_server.lua")
+	if err != nil {
+		return err
+	}
+	return runWorkerProgram(args, string(setup)+"\n"+string(program))
+}
+
+func runWorkerProgram(args []string, program string) error {
 	if len(args) != 3 {
 		return fmt.Errorf("воркеру нужны каталоги PoB runtime, нативных библиотек и моста")
 	}
@@ -28,11 +50,7 @@ func RunWorker(args []string) error {
 			return err
 		}
 	}
-	program, err := bridge.ReadFile("bridge/worker.lua")
-	if err != nil {
-		return err
-	}
-	return runLua(library, requireLuaJIT+string(program))
+	return runLua(library, requireLuaJIT+program)
 }
 
 func unpackBridge(directory string) (string, error) {

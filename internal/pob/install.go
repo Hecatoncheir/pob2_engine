@@ -58,15 +58,26 @@ type Manager struct {
 }
 
 func Local() (*Manager, error) {
-	cache, err := os.UserCacheDir()
+	cache, err := pobCacheDirectory()
 	if err != nil {
 		return nil, err
 	}
-	return &Manager{root: filepath.Join(cache, "pob2-engine", "pob"),
+	return &Manager{root: cache,
 		local: os.Getenv("POB2_ENGINE_POB_DIR"), localNative: os.Getenv("POB2_ENGINE_POB_NATIVE_DIR"),
 		githubToken: strings.TrimSpace(os.Getenv("POB2_ENGINE_POB_GITHUB_TOKEN")),
 		client:      &http.Client{Timeout: InstallTimeout, CheckRedirect: checkRedirect}, probe: probeInstallation,
 		nativeRuntime: nativeAsset(runtime.GOOS, runtime.GOARCH)}, nil
+}
+
+func pobCacheDirectory() (string, error) {
+	if directory := os.Getenv("POB2_ENGINE_POB_CACHE_DIR"); directory != "" {
+		return filepath.Abs(directory)
+	}
+	cache, err := os.UserCacheDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(cache, "pob2-engine", "pob"), nil
 }
 
 func (m *Manager) Installed() (Installation, error) {

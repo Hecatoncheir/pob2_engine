@@ -17,6 +17,11 @@ type installationState struct {
 	Previous *Installation `json:"previous,omitempty"`
 }
 
+func (m *Manager) Installations() (Installation, *Installation, error) {
+	entry, err := m.readInstallation()
+	return entry.Installation, entry.Previous, err
+}
+
 func (m *Manager) readInstallation() (installationState, error) {
 	if m.local != "" {
 		i, err := localInstallation(m.local, m.localNative)

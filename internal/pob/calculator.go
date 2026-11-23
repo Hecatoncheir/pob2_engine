@@ -303,6 +303,10 @@ type worker struct {
 }
 
 func startWorker(layout Layout) (*worker, error) {
+	return startLuaProcess(layout, "_pob-lua", unpackBridge)
+}
+
+func startLuaProcess(layout Layout, command string, unpack func(string) (string, error)) (*worker, error) {
 	executable, err := os.Executable()
 	if err != nil {
 		return nil, err
@@ -311,12 +315,12 @@ func startWorker(layout Layout) (*worker, error) {
 	if err != nil {
 		return nil, err
 	}
-	bridgeDir, err := unpackBridge(work)
+	bridgeDir, err := unpack(work)
 	if err != nil {
 		os.RemoveAll(work)
 		return nil, err
 	}
-	cmd := exec.Command(executable, "_pob-lua", layout.Runtime, layout.Native, bridgeDir)
+	cmd := exec.Command(executable, command, layout.Runtime, layout.Native, bridgeDir)
 	cmd.Dir, cmd.Stderr = layout.Source, os.Stderr
 	cmd.Env = append(cmd.Environ(), "LUA_PATH=", "LUA_CPATH=", "HOME="+work, "USERPROFILE="+work, "APPDATA="+work,
 		"LOCALAPPDATA="+work, "XDG_CONFIG_HOME="+work, "XDG_DATA_HOME="+work)

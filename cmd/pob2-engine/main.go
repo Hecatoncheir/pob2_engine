@@ -18,6 +18,9 @@ func run() int {
 	if len(os.Args) > 1 && os.Args[1] == "_pob-lua" {
 		return exitCode(pob.RunWorker(os.Args[2:]))
 	}
+	if len(os.Args) > 1 && os.Args[1] == "_workbench-lua" {
+		return exitCode(pob.RunWorkbenchWorker(os.Args[2:]))
+	}
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 	return exitCode(cli.Run(ctx, os.Args[1:], os.Stdin, os.Stdout, os.Stderr))

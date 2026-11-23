@@ -62,6 +62,22 @@ func (c *Calculator) ReadTreeTexture(ctx context.Context, query build.TreeTextur
 	return c.readTreeDDS(query)
 }
 
+func (c *Calculator) ReadGemTexture(ctx context.Context, file string, index uint32) (build.TreeTexture, error) {
+	name := strings.TrimPrefix(file, "Data/Skills/")
+	if name == file || strings.Contains(name, "/") || !strings.HasPrefix(name, "gem-icons_") || !strings.HasSuffix(name, ".dds.zst") {
+		return build.TreeTexture{}, fmt.Errorf("недопустимый атлас камней PoB")
+	}
+	query := build.TreeTextureQuery{File: "Assets/" + name, Index: index, TargetSize: 512}
+	if err := query.Validate(); err != nil {
+		return build.TreeTexture{}, err
+	}
+	if err := ctx.Err(); err != nil {
+		return build.TreeTexture{}, err
+	}
+	query.File = file
+	return c.readTreeDDS(query)
+}
+
 func (c *Calculator) readTreePNG(name string) (build.TreeTexture, error) {
 	data, err := c.openTreeAsset(name, maxTexturePNG)
 	if err != nil {
