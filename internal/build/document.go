@@ -27,7 +27,12 @@ type element struct {
 	parts []part
 }
 
-type Document struct{ root *element }
+const progressionCommentPrefix = " PoB II progression: "
+
+type Document struct {
+	root        *element
+	progression string
+}
 
 func Parse(data []byte) (*Document, error) {
 	if len(data) == 0 || len(data) > MaxXMLSize || !utf8.Valid(data) {
@@ -36,6 +41,7 @@ func Parse(data []byte) (*Document, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(data))
 	var root *element
 	var stack []*element
+	var progression string
 	count := 0
 	for {
 		token, err := decoder.Token()
@@ -83,6 +89,8 @@ func Parse(data []byte) (*Document, error) {
 			if len(stack) > 0 {
 				parent := stack[len(stack)-1]
 				parent.parts = append(parent.parts, part{comment: slices.Clone([]byte(value))})
+			} else if root != nil && strings.HasPrefix(string(value), progressionCommentPrefix) {
+				progression = string(value)
 			}
 		case xml.Directive:
 			return nil, fmt.Errorf("директивы и DTD запрещены")
@@ -95,7 +103,7 @@ func Parse(data []byte) (*Document, error) {
 	if root == nil || root.name.Local != "PathOfBuilding2" || root.name.Space != "" {
 		return nil, fmt.Errorf("ожидается корень PathOfBuilding2")
 	}
-	doc := &Document{root: root}
+	doc := &Document{root: root, progression: progression}
 	if _, err := doc.Model(); err != nil {
 		return nil, err
 	}
@@ -214,14 +222,33 @@ func (d *Document) canonical() ([]byte, error) {
 }
 
 func (d *Document) Export() ([]byte, error) {
+	return d.export(d.progression)
+}
+
+// ExportWithoutProgression отдаёт XML для Lua, сохраняя план в снимке сессии.
+func (d *Document) ExportWithoutProgression() ([]byte, error) {
+	return d.export("")
+}
+
+func (d *Document) export(progression string) ([]byte, error) {
 	content, err := d.canonical()
 	if err != nil {
 		return nil, err
 	}
+	content = appendProgression(content, progression)
 	if len(content)+len(xml.Header)+1 > MaxXMLSize {
 		return nil, fmt.Errorf("экспортированный XML превышает 1 МиБ")
 	}
 	return append([]byte(xml.Header), append(content, '\n')...), nil
+}
+
+func appendProgression(xml []byte, progression string) []byte {
+	if progression == "" {
+		return xml
+	}
+	xml = append(xml, "\n<!--"...)
+	xml = append(xml, progression...)
+	return append(xml, "-->"...)
 }
 
 func (d *Document) InputSHA256() (string, error) {
@@ -229,6 +256,6 @@ func (d *Document) InputSHA256() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	digest := sha256.Sum256(content)
+	digest := sha256.Sum256(appendProgression(content, d.progression))
 	return hex.EncodeToString(digest[:]), nil
 }

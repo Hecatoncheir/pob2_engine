@@ -25,11 +25,45 @@ service SessionService {
   rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);
   rpc WatchSession(WatchSessionRequest) returns (stream WatchSessionResponse);
   rpc WatchServer(WatchServerRequest) returns (stream WatchServerResponse);
+  rpc WatchEditor(WatchEditorRequest) returns (stream EditorCommand);
+  rpc CallEditor(CallEditorRequest) returns (EditorReply);
+  rpc ReplyEditor(ReplyEditorRequest) returns (ReplyEditorResponse);
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
   rpc RegisterClient(RegisterClientRequest) returns (RegisterClientResponse);
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
   rpc ReleaseClient(ReleaseClientRequest) returns (ReleaseClientResponse);
 }
+
+// Приложение открывает поток только после разрешения на правки через MCP.
+message WatchEditorRequest {
+  string session_id = 1;
+}
+
+message CallEditorRequest {
+  string session_id = 1;
+  string tool = 2;
+  string arguments_json = 3;
+}
+
+message EditorCommand {
+  string request_id = 1;
+  string tool = 2;
+  string arguments_json = 3;
+  // Первое сообщение подтверждает привязку потока к сессии.
+  bool attached = 4;
+}
+
+message EditorReply {
+  string result_json = 1;
+}
+
+message ReplyEditorRequest {
+  string session_id = 1;
+  string request_id = 2;
+  string result_json = 3;
+}
+
+message ReplyEditorResponse {}
 
 message SessionSnapshot {
   string session_id = 1;

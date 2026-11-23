@@ -547,12 +547,14 @@ const EquipmentEdit$json = {
   '2': [
     {'1': 'slot', '3': 1, '4': 1, '5': 9, '10': 'slot'},
     {'1': 'raw', '3': 2, '4': 1, '5': 9, '10': 'raw'},
+    {'1': 'item_id', '3': 3, '4': 1, '5': 13, '10': 'itemId'},
   ],
 };
 
 /// Descriptor for `EquipmentEdit`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List equipmentEditDescriptor = $convert.base64Decode(
-    'Cg1FcXVpcG1lbnRFZGl0EhIKBHNsb3QYASABKAlSBHNsb3QSEAoDcmF3GAIgASgJUgNyYXc=');
+    'Cg1FcXVpcG1lbnRFZGl0EhIKBHNsb3QYASABKAlSBHNsb3QSEAoDcmF3GAIgASgJUgNyYXcSFw'
+    'oHaXRlbV9pZBgDIAEoDVIGaXRlbUlk');
 
 @$core.Deprecated('Use passivesEditDescriptor instead')
 const PassivesEdit$json = {
@@ -635,6 +637,21 @@ final $typed_data.Uint8List treeNodeEditDescriptor = $convert.base64Decode(
     'CgxUcmVlTm9kZUVkaXQSFwoHbm9kZV9pZBgBIAEoDVIGbm9kZUlkEhYKBmFjdGlvbhgCIAEoCV'
     'IGYWN0aW9uEhwKCWF0dHJpYnV0ZRgDIAEoCVIJYXR0cmlidXRlEicKD2FsbG9jYXRpb25fbW9k'
     'ZRgEIAEoCVIOYWxsb2NhdGlvbk1vZGU=');
+
+@$core.Deprecated('Use treeClassEditDescriptor instead')
+const TreeClassEdit$json = {
+  '1': 'TreeClassEdit',
+  '2': [
+    {'1': 'class_id', '3': 1, '4': 1, '5': 13, '10': 'classId'},
+    {'1': 'ascendancy_id', '3': 2, '4': 1, '5': 13, '10': 'ascendancyId'},
+    {'1': 'mode', '3': 3, '4': 1, '5': 9, '10': 'mode'},
+  ],
+};
+
+/// Descriptor for `TreeClassEdit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List treeClassEditDescriptor = $convert.base64Decode(
+    'Cg1UcmVlQ2xhc3NFZGl0EhkKCGNsYXNzX2lkGAEgASgNUgdjbGFzc0lkEiMKDWFzY2VuZGFuY3'
+    'lfaWQYAiABKA1SDGFzY2VuZGFuY3lJZBISCgRtb2RlGAMgASgJUgRtb2Rl');
 
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {
@@ -721,6 +738,15 @@ const BuildEdit$json = {
       '9': 0,
       '10': 'jewel'
     },
+    {
+      '1': 'tree_class',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.TreeClassEdit',
+      '9': 0,
+      '10': 'treeClass'
+    },
   ],
   '8': [
     {'1': 'operation'},
@@ -737,7 +763,8 @@ final $typed_data.Uint8List buildEditDescriptor = $convert.base64Decode(
     'IudjEuU2VsZWN0aW9uRWRpdEgAUglzZWxlY3Rpb24SOgoLYWRkX3N1cHBvcnQYByABKAsyFy5w'
     'b2IyLnYxLkFkZFN1cHBvcnRFZGl0SABSCmFkZFN1cHBvcnQSNAoJdHJlZV9ub2RlGAggASgLMh'
     'UucG9iMi52MS5UcmVlTm9kZUVkaXRIAFIIdHJlZU5vZGUSKgoFamV3ZWwYCSABKAsyEi5wb2Iy'
-    'LnYxLkpld2VsRWRpdEgAUgVqZXdlbEILCglvcGVyYXRpb24=');
+    'LnYxLkpld2VsRWRpdEgAUgVqZXdlbBI3Cgp0cmVlX2NsYXNzGAogASgLMhYucG9iMi52MS5Ucm'
+    'VlQ2xhc3NFZGl0SABSCXRyZWVDbGFzc0ILCglvcGVyYXRpb24=');
 
 @$core.Deprecated('Use passiveChangeDescriptor instead')
 const PassiveChange$json = {

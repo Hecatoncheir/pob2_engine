@@ -28,6 +28,16 @@ type treeSpecResolver interface {
 	ResolveTreeSpec(context.Context, *build.Document) (build.TreeIdentity, error)
 }
 
+type treeClassEditor interface {
+	ResolveTreeClass(context.Context, *build.Document, build.TreeClassEdit) (build.TreeClassChange, error)
+}
+
+// SupportsTreeClass сообщает, что класс можно сменить средствами Lua PoB.
+func (s *Service) SupportsTreeClass() bool {
+	_, ok := s.calculator.(treeClassEditor)
+	return ok
+}
+
 // SupportsTreeSpecs сообщает, что выбор спецификации проверяет оригинальный PoB.
 func (s *Service) SupportsTreeSpecs() bool {
 	_, ok := s.calculator.(treeSpecResolver)
@@ -56,6 +66,10 @@ func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit bu
 	if edit.TreeNode != nil {
 		return s.editTree(ctx, doc, edit)
 	}
+	if edit.TreeClass != nil {
+		updated, err := s.editTreeClass(ctx, doc, edit)
+		return updated, nil, err
+	}
 	if edit.Jewel != nil {
 		updated, err := s.editJewel(ctx, doc, edit)
 		return updated, nil, err
@@ -77,6 +91,21 @@ func (s *Service) editDocument(ctx context.Context, doc *build.Document, edit bu
 		updated, err = s.resolveTreeSpec(ctx, updated)
 	}
 	return updated, nil, err
+}
+
+func (s *Service) editTreeClass(ctx context.Context, doc *build.Document, edit build.Edit) (*build.Document, error) {
+	if err := build.ValidateEdit(edit); err != nil {
+		return nil, err
+	}
+	editor, ok := s.calculator.(treeClassEditor)
+	if !ok {
+		return nil, fmt.Errorf("смена класса доступна с оригинальным Lua PoB")
+	}
+	change, err := editor.ResolveTreeClass(ctx, doc, *edit.TreeClass)
+	if err != nil {
+		return nil, err
+	}
+	return doc.WithResolvedTreeClass(change)
 }
 
 func selectsTreeSpec(edit *build.SelectionEdit) bool {

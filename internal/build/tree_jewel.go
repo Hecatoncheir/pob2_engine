@@ -50,16 +50,7 @@ func (d *Document) jewelItemID(edit JewelEdit) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if edit.ItemID == 0 {
-		return newEquipmentItem(items, raw)
-	}
-	id := strconv.Itoa(edit.ItemID)
-	for _, item := range items.children("Item") {
-		if existing, _ := strconv.Atoi(item.attr("id", "")); existing == edit.ItemID {
-			return id, nil
-		}
-	}
-	return "", fmt.Errorf("предмет %d отсутствует в сборке", edit.ItemID)
+	return equipmentItemID(items, edit.ItemID, raw)
 }
 
 func readTreeJewels(spec *element) map[string]int {

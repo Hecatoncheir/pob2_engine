@@ -1525,10 +1525,12 @@ class EquipmentEdit extends $pb.GeneratedMessage {
   factory EquipmentEdit({
     $core.String? slot,
     $core.String? raw,
+    $core.int? itemId,
   }) {
     final result = EquipmentEdit._();
     if (slot != null) result.slot = slot;
     if (raw != null) result.raw = raw;
+    if (itemId != null) result.itemId = itemId;
     return result;
   }
 
@@ -1547,6 +1549,7 @@ class EquipmentEdit extends $pb.GeneratedMessage {
       createEmptyInstance: EquipmentEdit.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'slot')
     ..aOS(2, _omitFieldNames ? '' : 'raw')
+    ..aI(3, _omitFieldNames ? '' : 'itemId', fieldType: $pb.PbFieldType.OU3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1580,7 +1583,7 @@ class EquipmentEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearSlot() => $_clearField(1);
 
-  /// Пустая строка снимает предмет.
+  /// Без текста и ID предмет снимается.
   @$pb.TagNumber(2)
   $core.String get raw => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -1589,6 +1592,15 @@ class EquipmentEdit extends $pb.GeneratedMessage {
   $core.bool hasRaw() => $_has(1);
   @$pb.TagNumber(2)
   void clearRaw() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get itemId => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set itemId($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasItemId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearItemId() => $_clearField(3);
 }
 
 class PassivesEdit extends $pb.GeneratedMessage {
@@ -1985,6 +1997,89 @@ class TreeNodeEdit extends $pb.GeneratedMessage {
   void clearAllocationMode() => $_clearField(4);
 }
 
+class TreeClassEdit extends $pb.GeneratedMessage {
+  factory TreeClassEdit({
+    $core.int? classId,
+    $core.int? ascendancyId,
+    $core.String? mode,
+  }) {
+    final result = TreeClassEdit._();
+    if (classId != null) result.classId = classId;
+    if (ascendancyId != null) result.ascendancyId = ascendancyId;
+    if (mode != null) result.mode = mode;
+    return result;
+  }
+
+  TreeClassEdit._();
+
+  factory TreeClassEdit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeClassEdit()..mergeFromBuffer(data, registry);
+  factory TreeClassEdit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      TreeClassEdit()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TreeClassEdit',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: TreeClassEdit.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'classId', fieldType: $pb.PbFieldType.OU3)
+    ..aI(2, _omitFieldNames ? '' : 'ascendancyId',
+        fieldType: $pb.PbFieldType.OU3)
+    ..aOS(3, _omitFieldNames ? '' : 'mode')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeClassEdit clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  TreeClassEdit copyWith(void Function(TreeClassEdit) updates) =>
+      super.copyWith((message) => updates(message as TreeClassEdit))
+          as TreeClassEdit;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use TreeClassEdit() / TreeClassEdit.new instead')
+  static TreeClassEdit create() => TreeClassEdit._();
+  static $pb.GeneratedMessage $_createMessage() => TreeClassEdit._();
+  @$core.override
+  TreeClassEdit createEmptyInstance() => TreeClassEdit._();
+  @$core.pragma('dart2js:noInline')
+  static TreeClassEdit getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TreeClassEdit>(
+          TreeClassEdit.$_createMessage);
+  static TreeClassEdit? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get classId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set classId($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasClassId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClassId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get ascendancyId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set ascendancyId($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasAscendancyId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearAscendancyId() => $_clearField(2);
+
+  /// Пустой режим сохраняет путь. connect соединяет путь, reset сбрасывает узлы.
+  @$pb.TagNumber(3)
+  $core.String get mode => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set mode($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMode() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMode() => $_clearField(3);
+}
+
 enum BuildEdit_Operation {
   level,
   config,
@@ -1995,6 +2090,7 @@ enum BuildEdit_Operation {
   addSupport,
   treeNode,
   jewel,
+  treeClass,
   notSet
 }
 
@@ -2009,6 +2105,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     AddSupportEdit? addSupport,
     TreeNodeEdit? treeNode,
     JewelEdit? jewel,
+    TreeClassEdit? treeClass,
   }) {
     final result = BuildEdit._();
     if (level != null) result.level = level;
@@ -2020,6 +2117,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     if (addSupport != null) result.addSupport = addSupport;
     if (treeNode != null) result.treeNode = treeNode;
     if (jewel != null) result.jewel = jewel;
+    if (treeClass != null) result.treeClass = treeClass;
     return result;
   }
 
@@ -2043,13 +2141,14 @@ class BuildEdit extends $pb.GeneratedMessage {
     7: BuildEdit_Operation.addSupport,
     8: BuildEdit_Operation.treeNode,
     9: BuildEdit_Operation.jewel,
+    10: BuildEdit_Operation.treeClass,
     0: BuildEdit_Operation.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BuildEdit',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
       createEmptyInstance: BuildEdit.$_createMessage)
-    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     ..aOM<LevelEdit>(1, _omitFieldNames ? '' : 'level',
         subBuilder: LevelEdit.$_createMessage)
     ..aOM<ConfigEdit>(2, _omitFieldNames ? '' : 'config',
@@ -2068,6 +2167,8 @@ class BuildEdit extends $pb.GeneratedMessage {
         subBuilder: TreeNodeEdit.$_createMessage)
     ..aOM<JewelEdit>(9, _omitFieldNames ? '' : 'jewel',
         subBuilder: JewelEdit.$_createMessage)
+    ..aOM<TreeClassEdit>(10, _omitFieldNames ? '' : 'treeClass',
+        subBuilder: TreeClassEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2099,6 +2200,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   @$pb.TagNumber(8)
   @$pb.TagNumber(9)
+  @$pb.TagNumber(10)
   BuildEdit_Operation whichOperation() =>
       _BuildEdit_OperationByTag[$_whichOneof(0)]!;
   @$pb.TagNumber(1)
@@ -2110,6 +2212,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   @$pb.TagNumber(8)
   @$pb.TagNumber(9)
+  @$pb.TagNumber(10)
   void clearOperation() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -2210,6 +2313,17 @@ class BuildEdit extends $pb.GeneratedMessage {
   void clearJewel() => $_clearField(9);
   @$pb.TagNumber(9)
   JewelEdit ensureJewel() => $_ensure(8);
+
+  @$pb.TagNumber(10)
+  TreeClassEdit get treeClass => $_getN(9);
+  @$pb.TagNumber(10)
+  set treeClass(TreeClassEdit value) => $_setField(10, value);
+  @$pb.TagNumber(10)
+  $core.bool hasTreeClass() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearTreeClass() => $_clearField(10);
+  @$pb.TagNumber(10)
+  TreeClassEdit ensureTreeClass() => $_ensure(9);
 }
 
 class PassiveChange extends $pb.GeneratedMessage {

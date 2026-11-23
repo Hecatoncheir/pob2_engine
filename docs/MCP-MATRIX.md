@@ -102,6 +102,13 @@ CLI создаёт сессию; `mcp --attach ID --profile ИМЯ` выбира
 
 ## Проверка и дальнейшие этапы
 
+С кандидата 0.0.13 команды `pob_editor_*` доступны в `mcp --attach`
+для общей сборки, если пользователь разрешил управление в окне PoB II.
+Для изменений указывайте `expectedRevision` из `pob_editor_status`.
+Команда снимка окна возвращает PNG как изображение MCP. Без разрешённого
+окна команды редактора возвращают недоступность. Остальные команды движка
+сохраняют прежний контракт сессии.
+
 Состав текущих инструментов задаётся [server.go](../internal/transport/mcpapi/server.go),
 [builds.go](../internal/transport/mcpapi/builds.go), [catalog.go](../internal/transport/mcpapi/catalog.go).
 Контракты и примеры: [сессии](SESSION-API.md), [полная сборка](CLI-BUILDS.md),

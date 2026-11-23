@@ -48,5 +48,6 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 		addCatalogTools(server, catalog, sessionID, timeout)
 	}
 	addMaintenanceTools(server, commands, timeout)
+	addEditorTools(server, commands, sessionID)
 	return server
 }

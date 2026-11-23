@@ -93,7 +93,11 @@ func (s *Service) restoreCommand(ctx context.Context, change Change) (domain.Sna
 		if _, exists := s.sessions[change.Create.SessionID]; exists {
 			return domain.Snapshot{}, fmt.Errorf("повтор создания сессии в журнале")
 		}
-		return s.Create(ctx, *change.Create)
+		xml, err := storedImportXML(change.Create.XML, change.Result.BuildXML)
+		if err != nil {
+			return domain.Snapshot{}, err
+		}
+		return s.create(ctx, *change.Create, xml)
 	case change.Rename != nil:
 		value, exists := s.sessions[change.Rename.SessionID]
 		if !exists {

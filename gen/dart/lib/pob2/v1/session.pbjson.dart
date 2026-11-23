@@ -15,6 +15,88 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use watchEditorRequestDescriptor instead')
+const WatchEditorRequest$json = {
+  '1': 'WatchEditorRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+  ],
+};
+
+/// Descriptor for `WatchEditorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchEditorRequestDescriptor =
+    $convert.base64Decode(
+        'ChJXYXRjaEVkaXRvclJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklk');
+
+@$core.Deprecated('Use callEditorRequestDescriptor instead')
+const CallEditorRequest$json = {
+  '1': 'CallEditorRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'tool', '3': 2, '4': 1, '5': 9, '10': 'tool'},
+    {'1': 'arguments_json', '3': 3, '4': 1, '5': 9, '10': 'argumentsJson'},
+  ],
+};
+
+/// Descriptor for `CallEditorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List callEditorRequestDescriptor = $convert.base64Decode(
+    'ChFDYWxsRWRpdG9yUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSEgoEdG'
+    '9vbBgCIAEoCVIEdG9vbBIlCg5hcmd1bWVudHNfanNvbhgDIAEoCVINYXJndW1lbnRzSnNvbg==');
+
+@$core.Deprecated('Use editorCommandDescriptor instead')
+const EditorCommand$json = {
+  '1': 'EditorCommand',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'tool', '3': 2, '4': 1, '5': 9, '10': 'tool'},
+    {'1': 'arguments_json', '3': 3, '4': 1, '5': 9, '10': 'argumentsJson'},
+    {'1': 'attached', '3': 4, '4': 1, '5': 8, '10': 'attached'},
+  ],
+};
+
+/// Descriptor for `EditorCommand`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List editorCommandDescriptor = $convert.base64Decode(
+    'Cg1FZGl0b3JDb21tYW5kEh0KCnJlcXVlc3RfaWQYASABKAlSCXJlcXVlc3RJZBISCgR0b29sGA'
+    'IgASgJUgR0b29sEiUKDmFyZ3VtZW50c19qc29uGAMgASgJUg1hcmd1bWVudHNKc29uEhoKCGF0'
+    'dGFjaGVkGAQgASgIUghhdHRhY2hlZA==');
+
+@$core.Deprecated('Use editorReplyDescriptor instead')
+const EditorReply$json = {
+  '1': 'EditorReply',
+  '2': [
+    {'1': 'result_json', '3': 1, '4': 1, '5': 9, '10': 'resultJson'},
+  ],
+};
+
+/// Descriptor for `EditorReply`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List editorReplyDescriptor = $convert.base64Decode(
+    'CgtFZGl0b3JSZXBseRIfCgtyZXN1bHRfanNvbhgBIAEoCVIKcmVzdWx0SnNvbg==');
+
+@$core.Deprecated('Use replyEditorRequestDescriptor instead')
+const ReplyEditorRequest$json = {
+  '1': 'ReplyEditorRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'request_id', '3': 2, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'result_json', '3': 3, '4': 1, '5': 9, '10': 'resultJson'},
+  ],
+};
+
+/// Descriptor for `ReplyEditorRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List replyEditorRequestDescriptor = $convert.base64Decode(
+    'ChJSZXBseUVkaXRvclJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklkEh0KCn'
+    'JlcXVlc3RfaWQYAiABKAlSCXJlcXVlc3RJZBIfCgtyZXN1bHRfanNvbhgDIAEoCVIKcmVzdWx0'
+    'SnNvbg==');
+
+@$core.Deprecated('Use replyEditorResponseDescriptor instead')
+const ReplyEditorResponse$json = {
+  '1': 'ReplyEditorResponse',
+};
+
+/// Descriptor for `ReplyEditorResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List replyEditorResponseDescriptor =
+    $convert.base64Decode('ChNSZXBseUVkaXRvclJlc3BvbnNl');
+
 @$core.Deprecated('Use sessionSnapshotDescriptor instead')
 const SessionSnapshot$json = {
   '1': 'SessionSnapshot',

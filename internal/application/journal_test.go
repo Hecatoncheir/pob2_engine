@@ -3,8 +3,10 @@ package application
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 
+	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 )
 
@@ -143,4 +145,67 @@ func verifyCreatedXML(t *testing.T, s *Service, want domain.Snapshot) {
 	if err != nil || event.Kind != "snapshot" || event.Snapshot != want {
 		t.Fatalf("подписка не получила первую ревизию: %+v, %v", event, err)
 	}
+}
+
+const progressionXML = "<!-- PoB II progression: eyJzY2hlbWEiOjEsInRyZWUiOiIwXzUiLCJjbGFzcyI6IldpdGNoIiwic3RlcHMiOlt7ImxldmVsIjoxMCwibm9kZXMiOltdfV19 -->"
+
+func TestProgressionSurvivesBuildEditAndRecovery(t *testing.T) {
+	ctx := t.Context()
+	j := &testJournal{}
+	s := openTestJournal(t, j)
+	cmd := CreateSession{
+		SessionID: "main", BuildName: "Сборка", RequestID: "initial",
+		XML: `<PathOfBuilding2><Build className="Witch" level="20"/></PathOfBuilding2>` + "\n" + progressionXML,
+	}
+	initial, err := s.Create(ctx, cmd)
+	if err != nil || !strings.Contains(initial.BuildXML, progressionXML) {
+		t.Fatal("план отсутствует в первой ревизии", err)
+	}
+	edit := ApplyBuild{SessionID: "main", RequestID: "next-level", ExpectedRevision: 1,
+		Edit: &build.Edit{Level: &build.LevelEdit{Level: 21}}}
+	updated, err := s.Apply(ctx, edit)
+	if err != nil || !strings.Contains(updated.BuildXML, progressionXML) {
+		t.Fatal("правка потеряла план", err)
+	}
+	recovered := openTestJournal(t, j)
+	if retry, err := recovered.Apply(ctx, edit); err != nil || retry != updated {
+		t.Fatal("после восстановления изменился результат правки", err)
+	}
+}
+
+func TestLegacyProgressionImportsStillRestore(t *testing.T) {
+	ctx := t.Context()
+	j := &testJournal{}
+	s := openTestJournal(t, j)
+	xml := `<PathOfBuilding2><Build className="Witch" level="20"/></PathOfBuilding2>`
+	create := CreateSession{SessionID: "main", BuildName: "Сборка", RequestID: "initial", XML: xml}
+	initial, err := s.Create(ctx, create)
+	if err != nil {
+		t.Fatal(err)
+	}
+	apply := ApplyBuild{SessionID: "main", RequestID: "replace", ExpectedRevision: 1, XML: xml}
+	accepted, err := s.Apply(ctx, apply)
+	if err != nil {
+		t.Fatal(err)
+	}
+	create.XML += "\n" + progressionXML
+	apply.XML += "\n" + progressionXML
+	j.changes[0].Create, j.changes[1].Apply = &create, &apply
+	// До переноса в журнал попадала исходная команда с планом и снимок без него.
+	recovered := openTestJournal(t, j)
+	if retry, err := recovered.Create(ctx, create); err != nil || retry != initial {
+		t.Fatal("повтор старого создания изменил снимок", err)
+	}
+	if retry, err := recovered.Apply(ctx, apply); err != nil || retry != accepted {
+		t.Fatal("повтор старого импорта изменил снимок", err)
+	}
+}
+
+func openTestJournal(t *testing.T, j *testJournal) *Service {
+	t.Helper()
+	s, err := OpenService(t.Context(), j)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return s
 }

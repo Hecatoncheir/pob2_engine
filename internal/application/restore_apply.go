@@ -68,16 +68,29 @@ func validateStoredApply(cmd ApplyBuild, stored domain.Snapshot) error {
 	if cmd.Edit != nil {
 		return build.ValidateEdit(*cmd.Edit)
 	}
-	doc, err := build.Parse([]byte(cmd.XML))
+	_, err := storedImportXML(cmd.XML, stored.BuildXML)
+	return err
+}
+
+func storedImportXML(input, stored string) (string, error) {
+	if input == "" && stored == "" {
+		return "", nil
+	}
+	doc, err := build.Parse([]byte(input))
 	if err != nil {
-		return err
+		return "", err
 	}
 	xml, err := doc.Export()
 	if err != nil {
-		return err
+		return "", err
 	}
-	if string(xml) != stored.BuildXML {
-		return fmt.Errorf("сохранённый XML не соответствует команде импорта")
+	if string(xml) == stored {
+		return input, nil
 	}
-	return nil
+	// Предыдущие выпуски сохраняли корень без внешнего комментария плана.
+	legacy, err := doc.ExportWithoutProgression()
+	if err == nil && string(legacy) == stored {
+		return stored, nil
+	}
+	return "", fmt.Errorf("сохранённый XML не соответствует команде импорта")
 }

@@ -22,25 +22,32 @@ type TreeIdentity struct {
 
 // WithTreeIdentity согласует метаданные Build с выбранной спецификацией.
 func (d *Document) WithTreeIdentity(identity TreeIdentity) (*Document, error) {
-	if identity.Class == "" || identity.Ascendancy == "" {
-		return nil, fmt.Errorf("PoB не вернул класс активной спецификации")
-	}
 	updated, err := d.copyForEdit()
 	if err != nil {
 		return nil, err
 	}
-	info, err := updated.root.child("Build")
-	if err != nil {
+	if err := updated.setTreeIdentity(identity); err != nil {
 		return nil, err
 	}
+	return updated, nil
+}
+
+func (d *Document) setTreeIdentity(identity TreeIdentity) error {
+	if identity.Class == "" || identity.Ascendancy == "" {
+		return fmt.Errorf("PoB не вернул класс активной спецификации")
+	}
+	info, err := d.root.child("Build")
+	if err != nil {
+		return err
+	}
 	if info == nil {
-		return nil, fmt.Errorf("в XML нет Build")
+		return fmt.Errorf("в XML нет Build")
 	}
 	info.set("className", identity.Class)
 	if info.attr("ascendClassName", "None") != identity.Ascendancy {
 		info.set("ascendClassName", identity.Ascendancy)
 	}
-	return updated, nil
+	return nil
 }
 
 func (e TreeNodeEdit) validate() error {
