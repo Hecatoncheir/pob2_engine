@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "tag": "v0.0.9-rc.2",
+  "commit": "f078fd9d2e6e952ba2ca1986475da24183aedc94",
+  "run_url": "https://github.com/Hecatoncheir/pob2_engine/actions/runs/45096433370",
+  "release_url": "https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.9-rc.2",
+  "platforms": {
+    "windows_amd64": {
+      "asset": "pob2_engine_v0.0.9-rc.2_windows_amd64.exe",
+      "sha256": "0e6efa4b9752512768ad7048630b7cfd4a8f7549e3b35a435186f9726c98c563"
+    },
+    "linux_amd64": {
+      "asset": "pob2_engine_v0.0.9-rc.2_linux_amd64",
+      "sha256": "e63f88cf193a9ef26c63a3ca8a71cb8b63d8aff654a17733efa16040c89acb8a"
+    },
+    "darwin_arm64": {
+      "asset": "pob2_engine_v0.0.9-rc.2_darwin_arm64",
+      "sha256": "d5a97c2616fa3b897aea81ee3b0a38ce2aceb6ab8d0ec560187bca2b2e4a4ec0"
+    }
+  }
+}
