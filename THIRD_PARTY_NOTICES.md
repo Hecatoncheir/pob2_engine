@@ -32,7 +32,8 @@ python tool/notices.py --archive .reference/licenses.zip
 ## Расчётный адаптер и эталон
 
 Файлы `HeadlessWrapper.lua`, `_SimpleGraphic.def.lua`, `headless_bootstrap.lua`,
-`tree-image-sizes.json` и части отрисовки `tree_scene.lua` и `worker.lua`
+`tree-image-sizes.json`, `gem_groups.lua`, `granted_supports.lua`, `skill_group.lua`
+и части отрисовки `tree_scene.lua` и `worker.lua`
 в `internal/pob/bridge/` основаны на
 [pob-poe2-mcp, commit 312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a](https://github.com/Hecatoncheir/pob-poe2-mcp/tree/312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a/pob_poe2_mcp)
 и распространяются по [MIT](internal/pob/bridge/LICENSE). Оригинальные Lua-код

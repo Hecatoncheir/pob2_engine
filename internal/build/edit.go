@@ -59,6 +59,7 @@ type Edit struct {
 	Jewel       *JewelEdit       `json:"jewel,omitempty"`
 	TreeClass   *TreeClassEdit   `json:"tree_class,omitempty"`
 	SkillChoice *SkillChoiceEdit `json:"skill_choice,omitempty"`
+	SkillGroup  *SkillGroupEdit  `json:"skill_group,omitempty"`
 }
 
 func newElement(name string) *element { return &element{name: xml.Name{Local: name}} }
@@ -117,7 +118,7 @@ func ValidateEdit(edit Edit) error {
 	operations := 0
 	for _, present := range []bool{edit.Level != nil, edit.Config != nil, edit.Gems != nil, edit.Equipment != nil,
 		edit.Passives != nil, edit.Selection != nil, edit.AddSupport != nil, edit.TreeNode != nil, edit.Jewel != nil, edit.TreeClass != nil,
-		edit.SkillChoice != nil} {
+		edit.SkillChoice != nil, edit.SkillGroup != nil} {
 		if present {
 			operations++
 		}
@@ -136,6 +137,9 @@ func ValidateEdit(edit Edit) error {
 	}
 	if edit.SkillChoice != nil {
 		return edit.SkillChoice.validate()
+	}
+	if edit.SkillGroup != nil {
+		return edit.SkillGroup.validate()
 	}
 	if edit.Equipment != nil {
 		return edit.Equipment.validate()
@@ -194,6 +198,8 @@ func (d *Document) applyEdit(edit Edit, data *gamedata.Dataset) error {
 		return fmt.Errorf("для смены класса требуется исходный Lua PoB")
 	case edit.SkillChoice != nil:
 		return fmt.Errorf("для выбора варианта умения требуется исходный Lua PoB")
+	case edit.SkillGroup != nil:
+		return fmt.Errorf("для штатной правки группы требуется исходный Lua PoB")
 	}
 	return nil
 }

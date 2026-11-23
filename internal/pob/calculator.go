@@ -260,6 +260,7 @@ type response struct {
 	TreeTooltip       *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
 	BuildReport       json.RawMessage          `json:"build_report,omitempty"`
 	SkillChoice       *build.SkillChoiceChange `json:"skill_choice,omitempty"`
+	SkillGroupXML     string                   `json:"skill_group_xml,omitempty"`
 	TreePower         *build.TreePower         `json:"tree_power,omitempty"`
 	TreePowerProgress *uint32                  `json:"tree_power_progress,omitempty"`
 	EquipmentDetails  json.RawMessage          `json:"equipment_details,omitempty"`
@@ -282,6 +283,7 @@ type request struct {
 	TreeVersion      string                       `json:"tree_version,omitempty"`
 	TreeClass        *build.TreeClassEdit         `json:"tree_class,omitempty"`
 	SkillChoice      *build.SkillChoiceEdit       `json:"skill_choice,omitempty"`
+	SkillGroup       *build.SkillGroupEdit        `json:"skill_group,omitempty"`
 	TreePower        *build.TreePowerQuery        `json:"tree_power,omitempty"`
 	ReportProgress   bool                         `json:"report_progress,omitempty"`
 	EquipmentDetails *build.EquipmentDetailsQuery `json:"equipment_details,omitempty"`

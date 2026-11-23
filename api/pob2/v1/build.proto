@@ -266,6 +266,22 @@ message SkillChoiceEdit {
   uint32 option_id = 2;
 }
 
+message SkillGroupEdit {
+  // Ноль создаёт обычную группу. Положительный номер берётся из штатного отчёта.
+  uint32 group_id = 1;
+  optional string label = 2;
+  bool delete = 3;
+  repeated SkillGroupGem gems = 4;
+}
+
+message SkillGroupGem {
+  string id = 1;
+  uint32 level = 2;
+  uint32 quality = 3;
+  optional bool enabled = 4;
+  uint32 source_index = 5;
+}
+
 message GetTreePowerRequest {
   string session_id = 1;
   uint64 expected_revision = 2;
@@ -378,6 +394,7 @@ message BuildEdit {
     JewelEdit jewel = 9;
     TreeClassEdit tree_class = 10;
     SkillChoiceEdit skill_choice = 11;
+    SkillGroupEdit skill_group = 12;
   }
 }
 

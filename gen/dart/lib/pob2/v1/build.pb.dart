@@ -3047,6 +3047,201 @@ class SkillChoiceEdit extends $pb.GeneratedMessage {
   void clearOptionId() => $_clearField(2);
 }
 
+class SkillGroupEdit extends $pb.GeneratedMessage {
+  factory SkillGroupEdit({
+    $core.int? groupId,
+    $core.String? label,
+    $core.bool? delete,
+    $core.Iterable<SkillGroupGem>? gems,
+  }) {
+    final result = SkillGroupEdit._();
+    if (groupId != null) result.groupId = groupId;
+    if (label != null) result.label = label;
+    if (delete != null) result.delete = delete;
+    if (gems != null) result.gems.addAll(gems);
+    return result;
+  }
+
+  SkillGroupEdit._();
+
+  factory SkillGroupEdit.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SkillGroupEdit()..mergeFromBuffer(data, registry);
+  factory SkillGroupEdit.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SkillGroupEdit()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SkillGroupEdit',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: SkillGroupEdit.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'groupId', fieldType: $pb.PbFieldType.OU3)
+    ..aOS(2, _omitFieldNames ? '' : 'label')
+    ..aOB(3, _omitFieldNames ? '' : 'delete')
+    ..pPM<SkillGroupGem>(4, _omitFieldNames ? '' : 'gems',
+        subBuilder: SkillGroupGem.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SkillGroupEdit clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SkillGroupEdit copyWith(void Function(SkillGroupEdit) updates) =>
+      super.copyWith((message) => updates(message as SkillGroupEdit))
+          as SkillGroupEdit;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use SkillGroupEdit() / SkillGroupEdit.new instead')
+  static SkillGroupEdit create() => SkillGroupEdit._();
+  static $pb.GeneratedMessage $_createMessage() => SkillGroupEdit._();
+  @$core.override
+  SkillGroupEdit createEmptyInstance() => SkillGroupEdit._();
+  @$core.pragma('dart2js:noInline')
+  static SkillGroupEdit getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SkillGroupEdit>(
+          SkillGroupEdit.$_createMessage);
+  static SkillGroupEdit? _defaultInstance;
+
+  /// Ноль создаёт обычную группу. Положительный номер берётся из штатного отчёта.
+  @$pb.TagNumber(1)
+  $core.int get groupId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set groupId($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasGroupId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearGroupId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get label => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set label($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLabel() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLabel() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get delete => $_getBF(2);
+  @$pb.TagNumber(3)
+  set delete($core.bool value) => $_setBool(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasDelete() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDelete() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<SkillGroupGem> get gems => $_getList(3);
+}
+
+class SkillGroupGem extends $pb.GeneratedMessage {
+  factory SkillGroupGem({
+    $core.String? id,
+    $core.int? level,
+    $core.int? quality,
+    $core.bool? enabled,
+    $core.int? sourceIndex,
+  }) {
+    final result = SkillGroupGem._();
+    if (id != null) result.id = id;
+    if (level != null) result.level = level;
+    if (quality != null) result.quality = quality;
+    if (enabled != null) result.enabled = enabled;
+    if (sourceIndex != null) result.sourceIndex = sourceIndex;
+    return result;
+  }
+
+  SkillGroupGem._();
+
+  factory SkillGroupGem.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SkillGroupGem()..mergeFromBuffer(data, registry);
+  factory SkillGroupGem.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SkillGroupGem()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SkillGroupGem',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: SkillGroupGem.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aI(2, _omitFieldNames ? '' : 'level', fieldType: $pb.PbFieldType.OU3)
+    ..aI(3, _omitFieldNames ? '' : 'quality', fieldType: $pb.PbFieldType.OU3)
+    ..aOB(4, _omitFieldNames ? '' : 'enabled')
+    ..aI(5, _omitFieldNames ? '' : 'sourceIndex',
+        fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SkillGroupGem clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SkillGroupGem copyWith(void Function(SkillGroupGem) updates) =>
+      super.copyWith((message) => updates(message as SkillGroupGem))
+          as SkillGroupGem;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use SkillGroupGem() / SkillGroupGem.new instead')
+  static SkillGroupGem create() => SkillGroupGem._();
+  static $pb.GeneratedMessage $_createMessage() => SkillGroupGem._();
+  @$core.override
+  SkillGroupGem createEmptyInstance() => SkillGroupGem._();
+  @$core.pragma('dart2js:noInline')
+  static SkillGroupGem getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SkillGroupGem>(
+          SkillGroupGem.$_createMessage);
+  static SkillGroupGem? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get level => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set level($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasLevel() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLevel() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get quality => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set quality($core.int value) => $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasQuality() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearQuality() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get enabled => $_getBF(3);
+  @$pb.TagNumber(4)
+  set enabled($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasEnabled() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearEnabled() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get sourceIndex => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set sourceIndex($core.int value) => $_setUnsignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasSourceIndex() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSourceIndex() => $_clearField(5);
+}
+
 class GetTreePowerRequest extends $pb.GeneratedMessage {
   factory GetTreePowerRequest({
     $core.String? sessionId,
@@ -4295,6 +4490,7 @@ enum BuildEdit_Operation {
   jewel,
   treeClass,
   skillChoice,
+  skillGroup,
   notSet
 }
 
@@ -4311,6 +4507,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     JewelEdit? jewel,
     TreeClassEdit? treeClass,
     SkillChoiceEdit? skillChoice,
+    SkillGroupEdit? skillGroup,
   }) {
     final result = BuildEdit._();
     if (level != null) result.level = level;
@@ -4324,6 +4521,7 @@ class BuildEdit extends $pb.GeneratedMessage {
     if (jewel != null) result.jewel = jewel;
     if (treeClass != null) result.treeClass = treeClass;
     if (skillChoice != null) result.skillChoice = skillChoice;
+    if (skillGroup != null) result.skillGroup = skillGroup;
     return result;
   }
 
@@ -4349,13 +4547,14 @@ class BuildEdit extends $pb.GeneratedMessage {
     9: BuildEdit_Operation.jewel,
     10: BuildEdit_Operation.treeClass,
     11: BuildEdit_Operation.skillChoice,
+    12: BuildEdit_Operation.skillGroup,
     0: BuildEdit_Operation.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'BuildEdit',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
       createEmptyInstance: BuildEdit.$_createMessage)
-    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     ..aOM<LevelEdit>(1, _omitFieldNames ? '' : 'level',
         subBuilder: LevelEdit.$_createMessage)
     ..aOM<ConfigEdit>(2, _omitFieldNames ? '' : 'config',
@@ -4378,6 +4577,8 @@ class BuildEdit extends $pb.GeneratedMessage {
         subBuilder: TreeClassEdit.$_createMessage)
     ..aOM<SkillChoiceEdit>(11, _omitFieldNames ? '' : 'skillChoice',
         subBuilder: SkillChoiceEdit.$_createMessage)
+    ..aOM<SkillGroupEdit>(12, _omitFieldNames ? '' : 'skillGroup',
+        subBuilder: SkillGroupEdit.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -4411,6 +4612,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   @$pb.TagNumber(10)
   @$pb.TagNumber(11)
+  @$pb.TagNumber(12)
   BuildEdit_Operation whichOperation() =>
       _BuildEdit_OperationByTag[$_whichOneof(0)]!;
   @$pb.TagNumber(1)
@@ -4424,6 +4626,7 @@ class BuildEdit extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   @$pb.TagNumber(10)
   @$pb.TagNumber(11)
+  @$pb.TagNumber(12)
   void clearOperation() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -4546,6 +4749,17 @@ class BuildEdit extends $pb.GeneratedMessage {
   void clearSkillChoice() => $_clearField(11);
   @$pb.TagNumber(11)
   SkillChoiceEdit ensureSkillChoice() => $_ensure(10);
+
+  @$pb.TagNumber(12)
+  SkillGroupEdit get skillGroup => $_getN(11);
+  @$pb.TagNumber(12)
+  set skillGroup(SkillGroupEdit value) => $_setField(12, value);
+  @$pb.TagNumber(12)
+  $core.bool hasSkillGroup() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearSkillGroup() => $_clearField(12);
+  @$pb.TagNumber(12)
+  SkillGroupEdit ensureSkillGroup() => $_ensure(11);
 }
 
 class PassiveChange extends $pb.GeneratedMessage {

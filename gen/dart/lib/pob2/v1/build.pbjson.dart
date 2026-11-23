@@ -880,6 +880,62 @@ final $typed_data.Uint8List skillChoiceEditDescriptor = $convert.base64Decode(
     'Cg9Ta2lsbENob2ljZUVkaXQSGAoHY29udHJvbBgBIAEoCVIHY29udHJvbBIbCglvcHRpb25faW'
     'QYAiABKA1SCG9wdGlvbklk');
 
+@$core.Deprecated('Use skillGroupEditDescriptor instead')
+const SkillGroupEdit$json = {
+  '1': 'SkillGroupEdit',
+  '2': [
+    {'1': 'group_id', '3': 1, '4': 1, '5': 13, '10': 'groupId'},
+    {'1': 'label', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'label', '17': true},
+    {'1': 'delete', '3': 3, '4': 1, '5': 8, '10': 'delete'},
+    {
+      '1': 'gems',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.pob2.v1.SkillGroupGem',
+      '10': 'gems'
+    },
+  ],
+  '8': [
+    {'1': '_label'},
+  ],
+};
+
+/// Descriptor for `SkillGroupEdit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List skillGroupEditDescriptor = $convert.base64Decode(
+    'Cg5Ta2lsbEdyb3VwRWRpdBIZCghncm91cF9pZBgBIAEoDVIHZ3JvdXBJZBIZCgVsYWJlbBgCIA'
+    'EoCUgAUgVsYWJlbIgBARIWCgZkZWxldGUYAyABKAhSBmRlbGV0ZRIqCgRnZW1zGAQgAygLMhYu'
+    'cG9iMi52MS5Ta2lsbEdyb3VwR2VtUgRnZW1zQggKBl9sYWJlbA==');
+
+@$core.Deprecated('Use skillGroupGemDescriptor instead')
+const SkillGroupGem$json = {
+  '1': 'SkillGroupGem',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    {'1': 'level', '3': 2, '4': 1, '5': 13, '10': 'level'},
+    {'1': 'quality', '3': 3, '4': 1, '5': 13, '10': 'quality'},
+    {
+      '1': 'enabled',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '9': 0,
+      '10': 'enabled',
+      '17': true
+    },
+    {'1': 'source_index', '3': 5, '4': 1, '5': 13, '10': 'sourceIndex'},
+  ],
+  '8': [
+    {'1': '_enabled'},
+  ],
+};
+
+/// Descriptor for `SkillGroupGem`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List skillGroupGemDescriptor = $convert.base64Decode(
+    'Cg1Ta2lsbEdyb3VwR2VtEg4KAmlkGAEgASgJUgJpZBIUCgVsZXZlbBgCIAEoDVIFbGV2ZWwSGA'
+    'oHcXVhbGl0eRgDIAEoDVIHcXVhbGl0eRIdCgdlbmFibGVkGAQgASgISABSB2VuYWJsZWSIAQES'
+    'IQoMc291cmNlX2luZGV4GAUgASgNUgtzb3VyY2VJbmRleEIKCghfZW5hYmxlZA==');
+
 @$core.Deprecated('Use getTreePowerRequestDescriptor instead')
 const GetTreePowerRequest$json = {
   '1': 'GetTreePowerRequest',
@@ -1267,6 +1323,15 @@ const BuildEdit$json = {
       '9': 0,
       '10': 'skillChoice'
     },
+    {
+      '1': 'skill_group',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.SkillGroupEdit',
+      '9': 0,
+      '10': 'skillGroup'
+    },
   ],
   '8': [
     {'1': 'operation'},
@@ -1285,7 +1350,8 @@ final $typed_data.Uint8List buildEditDescriptor = $convert.base64Decode(
     'UucG9iMi52MS5UcmVlTm9kZUVkaXRIAFIIdHJlZU5vZGUSKgoFamV3ZWwYCSABKAsyEi5wb2Iy'
     'LnYxLkpld2VsRWRpdEgAUgVqZXdlbBI3Cgp0cmVlX2NsYXNzGAogASgLMhYucG9iMi52MS5Ucm'
     'VlQ2xhc3NFZGl0SABSCXRyZWVDbGFzcxI9Cgxza2lsbF9jaG9pY2UYCyABKAsyGC5wb2IyLnYx'
-    'LlNraWxsQ2hvaWNlRWRpdEgAUgtza2lsbENob2ljZUILCglvcGVyYXRpb24=');
+    'LlNraWxsQ2hvaWNlRWRpdEgAUgtza2lsbENob2ljZRI6Cgtza2lsbF9ncm91cBgMIAEoCzIXLn'
+    'BvYjIudjEuU2tpbGxHcm91cEVkaXRIAFIKc2tpbGxHcm91cEILCglvcGVyYXRpb24=');
 
 @$core.Deprecated('Use passiveChangeDescriptor instead')
 const PassiveChange$json = {
