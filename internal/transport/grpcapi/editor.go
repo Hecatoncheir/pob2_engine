@@ -37,7 +37,7 @@ type editorLink struct {
 
 type editorCall struct {
 	ctx      context.Context
-	command  *pb.EditorCommand
+	command  *pb.WatchEditorResponse
 	result   chan string
 	answered bool
 }
@@ -63,7 +63,7 @@ func (b *editorBridge) detach(id string, link *editorLink) {
 	close(link.done)
 }
 
-func (s *Server) WatchEditor(req *pb.WatchEditorRequest, stream grpc.ServerStreamingServer[pb.EditorCommand]) error {
+func (s *Server) WatchEditor(req *pb.WatchEditorRequest, stream grpc.ServerStreamingServer[pb.WatchEditorResponse]) error {
 	ctx, cancel := context.WithCancel(stream.Context())
 	defer cancel()
 	session := req.GetSessionId()
@@ -80,8 +80,8 @@ func (s *Server) WatchEditor(req *pb.WatchEditorRequest, stream grpc.ServerStrea
 	return sendEditorCommands(ctx, link, stream)
 }
 
-func sendEditorCommands(ctx context.Context, link *editorLink, stream grpc.ServerStreamingServer[pb.EditorCommand]) error {
-	if err := stream.Send(&pb.EditorCommand{Attached: true}); err != nil {
+func sendEditorCommands(ctx context.Context, link *editorLink, stream grpc.ServerStreamingServer[pb.WatchEditorResponse]) error {
+	if err := stream.Send(&pb.WatchEditorResponse{Attached: true}); err != nil {
 		return err
 	}
 	for {
@@ -106,14 +106,14 @@ func editorLease(ctx context.Context) string {
 	return values[0]
 }
 
-func (s *Server) CallEditor(ctx context.Context, req *pb.CallEditorRequest) (*pb.EditorReply, error) {
+func (s *Server) CallEditor(ctx context.Context, req *pb.CallEditorRequest) (*pb.CallEditorResponse, error) {
 	if !slices.Contains(editorTools, req.GetTool()) || !editorArguments(req.GetArgumentsJson()) {
 		return nil, status.Error(codes.InvalidArgument, "неверная команда редактора")
 	}
 	ctx, cancel := context.WithTimeout(ctx, 45*time.Second)
 	defer cancel()
 	id := req.GetSessionId()
-	call := &editorCall{ctx: ctx, result: make(chan string, 1), command: &pb.EditorCommand{
+	call := &editorCall{ctx: ctx, result: make(chan string, 1), command: &pb.WatchEditorResponse{
 		RequestId: rand.Text(), Tool: req.GetTool(), ArgumentsJson: req.GetArgumentsJson(),
 	}}
 	link, err := s.editors.submit(id, call)
@@ -127,12 +127,12 @@ func (s *Server) CallEditor(ctx context.Context, req *pb.CallEditorRequest) (*pb
 	case <-link.done:
 		select {
 		case result := <-call.result:
-			return &pb.EditorReply{ResultJson: result}, nil
+			return &pb.CallEditorResponse{ResultJson: result}, nil
 		default:
 		}
 		return nil, status.Error(codes.Unavailable, "редактор PoB II отключился")
 	case result := <-call.result:
-		return &pb.EditorReply{ResultJson: result}, nil
+		return &pb.CallEditorResponse{ResultJson: result}, nil
 	}
 }
 

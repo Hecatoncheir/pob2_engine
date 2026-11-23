@@ -146,7 +146,7 @@ class SessionServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseStream<$0.EditorCommand> watchEditor(
+  $grpc.ResponseStream<$0.WatchEditorResponse> watchEditor(
     $0.WatchEditorRequest request, {
     $grpc.CallOptions? options,
   }) {
@@ -155,7 +155,7 @@ class SessionServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseFuture<$0.EditorReply> callEditor(
+  $grpc.ResponseFuture<$0.CallEditorResponse> callEditor(
     $0.CallEditorRequest request, {
     $grpc.CallOptions? options,
   }) {
@@ -275,15 +275,15 @@ class SessionServiceClient extends $grpc.Client {
           ($0.WatchServerRequest value) => value.writeToBuffer(),
           $0.WatchServerResponse.fromBuffer);
   static final _$watchEditor =
-      $grpc.ClientMethod<$0.WatchEditorRequest, $0.EditorCommand>(
+      $grpc.ClientMethod<$0.WatchEditorRequest, $0.WatchEditorResponse>(
           '/pob2.v1.SessionService/WatchEditor',
           ($0.WatchEditorRequest value) => value.writeToBuffer(),
-          $0.EditorCommand.fromBuffer);
+          $0.WatchEditorResponse.fromBuffer);
   static final _$callEditor =
-      $grpc.ClientMethod<$0.CallEditorRequest, $0.EditorReply>(
+      $grpc.ClientMethod<$0.CallEditorRequest, $0.CallEditorResponse>(
           '/pob2.v1.SessionService/CallEditor',
           ($0.CallEditorRequest value) => value.writeToBuffer(),
-          $0.EditorReply.fromBuffer);
+          $0.CallEditorResponse.fromBuffer);
   static final _$replyEditor =
       $grpc.ClientMethod<$0.ReplyEditorRequest, $0.ReplyEditorResponse>(
           '/pob2.v1.SessionService/ReplyEditor',
@@ -443,21 +443,22 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.WatchServerRequest.fromBuffer(value),
             ($0.WatchServerResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.WatchEditorRequest, $0.EditorCommand>(
-        'WatchEditor',
-        watchEditor_Pre,
-        false,
-        true,
-        ($core.List<$core.int> value) =>
-            $0.WatchEditorRequest.fromBuffer(value),
-        ($0.EditorCommand value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.CallEditorRequest, $0.EditorReply>(
+    $addMethod(
+        $grpc.ServiceMethod<$0.WatchEditorRequest, $0.WatchEditorResponse>(
+            'WatchEditor',
+            watchEditor_Pre,
+            false,
+            true,
+            ($core.List<$core.int> value) =>
+                $0.WatchEditorRequest.fromBuffer(value),
+            ($0.WatchEditorResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CallEditorRequest, $0.CallEditorResponse>(
         'CallEditor',
         callEditor_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.CallEditorRequest.fromBuffer(value),
-        ($0.EditorReply value) => value.writeToBuffer()));
+        ($0.CallEditorResponse value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.ReplyEditorRequest, $0.ReplyEditorResponse>(
             'ReplyEditor',
@@ -628,20 +629,20 @@ abstract class SessionServiceBase extends $grpc.Service {
   $async.Stream<$0.WatchServerResponse> watchServer(
       $grpc.ServiceCall call, $0.WatchServerRequest request);
 
-  $async.Stream<$0.EditorCommand> watchEditor_Pre($grpc.ServiceCall $call,
+  $async.Stream<$0.WatchEditorResponse> watchEditor_Pre($grpc.ServiceCall $call,
       $async.Future<$0.WatchEditorRequest> $request) async* {
     yield* watchEditor($call, await $request);
   }
 
-  $async.Stream<$0.EditorCommand> watchEditor(
+  $async.Stream<$0.WatchEditorResponse> watchEditor(
       $grpc.ServiceCall call, $0.WatchEditorRequest request);
 
-  $async.Future<$0.EditorReply> callEditor_Pre($grpc.ServiceCall $call,
+  $async.Future<$0.CallEditorResponse> callEditor_Pre($grpc.ServiceCall $call,
       $async.Future<$0.CallEditorRequest> $request) async {
     return callEditor($call, await $request);
   }
 
-  $async.Future<$0.EditorReply> callEditor(
+  $async.Future<$0.CallEditorResponse> callEditor(
       $grpc.ServiceCall call, $0.CallEditorRequest request);
 
   $async.Future<$0.ReplyEditorResponse> replyEditor_Pre($grpc.ServiceCall $call,

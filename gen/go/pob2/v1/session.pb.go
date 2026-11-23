@@ -126,7 +126,7 @@ func (x *CallEditorRequest) GetArgumentsJson() string {
 	return ""
 }
 
-type EditorCommand struct {
+type WatchEditorResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Tool          string                 `protobuf:"bytes,2,opt,name=tool,proto3" json:"tool,omitempty"`
@@ -137,20 +137,20 @@ type EditorCommand struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EditorCommand) Reset() {
-	*x = EditorCommand{}
+func (x *WatchEditorResponse) Reset() {
+	*x = WatchEditorResponse{}
 	mi := &file_pob2_v1_session_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EditorCommand) String() string {
+func (x *WatchEditorResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EditorCommand) ProtoMessage() {}
+func (*WatchEditorResponse) ProtoMessage() {}
 
-func (x *EditorCommand) ProtoReflect() protoreflect.Message {
+func (x *WatchEditorResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_pob2_v1_session_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -162,60 +162,60 @@ func (x *EditorCommand) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EditorCommand.ProtoReflect.Descriptor instead.
-func (*EditorCommand) Descriptor() ([]byte, []int) {
+// Deprecated: Use WatchEditorResponse.ProtoReflect.Descriptor instead.
+func (*WatchEditorResponse) Descriptor() ([]byte, []int) {
 	return file_pob2_v1_session_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *EditorCommand) GetRequestId() string {
+func (x *WatchEditorResponse) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
 	return ""
 }
 
-func (x *EditorCommand) GetTool() string {
+func (x *WatchEditorResponse) GetTool() string {
 	if x != nil {
 		return x.Tool
 	}
 	return ""
 }
 
-func (x *EditorCommand) GetArgumentsJson() string {
+func (x *WatchEditorResponse) GetArgumentsJson() string {
 	if x != nil {
 		return x.ArgumentsJson
 	}
 	return ""
 }
 
-func (x *EditorCommand) GetAttached() bool {
+func (x *WatchEditorResponse) GetAttached() bool {
 	if x != nil {
 		return x.Attached
 	}
 	return false
 }
 
-type EditorReply struct {
+type CallEditorResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ResultJson    string                 `protobuf:"bytes,1,opt,name=result_json,json=resultJson,proto3" json:"result_json,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EditorReply) Reset() {
-	*x = EditorReply{}
+func (x *CallEditorResponse) Reset() {
+	*x = CallEditorResponse{}
 	mi := &file_pob2_v1_session_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EditorReply) String() string {
+func (x *CallEditorResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EditorReply) ProtoMessage() {}
+func (*CallEditorResponse) ProtoMessage() {}
 
-func (x *EditorReply) ProtoReflect() protoreflect.Message {
+func (x *CallEditorResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_pob2_v1_session_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -227,12 +227,12 @@ func (x *EditorReply) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EditorReply.ProtoReflect.Descriptor instead.
-func (*EditorReply) Descriptor() ([]byte, []int) {
+// Deprecated: Use CallEditorResponse.ProtoReflect.Descriptor instead.
+func (*CallEditorResponse) Descriptor() ([]byte, []int) {
 	return file_pob2_v1_session_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *EditorReply) GetResultJson() string {
+func (x *CallEditorResponse) GetResultJson() string {
 	if x != nil {
 		return x.ResultJson
 	}
@@ -2118,14 +2118,14 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x12\n" +
 	"\x04tool\x18\x02 \x01(\tR\x04tool\x12%\n" +
-	"\x0earguments_json\x18\x03 \x01(\tR\rargumentsJson\"\x85\x01\n" +
-	"\rEditorCommand\x12\x1d\n" +
+	"\x0earguments_json\x18\x03 \x01(\tR\rargumentsJson\"\x8b\x01\n" +
+	"\x13WatchEditorResponse\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x12\n" +
 	"\x04tool\x18\x02 \x01(\tR\x04tool\x12%\n" +
 	"\x0earguments_json\x18\x03 \x01(\tR\rargumentsJson\x12\x1a\n" +
-	"\battached\x18\x04 \x01(\bR\battached\".\n" +
-	"\vEditorReply\x12\x1f\n" +
+	"\battached\x18\x04 \x01(\bR\battached\"5\n" +
+	"\x12CallEditorResponse\x12\x1f\n" +
 	"\vresult_json\x18\x01 \x01(\tR\n" +
 	"resultJson\"s\n" +
 	"\x12ReplyEditorRequest\x12\x1d\n" +
@@ -2268,7 +2268,7 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x04R\brevision\x12\x10\n" +
 	"\x03xml\x18\x03 \x01(\tR\x03xml\x12!\n" +
-	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xff\f\n" +
+	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\x8c\r\n" +
 	"\x0eSessionService\x12N\n" +
 	"\rGetServerInfo\x12\x1d.pob2.v1.GetServerInfoRequest\x1a\x1e.pob2.v1.GetServerInfoResponse\x129\n" +
 	"\x06Update\x12\x16.pob2.v1.UpdateRequest\x1a\x17.pob2.v1.UpdateResponse\x129\n" +
@@ -2286,10 +2286,10 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\x0ePreviewSupport\x12\x1e.pob2.v1.PreviewSupportRequest\x1a\x1f.pob2.v1.PreviewSupportResponse\x12H\n" +
 	"\vExportBuild\x12\x1b.pob2.v1.ExportBuildRequest\x1a\x1c.pob2.v1.ExportBuildResponse\x12M\n" +
 	"\fWatchSession\x12\x1c.pob2.v1.WatchSessionRequest\x1a\x1d.pob2.v1.WatchSessionResponse0\x01\x12J\n" +
-	"\vWatchServer\x12\x1b.pob2.v1.WatchServerRequest\x1a\x1c.pob2.v1.WatchServerResponse0\x01\x12D\n" +
-	"\vWatchEditor\x12\x1b.pob2.v1.WatchEditorRequest\x1a\x16.pob2.v1.EditorCommand0\x01\x12>\n" +
+	"\vWatchServer\x12\x1b.pob2.v1.WatchServerRequest\x1a\x1c.pob2.v1.WatchServerResponse0\x01\x12J\n" +
+	"\vWatchEditor\x12\x1b.pob2.v1.WatchEditorRequest\x1a\x1c.pob2.v1.WatchEditorResponse0\x01\x12E\n" +
 	"\n" +
-	"CallEditor\x12\x1a.pob2.v1.CallEditorRequest\x1a\x14.pob2.v1.EditorReply\x12H\n" +
+	"CallEditor\x12\x1a.pob2.v1.CallEditorRequest\x1a\x1b.pob2.v1.CallEditorResponse\x12H\n" +
 	"\vReplyEditor\x12\x1b.pob2.v1.ReplyEditorRequest\x1a\x1c.pob2.v1.ReplyEditorResponse\x12?\n" +
 	"\bShutdown\x12\x18.pob2.v1.ShutdownRequest\x1a\x19.pob2.v1.ShutdownResponse\x12Q\n" +
 	"\x0eRegisterClient\x12\x1e.pob2.v1.RegisterClientRequest\x1a\x1f.pob2.v1.RegisterClientResponse\x12B\n" +
@@ -2312,8 +2312,8 @@ var file_pob2_v1_session_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_pob2_v1_session_proto_goTypes = []any{
 	(*WatchEditorRequest)(nil),           // 0: pob2.v1.WatchEditorRequest
 	(*CallEditorRequest)(nil),            // 1: pob2.v1.CallEditorRequest
-	(*EditorCommand)(nil),                // 2: pob2.v1.EditorCommand
-	(*EditorReply)(nil),                  // 3: pob2.v1.EditorReply
+	(*WatchEditorResponse)(nil),          // 2: pob2.v1.WatchEditorResponse
+	(*CallEditorResponse)(nil),           // 3: pob2.v1.CallEditorResponse
 	(*ReplyEditorRequest)(nil),           // 4: pob2.v1.ReplyEditorRequest
 	(*ReplyEditorResponse)(nil),          // 5: pob2.v1.ReplyEditorResponse
 	(*SessionSnapshot)(nil),              // 6: pob2.v1.SessionSnapshot
@@ -2410,8 +2410,8 @@ var file_pob2_v1_session_proto_depIdxs = []int32{
 	36, // 46: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
 	18, // 47: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
 	21, // 48: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse
-	2,  // 49: pob2.v1.SessionService.WatchEditor:output_type -> pob2.v1.EditorCommand
-	3,  // 50: pob2.v1.SessionService.CallEditor:output_type -> pob2.v1.EditorReply
+	2,  // 49: pob2.v1.SessionService.WatchEditor:output_type -> pob2.v1.WatchEditorResponse
+	3,  // 50: pob2.v1.SessionService.CallEditor:output_type -> pob2.v1.CallEditorResponse
 	5,  // 51: pob2.v1.SessionService.ReplyEditor:output_type -> pob2.v1.ReplyEditorResponse
 	22, // 52: pob2.v1.SessionService.Shutdown:output_type -> pob2.v1.ShutdownResponse
 	24, // 53: pob2.v1.SessionService.RegisterClient:output_type -> pob2.v1.RegisterClientResponse

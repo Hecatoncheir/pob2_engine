@@ -25,7 +25,10 @@ SPELLS = (
     {'id': 'spark', 'name': 'Spark', 'file': 'testdata/reference/0.0.2/cases/spark-minimal.xml', 'dps': 8.5642857142857},
 )
 MCP_TOOLS = {'get_snapshot', 'rename_build', 'import_build', 'edit_build', 'calculate_build',
-             'compare_build', 'export_build', 'get_catalog', 'preview_support', 'doctor', 'update'}
+             'compare_build', 'export_build', 'get_catalog', 'preview_support', 'doctor', 'update',
+             'pob_editor_status', 'pob_editor_ui', 'pob_editor_app', 'pob_editor_components',
+             'pob_editor_library', 'pob_editor_history', 'pob_editor_notes', 'pob_editor_files',
+             'pob_editor_progression', 'pob_editor_job'}
 
 
 def require(condition, message):
@@ -96,6 +99,10 @@ def initialize_mcp(send, messages):
     send({'id': 2, 'method': 'tools/list', 'params': {}})
     tools = mcp_result(messages, 2)['tools']
     require({tool['name'] for tool in tools} == MCP_TOOLS, 'Неверный набор инструментов MCP')
+    send({'id': 3, 'method': 'tools/call', 'params': {'name': 'pob_editor_status', 'arguments': {}}})
+    answer = receive(messages)
+    result = answer.get('result', {})
+    require(answer.get('id') == 3 and result.get('isError'), 'Без разрешённого окна команда MCP должна дать ошибку')
 
 
 def check_calculation(result, dps):
@@ -196,7 +203,7 @@ class Scenario:
         try:
             initialize_mcp(send, messages)
             answers = [call_mcp(send, messages, request_id, name, args)
-                       for request_id, (name, args) in enumerate(calls, start=3)]
+                       for request_id, (name, args) in enumerate(calls, start=4)]
             process.stdin.close()
             require(process.wait(timeout=10) == 0, 'MCP не завершился по EOF')
             return answers

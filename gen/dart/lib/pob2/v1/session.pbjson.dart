@@ -43,9 +43,9 @@ final $typed_data.Uint8List callEditorRequestDescriptor = $convert.base64Decode(
     'ChFDYWxsRWRpdG9yUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSEgoEdG'
     '9vbBgCIAEoCVIEdG9vbBIlCg5hcmd1bWVudHNfanNvbhgDIAEoCVINYXJndW1lbnRzSnNvbg==');
 
-@$core.Deprecated('Use editorCommandDescriptor instead')
-const EditorCommand$json = {
-  '1': 'EditorCommand',
+@$core.Deprecated('Use watchEditorResponseDescriptor instead')
+const WatchEditorResponse$json = {
+  '1': 'WatchEditorResponse',
   '2': [
     {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
     {'1': 'tool', '3': 2, '4': 1, '5': 9, '10': 'tool'},
@@ -54,23 +54,23 @@ const EditorCommand$json = {
   ],
 };
 
-/// Descriptor for `EditorCommand`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List editorCommandDescriptor = $convert.base64Decode(
-    'Cg1FZGl0b3JDb21tYW5kEh0KCnJlcXVlc3RfaWQYASABKAlSCXJlcXVlc3RJZBISCgR0b29sGA'
-    'IgASgJUgR0b29sEiUKDmFyZ3VtZW50c19qc29uGAMgASgJUg1hcmd1bWVudHNKc29uEhoKCGF0'
-    'dGFjaGVkGAQgASgIUghhdHRhY2hlZA==');
+/// Descriptor for `WatchEditorResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchEditorResponseDescriptor = $convert.base64Decode(
+    'ChNXYXRjaEVkaXRvclJlc3BvbnNlEh0KCnJlcXVlc3RfaWQYASABKAlSCXJlcXVlc3RJZBISCg'
+    'R0b29sGAIgASgJUgR0b29sEiUKDmFyZ3VtZW50c19qc29uGAMgASgJUg1hcmd1bWVudHNKc29u'
+    'EhoKCGF0dGFjaGVkGAQgASgIUghhdHRhY2hlZA==');
 
-@$core.Deprecated('Use editorReplyDescriptor instead')
-const EditorReply$json = {
-  '1': 'EditorReply',
+@$core.Deprecated('Use callEditorResponseDescriptor instead')
+const CallEditorResponse$json = {
+  '1': 'CallEditorResponse',
   '2': [
     {'1': 'result_json', '3': 1, '4': 1, '5': 9, '10': 'resultJson'},
   ],
 };
 
-/// Descriptor for `EditorReply`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List editorReplyDescriptor = $convert.base64Decode(
-    'CgtFZGl0b3JSZXBseRIfCgtyZXN1bHRfanNvbhgBIAEoCVIKcmVzdWx0SnNvbg==');
+/// Descriptor for `CallEditorResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List callEditorResponseDescriptor = $convert.base64Decode(
+    'ChJDYWxsRWRpdG9yUmVzcG9uc2USHwoLcmVzdWx0X2pzb24YASABKAlSCnJlc3VsdEpzb24=');
 
 @$core.Deprecated('Use replyEditorRequestDescriptor instead')
 const ReplyEditorRequest$json = {

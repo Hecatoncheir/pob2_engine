@@ -158,14 +158,14 @@ class CallEditorRequest extends $pb.GeneratedMessage {
   void clearArgumentsJson() => $_clearField(3);
 }
 
-class EditorCommand extends $pb.GeneratedMessage {
-  factory EditorCommand({
+class WatchEditorResponse extends $pb.GeneratedMessage {
+  factory WatchEditorResponse({
     $core.String? requestId,
     $core.String? tool,
     $core.String? argumentsJson,
     $core.bool? attached,
   }) {
-    final result = EditorCommand._();
+    final result = WatchEditorResponse._();
     if (requestId != null) result.requestId = requestId;
     if (tool != null) result.tool = tool;
     if (argumentsJson != null) result.argumentsJson = argumentsJson;
@@ -173,19 +173,19 @@ class EditorCommand extends $pb.GeneratedMessage {
     return result;
   }
 
-  EditorCommand._();
+  WatchEditorResponse._();
 
-  factory EditorCommand.fromBuffer($core.List<$core.int> data,
+  factory WatchEditorResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      EditorCommand()..mergeFromBuffer(data, registry);
-  factory EditorCommand.fromJson($core.String json,
+      WatchEditorResponse()..mergeFromBuffer(data, registry);
+  factory WatchEditorResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      EditorCommand()..mergeFromJson(json, registry);
+      WatchEditorResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'EditorCommand',
+      _omitMessageNames ? '' : 'WatchEditorResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
-      createEmptyInstance: EditorCommand.$_createMessage)
+      createEmptyInstance: WatchEditorResponse.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'requestId')
     ..aOS(2, _omitFieldNames ? '' : 'tool')
     ..aOS(3, _omitFieldNames ? '' : 'argumentsJson')
@@ -193,26 +193,27 @@ class EditorCommand extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EditorCommand clone() => deepCopy();
+  WatchEditorResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EditorCommand copyWith(void Function(EditorCommand) updates) =>
-      super.copyWith((message) => updates(message as EditorCommand))
-          as EditorCommand;
+  WatchEditorResponse copyWith(void Function(WatchEditorResponse) updates) =>
+      super.copyWith((message) => updates(message as WatchEditorResponse))
+          as WatchEditorResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  @$core.Deprecated('Use EditorCommand() / EditorCommand.new instead')
-  static EditorCommand create() => EditorCommand._();
-  static $pb.GeneratedMessage $_createMessage() => EditorCommand._();
+  @$core
+      .Deprecated('Use WatchEditorResponse() / WatchEditorResponse.new instead')
+  static WatchEditorResponse create() => WatchEditorResponse._();
+  static $pb.GeneratedMessage $_createMessage() => WatchEditorResponse._();
   @$core.override
-  EditorCommand createEmptyInstance() => EditorCommand._();
+  WatchEditorResponse createEmptyInstance() => WatchEditorResponse._();
   @$core.pragma('dart2js:noInline')
-  static EditorCommand getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EditorCommand>(
-          EditorCommand.$_createMessage);
-  static EditorCommand? _defaultInstance;
+  static WatchEditorResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchEditorResponse>(
+          WatchEditorResponse.$_createMessage);
+  static WatchEditorResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get requestId => $_getSZ(0);
@@ -252,52 +253,52 @@ class EditorCommand extends $pb.GeneratedMessage {
   void clearAttached() => $_clearField(4);
 }
 
-class EditorReply extends $pb.GeneratedMessage {
-  factory EditorReply({
+class CallEditorResponse extends $pb.GeneratedMessage {
+  factory CallEditorResponse({
     $core.String? resultJson,
   }) {
-    final result = EditorReply._();
+    final result = CallEditorResponse._();
     if (resultJson != null) result.resultJson = resultJson;
     return result;
   }
 
-  EditorReply._();
+  CallEditorResponse._();
 
-  factory EditorReply.fromBuffer($core.List<$core.int> data,
+  factory CallEditorResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      EditorReply()..mergeFromBuffer(data, registry);
-  factory EditorReply.fromJson($core.String json,
+      CallEditorResponse()..mergeFromBuffer(data, registry);
+  factory CallEditorResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      EditorReply()..mergeFromJson(json, registry);
+      CallEditorResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'EditorReply',
+      _omitMessageNames ? '' : 'CallEditorResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
-      createEmptyInstance: EditorReply.$_createMessage)
+      createEmptyInstance: CallEditorResponse.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'resultJson')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EditorReply clone() => deepCopy();
+  CallEditorResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EditorReply copyWith(void Function(EditorReply) updates) =>
-      super.copyWith((message) => updates(message as EditorReply))
-          as EditorReply;
+  CallEditorResponse copyWith(void Function(CallEditorResponse) updates) =>
+      super.copyWith((message) => updates(message as CallEditorResponse))
+          as CallEditorResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  @$core.Deprecated('Use EditorReply() / EditorReply.new instead')
-  static EditorReply create() => EditorReply._();
-  static $pb.GeneratedMessage $_createMessage() => EditorReply._();
+  @$core.Deprecated('Use CallEditorResponse() / CallEditorResponse.new instead')
+  static CallEditorResponse create() => CallEditorResponse._();
+  static $pb.GeneratedMessage $_createMessage() => CallEditorResponse._();
   @$core.override
-  EditorReply createEmptyInstance() => EditorReply._();
+  CallEditorResponse createEmptyInstance() => CallEditorResponse._();
   @$core.pragma('dart2js:noInline')
-  static EditorReply getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EditorReply>(
-          EditorReply.$_createMessage);
-  static EditorReply? _defaultInstance;
+  static CallEditorResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CallEditorResponse>(
+          CallEditorResponse.$_createMessage);
+  static CallEditorResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get resultJson => $_getSZ(0);

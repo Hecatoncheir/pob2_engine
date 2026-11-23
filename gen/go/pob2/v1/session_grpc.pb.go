@@ -64,8 +64,8 @@ type SessionServiceClient interface {
 	ExportBuild(ctx context.Context, in *ExportBuildRequest, opts ...grpc.CallOption) (*ExportBuildResponse, error)
 	WatchSession(ctx context.Context, in *WatchSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchSessionResponse], error)
 	WatchServer(ctx context.Context, in *WatchServerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServerResponse], error)
-	WatchEditor(ctx context.Context, in *WatchEditorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[EditorCommand], error)
-	CallEditor(ctx context.Context, in *CallEditorRequest, opts ...grpc.CallOption) (*EditorReply, error)
+	WatchEditor(ctx context.Context, in *WatchEditorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchEditorResponse], error)
+	CallEditor(ctx context.Context, in *CallEditorRequest, opts ...grpc.CallOption) (*CallEditorResponse, error)
 	ReplyEditor(ctx context.Context, in *ReplyEditorRequest, opts ...grpc.CallOption) (*ReplyEditorResponse, error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
 	RegisterClient(ctx context.Context, in *RegisterClientRequest, opts ...grpc.CallOption) (*RegisterClientResponse, error)
@@ -258,13 +258,13 @@ func (c *sessionServiceClient) WatchServer(ctx context.Context, in *WatchServerR
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type SessionService_WatchServerClient = grpc.ServerStreamingClient[WatchServerResponse]
 
-func (c *sessionServiceClient) WatchEditor(ctx context.Context, in *WatchEditorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[EditorCommand], error) {
+func (c *sessionServiceClient) WatchEditor(ctx context.Context, in *WatchEditorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchEditorResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[3], SessionService_WatchEditor_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[WatchEditorRequest, EditorCommand]{ClientStream: stream}
+	x := &grpc.GenericClientStream[WatchEditorRequest, WatchEditorResponse]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -275,11 +275,11 @@ func (c *sessionServiceClient) WatchEditor(ctx context.Context, in *WatchEditorR
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SessionService_WatchEditorClient = grpc.ServerStreamingClient[EditorCommand]
+type SessionService_WatchEditorClient = grpc.ServerStreamingClient[WatchEditorResponse]
 
-func (c *sessionServiceClient) CallEditor(ctx context.Context, in *CallEditorRequest, opts ...grpc.CallOption) (*EditorReply, error) {
+func (c *sessionServiceClient) CallEditor(ctx context.Context, in *CallEditorRequest, opts ...grpc.CallOption) (*CallEditorResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(EditorReply)
+	out := new(CallEditorResponse)
 	err := c.cc.Invoke(ctx, SessionService_CallEditor_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -358,8 +358,8 @@ type SessionServiceServer interface {
 	ExportBuild(context.Context, *ExportBuildRequest) (*ExportBuildResponse, error)
 	WatchSession(*WatchSessionRequest, grpc.ServerStreamingServer[WatchSessionResponse]) error
 	WatchServer(*WatchServerRequest, grpc.ServerStreamingServer[WatchServerResponse]) error
-	WatchEditor(*WatchEditorRequest, grpc.ServerStreamingServer[EditorCommand]) error
-	CallEditor(context.Context, *CallEditorRequest) (*EditorReply, error)
+	WatchEditor(*WatchEditorRequest, grpc.ServerStreamingServer[WatchEditorResponse]) error
+	CallEditor(context.Context, *CallEditorRequest) (*CallEditorResponse, error)
 	ReplyEditor(context.Context, *ReplyEditorRequest) (*ReplyEditorResponse, error)
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
 	RegisterClient(context.Context, *RegisterClientRequest) (*RegisterClientResponse, error)
@@ -420,10 +420,10 @@ func (UnimplementedSessionServiceServer) WatchSession(*WatchSessionRequest, grpc
 func (UnimplementedSessionServiceServer) WatchServer(*WatchServerRequest, grpc.ServerStreamingServer[WatchServerResponse]) error {
 	return status.Error(codes.Unimplemented, "method WatchServer not implemented")
 }
-func (UnimplementedSessionServiceServer) WatchEditor(*WatchEditorRequest, grpc.ServerStreamingServer[EditorCommand]) error {
+func (UnimplementedSessionServiceServer) WatchEditor(*WatchEditorRequest, grpc.ServerStreamingServer[WatchEditorResponse]) error {
 	return status.Error(codes.Unimplemented, "method WatchEditor not implemented")
 }
-func (UnimplementedSessionServiceServer) CallEditor(context.Context, *CallEditorRequest) (*EditorReply, error) {
+func (UnimplementedSessionServiceServer) CallEditor(context.Context, *CallEditorRequest) (*CallEditorResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CallEditor not implemented")
 }
 func (UnimplementedSessionServiceServer) ReplyEditor(context.Context, *ReplyEditorRequest) (*ReplyEditorResponse, error) {
@@ -716,11 +716,11 @@ func _SessionService_WatchEditor_Handler(srv interface{}, stream grpc.ServerStre
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(SessionServiceServer).WatchEditor(m, &grpc.GenericServerStream[WatchEditorRequest, EditorCommand]{ServerStream: stream})
+	return srv.(SessionServiceServer).WatchEditor(m, &grpc.GenericServerStream[WatchEditorRequest, WatchEditorResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SessionService_WatchEditorServer = grpc.ServerStreamingServer[EditorCommand]
+type SessionService_WatchEditorServer = grpc.ServerStreamingServer[WatchEditorResponse]
 
 func _SessionService_CallEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CallEditorRequest)

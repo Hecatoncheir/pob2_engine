@@ -25,8 +25,8 @@ service SessionService {
   rpc ExportBuild(ExportBuildRequest) returns (ExportBuildResponse);
   rpc WatchSession(WatchSessionRequest) returns (stream WatchSessionResponse);
   rpc WatchServer(WatchServerRequest) returns (stream WatchServerResponse);
-  rpc WatchEditor(WatchEditorRequest) returns (stream EditorCommand);
-  rpc CallEditor(CallEditorRequest) returns (EditorReply);
+  rpc WatchEditor(WatchEditorRequest) returns (stream WatchEditorResponse);
+  rpc CallEditor(CallEditorRequest) returns (CallEditorResponse);
   rpc ReplyEditor(ReplyEditorRequest) returns (ReplyEditorResponse);
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
   rpc RegisterClient(RegisterClientRequest) returns (RegisterClientResponse);
@@ -45,7 +45,7 @@ message CallEditorRequest {
   string arguments_json = 3;
 }
 
-message EditorCommand {
+message WatchEditorResponse {
   string request_id = 1;
   string tool = 2;
   string arguments_json = 3;
@@ -53,7 +53,7 @@ message EditorCommand {
   bool attached = 4;
 }
 
-message EditorReply {
+message CallEditorResponse {
   string result_json = 1;
 }
 
