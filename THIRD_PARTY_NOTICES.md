@@ -40,6 +40,11 @@ python tool/notices.py --archive .reference/licenses.zip
 и данные PoB загружаются из выпуска сообщества. LuaJIT и `lua-utf8` для Linux
 и macOS загружаются из [pob-poe2-mcp v0.24.1](https://github.com/Hecatoncheir/pob-poe2-mcp/releases/tag/v0.24.1).
 
+Совместимые сценарии мастерской и Lua-мост оригинального окна используют
+файлы [pob-poe2-mcp v0.23.0, commit 1b3f61dc00016fe3bc86d889d6f4992302231d75](https://github.com/Hecatoncheir/pob-poe2-mcp/tree/1b3f61dc00016fe3bc86d889d6f4992302231d75/pob_poe2_mcp).
+Исходные Lua-модули, описания инструментов и таблицы ресурсов сохранены
+в `internal/poblegacy/assets/` вместе с [лицензией MIT](internal/poblegacy/assets/LICENSE).
+
 Закреплённые эталонные копии PoB и Python/Lua MCP используются в разработке и CI.
 Ревизии и контрольные
 суммы заданы в [sources.lock.json](testdata/reference/sources.lock.json);

@@ -1,0 +1,1630 @@
+[
+  {
+    "name": "pob_get_build_directory",
+    "description": "Путь к папке сборок, выбранной в запущенном Path of Building. Работает в режиме app даже в списке сборок.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_list_characters",
+    "description": "Получить список персонажей PoE 2 из авторизованного окна PoB. Требует режима app и обращения пользователя.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "pob_get_character",
+    "description": "Получить экипировку, умения, дерево и самоцветы персонажа по имени из авторизованного окна PoB. Требует режима app и выбора пользователя.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "pob_import_character",
+    "description": "Открыть новую сборку в отдельной сессии Lua по данным персонажа, полученным через pob_get_character.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "character"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_catalog",
+    "description": "Каталог исходного Lua: точные ID камней, классов, узлов, настроек и слотов. Пагинация; доступен до создания сборки.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "gems",
+            "classes",
+            "nodes",
+            "config",
+            "slots",
+            "bases"
+          ]
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_create_build",
+    "description": "Создать новую сборку оригинальным newBuild; заменяет текущую сессию. Уровень задаётся в ручном режиме.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "classId": {
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_import_xml",
+    "description": "Загрузить полный XML PathOfBuilding2 и рассчитать его через Lua. Заменяет текущую сборку.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "xml": {
+          "type": "string",
+          "maxLength": 4194304
+        }
+      },
+      "required": [
+        "xml"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_add_skill_group",
+    "description": "Добавить группу из точных ID каталога gems. Совместимость и ошибки нужно проверить pob_check_build.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "gems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 40
+              },
+              "quality": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "sourceIndex": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 12
+        }
+      },
+      "required": [
+        "gems"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_add_item",
+    "description": "Распознать текст предмета через Item Lua, добавить и при заданном slot надеть с проверкой IsItemValidForSlot.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "slot": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "raw"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_set_config",
+    "description": "Установить условия расчёта по точным именам, типам и значениям каталога config. Выполняет ConfigTab:BuildModList.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "values"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_set_custom_mods",
+    "description": "Заменить текст пользовательских модификаторов; это предположения автора, а не предметы. Явно раскрывайте их в отчёте.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_tree_action",
+    "description": "Действие оригинального дерева: назначение пути, возврат, атрибут, заметка. IDs берите из каталога nodes. Атрибуты: 1 сила, 2 ловкость, 3 интеллект. Для мастерства нужен mastery из каталога узла.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "allocate",
+            "refund",
+            "toggle",
+            "right",
+            "note"
+          ]
+        },
+        "attribute": {
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "mastery": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_tree_options",
+    "description": "Класс, восхождение, набор и оружейный режим через PassiveSpec; изменение класса с узлами требует connect или reset.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "integer"
+        },
+        "ascendancy": {
+          "type": "integer"
+        },
+        "spec": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mode": {
+          "type": "integer",
+          "enum": [
+            0,
+            1,
+            2
+          ]
+        },
+        "reset": {
+          "type": "boolean"
+        },
+        "connect": {
+          "type": "boolean"
+        },
+        "specAction": {
+          "type": "string",
+          "enum": [
+            "new",
+            "clone",
+            "rename",
+            "delete"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "compare": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_select_main_skill",
+    "description": "Выбрать основную группу, активное умение, его часть или набор показателей по id из соответствующего списка snapshot.buildInfo отчёта.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "control": {
+          "type": "string",
+          "enum": [
+            "groups",
+            "skills",
+            "parts",
+            "statSets"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "control",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_node_tooltip",
+    "description": "Оригинальный AddNodeTooltip: свойства, путь и расчётные изменения узла.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "compare": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_check_build",
+    "description": "Подробный отчёт Lua: показатели, условия, камни/ошибки, предметы/неподдержанные строки, слоты, узлы и предупреждения. targets сравнивает числа с целями, не доказывает легальность сборки.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "stat": {
+                "type": "string"
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "stat"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_export_xml",
+    "description": "Экспорт оригинальным SaveDB; возвращает XML без записи файла.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_render_image",
+    "description": "Создать PNG сборки: сводка, дерево, все характеристики, камни, предметы, условия, заметки, предупреждения или полный отчёт. Дерево отрисовывает оригинальный Lua PassiveTreeView с текстурами PoB, рамками, фонами и дугами; zoom масштабирует всё вместе, подписи showLabels по умолчанию выключены. Связи класса с восхождением скрыты. Сборка и файлы PoB не изменяются. Изображение возвращается прямо в MCP. Длинные разделы имеют страницы: смотрите pages. Для node/item нужен id из каталога/отчёта. treeScope: allocated или full; query фильтрует текст или выбирает область дерева.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "view": {
+          "type": "string",
+          "enum": [
+            "overview",
+            "tree",
+            "stats",
+            "skills",
+            "items",
+            "config",
+            "notes",
+            "warnings",
+            "node",
+            "item",
+            "all"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 640,
+          "maximum": 2400
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 480,
+          "maximum": 2400
+        },
+        "treeScope": {
+          "type": "string",
+          "enum": [
+            "allocated",
+            "full"
+          ]
+        },
+        "showLabels": {
+          "type": "boolean"
+        },
+        "zoom": {
+          "type": "number",
+          "minimum": 0.25,
+          "maximum": 8
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_get_tree",
+    "description": "Компактная геометрия настоящего дерева Lua: координаты, связи и выбранные узлы. Без PNG и игровых формул во внешнем интерфейсе.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "includeScene": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_tree_icons",
+    "description": "Оригинальные иконки узлов текущего дерева в PNG RGBA. Имена берите из pob_get_tree; до 32 за запрос.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "icons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "icons"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "pob_tree_textures",
+    "description": "Текстура готовой сцены PoB в PNG RGBA. Токен берите из scene.commands[].texture инструмента pob_get_tree(includeScene=true).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "pob_tree_hover",
+    "description": "Оригинальная подсказка Lua и готовая подсветка пути/зависимых узлов при наведении, без изменения сборки.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "compare": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true
+    }
+  },
+  {
+    "name": "pob_node_power",
+    "description": "Каталог характеристик и поэтапный отчёт влияния узлов через штатный Lua PowerBuilder. Только engine. start → poll до complete; cancel отменяет. Включает оригинальную тепловую карту и строки отчёта, без изменения XML.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "catalog",
+            "start",
+            "poll",
+            "cancel"
+          ]
+        },
+        "stat": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "maxDistance": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "job": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allocation": {
+          "type": "string",
+          "enum": [
+            "all",
+            "allocated",
+            "unallocated"
+          ]
+        },
+        "includeScene": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_gem_icons",
+    "description": "Оригинальные иконки камней PoB в PNG. Принимает только ID из каталога Lua.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "minItems": 1,
+          "maxItems": 24
+        }
+      },
+      "required": [
+        "ids"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_gem_supports",
+    "description": "Подходящие поддержки для черновика группы: исходная проверка PoB в отдельном Lua. Текущая сборка и ревизия не изменяются.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "gems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 40
+              },
+              "quality": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "sourceIndex": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 12
+        },
+        "groupId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "gems"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_preview_support",
+    "description": "Рассчитать DPS выбранного умения до и после добавления одной поддержки уровня 1 в полную копию черновика. targetIndex — позиция активного камня в gems начиная с 1. Рабочие XML и ревизия сохраняются.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "gems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 40
+              },
+              "quality": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "sourceIndex": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 11
+        },
+        "targetIndex": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 11
+        },
+        "supportId": {
+          "type": "string"
+        },
+        "groupId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "gems",
+        "targetIndex",
+        "supportId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_update_skill_group",
+    "description": "Изменить группу через исходный SkillsTab. Передавайте sourceIndex из отчёта для сохранённых камней. Для умения от предмета первый элемент содержит его skillId в поле id и sourceIndex: 1, последующие элементы — поддержки. Поля первого элемента и название такого умения задаёт источник.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "gems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 40
+              },
+              "quality": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "sourceIndex": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 12
+        }
+      },
+      "required": [
+        "groupId",
+        "gems"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_delete_skill_group",
+    "description": "Удалить указанную группу исходным SkillListControl.OnSelDelete; пересчитать основное умение. Для отмены восстановите XML из истории.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "groupId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_inspect_item",
+    "description": "Описание Item/ItemsTab Lua и совместимые слоты без изменения сборки. Нужен raw либо itemId; slot задаёт контекст описания.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "itemId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slot": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_equip_item",
+    "description": "Надеть raw либо сохранённый itemId в slot исходными методами PoB. itemId=0 снимает предмет, оставляя его в списке сборки.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "itemId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slot": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "slot"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_select_weapon_set",
+    "description": "Выбрать набор оружия I/II штатной кнопкой ItemsTab и пересчитать сборку.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "enum": [
+            1,
+            2
+          ]
+        }
+      },
+      "required": [
+        "index"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_gem_tooltip",
+    "description": "Описание камня исходным GemTooltip. Для установленного камня укажите groupId и sourceIndex; для каталога или черновика — id, level и quality. XML и ревизия не изменяются.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 40
+        },
+        "quality": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "groupId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sourceIndex": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_compare_item",
+    "description": "Примерка в конкретном слоте без изменения сборки. Исходный GetMiscCalculator и CompareStatList возвращают Было/Стало, формат и смысл изменений. Для применения передайте comparison.revision как expectedRevision.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "itemId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slot": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "slot"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_trade_catalog",
+    "description": "Локальный каталог характеристик, совместимых баз и валют из исходного PoB. Не обращается к торговому API и не изменяет сборку.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slot": {
+          "type": "string",
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "slot"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_trade_search",
+    "description": "Подготовить браузерную ссылку trade2 по каталогу PoB: лига, ячейка, база, бюджет и характеристики. Сетевые запросы не выполняются; рабочая сборка не изменяется.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slot": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "league": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "base": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "maxPrice": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000.0
+        },
+        "currency": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "online": {
+          "type": "boolean"
+        },
+        "filters": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              },
+              "option": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "slot",
+        "league"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_status",
+    "description": "Состояние PoB II: подключение, диалоги, сборка, ревизия, история, возможности. Доступно при открытом диалоге и занятом приложении.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_app",
+    "description": "Управление PoB II. close_dialog закрывает текущий диалог, включая «Полный DPS»; для отмены ввода в форме требуется discard=true. close/restart сохраняют данные и отвечают перед завершением. Начните с pob_editor_status. Новые действия интерфейса требуют PoB II 0.12.0.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "connect",
+            "disconnect",
+            "recalculate",
+            "save",
+            "doctor",
+            "close_dialog",
+            "disable_access",
+            "close",
+            "restart"
+          ]
+        },
+        "discard": {
+          "type": "boolean",
+          "description": "Явно отменить ввод в закрываемой форме."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_components",
+    "description": "Компоненты PoB II: активная/предыдущая пара, установленные версии, закреплённые обновления, проверка, обновление, откат, выбор установленной версии по commit. Новая пара проверяется Lua до переключения. Замена dev на закреплённый выпуск требует allowReplaceDev. Действия update, rollback, select_installed возвращают фоновую задачу; результат получите через pob_editor_job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "check_updates",
+            "update",
+            "rollback",
+            "select_installed"
+          ]
+        },
+        "component": {
+          "type": "string",
+          "enum": [
+            "pob",
+            "mcp"
+          ]
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$",
+          "maxLength": 40
+        },
+        "allowReplaceDev": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_library",
+    "description": "Библиотека PoB II: список, обновление, открытие, копирование, переименование, удаление выбранной сборки, выбор/поиск папки. Ручная смена сборки по-прежнему отзывает доступ; авторизованные команды MCP сохраняют соединение.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "list",
+            "refresh",
+            "open",
+            "copy",
+            "rename",
+            "delete",
+            "set_folder",
+            "detect_folder"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 4096
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_history",
+    "description": "Отмена и повтор правок текущей сборки с сохранением в библиотеку.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "undo",
+            "redo"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_notes",
+    "description": "Чтение и сохранение заметок текущей сборки.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "read",
+            "write"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 1000000
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_files",
+    "description": "Импорт XML, файла, кода или ссылки в отдельную сборку; экспорт XML/кода и сохранение XML по явному пути без системных диалогов. Перезапись файла требует overwrite=true.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "import_xml",
+            "import_file",
+            "import_code",
+            "import_link",
+            "export_xml",
+            "export_code",
+            "save_file"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4000000
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "overwrite": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_progression",
+    "description": "План прокачки: этапы, снимок текущего состояния, применение дерева/умений/экипировки, изменение описания, завершённости и удаление этапа. Индекс с нуля.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "list",
+            "capture",
+            "apply",
+            "update",
+            "delete"
+          ]
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 1000000
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "tree",
+              "skills",
+              "equipment"
+            ]
+          },
+          "maxItems": 3
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_ui",
+    "description": "Полное управление интерфейсом PoB II 0.12.0: snapshot возвращает видимые элементы, ID, поля, значения и доступные действия; perform выполняет действие элемента из свежего snapshotId; close_dialog закрывает верхний диалог. Перед setText нажмите tap на поле. Игровые изменения проходят обычные обработчики Lua. Для файлов доступны также pob_editor_files с явным путём. screenshot возвращает PNG окна и snapshot; gesture управляет мышью по координатам снимка, key отправляет клавишу с modifiers. Для gesture/key требуется свежий snapshotId. Системный выбор файла выполняйте через pob_editor_files.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "navigate",
+            "preferences",
+            "snapshot",
+            "perform",
+            "close_dialog",
+            "screenshot",
+            "gesture",
+            "key"
+          ]
+        },
+        "page": {
+          "type": "string",
+          "enum": [
+            "library",
+            "workspace",
+            "components"
+          ]
+        },
+        "tab": {
+          "type": "string",
+          "enum": [
+            "tree",
+            "items",
+            "skills",
+            "conditions",
+            "calculations"
+          ]
+        },
+        "theme": {
+          "type": "string",
+          "enum": [
+            "system",
+            "light",
+            "dark"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "ru",
+            "en",
+            "fr",
+            "de",
+            "es",
+            "pt-BR",
+            "ja",
+            "ko",
+            "th",
+            "zh-Hant"
+          ]
+        },
+        "scale": {
+          "type": "number",
+          "minimum": 0.75,
+          "maximum": 2.0
+        },
+        "motion": {
+          "type": "boolean"
+        },
+        "nodeId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "snapshotId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation": {
+          "type": "string",
+          "description": "Для perform — действие из nodes.actions; для gesture — tap, doubleTap, longPress, drag, scroll или hover. Для scroll value={x,y} задаёт смещение."
+        },
+        "value": {
+          "description": "Аргумент действия: строка для setText, объект для setSelection или scrollToOffset."
+        },
+        "discard": {
+          "type": "boolean"
+        },
+        "from": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ],
+          "additionalProperties": false,
+          "description": "Начало жеста в логических пикселях снимка окна."
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ],
+          "additionalProperties": false,
+          "description": "Конец drag в логических пикселях."
+        },
+        "button": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary"
+          ]
+        },
+        "key": {
+          "type": "string",
+          "description": "Клавиша: a–z, 0–9, tab, enter, escape, space, backspace, delete, arrowLeft/Right/Up/Down, home, end, pageUp, pageDown."
+        },
+        "modifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "control",
+              "shift",
+              "alt",
+              "meta"
+            ]
+          },
+          "description": "Модификаторы сочетания клавиш."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ]
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "pob_editor_job",
+    "description": "Состояние последней задачи смены компонентов: idle/running/complete/failed, результат или ошибка. Доступно при занятом приложении; завершение задачи обновляет ревизию.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "openWorldHint": false
+    }
+  }
+]

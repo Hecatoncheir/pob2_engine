@@ -64,6 +64,14 @@
       ]
     },
     {
+      "module": "golang.org/x/image",
+      "version": "v0.22.0",
+      "files": [
+        "modules/golang.org/x/image/v0.22.0/LICENSE",
+        "modules/golang.org/x/image/v0.22.0/PATENTS"
+      ]
+    },
+    {
       "module": "golang.org/x/net",
       "version": "v0.60.0",
       "files": [
@@ -144,6 +152,8 @@
     "modules/github.com/segmentio/encoding/v0.5.4/LICENSE": "d6d71a1f7dc6539e371120cc7af6e3257e55ca79634d473211f217b8965b0f16",
     "modules/github.com/yosida95/uritemplate/v3/v3.0.2/LICENSE": "0761aadfb1921103752869ee942d4a71bdd54494697684d4b13dc17ad9781191",
     "modules/go.etcd.io/bbolt/v1.5.0/LICENSE": "c15d721c37e277a11584547de6d618541501f7aa10c4e32a945a4f9ff36cb0f6",
+    "modules/golang.org/x/image/v0.22.0/LICENSE": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad",
+    "modules/golang.org/x/image/v0.22.0/PATENTS": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc",
     "modules/golang.org/x/net/v0.60.0/LICENSE": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad",
     "modules/golang.org/x/net/v0.60.0/PATENTS": "96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc",
     "modules/golang.org/x/oauth2/v0.36.0/LICENSE": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad",

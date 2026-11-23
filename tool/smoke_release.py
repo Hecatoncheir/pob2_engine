@@ -1,6 +1,7 @@
 """Проверить релизный бинарник на целевой ОС без среды разработки."""
 
 import argparse
+import base64
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
@@ -92,14 +93,17 @@ def mcp_result(messages, request_id):
     return result
 
 
-def initialize_mcp(send, messages):
+def initialize_tools(send, messages):
     send({'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-11-25',
           'capabilities': {}, 'clientInfo': {'name': 'release-smoke', 'version': '2'}}})
     mcp_result(messages, 1)
     send({'method': 'notifications/initialized'})
     send({'id': 2, 'method': 'tools/list', 'params': {}})
-    tools = mcp_result(messages, 2)['tools']
-    require({tool['name'] for tool in tools} == MCP_TOOLS, 'Неверный набор инструментов MCP')
+    return {tool['name'] for tool in mcp_result(messages, 2)['tools']}
+
+
+def initialize_mcp(send, messages):
+    require(initialize_tools(send, messages) == MCP_TOOLS, 'Неверный набор инструментов MCP')
     send({'id': 3, 'method': 'tools/call', 'params': {'name': 'pob_editor_status', 'arguments': {}}})
     answer = receive(messages)
     result = answer.get('result', {})
@@ -190,8 +194,11 @@ class Scenario:
         require(edited['revision'] == 3, 'MCP не изменил сборку')
 
     def mcp_tools(self, session, calls):
-        with_session = ['--attach', session, *self.connection]
-        process = subprocess.Popen([str(self.binary), 'mcp', *with_session],
+        command = ['mcp', '--attach', session, *self.connection]
+        return [result['structuredContent'] for result in self.call_tools(command, calls, initialize_mcp)]
+
+    def call_tools(self, command, calls, initialize):
+        process = subprocess.Popen([str(self.binary), *command],
                                    cwd=self.root, env=self.environment, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, encoding='utf-8')
         messages = queue.Queue()
@@ -202,8 +209,8 @@ class Scenario:
             process.stdin.flush()
 
         try:
-            initialize_mcp(send, messages)
-            answers = [call_mcp(send, messages, request_id, name, args)
+            initialize(send, messages)
+            answers = [tool_reply(send, messages, request_id, name, args)
                        for request_id, (name, args) in enumerate(calls, start=4)]
             process.stdin.close()
             require(process.wait(timeout=10) == 0, 'MCP не завершился по EOF')
@@ -369,8 +376,12 @@ def native_target():
 
 
 def call_mcp(send, messages, request_id, name, arguments):
+    return tool_reply(send, messages, request_id, name, arguments)['structuredContent']
+
+
+def tool_reply(send, messages, request_id, name, arguments):
     send({'id': request_id, 'method': 'tools/call', 'params': {'name': name, 'arguments': arguments}})
-    return mcp_result(messages, request_id)['structuredContent']
+    return mcp_result(messages, request_id)
 
 
 def damage_edit():
@@ -448,6 +459,7 @@ def check_native_lua(scenario):
         tree = check_lua_tree(scenario, fixtures)
         weapon_tree = check_lua_weapon_tree(scenario, fixtures)
         item_skill_group = check_lua_item_skill_group(scenario, fixtures)
+        workbench = check_workbench(scenario, fixtures)
         scenario.stop()
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
         upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
@@ -472,7 +484,7 @@ def check_native_lua(scenario):
                 selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
                 upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
                 multigroup=multigroup, catalog=catalog, tree=tree, weapon_tree=weapon_tree,
-                item_skill_group=item_skill_group, timings=timings,
+                item_skill_group=item_skill_group, workbench=workbench, timings=timings,
                 parallel_first_start=True, reused_cache_offline=True)
 
 
@@ -668,6 +680,40 @@ def chaos_bolt_group(view):
     group = next((row for row in groups if 'Chaos Bolt' in row['label'] and row.get('source')), None)
     require(group is not None and group['supportScope'] == 'slot', 'Не найдена группа умения от жезла')
     return group
+
+
+def check_workbench(scenario, fixtures):
+    spell = SPELLS[0]
+    xml = (fixtures / spell['file']).read_text('utf-8')
+    commands = [
+        ('pob_import_xml', {'xml': xml}),
+        ('pob_check_build', {}),
+        ('pob_export_xml', {}),
+        ('pob_render_image', {'view': 'overview', 'width': 640, 'height': 480}),
+        ('pob_render_image', {'view': 'tree', 'treeScope': 'full', 'width': 880, 'height': 640}),
+    ]
+    imported, report, exported, overview, tree = scenario.call_tools(['workbench'], commands, initialize_workbench)
+    assert_workbench_png(overview)
+    assert_workbench_png(tree)
+    stats = report['structuredContent']['result']['report']['stats']
+    require(math.isclose(stats['TotalDPS'], spell['dps'], rel_tol=1e-10), 'Мастерская изменила эталон DPS')
+    require('<PathOfBuilding2>' in exported['structuredContent']['result']['xml'], 'Мастерская не вернула XML')
+    revision = imported['structuredContent']['revision']
+    require(exported['structuredContent']['revision'] == tree['structuredContent']['revision'] == revision,
+            'Чтение изображения изменило ревизию мастерской')
+    return dict(dps=stats['TotalDPS'], revision=revision, exported_xml=True, overview_png=True, passive_tree_png=True)
+
+
+def initialize_workbench(send, messages):
+    required = {'pob_import_xml', 'pob_check_build', 'pob_export_xml', 'pob_render_image',
+                'pob_get_tree', 'pob_gem_icons', 'pob_gem_supports', 'pob_trade_search'}
+    require(required <= initialize_tools(send, messages), 'Мастерская не объявила совместимые команды')
+
+
+def assert_workbench_png(result):
+    image = next((item for item in result['content'] if item.get('type') == 'image'), {})
+    require(image.get('mimeType') == 'image/png' and base64.b64decode(image['data']).startswith(b'\x89PNG\r\n\x1a\n'),
+            'Мастерская не вернула изображение PNG')
 
 
 def commit_tree_edit(scenario, snapshot, node_id, action, change, attribute=None, *,
