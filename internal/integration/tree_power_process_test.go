@@ -3,12 +3,14 @@ package integration_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"reflect"
 	"slices"
 	"testing"
 	"time"
 
+	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"google.golang.org/grpc/codes"
@@ -42,9 +44,45 @@ func TestLuaTreePowerAcrossProcesses(t *testing.T) {
 		t.Fatal("отрисовка изменила расчёт влияния", err)
 	}
 	checkTreeScene(t, colored.Scene)
+	checkTreePowerStream(t, s, query, colored)
 	checkTreePowerCancellation(t, s)
 	if !reflect.DeepEqual(supportSnapshot(t, s), before) {
 		t.Fatal("расчёт влияния изменил состояние сборки")
+	}
+}
+
+func checkTreePowerStream(t *testing.T, s *groupScenario, query build.TreePowerQuery, want application.TreePowerView) {
+	t.Helper()
+	stream, err := s.client.WatchTreePower(s.ctx, "main", s.revision, query)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var last uint32
+	progressSeen := false
+	for {
+		event, err := stream.Recv()
+		if err != nil {
+			t.Fatal(err)
+		}
+		switch value := event.GetUpdate().(type) {
+		case *pb.WatchTreePowerResponse_Progress:
+			if value.Progress < last || value.Progress > 100 {
+				t.Fatalf("неверный ход расчёта Lua: %d после %d", value.Progress, last)
+			}
+			last = value.Progress
+			progressSeen = true
+		case *pb.WatchTreePowerResponse_Result:
+			if !progressSeen {
+				t.Fatal("подписка не показала ход расчёта")
+			}
+			if value.Result.GetRevision() != want.Revision || len(value.Result.GetEntries()) != len(want.Entries) || value.Result.GetScene().GetAssetId() != want.Scene.AssetID {
+				t.Fatal("результат подписки отличается от расчёта влияния")
+			}
+			if _, err := stream.Recv(); err != io.EOF {
+				t.Fatal("подписка не закрылась после результата", err)
+			}
+			return
+		}
 	}
 }
 
@@ -74,6 +112,19 @@ func checkTreePowerCancellation(t *testing.T, s *groupScenario) {
 	query := build.TreePowerQuery{Metric: "FullDPS"}
 	if _, err := s.client.TreePower(ctx, "main", s.revision, query); status.Code(err) != codes.DeadlineExceeded {
 		t.Fatal("отмена расчёта влияния не дошла до клиента", err)
+	}
+	streamCtx, stopStream := context.WithCancel(s.ctx)
+	defer stopStream()
+	stream, err := s.client.WatchTreePower(streamCtx, "main", s.revision, query)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if started, err := stream.Recv(); err != nil || started.GetUpdate() == nil {
+		t.Fatal("подписка не началась", err)
+	}
+	stopStream()
+	if _, err := stream.Recv(); status.Code(err) != codes.Canceled {
+		t.Fatal("закрытие подписки не отменило расчёт", err)
 	}
 	if _, err := s.client.BuildReport(s.ctx, "main", s.revision); err != nil {
 		t.Fatal("отмена помешала чтению отчёта общей сборки", err)

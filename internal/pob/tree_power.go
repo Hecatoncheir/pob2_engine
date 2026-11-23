@@ -7,12 +7,12 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
 
-func (c *Calculator) ReadTreePower(ctx context.Context, doc *build.Document, query build.TreePowerQuery) (*build.TreePower, error) {
+func (c *Calculator) ReadTreePower(ctx context.Context, doc *build.Document, query build.TreePowerQuery, progress func(uint32)) (*build.TreePower, error) {
 	xml, err := doc.ExportWithoutProgression()
 	if err != nil {
 		return nil, err
 	}
-	input := &request{Operation: "tree_power", XML: pobXML.Replace(string(xml)), TreePower: &query}
+	input := &request{Operation: "tree_power", XML: pobXML.Replace(string(xml)), TreePower: &query, ReportProgress: progress != nil, progress: progress}
 	answer, err := c.runTreePower(ctx, input)
 	if err != nil {
 		return nil, err

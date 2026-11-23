@@ -24,6 +24,7 @@ service SessionService {
   rpc GetTreeNodeTooltip(GetTreeNodeTooltipRequest) returns (GetTreeNodeTooltipResponse);
   rpc GetBuildReport(GetBuildReportRequest) returns (GetBuildReportResponse);
   rpc GetTreePower(GetTreePowerRequest) returns (GetTreePowerResponse);
+  rpc WatchTreePower(WatchTreePowerRequest) returns (stream WatchTreePowerResponse);
   rpc GetEquipmentDetails(GetEquipmentDetailsRequest) returns (GetEquipmentDetailsResponse);
   rpc GetTreeTexture(GetTreeTextureRequest) returns (GetTreeTextureResponse);
   rpc GetCatalog(GetCatalogRequest) returns (GetCatalogResponse);

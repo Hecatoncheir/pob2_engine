@@ -15,8 +15,12 @@ type TreePowerCommands interface {
 	TreePower(context.Context, string, uint64, build.TreePowerQuery) (TreePowerView, error)
 }
 
+type TreePowerProgressCommands interface {
+	TreePowerWithProgress(context.Context, string, uint64, build.TreePowerQuery, func(uint32)) (TreePowerView, error)
+}
+
 type treePowerReader interface {
-	ReadTreePower(context.Context, *build.Document, build.TreePowerQuery) (*build.TreePower, error)
+	ReadTreePower(context.Context, *build.Document, build.TreePowerQuery, func(uint32)) (*build.TreePower, error)
 }
 
 func (s *Service) SupportsTreePower() bool {
@@ -25,6 +29,10 @@ func (s *Service) SupportsTreePower() bool {
 }
 
 func (s *Service) TreePower(ctx context.Context, id string, expected uint64, query build.TreePowerQuery) (TreePowerView, error) {
+	return s.TreePowerWithProgress(ctx, id, expected, query, nil)
+}
+
+func (s *Service) TreePowerWithProgress(ctx context.Context, id string, expected uint64, query build.TreePowerQuery, progress func(uint32)) (TreePowerView, error) {
 	if err := query.Validate(); err != nil {
 		return TreePowerView{}, failure(InvalidArgument, err.Error())
 	}
@@ -36,7 +44,10 @@ func (s *Service) TreePower(ctx context.Context, id string, expected uint64, que
 	if !ok {
 		return TreePowerView{}, failure(InvalidArgument, "влияние узлов доступно с исходным Lua PoB")
 	}
-	report, err := reader.ReadTreePower(ctx, doc, query)
+	if progress != nil {
+		progress(0)
+	}
+	report, err := reader.ReadTreePower(ctx, doc, query, progress)
 	if err != nil {
 		if ctx.Err() != nil {
 			return TreePowerView{}, ctx.Err()

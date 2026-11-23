@@ -243,25 +243,26 @@ func (c *Calculator) stop() {
 }
 
 type response struct {
-	Ready            bool                     `json:"ready"`
-	EquipmentValid   bool                     `json:"equipment_valid"`
-	Skill            string                   `json:"skill"`
-	Mode             string                   `json:"mode"`
-	Stats            map[string]float64       `json:"stats"`
-	Warnings         []string                 `json:"warnings"`
-	Unsupported      []string                 `json:"unsupported"`
-	Error            string                   `json:"error"`
-	Catalog          *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
-	Issues           []build.Issue            `json:"issues,omitempty"`
-	TreeEdit         *build.PassiveChange     `json:"tree_edit,omitempty"`
-	TreeIdentity     *build.TreeIdentity      `json:"tree_identity,omitempty"`
-	TreeClass        *build.TreeClassChange   `json:"tree_class,omitempty"`
-	TreeGeometry     *build.TreeGeometry      `json:"tree_geometry,omitempty"`
-	TreeTooltip      *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
-	BuildReport      json.RawMessage          `json:"build_report,omitempty"`
-	SkillChoice      *build.SkillChoiceChange `json:"skill_choice,omitempty"`
-	TreePower        *build.TreePower         `json:"tree_power,omitempty"`
-	EquipmentDetails json.RawMessage          `json:"equipment_details,omitempty"`
+	Ready             bool                     `json:"ready"`
+	EquipmentValid    bool                     `json:"equipment_valid"`
+	Skill             string                   `json:"skill"`
+	Mode              string                   `json:"mode"`
+	Stats             map[string]float64       `json:"stats"`
+	Warnings          []string                 `json:"warnings"`
+	Unsupported       []string                 `json:"unsupported"`
+	Error             string                   `json:"error"`
+	Catalog           *gamedata.RuntimeCatalog `json:"catalog,omitempty"`
+	Issues            []build.Issue            `json:"issues,omitempty"`
+	TreeEdit          *build.PassiveChange     `json:"tree_edit,omitempty"`
+	TreeIdentity      *build.TreeIdentity      `json:"tree_identity,omitempty"`
+	TreeClass         *build.TreeClassChange   `json:"tree_class,omitempty"`
+	TreeGeometry      *build.TreeGeometry      `json:"tree_geometry,omitempty"`
+	TreeTooltip       *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
+	BuildReport       json.RawMessage          `json:"build_report,omitempty"`
+	SkillChoice       *build.SkillChoiceChange `json:"skill_choice,omitempty"`
+	TreePower         *build.TreePower         `json:"tree_power,omitempty"`
+	TreePowerProgress *uint32                  `json:"tree_power_progress,omitempty"`
+	EquipmentDetails  json.RawMessage          `json:"equipment_details,omitempty"`
 }
 
 type request struct {
@@ -282,7 +283,9 @@ type request struct {
 	TreeClass        *build.TreeClassEdit         `json:"tree_class,omitempty"`
 	SkillChoice      *build.SkillChoiceEdit       `json:"skill_choice,omitempty"`
 	TreePower        *build.TreePowerQuery        `json:"tree_power,omitempty"`
+	ReportProgress   bool                         `json:"report_progress,omitempty"`
 	EquipmentDetails *build.EquipmentDetailsQuery `json:"equipment_details,omitempty"`
+	progress         func(uint32)
 }
 
 type workerReply struct {
@@ -350,6 +353,20 @@ func (w *worker) request(value *request) workerReply {
 			return workerReply{err: fmt.Errorf("запись в PoB Lua: %w", err)}
 		}
 	}
+	for {
+		reply := w.readReply()
+		progress := reply.answer.TreePowerProgress
+		if progress == nil {
+			return reply
+		}
+		if value == nil || value.progress == nil {
+			return workerReply{err: fmt.Errorf("неожиданный ход расчёта PoB Lua")}
+		}
+		value.progress(*progress)
+	}
+}
+
+func (w *worker) readReply() workerReply {
 	if !w.output.Scan() {
 		err := w.output.Err()
 		if err == nil {

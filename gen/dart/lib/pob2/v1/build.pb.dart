@@ -2509,12 +2509,14 @@ class GetTreeNodeTooltipRequest extends $pb.GeneratedMessage {
     $fixnum.Int64? expectedRevision,
     $core.int? nodeId,
     $core.bool? compare,
+    $core.bool? includeScene,
   }) {
     final result = GetTreeNodeTooltipRequest._();
     if (sessionId != null) result.sessionId = sessionId;
     if (expectedRevision != null) result.expectedRevision = expectedRevision;
     if (nodeId != null) result.nodeId = nodeId;
     if (compare != null) result.compare = compare;
+    if (includeScene != null) result.includeScene = includeScene;
     return result;
   }
 
@@ -2537,6 +2539,7 @@ class GetTreeNodeTooltipRequest extends $pb.GeneratedMessage {
         defaultOrMaker: $fixnum.Int64.ZERO)
     ..aI(3, _omitFieldNames ? '' : 'nodeId', fieldType: $pb.PbFieldType.OU3)
     ..aOB(4, _omitFieldNames ? '' : 'compare')
+    ..aOB(5, _omitFieldNames ? '' : 'includeScene')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2600,6 +2603,15 @@ class GetTreeNodeTooltipRequest extends $pb.GeneratedMessage {
   $core.bool hasCompare() => $_has(3);
   @$pb.TagNumber(4)
   void clearCompare() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.bool get includeScene => $_getBF(4);
+  @$pb.TagNumber(5)
+  set includeScene($core.bool value) => $_setBool(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasIncludeScene() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearIncludeScene() => $_clearField(5);
 }
 
 class GetTreeNodeTooltipResponse extends $pb.GeneratedMessage {
@@ -2611,6 +2623,7 @@ class GetTreeNodeTooltipResponse extends $pb.GeneratedMessage {
     $core.int? points,
     $core.String? note,
     $core.Iterable<$core.String>? recipe,
+    TreeScene? scene,
   }) {
     final result = GetTreeNodeTooltipResponse._();
     if (revision != null) result.revision = revision;
@@ -2620,6 +2633,7 @@ class GetTreeNodeTooltipResponse extends $pb.GeneratedMessage {
     if (points != null) result.points = points;
     if (note != null) result.note = note;
     if (recipe != null) result.recipe.addAll(recipe);
+    if (scene != null) result.scene = scene;
     return result;
   }
 
@@ -2646,6 +2660,8 @@ class GetTreeNodeTooltipResponse extends $pb.GeneratedMessage {
     ..aI(5, _omitFieldNames ? '' : 'points', fieldType: $pb.PbFieldType.OU3)
     ..aOS(6, _omitFieldNames ? '' : 'note')
     ..pPS(7, _omitFieldNames ? '' : 'recipe')
+    ..aOM<TreeScene>(8, _omitFieldNames ? '' : 'scene',
+        subBuilder: TreeScene.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2719,6 +2735,17 @@ class GetTreeNodeTooltipResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(7)
   $pb.PbList<$core.String> get recipe => $_getList(6);
+
+  @$pb.TagNumber(8)
+  TreeScene get scene => $_getN(7);
+  @$pb.TagNumber(8)
+  set scene(TreeScene value) => $_setField(8, value);
+  @$pb.TagNumber(8)
+  $core.bool hasScene() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearScene() => $_clearField(8);
+  @$pb.TagNumber(8)
+  TreeScene ensureScene() => $_ensure(7);
 }
 
 class TreeTooltipLine extends $pb.GeneratedMessage {
@@ -3313,6 +3340,159 @@ class TreePowerMetric extends $pb.GeneratedMessage {
   $core.bool hasLabel() => $_has(1);
   @$pb.TagNumber(2)
   void clearLabel() => $_clearField(2);
+}
+
+class WatchTreePowerRequest extends $pb.GeneratedMessage {
+  factory WatchTreePowerRequest({
+    GetTreePowerRequest? query,
+  }) {
+    final result = WatchTreePowerRequest._();
+    if (query != null) result.query = query;
+    return result;
+  }
+
+  WatchTreePowerRequest._();
+
+  factory WatchTreePowerRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchTreePowerRequest()..mergeFromBuffer(data, registry);
+  factory WatchTreePowerRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchTreePowerRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'WatchTreePowerRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: WatchTreePowerRequest.$_createMessage)
+    ..aOM<GetTreePowerRequest>(1, _omitFieldNames ? '' : 'query',
+        subBuilder: GetTreePowerRequest.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchTreePowerRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchTreePowerRequest copyWith(
+          void Function(WatchTreePowerRequest) updates) =>
+      super.copyWith((message) => updates(message as WatchTreePowerRequest))
+          as WatchTreePowerRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use WatchTreePowerRequest() / WatchTreePowerRequest.new instead')
+  static WatchTreePowerRequest create() => WatchTreePowerRequest._();
+  static $pb.GeneratedMessage $_createMessage() => WatchTreePowerRequest._();
+  @$core.override
+  WatchTreePowerRequest createEmptyInstance() => WatchTreePowerRequest._();
+  @$core.pragma('dart2js:noInline')
+  static WatchTreePowerRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchTreePowerRequest>(
+          WatchTreePowerRequest.$_createMessage);
+  static WatchTreePowerRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  GetTreePowerRequest get query => $_getN(0);
+  @$pb.TagNumber(1)
+  set query(GetTreePowerRequest value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasQuery() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearQuery() => $_clearField(1);
+  @$pb.TagNumber(1)
+  GetTreePowerRequest ensureQuery() => $_ensure(0);
+}
+
+enum WatchTreePowerResponse_Update { progress, result, notSet }
+
+class WatchTreePowerResponse extends $pb.GeneratedMessage {
+  factory WatchTreePowerResponse({
+    $core.int? progress,
+    GetTreePowerResponse? result,
+  }) {
+    final result$ = WatchTreePowerResponse._();
+    if (progress != null) result$.progress = progress;
+    if (result != null) result$.result = result;
+    return result$;
+  }
+
+  WatchTreePowerResponse._();
+
+  factory WatchTreePowerResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchTreePowerResponse()..mergeFromBuffer(data, registry);
+  factory WatchTreePowerResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      WatchTreePowerResponse()..mergeFromJson(json, registry);
+
+  static const $core.Map<$core.int, WatchTreePowerResponse_Update>
+      _WatchTreePowerResponse_UpdateByTag = {
+    1: WatchTreePowerResponse_Update.progress,
+    2: WatchTreePowerResponse_Update.result,
+    0: WatchTreePowerResponse_Update.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'WatchTreePowerResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: WatchTreePowerResponse.$_createMessage)
+    ..oo(0, [1, 2])
+    ..aI(1, _omitFieldNames ? '' : 'progress', fieldType: $pb.PbFieldType.OU3)
+    ..aOM<GetTreePowerResponse>(2, _omitFieldNames ? '' : 'result',
+        subBuilder: GetTreePowerResponse.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchTreePowerResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  WatchTreePowerResponse copyWith(
+          void Function(WatchTreePowerResponse) updates) =>
+      super.copyWith((message) => updates(message as WatchTreePowerResponse))
+          as WatchTreePowerResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use WatchTreePowerResponse() / WatchTreePowerResponse.new instead')
+  static WatchTreePowerResponse create() => WatchTreePowerResponse._();
+  static $pb.GeneratedMessage $_createMessage() => WatchTreePowerResponse._();
+  @$core.override
+  WatchTreePowerResponse createEmptyInstance() => WatchTreePowerResponse._();
+  @$core.pragma('dart2js:noInline')
+  static WatchTreePowerResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<WatchTreePowerResponse>(
+          WatchTreePowerResponse.$_createMessage);
+  static WatchTreePowerResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  @$pb.TagNumber(2)
+  WatchTreePowerResponse_Update whichUpdate() =>
+      _WatchTreePowerResponse_UpdateByTag[$_whichOneof(0)]!;
+  @$pb.TagNumber(1)
+  @$pb.TagNumber(2)
+  void clearUpdate() => $_clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  $core.int get progress => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set progress($core.int value) => $_setUnsignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasProgress() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProgress() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  GetTreePowerResponse get result => $_getN(1);
+  @$pb.TagNumber(2)
+  set result(GetTreePowerResponse value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasResult() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearResult() => $_clearField(2);
+  @$pb.TagNumber(2)
+  GetTreePowerResponse ensureResult() => $_ensure(1);
 }
 
 class TreePowerEntry extends $pb.GeneratedMessage {

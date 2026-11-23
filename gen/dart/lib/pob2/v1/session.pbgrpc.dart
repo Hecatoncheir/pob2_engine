@@ -136,6 +136,15 @@ class SessionServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getTreePower, request, options: options);
   }
 
+  $grpc.ResponseStream<$2.WatchTreePowerResponse> watchTreePower(
+    $2.WatchTreePowerRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createStreamingCall(
+        _$watchTreePower, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
   $grpc.ResponseFuture<$2.GetEquipmentDetailsResponse> getEquipmentDetails(
     $2.GetEquipmentDetailsRequest request, {
     $grpc.CallOptions? options,
@@ -312,6 +321,11 @@ class SessionServiceClient extends $grpc.Client {
           '/pob2.v1.SessionService/GetTreePower',
           ($2.GetTreePowerRequest value) => value.writeToBuffer(),
           $2.GetTreePowerResponse.fromBuffer);
+  static final _$watchTreePower =
+      $grpc.ClientMethod<$2.WatchTreePowerRequest, $2.WatchTreePowerResponse>(
+          '/pob2.v1.SessionService/WatchTreePower',
+          ($2.WatchTreePowerRequest value) => value.writeToBuffer(),
+          $2.WatchTreePowerResponse.fromBuffer);
   static final _$getEquipmentDetails = $grpc.ClientMethod<
           $2.GetEquipmentDetailsRequest, $2.GetEquipmentDetailsResponse>(
       '/pob2.v1.SessionService/GetEquipmentDetails',
@@ -509,6 +523,15 @@ abstract class SessionServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $2.GetTreePowerRequest.fromBuffer(value),
             ($2.GetTreePowerResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.WatchTreePowerRequest,
+            $2.WatchTreePowerResponse>(
+        'WatchTreePower',
+        watchTreePower_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) =>
+            $2.WatchTreePowerRequest.fromBuffer(value),
+        ($2.WatchTreePowerResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.GetEquipmentDetailsRequest,
             $2.GetEquipmentDetailsResponse>(
         'GetEquipmentDetails',
@@ -749,6 +772,15 @@ abstract class SessionServiceBase extends $grpc.Service {
 
   $async.Future<$2.GetTreePowerResponse> getTreePower(
       $grpc.ServiceCall call, $2.GetTreePowerRequest request);
+
+  $async.Stream<$2.WatchTreePowerResponse> watchTreePower_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.WatchTreePowerRequest> $request) async* {
+    yield* watchTreePower($call, await $request);
+  }
+
+  $async.Stream<$2.WatchTreePowerResponse> watchTreePower(
+      $grpc.ServiceCall call, $2.WatchTreePowerRequest request);
 
   $async.Future<$2.GetEquipmentDetailsResponse> getEquipmentDetails_Pre(
       $grpc.ServiceCall $call,

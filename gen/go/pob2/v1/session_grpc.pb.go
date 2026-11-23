@@ -33,6 +33,7 @@ const (
 	SessionService_GetTreeNodeTooltip_FullMethodName   = "/pob2.v1.SessionService/GetTreeNodeTooltip"
 	SessionService_GetBuildReport_FullMethodName       = "/pob2.v1.SessionService/GetBuildReport"
 	SessionService_GetTreePower_FullMethodName         = "/pob2.v1.SessionService/GetTreePower"
+	SessionService_WatchTreePower_FullMethodName       = "/pob2.v1.SessionService/WatchTreePower"
 	SessionService_GetEquipmentDetails_FullMethodName  = "/pob2.v1.SessionService/GetEquipmentDetails"
 	SessionService_GetTreeTexture_FullMethodName       = "/pob2.v1.SessionService/GetTreeTexture"
 	SessionService_GetCatalog_FullMethodName           = "/pob2.v1.SessionService/GetCatalog"
@@ -69,6 +70,7 @@ type SessionServiceClient interface {
 	GetTreeNodeTooltip(ctx context.Context, in *GetTreeNodeTooltipRequest, opts ...grpc.CallOption) (*GetTreeNodeTooltipResponse, error)
 	GetBuildReport(ctx context.Context, in *GetBuildReportRequest, opts ...grpc.CallOption) (*GetBuildReportResponse, error)
 	GetTreePower(ctx context.Context, in *GetTreePowerRequest, opts ...grpc.CallOption) (*GetTreePowerResponse, error)
+	WatchTreePower(ctx context.Context, in *WatchTreePowerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchTreePowerResponse], error)
 	GetEquipmentDetails(ctx context.Context, in *GetEquipmentDetailsRequest, opts ...grpc.CallOption) (*GetEquipmentDetailsResponse, error)
 	GetTreeTexture(ctx context.Context, in *GetTreeTextureRequest, opts ...grpc.CallOption) (*GetTreeTextureResponse, error)
 	GetCatalog(ctx context.Context, in *GetCatalogRequest, opts ...grpc.CallOption) (*GetCatalogResponse, error)
@@ -242,6 +244,25 @@ func (c *sessionServiceClient) GetTreePower(ctx context.Context, in *GetTreePowe
 	return out, nil
 }
 
+func (c *sessionServiceClient) WatchTreePower(ctx context.Context, in *WatchTreePowerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchTreePowerResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[1], SessionService_WatchTreePower_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[WatchTreePowerRequest, WatchTreePowerResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SessionService_WatchTreePowerClient = grpc.ServerStreamingClient[WatchTreePowerResponse]
+
 func (c *sessionServiceClient) GetEquipmentDetails(ctx context.Context, in *GetEquipmentDetailsRequest, opts ...grpc.CallOption) (*GetEquipmentDetailsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetEquipmentDetailsResponse)
@@ -294,7 +315,7 @@ func (c *sessionServiceClient) ExportBuild(ctx context.Context, in *ExportBuildR
 
 func (c *sessionServiceClient) WatchSession(ctx context.Context, in *WatchSessionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchSessionResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[1], SessionService_WatchSession_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[2], SessionService_WatchSession_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +334,7 @@ type SessionService_WatchSessionClient = grpc.ServerStreamingClient[WatchSession
 
 func (c *sessionServiceClient) WatchServer(ctx context.Context, in *WatchServerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServerResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[2], SessionService_WatchServer_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[3], SessionService_WatchServer_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -332,7 +353,7 @@ type SessionService_WatchServerClient = grpc.ServerStreamingClient[WatchServerRe
 
 func (c *sessionServiceClient) WatchEditor(ctx context.Context, in *WatchEditorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchEditorResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[3], SessionService_WatchEditor_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[4], SessionService_WatchEditor_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -429,6 +450,7 @@ type SessionServiceServer interface {
 	GetTreeNodeTooltip(context.Context, *GetTreeNodeTooltipRequest) (*GetTreeNodeTooltipResponse, error)
 	GetBuildReport(context.Context, *GetBuildReportRequest) (*GetBuildReportResponse, error)
 	GetTreePower(context.Context, *GetTreePowerRequest) (*GetTreePowerResponse, error)
+	WatchTreePower(*WatchTreePowerRequest, grpc.ServerStreamingServer[WatchTreePowerResponse]) error
 	GetEquipmentDetails(context.Context, *GetEquipmentDetailsRequest) (*GetEquipmentDetailsResponse, error)
 	GetTreeTexture(context.Context, *GetTreeTextureRequest) (*GetTreeTextureResponse, error)
 	GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error)
@@ -494,6 +516,9 @@ func (UnimplementedSessionServiceServer) GetBuildReport(context.Context, *GetBui
 }
 func (UnimplementedSessionServiceServer) GetTreePower(context.Context, *GetTreePowerRequest) (*GetTreePowerResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetTreePower not implemented")
+}
+func (UnimplementedSessionServiceServer) WatchTreePower(*WatchTreePowerRequest, grpc.ServerStreamingServer[WatchTreePowerResponse]) error {
+	return status.Error(codes.Unimplemented, "method WatchTreePower not implemented")
 }
 func (UnimplementedSessionServiceServer) GetEquipmentDetails(context.Context, *GetEquipmentDetailsRequest) (*GetEquipmentDetailsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetEquipmentDetails not implemented")
@@ -802,6 +827,17 @@ func _SessionService_GetTreePower_Handler(srv interface{}, ctx context.Context, 
 	}
 	return interceptor(ctx, in, info, handler)
 }
+
+func _SessionService_WatchTreePower_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchTreePowerRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SessionServiceServer).WatchTreePower(m, &grpc.GenericServerStream[WatchTreePowerRequest, WatchTreePowerResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type SessionService_WatchTreePowerServer = grpc.ServerStreamingServer[WatchTreePowerResponse]
 
 func _SessionService_GetEquipmentDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetEquipmentDetailsRequest)
@@ -1142,6 +1178,11 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "CalculateBuild",
 			Handler:       _SessionService_CalculateBuild_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "WatchTreePower",
+			Handler:       _SessionService_WatchTreePower_Handler,
 			ServerStreams: true,
 		},
 		{

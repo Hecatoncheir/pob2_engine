@@ -225,6 +225,11 @@ pob2-engine tree-power --profile main --session build-1 --revision 3 --metric Li
 
 MCP предоставляет `get_tree_power`, gRPC — `GetTreePower`.
 Флаг `--scene` или поле `include_scene` добавляет команды тепловой карты.
+`WatchTreePower` в gRPC принимает тот же запрос с выбранной характеристикой
+и передаёт ход расчёта в процентах и итог. Закрытие потока отменяет расчёт.
+У `tree-node-tooltip --scene`, MCP `get_tree_node_tooltip` и gRPC
+`GetTreeNodeTooltip` поле `include_scene` запрашивает дополнительный слой
+штатной подсветки пути для сцены дерева.
 
 ## Резервные копии
 
