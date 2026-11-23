@@ -1,13 +1,14 @@
 -- Координаты и связи берутся из активной спецификации оригинального PoB,
 -- включая подграфы, которые изменились от самоцветов.
 local function hasPosition(node)
-	return type(node.x) == "number" and type(node.y) == "number" and type(node.type) == "string"
+	return type(node.x) == "number" and type(node.y) == "number" and type(node.type) == "string" and node.type ~= "OnlyImage"
 end
 
 local function geometryNode(id, node)
 	return { id = id, x = node.x, y = node.y, name = node.dn or node.name or "",
 		kind = node.type, icon = node.icon, allocated = node.alloc == true,
-		attribute = node.isAttribute == true, allocation_mode = node.allocMode or 0 }
+		attribute = node.isAttribute == true, allocation_mode = node.allocMode or 0,
+		draw_size = node.targetSize and node.targetSize.width or 0 }
 end
 
 local function nodeLinks(edges, id, node)

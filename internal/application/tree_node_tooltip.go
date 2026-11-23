@@ -19,8 +19,13 @@ type treeTooltipReader interface {
 	ReadTreeNodeTooltip(context.Context, *build.Document, uint32, bool) (*build.TreeNodeTooltip, error)
 }
 
+func (s *Service) SupportsTreeTooltip() bool {
+	_, ok := s.calculator.(treeTooltipReader)
+	return ok
+}
+
 func (s *Service) TreeNodeTooltip(ctx context.Context, id string, expected uint64, node uint32, compare bool) (TreeNodeTooltipView, error) {
-	doc, revision, err := s.treeDocument(ctx, id, expected)
+	doc, snapshot, err := s.buildDocumentAtRevision(ctx, id, expected)
 	if err != nil {
 		return TreeNodeTooltipView{}, err
 	}
@@ -35,5 +40,5 @@ func (s *Service) TreeNodeTooltip(ctx context.Context, id string, expected uint6
 	if tip == nil {
 		return TreeNodeTooltipView{}, failure(InvalidArgument, "узел отсутствует в активном дереве")
 	}
-	return TreeNodeTooltipView{Revision: revision, TreeNodeTooltip: *tip}, nil
+	return TreeNodeTooltipView{Revision: snapshot.Revision, TreeNodeTooltip: *tip}, nil
 }

@@ -55,5 +55,8 @@ func New(commands application.Commands, sessionID string, timeout time.Duration)
 	if reader, ok := commands.(application.TreeTooltipCommands); ok {
 		addTreeTooltipTool(server, reader, sessionID)
 	}
+	if reader, ok := commands.(application.BuildReportCommands); ok {
+		addBuildReportTool(server, reader, sessionID)
+	}
 	return server
 }

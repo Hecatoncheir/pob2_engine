@@ -252,10 +252,12 @@ type response struct {
 	TreeClass      *build.TreeClassChange   `json:"tree_class,omitempty"`
 	TreeGeometry   *build.TreeGeometry      `json:"tree_geometry,omitempty"`
 	TreeTooltip    *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
+	BuildReport    json.RawMessage          `json:"build_report,omitempty"`
 }
 
 type request struct {
 	XML            string                   `json:"xml,omitempty"`
+	BuildName      string                   `json:"build_name,omitempty"`
 	Operation      string                   `json:"operation,omitempty"`
 	Slot           string                   `json:"slot,omitempty"`
 	ItemID         int                      `json:"item_id,omitempty"`

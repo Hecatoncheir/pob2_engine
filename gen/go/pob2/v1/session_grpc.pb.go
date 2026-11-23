@@ -31,6 +31,7 @@ const (
 	SessionService_CompareBuild_FullMethodName         = "/pob2.v1.SessionService/CompareBuild"
 	SessionService_GetTreeGeometry_FullMethodName      = "/pob2.v1.SessionService/GetTreeGeometry"
 	SessionService_GetTreeNodeTooltip_FullMethodName   = "/pob2.v1.SessionService/GetTreeNodeTooltip"
+	SessionService_GetBuildReport_FullMethodName       = "/pob2.v1.SessionService/GetBuildReport"
 	SessionService_GetCatalog_FullMethodName           = "/pob2.v1.SessionService/GetCatalog"
 	SessionService_PreviewSupport_FullMethodName       = "/pob2.v1.SessionService/PreviewSupport"
 	SessionService_ExportBuild_FullMethodName          = "/pob2.v1.SessionService/ExportBuild"
@@ -63,6 +64,7 @@ type SessionServiceClient interface {
 	CompareBuild(ctx context.Context, in *CompareBuildRequest, opts ...grpc.CallOption) (*CompareBuildResponse, error)
 	GetTreeGeometry(ctx context.Context, in *GetTreeGeometryRequest, opts ...grpc.CallOption) (*GetTreeGeometryResponse, error)
 	GetTreeNodeTooltip(ctx context.Context, in *GetTreeNodeTooltipRequest, opts ...grpc.CallOption) (*GetTreeNodeTooltipResponse, error)
+	GetBuildReport(ctx context.Context, in *GetBuildReportRequest, opts ...grpc.CallOption) (*GetBuildReportResponse, error)
 	GetCatalog(ctx context.Context, in *GetCatalogRequest, opts ...grpc.CallOption) (*GetCatalogResponse, error)
 	PreviewSupport(ctx context.Context, in *PreviewSupportRequest, opts ...grpc.CallOption) (*PreviewSupportResponse, error)
 	ExportBuild(ctx context.Context, in *ExportBuildRequest, opts ...grpc.CallOption) (*ExportBuildResponse, error)
@@ -208,6 +210,16 @@ func (c *sessionServiceClient) GetTreeNodeTooltip(ctx context.Context, in *GetTr
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetTreeNodeTooltipResponse)
 	err := c.cc.Invoke(ctx, SessionService_GetTreeNodeTooltip_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionServiceClient) GetBuildReport(ctx context.Context, in *GetBuildReportRequest, opts ...grpc.CallOption) (*GetBuildReportResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBuildReportResponse)
+	err := c.cc.Invoke(ctx, SessionService_GetBuildReport_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -379,6 +391,7 @@ type SessionServiceServer interface {
 	CompareBuild(context.Context, *CompareBuildRequest) (*CompareBuildResponse, error)
 	GetTreeGeometry(context.Context, *GetTreeGeometryRequest) (*GetTreeGeometryResponse, error)
 	GetTreeNodeTooltip(context.Context, *GetTreeNodeTooltipRequest) (*GetTreeNodeTooltipResponse, error)
+	GetBuildReport(context.Context, *GetBuildReportRequest) (*GetBuildReportResponse, error)
 	GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error)
 	PreviewSupport(context.Context, *PreviewSupportRequest) (*PreviewSupportResponse, error)
 	ExportBuild(context.Context, *ExportBuildRequest) (*ExportBuildResponse, error)
@@ -436,6 +449,9 @@ func (UnimplementedSessionServiceServer) GetTreeGeometry(context.Context, *GetTr
 }
 func (UnimplementedSessionServiceServer) GetTreeNodeTooltip(context.Context, *GetTreeNodeTooltipRequest) (*GetTreeNodeTooltipResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetTreeNodeTooltip not implemented")
+}
+func (UnimplementedSessionServiceServer) GetBuildReport(context.Context, *GetBuildReportRequest) (*GetBuildReportResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetBuildReport not implemented")
 }
 func (UnimplementedSessionServiceServer) GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCatalog not implemented")
@@ -703,6 +719,24 @@ func _SessionService_GetTreeNodeTooltip_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SessionService_GetBuildReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBuildReportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionServiceServer).GetBuildReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionService_GetBuildReport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionServiceServer).GetBuildReport(ctx, req.(*GetBuildReportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SessionService_GetCatalog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCatalogRequest)
 	if err := dec(in); err != nil {
@@ -948,6 +982,10 @@ var SessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTreeNodeTooltip",
 			Handler:    _SessionService_GetTreeNodeTooltip_Handler,
+		},
+		{
+			MethodName: "GetBuildReport",
+			Handler:    _SessionService_GetBuildReport_Handler,
 		},
 		{
 			MethodName: "GetCatalog",

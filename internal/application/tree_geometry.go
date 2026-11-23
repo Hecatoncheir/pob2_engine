@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
+	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 )
 
 type TreeGeometryView struct {
@@ -25,7 +26,7 @@ func (s *Service) SupportsTreeGeometry() bool {
 }
 
 func (s *Service) TreeGeometry(ctx context.Context, id string, expected uint64) (TreeGeometryView, error) {
-	doc, revision, err := s.treeDocument(ctx, id, expected)
+	doc, snapshot, err := s.buildDocumentAtRevision(ctx, id, expected)
 	if err != nil {
 		return TreeGeometryView{}, err
 	}
@@ -37,20 +38,20 @@ func (s *Service) TreeGeometry(ctx context.Context, id string, expected uint64) 
 	if err != nil {
 		return TreeGeometryView{}, failure(CalculationFailure, err.Error())
 	}
-	return TreeGeometryView{Revision: revision, TreeGeometry: tree}, nil
+	return TreeGeometryView{Revision: snapshot.Revision, TreeGeometry: tree}, nil
 }
 
-func (s *Service) treeDocument(ctx context.Context, id string, expected uint64) (*build.Document, uint64, error) {
+func (s *Service) buildDocumentAtRevision(ctx context.Context, id string, expected uint64) (*build.Document, domain.Snapshot, error) {
 	snapshot, err := s.Snapshot(ctx, id)
 	if err != nil {
-		return nil, 0, err
+		return nil, domain.Snapshot{}, err
 	}
 	if expected != 0 && snapshot.Revision != expected {
-		return nil, 0, failure(RevisionConflict, "сборка изменилась, запросите дерево новой ревизии")
+		return nil, domain.Snapshot{}, failure(RevisionConflict, "сборка изменилась, запросите актуальную ревизию")
 	}
 	doc, err := build.Parse([]byte(snapshot.BuildXML))
 	if err != nil {
-		return nil, 0, failure(InvalidArgument, err.Error())
+		return nil, domain.Snapshot{}, failure(InvalidArgument, err.Error())
 	}
-	return doc, snapshot.Revision, nil
+	return doc, snapshot, nil
 }

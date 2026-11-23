@@ -719,6 +719,7 @@ const TreeGeometryNode$json = {
     {'1': 'allocated', '3': 7, '4': 1, '5': 8, '10': 'allocated'},
     {'1': 'attribute', '3': 8, '4': 1, '5': 8, '10': 'attribute'},
     {'1': 'allocation_mode', '3': 9, '4': 1, '5': 13, '10': 'allocationMode'},
+    {'1': 'draw_size', '3': 10, '4': 1, '5': 1, '10': 'drawSize'},
   ],
 };
 
@@ -728,7 +729,7 @@ final $typed_data.Uint8List treeGeometryNodeDescriptor = $convert.base64Decode(
     'ABKAFSAXkSEgoEbmFtZRgEIAEoCVIEbmFtZRISCgRraW5kGAUgASgJUgRraW5kEhIKBGljb24Y'
     'BiABKAlSBGljb24SHAoJYWxsb2NhdGVkGAcgASgIUglhbGxvY2F0ZWQSHAoJYXR0cmlidXRlGA'
     'ggASgIUglhdHRyaWJ1dGUSJwoPYWxsb2NhdGlvbl9tb2RlGAkgASgNUg5hbGxvY2F0aW9uTW9k'
-    'ZQ==');
+    'ZRIbCglkcmF3X3NpemUYCiABKAFSCGRyYXdTaXpl');
 
 @$core.Deprecated('Use treeGeometryEdgeDescriptor instead')
 const TreeGeometryEdge$json = {
@@ -809,6 +810,41 @@ const TreeTooltipLine$json = {
 final $typed_data.Uint8List treeTooltipLineDescriptor = $convert.base64Decode(
     'Cg9UcmVlVG9vbHRpcExpbmUSEgoEc2l6ZRgBIAEoAVIEc2l6ZRISCgR0ZXh0GAIgASgJUgR0ZX'
     'h0EhwKCXNlcGFyYXRvchgDIAEoCFIJc2VwYXJhdG9y');
+
+@$core.Deprecated('Use getBuildReportRequestDescriptor instead')
+const GetBuildReportRequest$json = {
+  '1': 'GetBuildReportRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {
+      '1': 'expected_revision',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '10': 'expectedRevision'
+    },
+  ],
+};
+
+/// Descriptor for `GetBuildReportRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBuildReportRequestDescriptor = $convert.base64Decode(
+    'ChVHZXRCdWlsZFJlcG9ydFJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklkEi'
+    'sKEWV4cGVjdGVkX3JldmlzaW9uGAIgASgEUhBleHBlY3RlZFJldmlzaW9u');
+
+@$core.Deprecated('Use getBuildReportResponseDescriptor instead')
+const GetBuildReportResponse$json = {
+  '1': 'GetBuildReportResponse',
+  '2': [
+    {'1': 'revision', '3': 1, '4': 1, '5': 4, '10': 'revision'},
+    {'1': 'report_json', '3': 2, '4': 1, '5': 12, '10': 'reportJson'},
+  ],
+};
+
+/// Descriptor for `GetBuildReportResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBuildReportResponseDescriptor =
+    $convert.base64Decode(
+        'ChZHZXRCdWlsZFJlcG9ydFJlc3BvbnNlEhoKCHJldmlzaW9uGAEgASgEUghyZXZpc2lvbhIfCg'
+        'tyZXBvcnRfanNvbhgCIAEoDFIKcmVwb3J0SnNvbg==');
 
 @$core.Deprecated('Use buildEditDescriptor instead')
 const BuildEdit$json = {

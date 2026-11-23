@@ -23,7 +23,7 @@ func (s *Server) GetTreeGeometry(ctx context.Context, req *pb.GetTreeGeometryReq
 	for _, node := range tree.Nodes {
 		result.Nodes = append(result.Nodes, &pb.TreeGeometryNode{
 			Id: uint32(node.ID), X: node.X, Y: node.Y, Name: node.Name, Kind: node.Kind, Icon: node.Icon,
-			Allocated: node.Allocated, Attribute: node.Attribute, AllocationMode: uint32(node.AllocationMode),
+			Allocated: node.Allocated, Attribute: node.Attribute, AllocationMode: uint32(node.AllocationMode), DrawSize: node.DrawSize,
 		})
 	}
 	for _, edge := range tree.Edges {
@@ -45,7 +45,7 @@ func (c *Client) TreeGeometry(ctx context.Context, id string, expected uint64) (
 	for _, node := range reply.GetNodes() {
 		tree.Nodes = append(tree.Nodes, build.TreeGeometryNode{
 			ID: int(node.GetId()), X: node.GetX(), Y: node.GetY(), Name: node.GetName(), Kind: node.GetKind(), Icon: node.GetIcon(),
-			Allocated: node.GetAllocated(), Attribute: node.GetAttribute(), AllocationMode: int(node.GetAllocationMode()),
+			Allocated: node.GetAllocated(), Attribute: node.GetAttribute(), AllocationMode: int(node.GetAllocationMode()), DrawSize: node.GetDrawSize(),
 		})
 	}
 	tree.Edges = make([]build.TreeGeometryEdge, 0, len(reply.GetEdges()))

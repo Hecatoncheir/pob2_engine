@@ -179,6 +179,16 @@ pob2-engine tree-node-tooltip --profile main --session build-1 --revision 3 --no
 
 MCP предоставляет `get_tree_node_tooltip`, gRPC — `GetTreeNodeTooltip`.
 
+Штатный отчёт Lua включает группы умений, предметы и слоты, условия,
+характеристики, предупреждения, заметки и варианты дерева.
+
+```shell
+pob2-engine build-report --profile main --session build-1 --revision 3
+```
+
+MCP предоставляет `get_build_report`, gRPC — `GetBuildReport`. В gRPC
+поле `report_json` содержит отчёт в UTF-8 с целыми ID узлов и вариантов.
+
 ## Резервные копии
 
 Сначала остановите сервер, дождитесь его завершения:

@@ -34,6 +34,7 @@ local editTree = dofile(directory .. "/tree_edit.lua")
 local editTreeClass = dofile(directory .. "/tree_class.lua")
 local readTreeGeometry = dofile(directory .. "/tree_geometry.lua")
 local readTreeNodeTooltip = dofile(directory .. "/tree_node_tooltip.lua")
+local readBuildReport = dofile(directory .. "/build_report.lua")
 
 local function clean(text)
 	return tostring(text or ""):gsub("%^x%x%x%x%x%x%x", ""):gsub("%^%d", "")
@@ -61,10 +62,10 @@ local function unsupportedModifiers()
 	return unsupported
 end
 
-local function loadDocument(xml)
+local function loadDocument(xml, name)
 	local parsed = common.xml.ParseXML(xml)
 	assert(parsed and parsed[1] and parsed[1].elem == "PathOfBuilding2", "Ожидался XML PathOfBuilding2")
-	loadBuildFromXML(xml, "PoB2Engine")
+	loadBuildFromXML(xml, name or "PoB2Engine")
 	assert(not launch.promptMsg, tostring(launch.promptMsg))
 end
 
@@ -153,6 +154,10 @@ for line in io.lines() do
 		if request.operation == "tree_node_tooltip" then
 			loadDocument(assert(request.xml))
 			return { tree_tooltip = readTreeNodeTooltip(build, request) or json.null }
+		end
+		if request.operation == "build_report" then
+			loadDocument(assert(request.xml), request.build_name)
+			return { build_report = readBuildReport(build, clean) }
 		end
 		return calculate(assert(request.xml))
 	end)

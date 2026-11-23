@@ -2252,6 +2252,7 @@ class TreeGeometryNode extends $pb.GeneratedMessage {
     $core.bool? allocated,
     $core.bool? attribute,
     $core.int? allocationMode,
+    $core.double? drawSize,
   }) {
     final result = TreeGeometryNode._();
     if (id != null) result.id = id;
@@ -2263,6 +2264,7 @@ class TreeGeometryNode extends $pb.GeneratedMessage {
     if (allocated != null) result.allocated = allocated;
     if (attribute != null) result.attribute = attribute;
     if (allocationMode != null) result.allocationMode = allocationMode;
+    if (drawSize != null) result.drawSize = drawSize;
     return result;
   }
 
@@ -2289,6 +2291,7 @@ class TreeGeometryNode extends $pb.GeneratedMessage {
     ..aOB(8, _omitFieldNames ? '' : 'attribute')
     ..aI(9, _omitFieldNames ? '' : 'allocationMode',
         fieldType: $pb.PbFieldType.OU3)
+    ..aD(10, _omitFieldNames ? '' : 'drawSize')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2393,6 +2396,15 @@ class TreeGeometryNode extends $pb.GeneratedMessage {
   $core.bool hasAllocationMode() => $_has(8);
   @$pb.TagNumber(9)
   void clearAllocationMode() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.double get drawSize => $_getN(9);
+  @$pb.TagNumber(10)
+  set drawSize($core.double value) => $_setDouble(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasDrawSize() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearDrawSize() => $_clearField(10);
 }
 
 class TreeGeometryEdge extends $pb.GeneratedMessage {
@@ -2761,6 +2773,154 @@ class TreeTooltipLine extends $pb.GeneratedMessage {
   $core.bool hasSeparator() => $_has(2);
   @$pb.TagNumber(3)
   void clearSeparator() => $_clearField(3);
+}
+
+class GetBuildReportRequest extends $pb.GeneratedMessage {
+  factory GetBuildReportRequest({
+    $core.String? sessionId,
+    $fixnum.Int64? expectedRevision,
+  }) {
+    final result = GetBuildReportRequest._();
+    if (sessionId != null) result.sessionId = sessionId;
+    if (expectedRevision != null) result.expectedRevision = expectedRevision;
+    return result;
+  }
+
+  GetBuildReportRequest._();
+
+  factory GetBuildReportRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportRequest()..mergeFromBuffer(data, registry);
+  factory GetBuildReportRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBuildReportRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetBuildReportRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'expectedRevision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportRequest copyWith(
+          void Function(GetBuildReportRequest) updates) =>
+      super.copyWith((message) => updates(message as GetBuildReportRequest))
+          as GetBuildReportRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetBuildReportRequest() / GetBuildReportRequest.new instead')
+  static GetBuildReportRequest create() => GetBuildReportRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetBuildReportRequest._();
+  @$core.override
+  GetBuildReportRequest createEmptyInstance() => GetBuildReportRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetBuildReportRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBuildReportRequest>(
+          GetBuildReportRequest.$_createMessage);
+  static GetBuildReportRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get expectedRevision => $_getI64(1);
+  @$pb.TagNumber(2)
+  set expectedRevision($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasExpectedRevision() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpectedRevision() => $_clearField(2);
+}
+
+class GetBuildReportResponse extends $pb.GeneratedMessage {
+  factory GetBuildReportResponse({
+    $fixnum.Int64? revision,
+    $core.List<$core.int>? reportJson,
+  }) {
+    final result = GetBuildReportResponse._();
+    if (revision != null) result.revision = revision;
+    if (reportJson != null) result.reportJson = reportJson;
+    return result;
+  }
+
+  GetBuildReportResponse._();
+
+  factory GetBuildReportResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportResponse()..mergeFromBuffer(data, registry);
+  factory GetBuildReportResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetBuildReportResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetBuildReportResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetBuildReportResponse.$_createMessage)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'revision', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'reportJson', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetBuildReportResponse copyWith(
+          void Function(GetBuildReportResponse) updates) =>
+      super.copyWith((message) => updates(message as GetBuildReportResponse))
+          as GetBuildReportResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetBuildReportResponse() / GetBuildReportResponse.new instead')
+  static GetBuildReportResponse create() => GetBuildReportResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetBuildReportResponse._();
+  @$core.override
+  GetBuildReportResponse createEmptyInstance() => GetBuildReportResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetBuildReportResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetBuildReportResponse>(
+          GetBuildReportResponse.$_createMessage);
+  static GetBuildReportResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get revision => $_getI64(0);
+  @$pb.TagNumber(1)
+  set revision($fixnum.Int64 value) => $_setInt64(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRevision() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRevision() => $_clearField(1);
+
+  /// UTF-8 JSON с полями штатного отчёта PoB II, включая целые ID форм и каталогов.
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get reportJson => $_getN(1);
+  @$pb.TagNumber(2)
+  set reportJson($core.List<$core.int> value) => $_setBytes(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasReportJson() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearReportJson() => $_clearField(2);
 }
 
 enum BuildEdit_Operation {

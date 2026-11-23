@@ -214,6 +214,7 @@ message TreeGeometryNode {
   bool allocated = 7;
   bool attribute = 8;
   uint32 allocation_mode = 9;
+  double draw_size = 10;
 }
 
 message TreeGeometryEdge {
@@ -242,6 +243,17 @@ message TreeTooltipLine {
   double size = 1;
   string text = 2;
   bool separator = 3;
+}
+
+message GetBuildReportRequest {
+  string session_id = 1;
+  uint64 expected_revision = 2;
+}
+
+message GetBuildReportResponse {
+  uint64 revision = 1;
+  // UTF-8 JSON с полями штатного отчёта PoB II, включая целые ID форм и каталогов.
+  bytes report_json = 2;
 }
 
 message BuildEdit {

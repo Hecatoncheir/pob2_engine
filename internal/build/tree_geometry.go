@@ -17,6 +17,7 @@ type TreeGeometryNode struct {
 	Allocated      bool    `json:"allocated"`
 	Attribute      bool    `json:"attribute"`
 	AllocationMode int     `json:"allocation_mode"`
+	DrawSize       float64 `json:"draw_size"`
 }
 
 type TreeGeometryEdge struct {
