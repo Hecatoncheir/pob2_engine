@@ -40,7 +40,13 @@ func TestLuaWorkbenchAcrossGRPCAndMCP(t *testing.T) {
 	}
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_import_xml", map[string]any{"xml": string(xml)})
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_check_build", nil)
-	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
+	before := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
+	preview := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", map[string]any{
+		"groupId": 1, "targetIndex": 1, "supportId": "Metadata/Items/Gems/SkillGemControlledDestructionSupport",
+		"gems": []map[string]any{{"id": "Metadata/Items/Gems/SkillGemFireball", "sourceIndex": 1}},
+	})
+	after := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
+	checkWorkbenchSupportPreview(t, before, preview, after)
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_render_image", map[string]any{"view": "overview", "width": 880, "height": 640})
 	closeWorker()
 }
@@ -84,7 +90,7 @@ func startWorkbenchGRPC(t *testing.T, ctx context.Context) (pb.WorkbenchServiceC
 	}
 }
 
-func compareWorkbenchCall(t *testing.T, ctx context.Context, client pb.WorkbenchServiceClient, tools *mcp.ClientSession, name string, arguments map[string]any) {
+func compareWorkbenchCall(t *testing.T, ctx context.Context, client pb.WorkbenchServiceClient, tools *mcp.ClientSession, name string, arguments map[string]any) *pb.CallWorkbenchToolResponse {
 	t.Helper()
 	input, err := json.Marshal(arguments)
 	if err != nil {
@@ -116,6 +122,24 @@ func compareWorkbenchCall(t *testing.T, ctx context.Context, client pb.Workbench
 		if image == nil || !bytes.HasPrefix(reply.GetPng(), []byte("\x89PNG\r\n\x1a\n")) || !bytes.Equal(reply.GetPng(), image.Data) {
 			t.Fatal("gRPC и MCP вернули разные изображения")
 		}
+	}
+	return reply
+}
+
+func checkWorkbenchSupportPreview(t *testing.T, before, preview, after *pb.CallWorkbenchToolResponse) {
+	t.Helper()
+	result := decodeCatalogJSON[struct {
+		Source string  `json:"source"`
+		Before float64 `json:"before"`
+		After  float64 `json:"after"`
+		Delta  float64 `json:"delta"`
+	}](t, preview.GetResultJson())
+	if result.Source != "original-lua" || result.Before <= 0 || result.After <= result.Before || result.Delta != result.After-result.Before {
+		t.Fatalf("неверный предпросмотр поддержки: %+v", result)
+	}
+	if before.GetRevision() != preview.GetRevision() || before.GetRevision() != after.GetRevision() ||
+		!bytes.Equal(before.GetResultJson(), after.GetResultJson()) {
+		t.Fatal("предпросмотр изменил текущую сборку или ревизию")
 	}
 }
 

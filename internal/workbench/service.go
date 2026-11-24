@@ -100,7 +100,12 @@ func New(session *pob.Workbench, installation pob.Installation) (*Service, error
 func (s *Service) Tools() []Tool { return s.tools }
 
 func Supports(name string) bool {
-	return workbenchMethods[name] != "" || name == "pob_check_build" || name == "pob_gem_supports" || name == "pob_tree_textures" || name == "pob_render_image"
+	switch name {
+	case "pob_check_build", "pob_gem_supports", "pob_preview_support", "pob_tree_textures", "pob_render_image":
+		return true
+	default:
+		return workbenchMethods[name] != ""
+	}
 }
 
 func (s *Service) Invoke(ctx context.Context, name string, raw json.RawMessage) (Response, error) {
@@ -159,6 +164,8 @@ func (s *Service) call(ctx context.Context, name string, arguments map[string]an
 		return s.checkBuild(ctx, arguments)
 	case "pob_gem_supports":
 		return s.compatibleSupports(ctx, arguments)
+	case "pob_preview_support":
+		return s.previewSupport(ctx, arguments)
 	case "pob_tree_textures":
 		result, err := s.assets.texture(ctx, arguments["token"].(string))
 		result.Revision = s.revision
@@ -222,45 +229,56 @@ func meetsTarget(actual any, target map[string]any) bool {
 }
 
 func (s *Service) compatibleSupports(ctx context.Context, arguments map[string]any) (pob.WorkbenchResult, error) {
+	preview, revision, err := s.openPreview(ctx)
+	if err != nil {
+		return pob.WorkbenchResult{}, err
+	}
+	defer preview.Close()
+	group, err := applyPreviewGroup(ctx, preview, arguments)
+	if err != nil {
+		return pob.WorkbenchResult{}, err
+	}
+	supports, err := preview.Call(ctx, "getCompatibleSupports", map[string]any{"groupId": group})
+	supports.Revision = revision
+	return supports, err
+}
+
+func (s *Service) openPreview(ctx context.Context) (*pob.Workbench, int, error) {
 	export, err := s.session.Call(ctx, "exportBuild", nil)
 	if err != nil {
-		return export, err
+		return nil, 0, err
 	}
 	var document struct {
 		XML string `json:"xml"`
 	}
 	if err := json.Unmarshal(export.Result, &document); err != nil {
-		return export, err
+		return nil, 0, err
 	}
 	preview, err := pob.NewWorkbench(ctx, s.installation)
 	if err != nil {
-		return export, err
+		return nil, 0, err
 	}
-	defer preview.Close()
 	if _, err := preview.Call(ctx, "loadBuild", map[string]any{"xml": document.XML}); err != nil {
-		return export, err
+		preview.Close()
+		return nil, 0, err
 	}
-	return readWorkbenchSupports(ctx, preview, export.Revision, arguments)
+	return preview, export.Revision, nil
 }
 
-func readWorkbenchSupports(ctx context.Context, preview *pob.Workbench, revision int, arguments map[string]any) (pob.WorkbenchResult, error) {
+func applyPreviewGroup(ctx context.Context, preview *pob.Workbench, arguments map[string]any) (int, error) {
 	operation := "addSkillGroup"
 	if arguments["groupId"] != nil {
 		operation = "updateSkillGroup"
 	}
 	edited, err := preview.Call(ctx, operation, arguments)
 	if err != nil {
-		return edited, err
+		return 0, err
 	}
 	var group struct {
 		ID int `json:"groupId"`
 	}
-	if err := json.Unmarshal(edited.Result, &group); err != nil {
-		return edited, err
-	}
-	supports, err := preview.Call(ctx, "getCompatibleSupports", map[string]any{"groupId": group.ID})
-	supports.Revision = revision
-	return supports, err
+	err = json.Unmarshal(edited.Result, &group)
+	return group.ID, err
 }
 
 func workbenchResult(revision int, value any) (pob.WorkbenchResult, error) {

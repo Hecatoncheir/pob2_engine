@@ -689,25 +689,33 @@ def check_workbench(scenario, fixtures):
     commands = [
         ('pob_import_xml', {'xml': xml}),
         ('pob_check_build', {}),
+        ('pob_preview_support', {
+            'groupId': 1, 'targetIndex': 1,
+            'gems': [{'id': 'Metadata/Items/Gems/SkillGemFireball', 'sourceIndex': 1}],
+            'supportId': 'Metadata/Items/Gems/SkillGemControlledDestructionSupport',
+        }),
         ('pob_export_xml', {}),
         ('pob_render_image', {'view': 'overview', 'width': 640, 'height': 480}),
         ('pob_render_image', {'view': 'tree', 'treeScope': 'full', 'width': 880, 'height': 640}),
     ]
-    imported, report, exported, overview, tree = scenario.call_tools(['workbench'], commands, initialize_workbench)
+    imported, report, preview, exported, overview, tree = scenario.call_tools(['workbench'], commands, initialize_workbench)
     assert_workbench_png(overview)
     assert_workbench_png(tree)
     stats = report['structuredContent']['result']['report']['stats']
     require(math.isclose(stats['TotalDPS'], spell['dps'], rel_tol=1e-10), 'Мастерская изменила эталон DPS')
     require('<PathOfBuilding2>' in exported['structuredContent']['result']['xml'], 'Мастерская не вернула XML')
     revision = imported['structuredContent']['revision']
-    require(exported['structuredContent']['revision'] == tree['structuredContent']['revision'] == revision,
-            'Чтение изображения изменило ревизию мастерской')
+    support = preview['structuredContent']['result']
+    require(support['source'] == 'original-lua' and support['after'] > support['before'] > 0,
+            'Предпросмотр поддержки не подтвердил расчёт Lua')
+    require(preview['structuredContent']['revision'] == exported['structuredContent']['revision']
+            == tree['structuredContent']['revision'] == revision, 'Чтение изменило ревизию мастерской')
     return dict(dps=stats['TotalDPS'], revision=revision, exported_xml=True, overview_png=True, passive_tree_png=True)
 
 
 def initialize_workbench(send, messages):
     required = {'pob_import_xml', 'pob_check_build', 'pob_export_xml', 'pob_render_image',
-                'pob_get_tree', 'pob_gem_icons', 'pob_gem_supports', 'pob_trade_search'}
+                'pob_get_tree', 'pob_gem_icons', 'pob_gem_supports', 'pob_preview_support', 'pob_trade_search'}
     require(required <= initialize_tools(send, messages), 'Мастерская не объявила совместимые команды')
 
 
