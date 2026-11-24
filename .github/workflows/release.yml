@@ -93,6 +93,9 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
+      - name: Собрать библиотеки Lua для Linux и macOS
+        if: runner.os != 'Windows'
+        run: python3 tool/build_native_runtime.py
       - name: Собрать самостоятельный файл
         shell: bash
         env:

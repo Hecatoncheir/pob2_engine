@@ -44,7 +44,6 @@ def durable_measure(scenario, probe):
 def measure(binary, probe):
     with tempfile.TemporaryDirectory(prefix='measure-upgrade-', dir=CACHE) as directory:
         scenario = Scenario(binary, Path(directory))
-        scenario.environment.pop('POB2_ENGINE_CALCULATOR')
         scenario.environment['POB2_ENGINE_POB_DIR'] = str(CACHE / 'pob')
         try:
             version = scenario.run('--version')['version']

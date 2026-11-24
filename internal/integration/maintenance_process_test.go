@@ -94,8 +94,6 @@ func offlineMaintenance(t *testing.T) {
 	t.Setenv("HOME", base)
 	t.Setenv("XDG_CACHE_HOME", base)
 	t.Setenv("LOCALAPPDATA", base)
-	t.Setenv("POB2_ENGINE_POB_DIR", "")
-	t.Setenv("POB2_ENGINE_POB_NATIVE_DIR", "")
 	t.Setenv("HTTPS_PROXY", "http://127.0.0.1:0")
 	t.Setenv("NO_PROXY", "")
 	t.Setenv("no_proxy", "")

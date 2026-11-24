@@ -1,4 +1,4 @@
-package calculation
+package testreference
 
 import (
 	"fmt"
@@ -157,9 +157,9 @@ func (s *inputs) readSupport(gem gamedata.Gem, path string, families map[string]
 	for _, stat := range gem.ConstantStats {
 		switch stat.Name {
 		case "base_cast_speed_+%":
-			s.result.Modifiers = append(s.result.Modifiers, Modifier{"CastSpeed", "INC", stat.Value, path})
+			s.result.Modifiers = append(s.result.Modifiers, Modifier{Stat: "CastSpeed", Kind: "INC", Value: stat.Value, Source: path})
 		case "support_controlled_destruction_spell_damage_+%_final":
-			s.result.Modifiers = append(s.result.Modifiers, Modifier{"Damage", "MORE", stat.Value, path})
+			s.result.Modifiers = append(s.result.Modifiers, Modifier{Stat: "Damage", Kind: "MORE", Value: stat.Value, Source: path})
 			s.cannotCrit = true
 		default:
 			s.issue("unsupported_support", path, "неизвестное свойство поддержки")

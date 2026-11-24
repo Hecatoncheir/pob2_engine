@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
+	"path/filepath"
 	"strconv"
 	"sync"
 
@@ -54,7 +56,14 @@ func unpackWorkbench(directory string) (string, error) {
 	if err := poblegacy.Unpack(directory, "lua"); err != nil {
 		return "", err
 	}
-	return directory, poblegacy.Unpack(directory, "data")
+	if err := poblegacy.Unpack(directory, "data"); err != nil {
+		return "", err
+	}
+	geometry, err := bridge.ReadFile("bridge/tree_geometry.lua")
+	if err != nil {
+		return "", err
+	}
+	return directory, os.WriteFile(filepath.Join(directory, "tree_geometry.lua"), geometry, 0600)
 }
 
 type workbenchRequest struct {

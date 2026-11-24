@@ -85,11 +85,19 @@ jobs:
         run: go run ./tool/reference
       - name: Проверить лицензии поставляемых зависимостей
         run: python3 tool/notices.py
+      - name: Собрать LuaJIT и установить закреплённый оригинальный PoB
+        env:
+          POB2_ENGINE_POB_GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 tool/build_native_runtime.py
+          go run ./cmd/pob2-engine pob-data ensure > pob-installation.json
+          jq -r '"POB2_ENGINE_POB_DIR=" + .current.directory,
+                 "POB2_ENGINE_POB_NATIVE_DIR=" + .current.nativeDirectory' pob-installation.json >> "$GITHUB_ENV"
       - name: Выполнить тесты
         run: go test ./...
       - name: Проверить гонки
         run: go test -race ./...
-      - name: Измерить расчёт и сохранить состав среды
+      - name: Измерить LuaJIT и сохранить состав среды
         shell: bash
         run: |
           mkdir -p .reference/performance
@@ -108,9 +116,7 @@ jobs:
           Path('.reference/performance/runtime.json').write_text(json.dumps(options, indent=2) + '\n', encoding='utf-8')
           PY
           sha256sum testdata/reference/fireball.xml testdata/reference/0.0.2/cases/frostbolt-minimal.xml testdata/reference/0.0.2/cases/spark-minimal.xml internal/gamedata/files/catalog.json internal/gamedata/files/manifest.json > .reference/performance/inputs.sha256
-          go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculate(Parallel)?$' -benchmem -benchtime=500ms -count=3 | tee .reference/performance/benchmark.txt
-          go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculateSpells$' -benchmem -benchtime=500ms -count=5 | tee .reference/performance/spells.txt
-          go test ./internal/application -run '^$' -bench '^BenchmarkPreviewSupport$' -benchmem -benchtime=500ms -count=5 | tee .reference/performance/support-preview.txt
+          go test ./internal/pob -run '^$' -bench '^BenchmarkCalculators$' -benchmem -benchtime=500ms -count=3 | tee .reference/performance/spells.txt
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: calculation-performance-linux

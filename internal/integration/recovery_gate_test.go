@@ -15,6 +15,7 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 	"github.com/Hecatoncheir/pob2_engine/internal/host"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
+	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 	"github.com/Hecatoncheir/pob2_engine/internal/storage"
 )
 
@@ -110,7 +111,9 @@ func TestRecoveryServerHelper(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer journal.Close()
-	service, err := application.OpenService(t.Context(), recoveryJournal{Journal: journal, base: base})
+	calculator := openTestCalculator(t)
+	defer calculator.Close()
+	service, err := application.OpenServiceWithCalculator(t.Context(), recoveryJournal{Journal: journal, base: base}, calculator)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -130,6 +133,23 @@ func TestRecoveryServerHelper(t *testing.T) {
 	if err := server.Err(); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func openTestCalculator(t *testing.T) *pob.Calculator {
+	t.Helper()
+	manager, err := pob.Local()
+	if err != nil {
+		t.Fatal(err)
+	}
+	installation, err := manager.Ensure(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	calculator, err := pob.NewCalculator(installation)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return calculator
 }
 
 func closeRecoveryServer(server *host.Server) {

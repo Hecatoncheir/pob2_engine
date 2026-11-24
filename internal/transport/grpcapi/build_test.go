@@ -10,12 +10,22 @@ import (
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
+	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
+	"github.com/Hecatoncheir/pob2_engine/internal/testreference"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 )
 
 func TestFullBuildCommandsAndEvents(t *testing.T) {
-	_, client := start(t, application.NewService())
+	data, err := gamedata.Embedded()
+	if err != nil {
+		t.Fatal(err)
+	}
+	calculator, err := testreference.New(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, client := start(t, application.NewServiceWithCalculator(calculator))
 	ctx := t.Context()
 	if _, err := client.Create(ctx, application.CreateSession{SessionID: "main", BuildName: "Сборка", RequestID: "create"}); err != nil {
 		t.Fatal(err)

@@ -1,5 +1,5 @@
-// Package calculation выполняет объявленный расчёт на Go без Lua и транспортов.
-package calculation
+// Package testreference содержит исторический расчёт для тестов.
+package testreference
 
 import (
 	"context"
@@ -7,24 +7,11 @@ import (
 	"strings"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
+	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 )
 
-// LocalPoBDataID обозначает расчёт из явно выбранного каталога PoB.
-const LocalPoBDataID = "pob-lua-local"
-
-type Result struct {
-	Status      string             `json:"status"`
-	DataID      string             `json:"data_id"`
-	DataSHA256  string             `json:"data_sha256"`
-	PoBCommit   string             `json:"pob_commit"`
-	InputSHA256 string             `json:"input_sha256"`
-	Skill       string             `json:"skill"`
-	Mode        string             `json:"mode"`
-	Stats       map[string]float64 `json:"stats"`
-	Modifiers   []Modifier         `json:"modifiers"`
-	Issues      []build.Issue      `json:"issues"`
-}
+type Result = calculation.Result
 
 type Engine struct{ data *gamedata.Dataset }
 
@@ -123,4 +110,8 @@ func (s *inputs) readCharacter() {
 	if s.model.AscendancyID != 0 || s.model.Ascendancy != "None" {
 		s.issue("unsupported_ascendancy", "Build/ascendClassName", "возвышения пока не поддерживаются")
 	}
+}
+
+func (e *Engine) Compare(ctx context.Context, before, after *build.Document) (calculation.Comparison, error) {
+	return calculation.Compare(ctx, e, before, after)
 }

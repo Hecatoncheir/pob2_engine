@@ -4,3 +4,4 @@
 /.reference/
 **/__pycache__/
 **/.dart_tool/
+/internal/pob/runtime/*.zip

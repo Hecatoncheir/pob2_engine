@@ -1,4 +1,4 @@
-package calculation
+package testreference
 
 // Ограниченный перенос порядка вычислений PoB:
 // PathOfBuildingCommunity/PathOfBuilding-PoE2, commit 7d6f530cbdab20389ff8bc6ba97a37ac27f74e41.

@@ -101,7 +101,12 @@ func checkSupportGroups(t *testing.T, s *groupScenario) {
 	}
 	installPreviewSupport(t, s)
 	checkPreviewAdapters(t, s, "Controlled Destruction", "complete")
-	checkPreviewAdapters(t, s, "Rapid Casting I", "unsupported")
+	preview := checkPreviewAdapters(t, s, "Rapid Casting I", "partial")
+	if preview.Compatible || !slices.ContainsFunc(preview.Comparison.After.Issues, func(issue build.Issue) bool {
+		return issue.Code == "pob_support_superseded"
+	}) {
+		t.Fatal("PoB не сообщил о вытесненной поддержке")
+	}
 }
 
 func installPreviewSupport(t *testing.T, s *groupScenario) {
@@ -117,7 +122,7 @@ func installPreviewSupport(t *testing.T, s *groupScenario) {
 	s.expectEvent(s.revision, "build.model.groups")
 }
 
-func checkPreviewAdapters(t *testing.T, s *groupScenario, support, state string) {
+func checkPreviewAdapters(t *testing.T, s *groupScenario, support, state string) application.SupportPreview {
 	t.Helper()
 	before, err := s.client.Snapshot(s.ctx, "main")
 	if err != nil {
@@ -129,14 +134,18 @@ func checkPreviewAdapters(t *testing.T, s *groupScenario, support, state string)
 	}
 	result := call(t, s.ctx, s.mcp, "preview_support", map[string]any{"support_id": support, "expected_revision": s.revision}, false)
 	fromMCP := structuredCatalogJSON[application.SupportPreview](t, result.StructuredContent)
+	if grpc.Status != state {
+		t.Fatalf("предпросмотр группы %d, %s: статус %s вместо %s; диагностика: %v / %v", grpc.GroupID, support, grpc.Status, state, grpc.Comparison.Before.Issues, grpc.Comparison.After.Issues)
+	}
 	fromCLI := previewCLI(t, s, support, state)
-	if grpc.Status != state || !reflect.DeepEqual(grpc, fromCLI) || !reflect.DeepEqual(grpc, fromMCP) {
+	if !reflect.DeepEqual(grpc, fromCLI) || !reflect.DeepEqual(grpc, fromMCP) {
 		t.Fatalf("разные результаты предпросмотра %s: %+v", support, grpc)
 	}
 	after, err := s.client.Snapshot(s.ctx, "main")
 	if err != nil || before != after {
 		t.Fatal("предпросмотр изменил сессию")
 	}
+	return grpc
 }
 
 func previewCLI(t *testing.T, s *groupScenario, support, state string) application.SupportPreview {
@@ -178,7 +187,7 @@ func checkCatalogAdapterErrors(t *testing.T, s *groupScenario) {
 func checkPreviewDiagnosticCases(t *testing.T, s *groupScenario) {
 	t.Helper()
 	for _, sample := range []struct{ file, state string }{
-		{"gem-requirement-warning", "partial"}, {"unparsed-custom-modifier", "unsupported"},
+		{"gem-requirement-warning", "partial"}, {"unparsed-custom-modifier", "partial"},
 	} {
 		xml, err := os.ReadFile("../../testdata/reference/cases/" + sample.file + ".xml")
 		if err != nil {

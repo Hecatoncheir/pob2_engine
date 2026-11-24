@@ -1,6 +1,7 @@
 -- Данные одного кадра для изображений; формулы и состояния остаются в PoB.
 return function(methods)
     local json = require("dkjson")
+    local readTreeGeometry = dofile(POB_MCP_PACKAGE_DIR .. "/tree_geometry.lua")
     local baseCommands, baseRevision
     local function commandKey(command)
         return json.encode({command.file, command.index, command.positions, command.uv, command.color, command.blend, command.clamp})
@@ -11,23 +12,20 @@ return function(methods)
         return capture(build, {treeScope = "full", width = 1856, height = 2034, hoverId = hoverId})
     end
     local function imageTree()
+        local geometry = readTreeGeometry(build.spec)
         local nodes, edges = {}, {}
-        for id, node in pairs(build.spec.nodes) do
-            if type(node.x) == "number" and type(node.y) == "number" and node.type ~= "OnlyImage" then
-                nodes[#nodes + 1] = { id = id, x = node.x, y = node.y, name = node.dn or node.name or "",
-                    type = node.type, allocated = node.alloc == true, isAttribute = node.isAttribute == true, allocMode = node.allocMode or 0,
-                    icon = node.icon, drawSize = node.targetSize and node.targetSize.width or 0 }
-                for _, other in ipairs(node.linked or {}) do
-                    if id < other.id then edges[#edges + 1] = { id, other.id } end
-                end
-            end
+        local hidden = setmetatable({}, { __jsontype = "array" })
+        for _, node in ipairs(geometry.nodes) do
+            nodes[#nodes + 1] = { id = node.id, x = node.x, y = node.y, name = node.name,
+                type = node.kind, allocated = node.allocated, isAttribute = node.attribute,
+                icon = node.icon, drawSize = node.draw_size, allocMode = node.allocation_mode }
         end
-        table.sort(nodes, function(a, b) return a.id < b.id end)
-        table.sort(edges, function(a, b)
-            if a[1] == b[1] then return a[2] < b[2] end
-            return a[1] < b[1]
-        end)
-        return { nodes = nodes, edges = edges }
+        for _, edge in ipairs(geometry.edges) do
+            local pair = {edge.from_node, edge.to_node}
+            edges[#edges + 1] = pair
+            if edge.hidden_in_scene then hidden[#hidden + 1] = pair end
+        end
+        return { nodes = nodes, edges = edges, hiddenEdges = hidden }
     end
 
     function methods.getBuildImageData(params)

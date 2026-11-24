@@ -28,7 +28,7 @@ CastRate/Speed, CritChance/CritMultiplier, AverageHit/TotalDPS, сопротив
 `item-*`, `passives-*`, `mod-*`, `enemy-resist-*`, `penalty-*`, а также
 `combined-build`, `rounding-resources` и проверки границ. Неподдержанные
 выборы и повторы поддержек проверяются в
-[engine_test.go](../internal/calculation/engine_test.go).
+[engine_test.go](../internal/testreference/engine_test.go).
 
 ## Статус результата
 

@@ -2,8 +2,10 @@ package pob
 
 import (
 	"archive/zip"
+	"bytes"
 	"context"
 	"crypto/sha256"
+	"embed"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -13,6 +15,9 @@ import (
 	"path/filepath"
 	"strings"
 )
+
+//go:embed runtime/*
+var runtimes embed.FS
 
 func (m *Manager) install(ctx context.Context, rel release, current Installation) (installationState, error) {
 	file, err := portableAsset(rel)
@@ -56,8 +61,12 @@ func (m *Manager) stage(ctx context.Context, file asset, next installationState)
 	if err := m.extract(ctx, file, staging, false); err != nil {
 		return err
 	}
-	if m.nativeRuntime.url != "" {
-		if err := m.extract(ctx, m.nativeRuntime, staging, true); err != nil {
+	if len(m.nativeRuntime) != 0 {
+		archive, err := zip.NewReader(bytes.NewReader(m.nativeRuntime), int64(len(m.nativeRuntime)))
+		if err != nil {
+			return fmt.Errorf("не удалось открыть встроенный архив LuaJIT: %w", err)
+		}
+		if err := extractFiles(ctx, archive.File, staging, true); err != nil {
 			return err
 		}
 		i.NativeDirectory = filepath.Join(staging, "native")
@@ -237,17 +246,7 @@ func extractFile(root *os.Root, entry *zip.File, name string) error {
 	return closeErr
 }
 
-func nativeAsset(goos, arch string) asset {
-	const repo, tag = "Hecatoncheir/pob-poe2-mcp", "v0.24.1"
-	var file asset
-	switch goos + "/" + arch {
-	case "linux/amd64":
-		file = asset{Name: "pob-poe2-mcp-native-linux-x64.zip", Size: 817929, Digest: "sha256:e7dbdb4319c417df4ea5365b3a3d254aacf8cec8deabb7a0f809f61e08a5c1a0"}
-	case "darwin/arm64":
-		file = asset{Name: "pob-poe2-mcp-native-macos-arm64.zip", Size: 647635, Digest: "sha256:0eebe81f5221aeab6ba0f2e89e1393b8a97a9cd042c41a1fc42c1f64963dff3e"}
-	default:
-		return file
-	}
-	file.url = downloadURL(repo, tag, file.Name)
-	return file
+func nativeArchive(goos, arch string) []byte {
+	data, _ := runtimes.ReadFile("runtime/" + goos + "-" + arch + ".zip")
+	return data
 }

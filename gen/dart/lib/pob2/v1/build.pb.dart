@@ -2438,10 +2438,12 @@ class TreeGeometryEdge extends $pb.GeneratedMessage {
   factory TreeGeometryEdge({
     $core.int? fromNode,
     $core.int? toNode,
+    $core.bool? hiddenInScene,
   }) {
     final result = TreeGeometryEdge._();
     if (fromNode != null) result.fromNode = fromNode;
     if (toNode != null) result.toNode = toNode;
+    if (hiddenInScene != null) result.hiddenInScene = hiddenInScene;
     return result;
   }
 
@@ -2460,6 +2462,7 @@ class TreeGeometryEdge extends $pb.GeneratedMessage {
       createEmptyInstance: TreeGeometryEdge.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'fromNode', fieldType: $pb.PbFieldType.OU3)
     ..aI(2, _omitFieldNames ? '' : 'toNode', fieldType: $pb.PbFieldType.OU3)
+    ..aOB(3, _omitFieldNames ? '' : 'hiddenInScene')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2501,6 +2504,15 @@ class TreeGeometryEdge extends $pb.GeneratedMessage {
   $core.bool hasToNode() => $_has(1);
   @$pb.TagNumber(2)
   void clearToNode() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get hiddenInScene => $_getBF(2);
+  @$pb.TagNumber(3)
+  set hiddenInScene($core.bool value) => $_setBool(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasHiddenInScene() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearHiddenInScene() => $_clearField(3);
 }
 
 class GetTreeNodeTooltipRequest extends $pb.GeneratedMessage {

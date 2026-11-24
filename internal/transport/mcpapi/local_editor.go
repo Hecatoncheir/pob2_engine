@@ -15,7 +15,7 @@ import (
 
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
-	"github.com/Hecatoncheir/pob2_engine/internal/poblegacy"
+	"github.com/Hecatoncheir/pob2_engine/internal/workbench"
 	"github.com/google/jsonschema-go/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -31,12 +31,8 @@ type localEditor struct {
 }
 
 func NewLocalEditor(endpoint string) (*mcp.Server, error) {
-	raw, err := poblegacy.Read("data/tools.json")
+	tools, err := workbench.Manifest()
 	if err != nil {
-		return nil, err
-	}
-	var tools []workbenchTool
-	if err := json.Unmarshal(raw, &tools); err != nil {
 		return nil, err
 	}
 	server := mcp.NewServer(&mcp.Implementation{Name: "pob2_engine", Version: buildinfo.Version}, &mcp.ServerOptions{
@@ -59,7 +55,7 @@ func localEditorHTTP() *http.Client {
 	}
 }
 
-func (e *localEditor) register(server *mcp.Server, tool workbenchTool) error {
+func (e *localEditor) register(server *mcp.Server, tool workbench.Tool) error {
 	if !editorSupports(tool.Name) {
 		return nil
 	}
@@ -74,11 +70,11 @@ func (e *localEditor) register(server *mcp.Server, tool workbenchTool) error {
 }
 
 func editorSupports(name string) bool {
-	return strings.HasPrefix(name, "pob_editor_") || workbenchSupports(name) || name == "pob_preview_support" || name == "pob_render_image"
+	return strings.HasPrefix(name, "pob_editor_") || workbench.Supports(name) || name == "pob_preview_support" || name == "pob_render_image"
 }
 
 func (e *localEditor) handle(ctx context.Context, name string, schema *jsonschema.Resolved, raw json.RawMessage) *mcp.CallToolResult {
-	args, err := workbenchArguments(schema, raw)
+	args, err := workbench.Arguments(schema, raw)
 	if err != nil {
 		return workbenchFailure("INVALID_ARGUMENTS", err)
 	}

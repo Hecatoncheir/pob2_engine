@@ -118,17 +118,8 @@ func TestLuaReportsUnsupportedModifierAfterEdit(t *testing.T) {
 
 func BenchmarkCalculators(b *testing.B) {
 	lua := localCalculator(b)
-	data, err := gamedata.Embedded()
-	if err != nil {
-		b.Fatal(err)
-	}
-	pureGo, err := calculation.New(data)
-	if err != nil {
-		b.Fatal(err)
-	}
 	for _, spell := range spells {
 		doc := readBuild(b, spell.file)
-		b.Run(spell.name+"/Go", func(b *testing.B) { benchmarkCalculation(b, pureGo, doc) })
 		b.Run(spell.name+"/Lua", func(b *testing.B) { benchmarkCalculation(b, lua, doc) })
 	}
 }

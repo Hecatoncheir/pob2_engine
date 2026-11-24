@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package pob2.v1;
+
+option go_package = "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1;pob2v1";
+
+// Рабочая копия принадлежит одному процессу клиента и не записывает общую сессию.
+service WorkbenchService {
+  rpc ListWorkbenchTools(ListWorkbenchToolsRequest) returns (ListWorkbenchToolsResponse);
+  rpc CallWorkbenchTool(CallWorkbenchToolRequest) returns (CallWorkbenchToolResponse);
+}
+
+message ListWorkbenchToolsRequest {}
+
+message ListWorkbenchToolsResponse {
+  repeated string names = 1;
+}
+
+message CallWorkbenchToolRequest {
+  string name = 1;
+  bytes arguments_json = 2;
+}
+
+message CallWorkbenchToolResponse {
+  uint64 revision = 1;
+  bytes result_json = 2;
+  bytes png = 3;
+  WorkbenchToolError error = 4;
+}
+
+message WorkbenchToolError {
+  string code = 1;
+  string message = 2;
+}

@@ -60,7 +60,7 @@ Calculate и PreviewSupport выполняют вычисления при ка�
 ## Воспроизведение
 
 ```shell
-go test ./internal/calculation -run '^$' -bench '^BenchmarkCalculateSpells$' -benchmem -benchtime=500ms -count=5
+go test ./internal/testreference -run '^$' -bench '^BenchmarkCalculateSpells$' -benchmem -benchtime=500ms -count=5
 go test ./internal/application -run '^$' -bench '^BenchmarkPreviewSupport$' -benchmem -benchtime=500ms -count=5
 ```
 
@@ -73,7 +73,7 @@ CI сохраняет исходные `spells.txt`, `support-preview.txt`, Go/O
 переменные GOMAXPROCS/GOGC/GOMEMLIMIT (без остальных переменных окружения),
 commit, время UTC и SHA-256 XML/встроенных данных. Отдельно остаётся прежний
 замер последовательного/параллельного Fireball в `benchmark.txt` (три повторения).
-Исходники измерений: [библиотека](../internal/calculation/benchmark_test.go),
+Исходники измерений: [библиотека](../internal/testreference/benchmark_test.go),
 [сервис](../internal/application/benchmark_test.go), [CI](../.github/workflows/ci.yml).
 
 ## Границы результата

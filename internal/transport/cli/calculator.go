@@ -6,24 +6,16 @@ import (
 	"os"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
-	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
 	"github.com/Hecatoncheir/pob2_engine/internal/maintenance"
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 )
 
 func openCalculator(ctx context.Context) (calculation.Calculator, func(), error) {
 	switch os.Getenv("POB2_ENGINE_CALCULATOR") {
-	case "go":
-		data, err := gamedata.Embedded()
-		if err != nil {
-			return nil, nil, err
-		}
-		engine, err := calculation.New(data)
-		return engine, func() {}, err
 	case "", "luajit", "lua":
 		return openLuaJITCalculator(ctx)
 	default:
-		return nil, nil, fmt.Errorf("POB2_ENGINE_CALCULATOR принимает luajit, lua или go")
+		return nil, nil, fmt.Errorf("pob2_engine использует LuaJIT; удалите значение POB2_ENGINE_CALCULATOR из окружения")
 	}
 }
 

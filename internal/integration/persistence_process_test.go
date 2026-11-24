@@ -222,7 +222,9 @@ func TestPersistenceFailureHelper(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer journal.Close()
-	service, err := application.OpenService(t.Context(), failingJournal{Journal: journal, failurePath: filepath.Join(base, "fail-save")})
+	calculator := openTestCalculator(t)
+	defer calculator.Close()
+	service, err := application.OpenServiceWithCalculator(t.Context(), failingJournal{Journal: journal, failurePath: filepath.Join(base, "fail-save")}, calculator)
 	if err != nil {
 		t.Fatal(err)
 	}

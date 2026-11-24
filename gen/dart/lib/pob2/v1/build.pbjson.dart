@@ -746,13 +746,15 @@ const TreeGeometryEdge$json = {
   '2': [
     {'1': 'from_node', '3': 1, '4': 1, '5': 13, '10': 'fromNode'},
     {'1': 'to_node', '3': 2, '4': 1, '5': 13, '10': 'toNode'},
+    {'1': 'hidden_in_scene', '3': 3, '4': 1, '5': 8, '10': 'hiddenInScene'},
   ],
 };
 
 /// Descriptor for `TreeGeometryEdge`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List treeGeometryEdgeDescriptor = $convert.base64Decode(
     'ChBUcmVlR2VvbWV0cnlFZGdlEhsKCWZyb21fbm9kZRgBIAEoDVIIZnJvbU5vZGUSFwoHdG9fbm'
-    '9kZRgCIAEoDVIGdG9Ob2Rl');
+    '9kZRgCIAEoDVIGdG9Ob2RlEiYKD2hpZGRlbl9pbl9zY2VuZRgDIAEoCFINaGlkZGVuSW5TY2Vu'
+    'ZQ==');
 
 @$core.Deprecated('Use getTreeNodeTooltipRequestDescriptor instead')
 const GetTreeNodeTooltipRequest$json = {

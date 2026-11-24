@@ -1920,6 +1920,7 @@ type TreeGeometryEdge struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FromNode      uint32                 `protobuf:"varint,1,opt,name=from_node,json=fromNode,proto3" json:"from_node,omitempty"`
 	ToNode        uint32                 `protobuf:"varint,2,opt,name=to_node,json=toNode,proto3" json:"to_node,omitempty"`
+	HiddenInScene bool                   `protobuf:"varint,3,opt,name=hidden_in_scene,json=hiddenInScene,proto3" json:"hidden_in_scene,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1966,6 +1967,13 @@ func (x *TreeGeometryEdge) GetToNode() uint32 {
 		return x.ToNode
 	}
 	return 0
+}
+
+func (x *TreeGeometryEdge) GetHiddenInScene() bool {
+	if x != nil {
+		return x.HiddenInScene
+	}
+	return false
 }
 
 type GetTreeNodeTooltipRequest struct {
@@ -4301,10 +4309,11 @@ const file_pob2_v1_build_proto_rawDesc = "" +
 	"\tattribute\x18\b \x01(\bR\tattribute\x12'\n" +
 	"\x0fallocation_mode\x18\t \x01(\rR\x0eallocationMode\x12\x1b\n" +
 	"\tdraw_size\x18\n" +
-	" \x01(\x01R\bdrawSize\"H\n" +
+	" \x01(\x01R\bdrawSize\"p\n" +
 	"\x10TreeGeometryEdge\x12\x1b\n" +
 	"\tfrom_node\x18\x01 \x01(\rR\bfromNode\x12\x17\n" +
-	"\ato_node\x18\x02 \x01(\rR\x06toNode\"\xbf\x01\n" +
+	"\ato_node\x18\x02 \x01(\rR\x06toNode\x12&\n" +
+	"\x0fhidden_in_scene\x18\x03 \x01(\bR\rhiddenInScene\"\xbf\x01\n" +
 	"\x19GetTreeNodeTooltipRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12+\n" +

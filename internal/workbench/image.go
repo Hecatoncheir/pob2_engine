@@ -1,4 +1,4 @@
-package mcpapi
+package workbench
 
 import (
 	"bytes"
@@ -12,7 +12,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/gofont/goregular"
 	"golang.org/x/image/font/opentype"
@@ -46,32 +45,32 @@ func workbenchImageOptions(arguments map[string]any) (imageOptions, error) {
 	return options, nil
 }
 
-func (s *workbenchServer) renderImage(ctx context.Context, arguments map[string]any) *mcp.CallToolResult {
+func (s *Service) renderImage(ctx context.Context, arguments map[string]any) (Response, error) {
 	options, err := workbenchImageOptions(arguments)
 	if err != nil {
-		return workbenchFailure("INVALID_ARGUMENTS", err)
+		return Response{}, failure("INVALID_ARGUMENTS", err)
 	}
 	reply, err := s.session.Call(ctx, "getBuildImageData", arguments)
 	if err != nil {
-		return workbenchFailure("CALCULATION_FAILED", err)
+		return Response{}, failure("CALCULATION_FAILED", err)
 	}
 	var data imageData
 	if err := json.Unmarshal(reply.Result, &data); err != nil {
-		return workbenchFailure("INVALID_RESPONSE", err)
+		return Response{}, failure("INVALID_RESPONSE", err)
 	}
 	canvas, err := newWorkbenchCanvas(options, data)
 	if err != nil {
-		return workbenchFailure("INVALID_RESPONSE", err)
+		return Response{}, failure("INVALID_RESPONSE", err)
 	}
 	defer canvas.close()
 	details, err := s.paintImage(ctx, canvas, options, data)
 	if err != nil {
-		return workbenchFailure("INVALID_ARGUMENTS", err)
+		return Response{}, failure("INVALID_ARGUMENTS", err)
 	}
 	return imageToolResult(canvas, reply.Revision, details)
 }
 
-func (s *workbenchServer) paintImage(ctx context.Context, canvas *workbenchCanvas, options imageOptions, data imageData) (map[string]any, error) {
+func (s *Service) paintImage(ctx context.Context, canvas *workbenchCanvas, options imageOptions, data imageData) (map[string]any, error) {
 	var tree map[string]any
 	pages := 1
 	var err error
@@ -95,24 +94,19 @@ func (s *workbenchServer) paintImage(ctx context.Context, canvas *workbenchCanva
 	}, nil
 }
 
-func imageToolResult(canvas *workbenchCanvas, revision int, details map[string]any) *mcp.CallToolResult {
+func imageToolResult(canvas *workbenchCanvas, revision int, details map[string]any) (Response, error) {
 	var image bytes.Buffer
 	if err := png.Encode(&image, canvas.pixels); err != nil {
-		return workbenchFailure("INVALID_RESPONSE", err)
+		return Response{}, failure("INVALID_RESPONSE", err)
 	}
 	if image.Len() > 4<<20 {
-		return workbenchFailure("IMAGE_TOO_LARGE", fmt.Errorf("PNG превышает 4 МиБ; уменьшите размер изображения"))
+		return Response{}, failure("IMAGE_TOO_LARGE", fmt.Errorf("PNG превышает 4 МиБ; уменьшите размер изображения"))
 	}
 	result, err := workbenchResult(revision, details)
 	if err != nil {
-		return workbenchFailure("INVALID_RESPONSE", err)
+		return Response{}, failure("INVALID_RESPONSE", err)
 	}
-	text, err := json.Marshal(result)
-	if err != nil {
-		return workbenchFailure("INVALID_RESPONSE", err)
-	}
-	return &mcp.CallToolResult{StructuredContent: result,
-		Content: []mcp.Content{&mcp.TextContent{Text: string(text)}, &mcp.ImageContent{MIMEType: "image/png", Data: image.Bytes()}}}
+	return Response{Result: result, PNG: image.Bytes()}, nil
 }
 
 var (

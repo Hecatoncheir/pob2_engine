@@ -29,6 +29,7 @@ func (s *Server) GetTreeGeometry(ctx context.Context, req *pb.GetTreeGeometryReq
 	for _, edge := range tree.Edges {
 		result.Edges = append(result.Edges, &pb.TreeGeometryEdge{
 			FromNode: uint32(edge.FromNode), ToNode: uint32(edge.ToNode),
+			HiddenInScene: edge.HiddenInScene,
 		})
 	}
 	return result, nil
@@ -53,6 +54,7 @@ func (c *Client) TreeGeometry(ctx context.Context, id string, expected uint64, s
 	for _, edge := range reply.GetEdges() {
 		tree.Edges = append(tree.Edges, build.TreeGeometryEdge{
 			FromNode: int(edge.GetFromNode()), ToNode: int(edge.GetToNode()),
+			HiddenInScene: edge.GetHiddenInScene(),
 		})
 	}
 	return tree, nil

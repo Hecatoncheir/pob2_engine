@@ -54,7 +54,7 @@ type Manager struct {
 	githubToken              string
 	client                   *http.Client
 	probe                    func(context.Context, Installation) error
-	nativeRuntime            asset
+	nativeRuntime            []byte
 }
 
 func Local() (*Manager, error) {
@@ -66,7 +66,7 @@ func Local() (*Manager, error) {
 		local: os.Getenv("POB2_ENGINE_POB_DIR"), localNative: os.Getenv("POB2_ENGINE_POB_NATIVE_DIR"),
 		githubToken: strings.TrimSpace(os.Getenv("POB2_ENGINE_POB_GITHUB_TOKEN")),
 		client:      &http.Client{Timeout: InstallTimeout, CheckRedirect: checkRedirect}, probe: probeInstallation,
-		nativeRuntime: nativeAsset(runtime.GOOS, runtime.GOARCH)}, nil
+		nativeRuntime: nativeArchive(runtime.GOOS, runtime.GOARCH)}, nil
 }
 
 func pobCacheDirectory() (string, error) {

@@ -47,7 +47,7 @@ const usage = `pob2_engine — сервис сессий Path of Exile 2
   pob-data                  Проверить, установить, обновить или откатить данные PoB
   storage backup|verify|restore  Резервные копии остановленного профиля
   mcp                       MCP stdio: --attach СЕССИЯ или --standalone --session СЕССИЯ
-  workbench                 MCP stdio для форм мастерской и рабочих копий XML
+  workbench [--grpc]        Рабочая копия XML через MCP stdio или локальный gRPC
   editor                    MCP stdio для разрешённого окна PoB II: --endpoint ФАЙЛ
   shutdown                  Корректно завершить сервер
 
@@ -339,7 +339,7 @@ func (c *connection) usesServer() bool {
 }
 
 func (c *connection) connectTimeout() time.Duration {
-	if c.startServer && os.Getenv("POB2_ENGINE_CALCULATOR") != "go" {
+	if c.startServer {
 		return c.timeout + pob.InstallTimeout
 	}
 	return c.timeout

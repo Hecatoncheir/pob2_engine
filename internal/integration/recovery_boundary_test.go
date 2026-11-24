@@ -96,7 +96,7 @@ func checkCommitBoundary(t *testing.T, spell recoverySpell, phase string) {
 	}
 	result, err := s.client.Calculate(s.ctx, command)
 	if err != nil || result != pending {
-		t.Fatal("потерян либо повторно применён результат запроса")
+		t.Fatalf("потерян либо повторно применён результат запроса: %v,\nполучен %s\nожидался %s", err, result.CalculationJSON, pending.CalculationJSON)
 	}
 	checkRecoveredCalculation(t, result, spell, 1)
 	s.expectCalculationEvent(result, command.RequestID)

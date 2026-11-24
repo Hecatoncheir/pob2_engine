@@ -1,4 +1,4 @@
-package mcpapi
+package workbench
 
 import (
 	"cmp"

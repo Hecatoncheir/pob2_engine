@@ -152,7 +152,7 @@ class Scenario:
         self.environment.update(PATH='', HOME=str(root), USERPROFILE=str(root), APPDATA=str(root),
                                 LOCALAPPDATA=str(root), XDG_CONFIG_HOME=str(root / 'config'),
                                 XDG_CACHE_HOME=str(root / 'cache'),
-                                POB_DIR=str(root / 'missing-pob'), POB2_ENGINE_CALCULATOR='go')
+                                POB_DIR=str(root / 'missing-pob'))
         if token := os.environ.get('POB2_ENGINE_POB_GITHUB_TOKEN'):
             self.environment['POB2_ENGINE_POB_GITHUB_TOKEN'] = token
         self.server = None
@@ -396,6 +396,7 @@ def damage_edit():
 def run_scenario(binary, fixtures, work, tag):
     work.mkdir()
     scenario = Scenario(binary, work)
+    scenario.environment['POB2_ENGINE_CALCULATOR'] = 'go'
     try:
         return scenario.execute(fixtures, tag)
     finally:
@@ -436,9 +437,8 @@ def smoke_binary(source, tag):
         licenses = scenario.run('doctor', '--licenses')
         require(all(licenses.get(name) for name in ('LICENSE', 'THIRD_PARTY_NOTICES.md', '.licenses/runtime/manifest.json')),
                 'Бинарник не содержит лицензионные уведомления')
-        result = run_scenario(binary, Path(__file__).resolve().parents[1], root / 'work', tag)
         lua = check_native_lua(scenario)
-        return report_metadata(dict(result, commit=doctor.get('commit', ''), doctor=doctor, lua=lua),
+        return report_metadata(dict(schema=3, version=scenario.run('--version'), commit=doctor.get('commit', ''), doctor=doctor, lua=lua),
                                source, tag, 'binary_sha256')
 
 
@@ -446,7 +446,6 @@ def check_native_lua(scenario):
     from smoke_catalog import check_full_catalog
     from smoke_multigroup import Matrix, check_multigroup
     from smoke_upgrade import check_upgrade
-    scenario.environment.pop('POB2_ENGINE_CALCULATOR')
     fixtures = Path(__file__).resolve().parents[1]
     lock = json.loads((fixtures / 'testdata/reference/sources.lock.json').read_text('utf-8'))['pob']
     results = check_lua_install(scenario, fixtures, lock)
@@ -465,6 +464,8 @@ def check_native_lua(scenario):
         item_skill_group = check_lua_item_skill_group(scenario, fixtures)
         workbench = check_workbench(scenario, fixtures)
         scenario.stop()
+        scenario.check_atomic_xml_creation(fixtures)
+        upgrade001 = scenario.upgrade_session(fixtures, 'v0.0.1', lock, 'upgrade001')
         upgrade = scenario.upgrade_session(fixtures, 'v0.0.2', lock)
         upgrade003 = scenario.upgrade_session(fixtures, 'v0.0.3', lock, 'upgrade003')
         check_source = lambda result: assert_lua_source(result, lock)
@@ -475,17 +476,14 @@ def check_native_lua(scenario):
         upgrade005 = check_upgrade(scenario, fixtures)
         upgrade006 = scenario.upgrade_session(fixtures, 'v0.0.6', profile='upgrade006',
                                               verify=lambda old, new: check_same_lua_revision(old, new, lock))
-        timings = {
-            'lua': measure_binary_calculations(scenario, fixtures, 'luajit',
-                                               lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)),
-            'go': measure_binary_calculations(scenario, fixtures, 'go',
-                                              lambda result, spell: check_calculation(result, spell['dps'])),
-        }
+        timings = measure_binary_calculations(
+            scenario, fixtures, lambda result, spell: assert_lua_result(result, spell['name'], spell['dps'], lock)
+        )
     finally:
         scenario.close()
     return dict(version=doctor['pob']['installed_version'], commit=lock['commit'],
                 archive_sha256=selection['data_sha256'], dps=results, sessions=sessions, diagnostics=diagnostics,
-                selected_set_dps=selection['stats']['TotalDPS'], upgrade=upgrade, upgrade003=upgrade003,
+                selected_set_dps=selection['stats']['TotalDPS'], upgrade001=upgrade001, upgrade=upgrade, upgrade003=upgrade003,
                 upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
                 multigroup=multigroup, catalog=catalog, tree=tree, weapon_tree=weapon_tree,
                 item_skill_group=item_skill_group, workbench=workbench, timings=timings,
@@ -513,10 +511,9 @@ def open_build_session(scenario, session, name, fixture):
                  '--file', fixture, *scenario.connection)
 
 
-def measure_binary_calculations(scenario, fixtures, engine, verify_result):
-    scenario.environment['POB2_ENGINE_CALCULATOR'] = engine
+def measure_binary_calculations(scenario, fixtures, verify_result):
     started = perf_counter()
-    scenario.start('timing-' + engine)
+    scenario.start('timing-lua')
     ready_ms = (perf_counter() - started) * 1000
     timings = {spell['id']: measure_session_calculations(scenario, fixtures, spell, verify_result) for spell in SPELLS}
     scenario.stop()
@@ -790,7 +787,7 @@ def assert_lua_source(result, lock):
 
 def check_lua_updated_snapshot(previous, updated, lock):
     old, new = check_updated_build(previous, updated)
-    require(old['data_id'] == DATA_ID, 'Прежний расчёт выполнен с неожиданным набором данных')
+    require(old['data_id'] in ('pob2-0.0.1-fireball-v1', DATA_ID), 'Прежний расчёт выполнен с неожиданным набором данных')
     require(new['data_sha256'] != old['data_sha256'], 'Новый расчёт сохранил контрольную сумму прежнего каталога')
     assert_lua_result(new, 'Fireball', old['stats']['TotalDPS'], lock)
 

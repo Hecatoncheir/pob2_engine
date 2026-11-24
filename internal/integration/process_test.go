@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
+	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -22,10 +23,16 @@ import (
 var binary string
 
 func TestMain(m *testing.M) {
+	if len(os.Args) > 1 && os.Args[1] == "_pob-lua" {
+		if err := pob.RunWorker(os.Args[2:]); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
 	if os.Getenv("POB2_LIFECYCLE_HELPER") == "1" || os.Getenv("POB2_PERSISTENCE_HELPER") == "1" || os.Getenv("POB2_RECOVERY_HELPER") == "1" {
 		os.Exit(m.Run())
 	}
-	_ = os.Setenv("POB2_ENGINE_CALCULATOR", "go")
 	dir, err := os.MkdirTemp("", "pob2-process-test-")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -118,14 +125,7 @@ func cli(t *testing.T, ctx context.Context, wantExit int, args ...string) []byte
 
 func connectMCP(t *testing.T, ctx context.Context, args ...string) *mcp.ClientSession {
 	t.Helper()
-	client := mcp.NewClient(&mcp.Implementation{Name: "process-test", Version: "1"}, nil)
-	cmd := exec.CommandContext(ctx, binary, append([]string{"mcp"}, args...)...)
-	cmd.Stderr = os.Stderr
-	session, err := client.Connect(ctx, &mcp.CommandTransport{Command: cmd, TerminateDuration: time.Second}, nil)
-	if err != nil {
-		t.Fatalf("MCP initialize: %v", err)
-	}
-	t.Cleanup(func() { _ = session.Close() })
+	session := openMCP(t, ctx, append([]string{"mcp"}, args...)...)
 	tools, err := session.ListTools(ctx, nil)
 	if err != nil {
 		t.Fatalf("MCP tools/list: %v, %v", tools, err)
@@ -135,6 +135,19 @@ func connectMCP(t *testing.T, ctx context.Context, args ...string) *mcp.ClientSe
 			t.Fatalf("нет MCP-инструмента %s", name)
 		}
 	}
+	return session
+}
+
+func openMCP(t *testing.T, ctx context.Context, args ...string) *mcp.ClientSession {
+	t.Helper()
+	client := mcp.NewClient(&mcp.Implementation{Name: "process-test", Version: "1"}, nil)
+	cmd := exec.CommandContext(ctx, binary, args...)
+	cmd.Stderr = os.Stderr
+	session, err := client.Connect(ctx, &mcp.CommandTransport{Command: cmd, TerminateDuration: time.Second}, nil)
+	if err != nil {
+		t.Fatalf("MCP initialize: %v", err)
+	}
+	t.Cleanup(func() { _ = session.Close() })
 	return session
 }
 

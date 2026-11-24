@@ -2,6 +2,8 @@ package calculation
 
 import (
 	"context"
+	"maps"
+	"slices"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 )
@@ -24,10 +26,6 @@ type Calculator interface {
 	Compare(context.Context, *build.Document, *build.Document) (Comparison, error)
 }
 
-func (e *Engine) Compare(ctx context.Context, before, after *build.Document) (Comparison, error) {
-	return Compare(ctx, e, before, after)
-}
-
 func Compare(ctx context.Context, engine interface {
 	Calculate(context.Context, *build.Document) (Result, error)
 }, before, after *build.Document) (Comparison, error) {
@@ -43,7 +41,7 @@ func Compare(ctx context.Context, engine interface {
 	if old.Stats == nil || current.Stats == nil {
 		return result, nil
 	}
-	for _, name := range sortedKeys(old.Stats) {
+	for _, name := range slices.Sorted(maps.Keys(old.Stats)) {
 		value, ok := current.Stats[name]
 		if ok {
 			result.Deltas = append(result.Deltas, Delta{Stat: name, Before: old.Stats[name], After: value, Difference: value - old.Stats[name]})

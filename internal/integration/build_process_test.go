@@ -156,6 +156,9 @@ func TestFullBuildThroughCLIAndMCPRecoversAfterRestart(t *testing.T) {
 }
 
 func TestCleanStandaloneCalculationAndStatusExitCodes(t *testing.T) {
+	if os.Getenv("POB2_ENGINE_POB_DIR") == "" {
+		t.Skip("для проверки изолированного запуска укажите POB2_ENGINE_POB_DIR")
+	}
 	ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
 	defer cancel()
 	for _, sample := range []struct {
@@ -163,15 +166,15 @@ func TestCleanStandaloneCalculationAndStatusExitCodes(t *testing.T) {
 		code   int
 		status string
 	}{
-		{"fireball.xml", 0, "complete"}, {"cases/gem-requirement-warning.xml", 4, "partial"}, {"cases/unparsed-custom-modifier.xml", 3, "unsupported"},
+		{"fireball.xml", 0, "complete"}, {"cases/gem-requirement-warning.xml", 4, "partial"}, {"cases/unparsed-custom-modifier.xml", 4, "partial"},
 	} {
 		t.Run(sample.status, func(t *testing.T) {
 			result := calculateInCleanEnvironment(t, ctx, sample.name, sample.code)
-			if result.Status != sample.status || result.DataSHA256 == "" {
-				t.Fatalf("неверный результат: %+v", result)
+			if result.Status != sample.status || result.DataID != calculation.LocalPoBDataID || len(result.InputSHA256) != 64 {
+				t.Fatalf("неверный результат: статус %s, данные %s, контрольная сумма XML %s", result.Status, result.DataID, result.InputSHA256)
 			}
-			if sample.status == "unsupported" && result.Stats != nil {
-				t.Fatal("неподдержанный ввод превратился в числа")
+			if sample.status == "partial" && (result.Stats == nil || len(result.Issues) == 0) {
+				t.Fatal("частичный расчёт PoB не содержит показателей или диагностики")
 			}
 		})
 	}
@@ -219,7 +222,8 @@ func cleanCalculationEnvironment(root string) []string {
 		}
 	}
 	return append(env, "PATH=", "HOME="+root, "USERPROFILE="+root, "APPDATA="+root, "LOCALAPPDATA="+root,
-		"POB_DIR="+filepath.Join(root, "missing-pob"), "POB2_ENGINE_CALCULATOR=go")
+		"POB2_ENGINE_POB_DIR="+os.Getenv("POB2_ENGINE_POB_DIR"),
+		"POB2_ENGINE_POB_NATIVE_DIR="+os.Getenv("POB2_ENGINE_POB_NATIVE_DIR"))
 }
 
 func TestEveryMCPEditSurvivesCrashAndReachesGRPC(t *testing.T) {

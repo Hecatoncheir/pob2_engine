@@ -128,6 +128,9 @@ func (s *Service) Calculate(ctx context.Context, cmd CalculateBuild) (result dom
 	if err != nil {
 		return result, failure(CalculationFailure, err.Error())
 	}
+	if s.calculator == nil {
+		return result, failure(CalculationFailure, "модуль расчёта не настроен")
+	}
 	report, err := s.calculator.Calculate(ctx, doc)
 	if err != nil {
 		return result, err

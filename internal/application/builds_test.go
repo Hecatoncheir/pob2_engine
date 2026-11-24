@@ -16,10 +16,11 @@ import (
 
 func importedService(t *testing.T, journal Journal) (*Service, domain.Snapshot) {
 	t.Helper()
-	s := NewService()
+	calculator := testCalculator(t)
+	s := NewServiceWithCalculator(calculator)
 	if journal != nil {
 		var err error
-		s, err = OpenService(t.Context(), journal)
+		s, err = OpenServiceWithCalculator(t.Context(), journal, calculator)
 		if err != nil {
 			t.Fatal(err)
 		}

@@ -12,6 +12,8 @@ import (
 	"testing"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
+	"github.com/Hecatoncheir/pob2_engine/internal/gamedata"
+	"github.com/Hecatoncheir/pob2_engine/internal/testreference"
 	bolt "go.etcd.io/bbolt"
 )
 
@@ -22,7 +24,15 @@ func openService(t *testing.T, base, profile string) (*Journal, *application.Ser
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = j.Close() })
-	s, err := application.OpenService(t.Context(), j)
+	data, err := gamedata.Embedded()
+	if err != nil {
+		t.Fatal(err)
+	}
+	calculator, err := testreference.New(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, err := application.OpenServiceWithCalculator(t.Context(), j, calculator)
 	if err != nil {
 		t.Fatal(err)
 	}

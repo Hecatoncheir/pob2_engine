@@ -24,6 +24,7 @@ func TestLuaTreeGeometryAcrossProcesses(t *testing.T) {
 	before := supportSnapshot(t, s)
 	tree := compareGeometryTransports(t, s, false)
 	checkGeometry(t, tree)
+	checkSceneLinks(t, tree.Edges)
 	withScene := compareGeometryTransports(t, s, true)
 	checkTreeScene(t, withScene.Scene)
 	if _, err := s.client.TreeGeometry(s.ctx, "main", s.revision-1, false); status.Code(err) != codes.Aborted {
@@ -31,6 +32,20 @@ func TestLuaTreeGeometryAcrossProcesses(t *testing.T) {
 	}
 	if !reflect.DeepEqual(supportSnapshot(t, s), before) {
 		t.Fatal("чтение геометрии изменило состояние сборки")
+	}
+}
+
+func checkSceneLinks(t *testing.T, edges []build.TreeGeometryEdge) {
+	t.Helper()
+	for _, pair := range [][2]int{{3936, 57253}, {38646, 57253}, {4739, 12795}, {12795, 44871}} {
+		if !slices.Contains(edges, build.TreeGeometryEdge{FromNode: pair[0], ToNode: pair[1], HiddenInScene: true}) {
+			t.Fatalf("служебная связь %v потеряна или попала в отрисовку", pair)
+		}
+	}
+	if !slices.ContainsFunc(edges, func(edge build.TreeGeometryEdge) bool {
+		return !edge.HiddenInScene && (edge.FromNode == 38646 || edge.ToNode == 38646)
+	}) {
+		t.Fatal("пропали обычные линии у стартовых пассивов")
 	}
 }
 

@@ -72,9 +72,6 @@ func fingerprint(kind string, command any) (string, error) {
 func (s *Service) loadData() error {
 	s.dataOnce.Do(func() {
 		s.data, s.dataError = gamedata.Embedded()
-		if s.dataError == nil && s.calculator == nil {
-			s.calculator, s.dataError = calculation.New(s.data)
-		}
 	})
 	if s.dataError != nil {
 		return failure(CalculationFailure, fmt.Sprintf("не удалось загрузить набор данных: %v", s.dataError))
@@ -269,6 +266,9 @@ func (s *Service) Compare(ctx context.Context, cmd CompareBuild) (BuildCompariso
 	}
 	if err != nil {
 		return BuildComparison{}, failure(InvalidArgument, err.Error())
+	}
+	if s.calculator == nil {
+		return BuildComparison{}, failure(CalculationFailure, "модуль расчёта не настроен")
 	}
 	result, err := s.calculator.Compare(ctx, before, after)
 	if err != nil {

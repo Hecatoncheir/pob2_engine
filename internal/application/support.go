@@ -57,6 +57,9 @@ func (s *Service) PreviewSupport(ctx context.Context, cmd PreviewSupport) (Suppo
 	if err != nil {
 		return SupportPreview{}, failure(InvalidArgument, err.Error())
 	}
+	if s.calculator == nil {
+		return SupportPreview{}, failure(CalculationFailure, "модуль расчёта не настроен")
+	}
 	comparison, err := s.calculator.Compare(ctx, before, after)
 	if err != nil {
 		return SupportPreview{}, err

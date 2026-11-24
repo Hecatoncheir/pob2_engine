@@ -222,6 +222,7 @@ message TreeGeometryNode {
 message TreeGeometryEdge {
   uint32 from_node = 1;
   uint32 to_node = 2;
+  bool hidden_in_scene = 3;
 }
 
 message GetTreeNodeTooltipRequest {

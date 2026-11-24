@@ -169,7 +169,6 @@ def check_upgrade(parent, fixtures):
     workspace = parent.root / 'pob-update'
     workspace.mkdir()
     scenario = Scenario(parent.binary, workspace)
-    scenario.environment.pop('POB2_ENGINE_CALCULATOR')
     try:
         return run_upgrade_cycle(scenario, fixtures)
     finally:
@@ -185,7 +184,6 @@ def check_older_corpus(binary):
         portable = workspace / 'portable'
         unpack_portable(archive, portable)
         scenario = Scenario(binary.resolve(), workspace)
-        scenario.environment.pop('POB2_ENGINE_CALCULATOR')
         scenario.environment['POB2_ENGINE_POB_DIR'] = str(portable)
         native = CACHE / 'linux-x86_64/native'
         if sys.platform != 'win32' and native.is_dir():

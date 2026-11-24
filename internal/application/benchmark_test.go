@@ -32,7 +32,7 @@ func benchmarkPreviewSession(b *testing.B, file string) (*Service, domain.Snapsh
 	if err != nil {
 		b.Fatal(err)
 	}
-	service := NewService()
+	service := serviceWithTestCalculation(b)
 	_, err = service.Create(b.Context(), CreateSession{SessionID: "bench", BuildName: "Измерение", RequestID: "create"})
 	if err != nil {
 		b.Fatal(err)

@@ -22,8 +22,9 @@ type TreeGeometryNode struct {
 }
 
 type TreeGeometryEdge struct {
-	FromNode int `json:"from_node"`
-	ToNode   int `json:"to_node"`
+	FromNode      int  `json:"from_node"`
+	ToNode        int  `json:"to_node"`
+	HiddenInScene bool `json:"hidden_in_scene,omitempty"`
 }
 
 // TreeNodeTooltip содержит строки оригинальной подсказки и список узлов пути.
