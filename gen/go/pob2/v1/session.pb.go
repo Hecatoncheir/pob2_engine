@@ -2268,7 +2268,7 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\x04R\brevision\x12\x10\n" +
 	"\x03xml\x18\x03 \x01(\tR\x03xml\x12!\n" +
-	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xc2\x12\n" +
+	"\finput_sha256\x18\x04 \x01(\tR\vinputSha2562\xc3\x12\n" +
 	"\x0eSessionService\x12N\n" +
 	"\rGetServerInfo\x12\x1d.pob2.v1.GetServerInfoRequest\x1a\x1e.pob2.v1.GetServerInfoResponse\x129\n" +
 	"\x06Update\x12\x16.pob2.v1.UpdateRequest\x1a\x17.pob2.v1.UpdateResponse\x129\n" +
@@ -2287,8 +2287,8 @@ const file_pob2_v1_session_proto_rawDesc = "" +
 	"\fGetTreePower\x12\x1c.pob2.v1.GetTreePowerRequest\x1a\x1d.pob2.v1.GetTreePowerResponse\x12S\n" +
 	"\x0eWatchTreePower\x12\x1e.pob2.v1.WatchTreePowerRequest\x1a\x1f.pob2.v1.WatchTreePowerResponse0\x01\x12`\n" +
 	"\x13GetEquipmentDetails\x12#.pob2.v1.GetEquipmentDetailsRequest\x1a$.pob2.v1.GetEquipmentDetailsResponse\x12Q\n" +
-	"\x0eGetTreeTexture\x12\x1e.pob2.v1.GetTreeTextureRequest\x1a\x1f.pob2.v1.GetTreeTextureResponse\x12U\n" +
-	"\x0fGetTreeTextures\x12\x1f.pob2.v1.GetTreeTexturesRequest\x1a\x1f.pob2.v1.GetTreeTextureResponse0\x01\x12E\n" +
+	"\x0eGetTreeTexture\x12\x1e.pob2.v1.GetTreeTextureRequest\x1a\x1f.pob2.v1.GetTreeTextureResponse\x12V\n" +
+	"\x0fGetTreeTextures\x12\x1f.pob2.v1.GetTreeTexturesRequest\x1a .pob2.v1.GetTreeTexturesResponse0\x01\x12E\n" +
 	"\n" +
 	"GetCatalog\x12\x1a.pob2.v1.GetCatalogRequest\x1a\x1b.pob2.v1.GetCatalogResponse\x12Q\n" +
 	"\x0ePreviewSupport\x12\x1e.pob2.v1.PreviewSupportRequest\x1a\x1f.pob2.v1.PreviewSupportResponse\x12H\n" +
@@ -2380,8 +2380,9 @@ var file_pob2_v1_session_proto_goTypes = []any{
 	(*WatchTreePowerResponse)(nil),       // 59: pob2.v1.WatchTreePowerResponse
 	(*GetEquipmentDetailsResponse)(nil),  // 60: pob2.v1.GetEquipmentDetailsResponse
 	(*GetTreeTextureResponse)(nil),       // 61: pob2.v1.GetTreeTextureResponse
-	(*GetCatalogResponse)(nil),           // 62: pob2.v1.GetCatalogResponse
-	(*PreviewSupportResponse)(nil),       // 63: pob2.v1.PreviewSupportResponse
+	(*GetTreeTexturesResponse)(nil),      // 62: pob2.v1.GetTreeTexturesResponse
+	(*GetCatalogResponse)(nil),           // 63: pob2.v1.GetCatalogResponse
+	(*PreviewSupportResponse)(nil),       // 64: pob2.v1.PreviewSupportResponse
 }
 var file_pob2_v1_session_proto_depIdxs = []int32{
 	37, // 0: pob2.v1.SessionSnapshot.build:type_name -> pob2.v1.BuildDocument
@@ -2443,9 +2444,9 @@ var file_pob2_v1_session_proto_depIdxs = []int32{
 	59, // 56: pob2.v1.SessionService.WatchTreePower:output_type -> pob2.v1.WatchTreePowerResponse
 	60, // 57: pob2.v1.SessionService.GetEquipmentDetails:output_type -> pob2.v1.GetEquipmentDetailsResponse
 	61, // 58: pob2.v1.SessionService.GetTreeTexture:output_type -> pob2.v1.GetTreeTextureResponse
-	61, // 59: pob2.v1.SessionService.GetTreeTextures:output_type -> pob2.v1.GetTreeTextureResponse
-	62, // 60: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
-	63, // 61: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
+	62, // 59: pob2.v1.SessionService.GetTreeTextures:output_type -> pob2.v1.GetTreeTexturesResponse
+	63, // 60: pob2.v1.SessionService.GetCatalog:output_type -> pob2.v1.GetCatalogResponse
+	64, // 61: pob2.v1.SessionService.PreviewSupport:output_type -> pob2.v1.PreviewSupportResponse
 	36, // 62: pob2.v1.SessionService.ExportBuild:output_type -> pob2.v1.ExportBuildResponse
 	18, // 63: pob2.v1.SessionService.WatchSession:output_type -> pob2.v1.WatchSessionResponse
 	21, // 64: pob2.v1.SessionService.WatchServer:output_type -> pob2.v1.WatchServerResponse

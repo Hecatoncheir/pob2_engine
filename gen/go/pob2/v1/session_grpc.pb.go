@@ -74,7 +74,7 @@ type SessionServiceClient interface {
 	WatchTreePower(ctx context.Context, in *WatchTreePowerRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchTreePowerResponse], error)
 	GetEquipmentDetails(ctx context.Context, in *GetEquipmentDetailsRequest, opts ...grpc.CallOption) (*GetEquipmentDetailsResponse, error)
 	GetTreeTexture(ctx context.Context, in *GetTreeTextureRequest, opts ...grpc.CallOption) (*GetTreeTextureResponse, error)
-	GetTreeTextures(ctx context.Context, in *GetTreeTexturesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetTreeTextureResponse], error)
+	GetTreeTextures(ctx context.Context, in *GetTreeTexturesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetTreeTexturesResponse], error)
 	GetCatalog(ctx context.Context, in *GetCatalogRequest, opts ...grpc.CallOption) (*GetCatalogResponse, error)
 	PreviewSupport(ctx context.Context, in *PreviewSupportRequest, opts ...grpc.CallOption) (*PreviewSupportResponse, error)
 	ExportBuild(ctx context.Context, in *ExportBuildRequest, opts ...grpc.CallOption) (*ExportBuildResponse, error)
@@ -285,13 +285,13 @@ func (c *sessionServiceClient) GetTreeTexture(ctx context.Context, in *GetTreeTe
 	return out, nil
 }
 
-func (c *sessionServiceClient) GetTreeTextures(ctx context.Context, in *GetTreeTexturesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetTreeTextureResponse], error) {
+func (c *sessionServiceClient) GetTreeTextures(ctx context.Context, in *GetTreeTexturesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetTreeTexturesResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &SessionService_ServiceDesc.Streams[2], SessionService_GetTreeTextures_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[GetTreeTexturesRequest, GetTreeTextureResponse]{ClientStream: stream}
+	x := &grpc.GenericClientStream[GetTreeTexturesRequest, GetTreeTexturesResponse]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -302,7 +302,7 @@ func (c *sessionServiceClient) GetTreeTextures(ctx context.Context, in *GetTreeT
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SessionService_GetTreeTexturesClient = grpc.ServerStreamingClient[GetTreeTextureResponse]
+type SessionService_GetTreeTexturesClient = grpc.ServerStreamingClient[GetTreeTexturesResponse]
 
 func (c *sessionServiceClient) GetCatalog(ctx context.Context, in *GetCatalogRequest, opts ...grpc.CallOption) (*GetCatalogResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -474,7 +474,7 @@ type SessionServiceServer interface {
 	WatchTreePower(*WatchTreePowerRequest, grpc.ServerStreamingServer[WatchTreePowerResponse]) error
 	GetEquipmentDetails(context.Context, *GetEquipmentDetailsRequest) (*GetEquipmentDetailsResponse, error)
 	GetTreeTexture(context.Context, *GetTreeTextureRequest) (*GetTreeTextureResponse, error)
-	GetTreeTextures(*GetTreeTexturesRequest, grpc.ServerStreamingServer[GetTreeTextureResponse]) error
+	GetTreeTextures(*GetTreeTexturesRequest, grpc.ServerStreamingServer[GetTreeTexturesResponse]) error
 	GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error)
 	PreviewSupport(context.Context, *PreviewSupportRequest) (*PreviewSupportResponse, error)
 	ExportBuild(context.Context, *ExportBuildRequest) (*ExportBuildResponse, error)
@@ -548,7 +548,7 @@ func (UnimplementedSessionServiceServer) GetEquipmentDetails(context.Context, *G
 func (UnimplementedSessionServiceServer) GetTreeTexture(context.Context, *GetTreeTextureRequest) (*GetTreeTextureResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetTreeTexture not implemented")
 }
-func (UnimplementedSessionServiceServer) GetTreeTextures(*GetTreeTexturesRequest, grpc.ServerStreamingServer[GetTreeTextureResponse]) error {
+func (UnimplementedSessionServiceServer) GetTreeTextures(*GetTreeTexturesRequest, grpc.ServerStreamingServer[GetTreeTexturesResponse]) error {
 	return status.Error(codes.Unimplemented, "method GetTreeTextures not implemented")
 }
 func (UnimplementedSessionServiceServer) GetCatalog(context.Context, *GetCatalogRequest) (*GetCatalogResponse, error) {
@@ -905,11 +905,11 @@ func _SessionService_GetTreeTextures_Handler(srv interface{}, stream grpc.Server
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(SessionServiceServer).GetTreeTextures(m, &grpc.GenericServerStream[GetTreeTexturesRequest, GetTreeTextureResponse]{ServerStream: stream})
+	return srv.(SessionServiceServer).GetTreeTextures(m, &grpc.GenericServerStream[GetTreeTexturesRequest, GetTreeTexturesResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type SessionService_GetTreeTexturesServer = grpc.ServerStreamingServer[GetTreeTextureResponse]
+type SessionService_GetTreeTexturesServer = grpc.ServerStreamingServer[GetTreeTexturesResponse]
 
 func _SessionService_GetCatalog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCatalogRequest)

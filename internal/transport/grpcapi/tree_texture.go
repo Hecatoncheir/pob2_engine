@@ -24,7 +24,7 @@ func (s *Server) GetTreeTexture(ctx context.Context, req *pb.GetTreeTextureReque
 	return treeTextureReply(texture), nil
 }
 
-func (s *Server) GetTreeTextures(req *pb.GetTreeTexturesRequest, stream grpc.ServerStreamingServer[pb.GetTreeTextureResponse]) error {
+func (s *Server) GetTreeTextures(req *pb.GetTreeTexturesRequest, stream grpc.ServerStreamingServer[pb.GetTreeTexturesResponse]) error {
 	reader, ok := s.commands.(application.TreeTextureBatchCommands)
 	if !ok {
 		return status.Error(codes.Unimplemented, "сервис не поддерживает пакетное чтение текстур")
@@ -34,7 +34,7 @@ func (s *Server) GetTreeTextures(req *pb.GetTreeTexturesRequest, stream grpc.Ser
 		queries = append(queries, build.TreeTextureQuery{File: req.GetFile(), Index: layer.GetIndex(), TargetSize: layer.GetTargetSize()})
 	}
 	err := reader.TreeTextures(stream.Context(), queries, func(texture build.TreeTexture) error {
-		return stream.Send(treeTextureReply(texture))
+		return stream.Send(&pb.GetTreeTexturesResponse{Texture: treeTextureReply(texture)})
 	})
 	return rpcError(err)
 }
@@ -43,7 +43,7 @@ func treeTextureReply(texture build.TreeTexture) *pb.GetTreeTextureResponse {
 	return &pb.GetTreeTextureResponse{Width: texture.Width, Height: texture.Height, MipLevel: texture.MipLevel, Png: texture.PNG}
 }
 
-func (c *Client) TreeTextures(ctx context.Context, file string, layers []*pb.TreeTextureLayer) (grpc.ServerStreamingClient[pb.GetTreeTextureResponse], error) {
+func (c *Client) TreeTextures(ctx context.Context, file string, layers []*pb.TreeTextureLayer) (grpc.ServerStreamingClient[pb.GetTreeTexturesResponse], error) {
 	return c.rpc.GetTreeTextures(ctx, &pb.GetTreeTexturesRequest{File: file, Layers: layers})
 }
 

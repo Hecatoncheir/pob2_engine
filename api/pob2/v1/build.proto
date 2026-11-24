@@ -376,6 +376,10 @@ message GetTreeTexturesRequest {
   repeated TreeTextureLayer layers = 2;
 }
 
+message GetTreeTexturesResponse {
+  GetTreeTextureResponse texture = 1;
+}
+
 message GetEquipmentDetailsRequest {
   string session_id = 1;
   uint64 expected_revision = 2;

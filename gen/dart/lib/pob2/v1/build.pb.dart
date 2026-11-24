@@ -4406,6 +4406,68 @@ class GetTreeTexturesRequest extends $pb.GeneratedMessage {
   $pb.PbList<TreeTextureLayer> get layers => $_getList(1);
 }
 
+class GetTreeTexturesResponse extends $pb.GeneratedMessage {
+  factory GetTreeTexturesResponse({
+    GetTreeTextureResponse? texture,
+  }) {
+    final result = GetTreeTexturesResponse._();
+    if (texture != null) result.texture = texture;
+    return result;
+  }
+
+  GetTreeTexturesResponse._();
+
+  factory GetTreeTexturesResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeTexturesResponse()..mergeFromBuffer(data, registry);
+  factory GetTreeTexturesResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetTreeTexturesResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetTreeTexturesResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'pob2.v1'),
+      createEmptyInstance: GetTreeTexturesResponse.$_createMessage)
+    ..aOM<GetTreeTextureResponse>(1, _omitFieldNames ? '' : 'texture',
+        subBuilder: GetTreeTextureResponse.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeTexturesResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetTreeTexturesResponse copyWith(
+          void Function(GetTreeTexturesResponse) updates) =>
+      super.copyWith((message) => updates(message as GetTreeTexturesResponse))
+          as GetTreeTexturesResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetTreeTexturesResponse() / GetTreeTexturesResponse.new instead')
+  static GetTreeTexturesResponse create() => GetTreeTexturesResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetTreeTexturesResponse._();
+  @$core.override
+  GetTreeTexturesResponse createEmptyInstance() => GetTreeTexturesResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetTreeTexturesResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetTreeTexturesResponse>(
+          GetTreeTexturesResponse.$_createMessage);
+  static GetTreeTexturesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  GetTreeTextureResponse get texture => $_getN(0);
+  @$pb.TagNumber(1)
+  set texture(GetTreeTextureResponse value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasTexture() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTexture() => $_clearField(1);
+  @$pb.TagNumber(1)
+  GetTreeTextureResponse ensureTexture() => $_ensure(0);
+}
+
 enum GetEquipmentDetailsRequest_Item { itemId, raw, notSet }
 
 class GetEquipmentDetailsRequest extends $pb.GeneratedMessage {

@@ -1214,6 +1214,27 @@ final $typed_data.Uint8List getTreeTexturesRequestDescriptor =
         'ChZHZXRUcmVlVGV4dHVyZXNSZXF1ZXN0EhIKBGZpbGUYASABKAlSBGZpbGUSMQoGbGF5ZXJzGA'
         'IgAygLMhkucG9iMi52MS5UcmVlVGV4dHVyZUxheWVyUgZsYXllcnM=');
 
+@$core.Deprecated('Use getTreeTexturesResponseDescriptor instead')
+const GetTreeTexturesResponse$json = {
+  '1': 'GetTreeTexturesResponse',
+  '2': [
+    {
+      '1': 'texture',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.pob2.v1.GetTreeTextureResponse',
+      '10': 'texture'
+    },
+  ],
+};
+
+/// Descriptor for `GetTreeTexturesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getTreeTexturesResponseDescriptor =
+    $convert.base64Decode(
+        'ChdHZXRUcmVlVGV4dHVyZXNSZXNwb25zZRI5Cgd0ZXh0dXJlGAEgASgLMh8ucG9iMi52MS5HZX'
+        'RUcmVlVGV4dHVyZVJlc3BvbnNlUgd0ZXh0dXJl');
+
 @$core.Deprecated('Use getEquipmentDetailsRequestDescriptor instead')
 const GetEquipmentDetailsRequest$json = {
   '1': 'GetEquipmentDetailsRequest',

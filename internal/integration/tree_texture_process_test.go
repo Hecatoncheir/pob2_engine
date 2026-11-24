@@ -58,7 +58,7 @@ func compareTextureBatch(t *testing.T, s *groupScenario, query build.TreeTexture
 			t.Fatal(err)
 		}
 		batch, err := stream.Recv()
-		if err != nil || !bytes.Equal(single.PNG, batch.GetPng()) || single.MipLevel != batch.GetMipLevel() {
+		if err != nil || !bytes.Equal(single.PNG, batch.GetTexture().GetPng()) || single.MipLevel != batch.GetTexture().GetMipLevel() {
 			t.Fatalf("слой размера %d отличается от одиночного запроса: %v", size, err)
 		}
 	}
