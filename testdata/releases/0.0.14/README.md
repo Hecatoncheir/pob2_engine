@@ -26,4 +26,25 @@ PoB II без Python MCP восстановил прежнюю общую сес
 
 Dart API закреплён на `708523bab034964087d018ec7fa913f9a06c4ce9`.
 [Приёмка RC2](https://github.com/Hecatoncheir/pob2_engine/actions/runs/45282831792) ·
-[Приёмка PoB II со стабильным движком](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45294308966).
+[Приёмка PoB II со стабильным движком](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45297407858).
+
+## PoB II v1.0.0
+
+Выпуск собран из коммита `0ea165dc4e7b14ccbf16c5417cfac9b2ac0f120c`.
+На трёх ОС проверены чистая установка, обновление старого профиля и
+восстановление сборки. Затем скачанные установщики сверены с `SHA256SUMS`.
+Проверка каждого скачанного установщика включает запуск, расчёт Lua,
+сохранение XML и повторное открытие сборки с заметками.
+[Выпуск PoB II](https://github.com/Hecatoncheir/pob2_ui/releases/tag/v1.0.0) ·
+[Выпускной прогон](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45306825892).
+
+| Платформа | SHA-256 установщика | Проверка скачанного пакета |
+| --- | --- | --- |
+| Windows x64 | `00c00eb28f7341da6d92f45c63b5b3d10530c8762c1c13fc8bebd2165a4c1183` | [Прогон](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45306825892/job/138177582828) |
+| Linux x64 | `f206ae675f01d4cc743397bcb32b17a3a605d29cc29594803634e691ff5df7db` | [Прогон](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45315522912/job/138181323276) |
+| macOS arm64 | `fc4963d180e3d5f94a1d79baf7bbb9e8d0768f1c4755b1f1cfd3ec3bdd45139d` | [Прогон](https://github.com/Hecatoncheir/pob2_ui/actions/runs/45306825892/job/138177583082) |
+
+На чистом исполнителе Ubuntu 22.04 для первого кадра Flutter понадобились
+системные библиотеки EGL и OpenGL ES. Повторная проверка использовала тот же
+опубликованный установщик и установила только системные библиотеки GTK,
+EGL и OpenGL ES с Xvfb.
