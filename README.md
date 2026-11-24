@@ -2,11 +2,12 @@
 
 Движок Path of Exile 2 с сервисом сессий на **Go** и расчётами оригинального **Path of Building PoE2** на Lua. Управление доступно через **CLI**, **MCP** и **gRPC / Protobuf**. Приложение [PoB II на Flutter](https://github.com/Hecatoncheir/pob2_ui) подключается к общей сессии через gRPC в ветке `1.x.x`.
 
-**Текущий выпуск — [v0.0.14](https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.14).**
+**Текущий выпуск — [v0.0.16](https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.16).**
 Go обслуживает общие сессии, мастерскую, MCP и чтение открытых сборок
 из оригинального PoB. Игровые расчёты выполняет исходный Lua на LuaJIT.
 Движок устанавливает закреплённый PoB при первом запуске. После
 перезапуска восстанавливаются сессии, ревизии и результаты команд.
+[Приёмка скачанных бинарников](testdata/releases/0.0.16/README.md).
 [Порядок перехода PoB II 1.x](docs/POB-II-MIGRATION.md).
 
 Выпущен [v0.0.1](https://github.com/Hecatoncheir/pob2_engine/releases/tag/v0.0.1).
