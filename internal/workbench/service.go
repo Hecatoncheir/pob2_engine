@@ -55,6 +55,7 @@ type Response struct {
 
 type Service struct {
 	session      *pob.Workbench
+	preview      *pob.Workbench
 	installation pob.Installation
 	assets       *workbenchAssets
 	gate         chan struct{}
@@ -73,7 +74,7 @@ func Manifest() ([]Tool, error) {
 	return tools, err
 }
 
-func New(session *pob.Workbench, installation pob.Installation) (*Service, error) {
+func New(installation pob.Installation) (*Service, error) {
 	manifest, err := Manifest()
 	if err != nil {
 		return nil, err
@@ -82,7 +83,7 @@ func New(session *pob.Workbench, installation pob.Installation) (*Service, error
 	if err != nil {
 		return nil, err
 	}
-	s := &Service{session: session, installation: installation, assets: assets, gate: make(chan struct{}, 1), schemas: make(map[string]*jsonschema.Resolved)}
+	s := &Service{installation: installation, assets: assets, gate: make(chan struct{}, 1), schemas: make(map[string]*jsonschema.Resolved)}
 	for _, tool := range manifest {
 		if !Supports(tool.Name) {
 			continue
@@ -98,6 +99,47 @@ func New(session *pob.Workbench, installation pob.Installation) (*Service, error
 }
 
 func (s *Service) Tools() []Tool { return s.tools }
+
+// Prepare нужен MCP перед публикацией сервера. Мастерская gRPC открывает Lua по запросу.
+func (s *Service) Prepare(ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+	return s.openSession(ctx)
+}
+
+func (s *Service) openSession(ctx context.Context) error {
+	if s.session != nil {
+		return nil
+	}
+	session, err := pob.NewWorkbench(ctx, s.installation)
+	if err == nil {
+		s.session = session
+	}
+	return err
+}
+
+func (s *Service) Close() {
+	s.gate <- struct{}{}
+	defer func() { <-s.gate }()
+	s.discardPreview()
+	if s.session != nil {
+		s.session.Close()
+		s.session = nil
+	}
+}
+
+func (s *Service) discardPreview() {
+	if s.preview != nil {
+		s.preview.Close()
+		s.preview = nil
+	}
+}
+
+func (s *Service) finishPreview(err *error) {
+	if *err != nil {
+		s.discardPreview()
+	}
+}
 
 func Supports(name string) bool {
 	switch name {
@@ -129,6 +171,11 @@ func (s *Service) Invoke(ctx context.Context, name string, raw json.RawMessage) 
 }
 
 func (s *Service) run(ctx context.Context, name string, args map[string]any) (Response, error) {
+	if name != "pob_tree_textures" {
+		if err := s.openSession(ctx); err != nil {
+			return Response{}, failure("CALCULATION_FAILED", err)
+		}
+	}
 	if name == "pob_render_image" {
 		return s.renderImage(ctx, args)
 	}
@@ -228,12 +275,12 @@ func meetsTarget(actual any, target map[string]any) bool {
 	return !limited || value <= maximum
 }
 
-func (s *Service) compatibleSupports(ctx context.Context, arguments map[string]any) (pob.WorkbenchResult, error) {
+func (s *Service) compatibleSupports(ctx context.Context, arguments map[string]any) (_ pob.WorkbenchResult, err error) {
+	defer s.finishPreview(&err)
 	preview, revision, err := s.openPreview(ctx)
 	if err != nil {
 		return pob.WorkbenchResult{}, err
 	}
-	defer preview.Close()
 	group, err := applyPreviewGroup(ctx, preview, arguments)
 	if err != nil {
 		return pob.WorkbenchResult{}, err
@@ -254,15 +301,16 @@ func (s *Service) openPreview(ctx context.Context) (*pob.Workbench, int, error) 
 	if err := json.Unmarshal(export.Result, &document); err != nil {
 		return nil, 0, err
 	}
-	preview, err := pob.NewWorkbench(ctx, s.installation)
-	if err != nil {
+	if s.preview == nil {
+		s.preview, err = pob.NewWorkbench(ctx, s.installation)
+		if err != nil {
+			return nil, 0, err
+		}
+	}
+	if _, err := s.preview.Call(ctx, "loadBuild", map[string]any{"xml": document.XML}); err != nil {
 		return nil, 0, err
 	}
-	if _, err := preview.Call(ctx, "loadBuild", map[string]any{"xml": document.XML}); err != nil {
-		preview.Close()
-		return nil, 0, err
-	}
-	return preview, export.Revision, nil
+	return s.preview, export.Revision, nil
 }
 
 func applyPreviewGroup(ctx context.Context, preview *pob.Workbench, arguments map[string]any) (int, error) {

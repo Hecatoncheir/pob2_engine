@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"image/png"
+	"io"
 	"os"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	pb "github.com/Hecatoncheir/pob2_engine/gen/go/pob2/v1"
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"google.golang.org/grpc/codes"
@@ -30,10 +32,38 @@ func TestLuaTreeTextureAcrossProcesses(t *testing.T) {
 	for _, format := range []string{"BC1", "BC7"} {
 		query := sceneTexture(t, tree.Scene, format)
 		compareTreeTexture(t, s, query)
+		compareTextureBatch(t, s, query)
 	}
 	_, err = s.client.TreeTexture(s.ctx, build.TreeTextureQuery{File: "TreeData/../Settings.png"})
 	if status.Code(err) != codes.InvalidArgument {
 		t.Fatal("разрешён путь вне каталога текстур", err)
+	}
+}
+
+func compareTextureBatch(t *testing.T, s *groupScenario, query build.TreeTextureQuery) {
+	t.Helper()
+	sizes := []uint32{query.TargetSize, 80}
+	layers := []*pb.TreeTextureLayer{
+		{Index: query.Index, TargetSize: sizes[0]},
+		{Index: query.Index, TargetSize: sizes[1]},
+	}
+	stream, err := s.client.TreeTextures(s.ctx, query.File, layers)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, size := range sizes {
+		query.TargetSize = size
+		single, err := s.client.TreeTexture(s.ctx, query)
+		if err != nil {
+			t.Fatal(err)
+		}
+		batch, err := stream.Recv()
+		if err != nil || !bytes.Equal(single.PNG, batch.GetPng()) || single.MipLevel != batch.GetMipLevel() {
+			t.Fatalf("слой размера %d отличается от одиночного запроса: %v", size, err)
+		}
+	}
+	if _, err := stream.Recv(); err != io.EOF {
+		t.Fatalf("пакет вернул лишний слой или ошибку: %v", err)
 	}
 }
 

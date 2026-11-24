@@ -29,6 +29,7 @@ type Calculator struct {
 	gate         chan struct{}
 	powerGate    chan struct{}
 	treeTextures treeTextureCache
+	treeScene    treeSceneCache
 	worker       *worker
 	data         *gamedata.Dataset
 }
@@ -41,7 +42,10 @@ func NewCalculator(installation Installation) (*Calculator, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Calculator{installation: installation, layout: layout, gate: make(chan struct{}, 1), powerGate: make(chan struct{}, 1)}, nil
+	return &Calculator{
+		installation: installation, layout: layout, gate: make(chan struct{}, 1),
+		powerGate: make(chan struct{}, 1),
+	}, nil
 }
 
 func (c *Calculator) Close() error {

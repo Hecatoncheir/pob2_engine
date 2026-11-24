@@ -27,6 +27,10 @@ func (m *Manager) readInstallation() (installationState, error) {
 		i, err := localInstallation(m.local, m.localNative)
 		return installationState{Installation: i}, err
 	}
+	return m.readManagedInstallation()
+}
+
+func (m *Manager) readManagedInstallation() (installationState, error) {
 	var entry installationState
 	data, err := os.ReadFile(filepath.Join(m.root, "current.json"))
 	if err != nil {

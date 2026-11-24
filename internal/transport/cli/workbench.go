@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
@@ -22,26 +21,26 @@ func (r runner) workbench(ctx context.Context, args []string) error {
 	if flags.NArg() != 0 {
 		return &UsageError{Err: fmt.Errorf("workbench не принимает позиционные параметры")}
 	}
-	session, installation, err := openWorkbench(ctx)
+	installation, err := workbenchInstallation(ctx)
 	if err != nil {
 		return err
 	}
-	defer session.Close()
+	service, err := workbench.New(installation)
+	if err != nil {
+		return err
+	}
+	defer service.Close()
 	if *useGRPC {
-		return r.serveWorkbench(ctx, session, installation)
+		return r.serveWorkbench(ctx, service)
 	}
-	server, err := mcpapi.NewWorkbench(session, installation)
-	if err != nil {
+	if err := service.Prepare(ctx); err != nil {
 		return err
 	}
+	server := mcpapi.NewWorkbench(service)
 	return server.Run(ctx, &mcp.IOTransport{Reader: r.in, Writer: writer{r.out}})
 }
 
-func (r runner) serveWorkbench(ctx context.Context, session *pob.Workbench, installation pob.Installation) error {
-	service, err := workbench.New(session, installation)
-	if err != nil {
-		return err
-	}
+func (r runner) serveWorkbench(ctx context.Context, service *workbench.Service) error {
 	ctx, stop := context.WithCancel(ctx)
 	defer stop()
 	go func() {
@@ -53,21 +52,14 @@ func (r runner) serveWorkbench(ctx context.Context, session *pob.Workbench, inst
 	})
 }
 
-func openWorkbench(ctx context.Context) (*pob.Workbench, pob.Installation, error) {
+func workbenchInstallation(ctx context.Context) (pob.Installation, error) {
 	manager, err := pob.Local()
 	if err != nil {
-		return nil, pob.Installation{}, err
+		return pob.Installation{}, err
 	}
 	installCtx, cancel := context.WithTimeout(ctx, pob.InstallTimeout)
 	defer cancel()
-	installation, err := manager.Ensure(installCtx)
-	if err != nil {
-		return nil, installation, err
-	}
-	ready, cancelReady := context.WithTimeout(ctx, 60*time.Second)
-	defer cancelReady()
-	session, err := pob.NewWorkbench(ready, installation)
-	return session, installation, err
+	return manager.Ensure(installCtx)
 }
 
 func (r runner) localEditor(ctx context.Context, args []string) error {

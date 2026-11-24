@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/maintenance"
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
 )
 
-func openCalculator(ctx context.Context) (calculation.Calculator, func(), error) {
+func openCalculator(ctx context.Context) (*pob.Calculator, func(), error) {
 	switch os.Getenv("POB2_ENGINE_CALCULATOR") {
 	case "", "luajit", "lua":
 		return openLuaJITCalculator(ctx)
@@ -19,7 +18,7 @@ func openCalculator(ctx context.Context) (calculation.Calculator, func(), error)
 	}
 }
 
-func openLuaJITCalculator(ctx context.Context) (calculation.Calculator, func(), error) {
+func openLuaJITCalculator(ctx context.Context) (*pob.Calculator, func(), error) {
 	m, err := pob.Local()
 	if err != nil {
 		return nil, nil, err

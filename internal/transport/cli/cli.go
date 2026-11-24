@@ -8,16 +8,17 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"github.com/Hecatoncheir/pob2_engine/internal/buildinfo"
-	"github.com/Hecatoncheir/pob2_engine/internal/calculation"
 	"github.com/Hecatoncheir/pob2_engine/internal/discovery"
 	"github.com/Hecatoncheir/pob2_engine/internal/domain"
 	"github.com/Hecatoncheir/pob2_engine/internal/host"
 	"github.com/Hecatoncheir/pob2_engine/internal/lifecycle"
 	"github.com/Hecatoncheir/pob2_engine/internal/pob"
+	"github.com/Hecatoncheir/pob2_engine/internal/storage"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/grpcapi"
 	"github.com/Hecatoncheir/pob2_engine/internal/transport/mcpapi"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -285,7 +286,7 @@ func (r runner) waitForServer(ctx context.Context, server runningServer) (result
 	}
 }
 
-func startServer(ctx context.Context, name, baseDir, dataDir, address, token string, config lifecycle.Config, calculator calculation.Calculator) (runningServer, error) {
+func startServer(ctx context.Context, name, baseDir, dataDir, address, token string, config lifecycle.Config, calculator *pob.Calculator) (runningServer, error) {
 	if name == "" {
 		if baseDir != "" {
 			return nil, &UsageError{Err: fmt.Errorf("для --runtime-dir нужен --profile")}
@@ -296,6 +297,11 @@ func startServer(ctx context.Context, name, baseDir, dataDir, address, token str
 	if err != nil {
 		return nil, err
 	}
+	path, err := storage.Path(dataDir, profile.Name)
+	if err != nil {
+		return nil, err
+	}
+	calculator.EnableTreeSceneCache(filepath.Dir(path))
 	return host.StartDurableWithCalculator(ctx, profile, address, token, dataDir, config, calculator)
 }
 

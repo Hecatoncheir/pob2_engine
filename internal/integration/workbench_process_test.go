@@ -41,12 +41,18 @@ func TestLuaWorkbenchAcrossGRPCAndMCP(t *testing.T) {
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_import_xml", map[string]any{"xml": string(xml)})
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_check_build", nil)
 	before := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
-	preview := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", map[string]any{
+	arguments := map[string]any{
 		"groupId": 1, "targetIndex": 1, "supportId": "Metadata/Items/Gems/SkillGemControlledDestructionSupport",
 		"gems": []map[string]any{{"id": "Metadata/Items/Gems/SkillGemFireball", "sourceIndex": 1}},
-	})
+	}
+	preview := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
+	repeated := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
 	after := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
 	checkWorkbenchSupportPreview(t, before, preview, after)
+	checkWorkbenchSupportPreview(t, before, repeated, after)
+	if !bytes.Equal(preview.GetResultJson(), repeated.GetResultJson()) {
+		t.Fatal("повторный предпросмотр использовал состояние предыдущего запроса")
+	}
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_render_image", map[string]any{"view": "overview", "width": 880, "height": 640})
 	closeWorker()
 }

@@ -16,18 +16,18 @@ type skillMeasurement struct {
 	StatSet  int      `json:"statSet"`
 }
 
-func (s *Service) previewSupport(ctx context.Context, args map[string]any) (pob.WorkbenchResult, error) {
+func (s *Service) previewSupport(ctx context.Context, args map[string]any) (_ pob.WorkbenchResult, err error) {
 	gems := args["gems"].([]any)
 	supportID := args["supportId"].(string)
 	updated, err := addPreviewSupport(gems, supportID)
 	if err != nil {
 		return pob.WorkbenchResult{}, err
 	}
+	defer s.finishPreview(&err)
 	preview, revision, err := s.openPreview(ctx)
 	if err != nil {
 		return pob.WorkbenchResult{}, err
 	}
-	defer preview.Close()
 	group, err := applyPreviewGroup(ctx, preview, map[string]any{"gems": gems, "groupId": args["groupId"]})
 	if err != nil {
 		return pob.WorkbenchResult{}, err

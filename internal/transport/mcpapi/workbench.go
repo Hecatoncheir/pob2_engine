@@ -11,11 +11,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-func NewWorkbench(session *pob.Workbench, installation pob.Installation) (*mcp.Server, error) {
-	service, err := workbench.New(session, installation)
-	if err != nil {
-		return nil, err
-	}
+func NewWorkbench(service *workbench.Service) *mcp.Server {
 	server := mcp.NewServer(&mcp.Implementation{Name: "pob2_engine", Version: buildinfo.Version}, &mcp.ServerOptions{
 		Instructions: "Рабочая копия сборки использует расчёты исходного Lua PoB.",
 	})
@@ -25,7 +21,7 @@ func NewWorkbench(session *pob.Workbench, installation pob.Installation) (*mcp.S
 			return workbenchReply(result, err), nil
 		})
 	}
-	return server, nil
+	return server
 }
 
 func workbenchReply(response workbench.Response, err error) *mcp.CallToolResult {

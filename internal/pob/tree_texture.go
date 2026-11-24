@@ -12,6 +12,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 
@@ -25,6 +26,7 @@ const (
 	maxTextureDDS    = 128 << 20
 	maxTexturePNG    = 12 << 20
 	maxTexturePixels = 16 << 20
+	textureWorkers   = 3
 )
 
 // Последний атлас переиспользуется при загрузке следующих слоёв этого файла.
@@ -59,6 +61,82 @@ func (c *Calculator) ReadTreeTexture(ctx context.Context, query build.TreeTextur
 		return c.readTreePNG(query.File)
 	}
 	return c.readTreeDDS(query)
+}
+
+func (c *Calculator) ReadTreeTextures(ctx context.Context, queries []build.TreeTextureQuery, send func(build.TreeTexture) error) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	read, err := c.openTextureBatch(queries[0].File)
+	if err != nil {
+		return err
+	}
+	for chunk := range slices.Chunk(queries, textureWorkers) {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		if err := sendTextureChunk(ctx, chunk, read, send); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+type textureResult struct {
+	texture build.TreeTexture
+	err     error
+}
+
+func sendTextureChunk(ctx context.Context, chunk []build.TreeTextureQuery, read func(build.TreeTextureQuery) (build.TreeTexture, error), send func(build.TreeTexture) error) error {
+	var workers sync.WaitGroup
+	defer workers.Wait()
+	results := make([]<-chan textureResult, 0, len(chunk))
+	for _, query := range chunk {
+		result := make(chan textureResult, 1)
+		results = append(results, result)
+		workers.Go(func() {
+			texture, err := read(query)
+			result <- textureResult{texture, err}
+		})
+	}
+	for _, result := range results {
+		select {
+		case value := <-result:
+			if value.err != nil {
+				return value.err
+			}
+			if err := send(value.texture); err != nil {
+				return err
+			}
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+	return nil
+}
+
+func (c *Calculator) openTextureBatch(file string) (func(build.TreeTextureQuery) (build.TreeTexture, error), error) {
+	if file == "" {
+		return repeatTexture(encodeTreePNG(whitePixel(), 0))
+	}
+	if strings.HasSuffix(file, ".png") {
+		return repeatTexture(c.readTreePNG(file))
+	}
+	atlas, err := c.treeDDS(file)
+	if err != nil {
+		return nil, err
+	}
+	return func(query build.TreeTextureQuery) (build.TreeTexture, error) {
+		pixels, level, err := decodeTextureLayer(atlas, query)
+		if err != nil {
+			return build.TreeTexture{}, err
+		}
+		return encodeTreePNG(pixels, level)
+	}, nil
+}
+
+func repeatTexture(texture build.TreeTexture, err error) (func(build.TreeTextureQuery) (build.TreeTexture, error), error) {
+	return func(build.TreeTextureQuery) (build.TreeTexture, error) { return texture, nil }, err
 }
 
 func (c *Calculator) ReadTreeImage(ctx context.Context, query build.TreeTextureQuery) (*image.NRGBA, error) {
@@ -128,6 +206,10 @@ func (c *Calculator) decodeTreeDDS(query build.TreeTextureQuery) (*image.NRGBA, 
 	if err != nil {
 		return nil, 0, err
 	}
+	return decodeTextureLayer(atlas, query)
+}
+
+func decodeTextureLayer(atlas *dds.File, query build.TreeTextureQuery) (*image.NRGBA, int, error) {
 	level := textureMipLevel(atlas, int(max(1, query.TargetSize)))
 	if !validTextureSize(max(1, atlas.Width>>level), max(1, atlas.Height>>level)) {
 		return nil, 0, fmt.Errorf("слой DDS превышает допустимый размер")

@@ -365,6 +365,17 @@ message GetTreeTextureResponse {
   bytes png = 4;
 }
 
+message TreeTextureLayer {
+  uint32 index = 1;
+  uint32 target_size = 2;
+}
+
+message GetTreeTexturesRequest {
+  // Все слои относятся к одному файлу. Ответы идут в порядке запроса.
+  string file = 1;
+  repeated TreeTextureLayer layers = 2;
+}
+
 message GetEquipmentDetailsRequest {
   string session_id = 1;
   uint64 expected_revision = 2;
