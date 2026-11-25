@@ -54,7 +54,7 @@ def check_engine(candidate):
         '--json', 'headSha,conclusion', '--limit', '10',
     ]))
     require(any(run['headSha'] == candidate_sha and run['conclusion'] == 'success' for run in runs),
-            'Проверка опубликованного кандидата должна завершиться успешно')
+            'Релизный прогон кандидата должен завершиться успешно')
     changed = git('diff', '--name-only', candidate_sha, 'HEAD').decode().splitlines()
     notes = {'CHANGELOG.md', 'TODO.md', f'todo_{stable_tag(candidate)[1:]}.md'}
     require(set(changed) <= notes, 'Код стабильного выпуска должен совпадать с принятым кандидатом')
