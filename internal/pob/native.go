@@ -1,43 +1,16 @@
 package pob
 
 import (
-	"embed"
 	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"runtime"
-
-	"github.com/Hecatoncheir/pob2_engine/internal/poblegacy"
 )
-
-//go:embed all:bridge
-var bridge embed.FS
 
 const requireLuaJIT = `assert(type(jit) == "table" and type(jit.version) == "string", "runtime LuaJIT is required")` + "\n"
 
-// RunWorker запускает LuaJIT в отдельном процессе PoB2Engine.
-func RunWorker(args []string) error {
-	program, err := bridge.ReadFile("bridge/worker.lua")
-	if err != nil {
-		return err
-	}
-	return runWorkerProgram(args, string(program))
-}
-
-func RunWorkbenchWorker(args []string) error {
-	setup, err := bridge.ReadFile("bridge/workbench.lua")
-	if err != nil {
-		return err
-	}
-	program, err := poblegacy.Read("lua/headless_server.lua")
-	if err != nil {
-		return err
-	}
-	return runWorkerProgram(args, string(setup)+"\n"+string(program))
-}
-
-func runWorkerProgram(args []string, program string) error {
+func runWorkerProgram(args []string, entry, program string) error {
 	if len(args) != 3 {
 		return fmt.Errorf("воркеру нужны каталоги PoB runtime, нативных библиотек и моста")
 	}
@@ -50,11 +23,20 @@ func runWorkerProgram(args []string, program string) error {
 			return err
 		}
 	}
-	return runLua(library, requireLuaJIT+program)
+	return runLua(library, requireLuaJIT+workerEntry(bridgeDir, entry)+program)
 }
 
 func unpackBridge(directory string) (string, error) {
-	err := fs.WalkDir(bridge, "bridge", func(path string, entry fs.DirEntry, err error) error {
+	target := filepath.Join(directory, "bridge")
+	return target, unpackLuaFiles(bridge, bridgeRoot, target)
+}
+
+func unpackLuaFiles(assets fs.FS, source, directory string) error {
+	files, err := fs.Sub(assets, source)
+	if err != nil {
+		return err
+	}
+	return fs.WalkDir(files, ".", func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -62,13 +44,12 @@ func unpackBridge(directory string) (string, error) {
 		if entry.IsDir() {
 			return os.Mkdir(target, 0700)
 		}
-		data, err := bridge.ReadFile(path)
+		data, err := fs.ReadFile(files, path)
 		if err != nil {
 			return err
 		}
 		return os.WriteFile(target, data, 0600)
 	})
-	return filepath.Join(directory, "bridge"), err
 }
 
 func luaLibrary(runtimeDir, nativeDir string) (library, extension string) {

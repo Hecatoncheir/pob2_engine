@@ -73,8 +73,11 @@ func (s *workbenchServer) CallWorkbenchTool(ctx context.Context, request *pb.Cal
 		return &pb.CallWorkbenchToolResponse{Revision: uint64(response.Result.Revision), ResultJson: response.Result.Result, Png: response.PNG}, nil
 	}
 	var failure *pob.WorkbenchError
-	if errors.As(err, &failure) {
-		return &pb.CallWorkbenchToolResponse{Error: &pb.WorkbenchToolError{Code: failure.Code, Message: failure.Message}}, nil
+	if !errors.As(err, &failure) {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
-	return nil, status.Error(codes.Internal, err.Error())
+	if failure.Code == workbench.LostCode {
+		return nil, status.Error(codes.Unavailable, failure.Message)
+	}
+	return &pb.CallWorkbenchToolResponse{Error: &pb.WorkbenchToolError{Code: failure.Code, Message: failure.Message}}, nil
 }

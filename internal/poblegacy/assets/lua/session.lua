@@ -355,7 +355,7 @@ setfenv(installMethods, getfenv(1))
 installMethods(methods, fail, snapshot, finishTreeChange, granted)
 local installGemCatalog = dofile(POB_MCP_PACKAGE_DIR .. "/lua/gem_catalog.lua")
 setfenv(installGemCatalog, getfenv(1))
-installGemCatalog(methods, fail, granted, not host.live)
+installGemCatalog(methods, fail, granted, not host.live, finishTreeChange)
 local installGemGroups = dofile(POB_MCP_PACKAGE_DIR .. "/lua/gem_groups.lua")
 setfenv(installGemGroups, getfenv(1))
 installGemGroups(methods, fail, finishTreeChange, granted)
@@ -381,7 +381,10 @@ function methods.initialize()
 		available[#available + 1] = "importCharacter"
 	end
 	if host.get_build_directory then available[#available + 1] = "getBuildDirectory" end
-	if not host.live then available[#available + 1] = "measureSupportPreview" end
+	if not host.live then
+		available[#available + 1] = "measureSupportPreview"
+		available[#available + 1] = "previewSupport"
+	end
 	local platform = host.live and (host.app_platform or system) .. "-app" or system .. "-engine"
 	return { methods = available, platform = platform }
 end

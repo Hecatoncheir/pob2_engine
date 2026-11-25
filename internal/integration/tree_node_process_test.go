@@ -35,6 +35,7 @@ func TestLuaTreeNodeAcrossProcesses(t *testing.T) {
 	command := application.ApplyBuild{SessionID: "main", ExpectedRevision: s.revision, RequestID: "passives-allocate", Edit: allocate}
 	applied := applyTreeNodeCLI(t, s, command, preview)
 	checkAllocatedXML(t, s)
+	checkFirstReportAfterEdit(t, s, before, applied)
 	refund := refundTreeNode(t, s)
 	if refund.Build.InputSHA256 != before.Build.InputSHA256 {
 		t.Fatal("снятие ветви изменило прочие данные сборки")

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"sync"
+	"sync/atomic"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/poblegacy"
 )
@@ -17,6 +18,7 @@ type Workbench struct {
 	process  *worker
 	gate     chan struct{}
 	close    sync.Once
+	closed   atomic.Bool
 	sequence int
 	revision int
 }
@@ -50,16 +52,23 @@ func NewWorkbench(ctx context.Context, installation Installation) (*Workbench, e
 	return session, nil
 }
 
-func (s *Workbench) Close() { s.close.Do(s.process.close) }
+func (s *Workbench) Close() {
+	s.close.Do(func() {
+		s.closed.Store(true)
+		s.process.close()
+	})
+}
+
+func (s *Workbench) Closed() bool { return s.closed.Load() }
 
 func unpackWorkbench(directory string) (string, error) {
-	if err := poblegacy.Unpack(directory, "lua"); err != nil {
+	if err := unpackWorkbenchLua(directory); err != nil {
 		return "", err
 	}
 	if err := poblegacy.Unpack(directory, "data"); err != nil {
 		return "", err
 	}
-	geometry, err := bridge.ReadFile("bridge/tree_geometry.lua")
+	geometry, err := bridge.ReadFile(bridgeRoot + "/tree_geometry.lua")
 	if err != nil {
 		return "", err
 	}
@@ -91,6 +100,12 @@ func (s *Workbench) Call(ctx context.Context, method string, arguments map[strin
 		return WorkbenchResult{}, err
 	}
 	defer release()
+	if err := ctx.Err(); err != nil {
+		return WorkbenchResult{}, err
+	}
+	if s.Closed() {
+		return WorkbenchResult{}, os.ErrClosed
+	}
 	request := s.request(method, arguments)
 	answer := make(chan workbenchAnswer, 1)
 	go func() {

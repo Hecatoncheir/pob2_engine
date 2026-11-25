@@ -29,6 +29,7 @@ func TestLuaTreeWeaponModesAcrossProcesses(t *testing.T) {
 		t.Fatal("движок не объявил режимы назначения", err)
 	}
 	before := calculateRecordedBuild(t, s, "weapon-one-baseline")
+	checkAutoLevelTreeReport(t, s, before)
 	checkWeaponTreeMatrix(t, s, before, 1)
 	second := beginSecondWeaponSet(t, s)
 	preview := checkWeaponTreeMatrix(t, s, second, 2)
@@ -37,8 +38,31 @@ func TestLuaTreeWeaponModesAcrossProcesses(t *testing.T) {
 		RequestID: "allocate-weapon-two", Edit: weaponTreeEdit(weaponTarget, "allocate", build.AllocationWeaponSet2)}
 	applied := applyTreeNodeCLI(t, s, command, preview)
 	checkWeaponTreeXML(t, second, applied)
+	checkFirstReportAfterEdit(t, s, second, applied)
 	restored := refundWeaponPath(t, s, second)
 	checkBuildEditRestart(t, s, command, applied, restored)
+}
+
+func checkAutoLevelTreeReport(t *testing.T, s *groupScenario, before application.SnapshotView) {
+	t.Helper()
+	const id = "auto-level-tree"
+	xml := strings.Replace(before.Build.XML, `characterLevelAutoMode="false"`, `characterLevelAutoMode="true"`, 1)
+	initial, err := s.client.Create(s.ctx, application.CreateSession{SessionID: id, BuildName: before.BuildName, RequestID: id, XML: xml})
+	if err != nil {
+		t.Fatal(err)
+	}
+	updated, err := s.client.Apply(s.ctx, application.ApplyBuild{
+		SessionID: id, ExpectedRevision: initial.Revision, RequestID: "auto-level-allocate",
+		Edit: weaponTreeEdit(weaponTarget, "allocate", build.AllocationCommon),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	first := reportJSON(t, s, id, updated.Revision)
+	reportJSON(t, s, "main", before.Revision)
+	if reloaded := reportJSON(t, s, id, updated.Revision); !reflect.DeepEqual(first, reloaded) {
+		t.Fatal("отчёт с автоуровнем отличается после повторной загрузки XML")
+	}
 }
 
 func weaponTreeEdit(node int, action string, mode build.TreeAllocationMode) *build.Edit {

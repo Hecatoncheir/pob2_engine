@@ -58,12 +58,20 @@ func Inspect(ctx context.Context, address, token string) (*pb.GetServerInfoRespo
 	return c.Info(ctx)
 }
 
-func open(address, token string) (*Client, error) {
+// ValidateTarget проверяет параметры явного подключения без сетевого запроса.
+func ValidateTarget(address, token string) error {
 	if err := ValidateAddress(address); err != nil {
-		return nil, err
+		return err
 	}
 	if token == "" {
-		return nil, fmt.Errorf("нужен токен сервера")
+		return fmt.Errorf("нужен токен сервера")
+	}
+	return nil
+}
+
+func open(address, token string) (*Client, error) {
+	if err := ValidateTarget(address, token); err != nil {
+		return nil, err
 	}
 	c := &Client{heartbeatDone: make(chan struct{}), lost: make(chan struct{}), cancel: func() {}}
 	conn, err := grpc.NewClient("passthrough:///"+address, grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMessageSize), grpc.MaxCallSendMsgSize(maxMessageSize)), grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithUnaryInterceptor(func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoke grpc.UnaryInvoker, opts ...grpc.CallOption) error {

@@ -1,5 +1,5 @@
 -- Каталог и совместимость используют данные и проверку исходного PoB.
-return function(methods, fail, granted, canPreview)
+return function(methods, fail, granted, canPreview, finish)
 local assets
 local gemTooltip
 local function tooltipInstance(params)
@@ -122,5 +122,31 @@ function methods.measureSupportPreview(params)
 	end
 	return { dps = methods.getSnapshot().output.TotalDPS, effectId = effect.grantedEffect.id,
 		part = target.skillPart or 1, statSet = effect.statSet and effect.statSet.index or 1 }
+end
+
+local function compareSupport(params)
+	local target = { groupId = params.groupId, targetIndex = params.targetIndex, supportId = params.supportId }
+	local before = methods.measureSupportPreview(target)
+	methods.updateSkillGroup({ groupId = params.groupId, gems = params.gems })
+	target.supportId, target.effectId = nil, before.effectId
+	local after = methods.measureSupportPreview(target)
+	if before.part ~= after.part or before.statSet ~= after.statSet then
+		fail("CALCULATION_FAILED", "изменился вариант выбранного умения")
+	end
+	return { before = before.dps, after = after.dps, warnings = methods.getBuildReport().warnings }
+end
+
+-- Временная примерка возвращает черновику состав группы и активное умение.
+function methods.previewSupport(params)
+	if not canPreview then fail("UNKNOWN_METHOD", "Предпросмотр доступен в рабочей копии Lua") end
+	local skills = build.skillsTab
+	local state = skills:CreateUndoState()
+	local dirty = build.modFlag
+	local ok, result = pcall(compareSupport, params)
+	skills:RestoreUndoState(state)
+	finish()
+	build.modFlag = dirty
+	if not ok then error(result, 0) end
+	return result
 end
 end

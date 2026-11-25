@@ -159,11 +159,13 @@ class Scenario:
         self.connection = []
         self.steps = []
 
-    def run(self, *args, code=0, raw=False, timeout=20, environment=None):
+    def run(self, *args, code=0, raw=False, timeout=20, environment=None, stderr_line=None):
         result = subprocess.run([str(self.binary), *map(str, args)], cwd=self.root,
                                 env=self.environment if environment is None else environment,
                                 capture_output=True, encoding='utf-8', timeout=timeout)
         require(result.returncode == code, f'{args[0]}: выход {result.returncode}, stderr={result.stderr}')
+        if stderr_line is not None:
+            require(stderr_line in result.stderr.splitlines(), f'{args[0]}: ожидалась строка {stderr_line!r}')
         return result.stdout if raw else json.loads(result.stdout)
 
     def start(self, profile):
@@ -421,7 +423,7 @@ def smoke(archive, tag):
         return report_metadata(dict(result, commit=manifest['commit']), archive, tag, 'archive_sha256')
 
 
-def smoke_binary(source, tag):
+def smoke_binary(source, tag, require_bytecode=False):
     goos, arch = native_target()
     extension = '.exe' if goos == 'windows' else ''
     require(source.name == f'pob2_engine_{tag}_{goos}_{arch}{extension}', 'Бинарник не соответствует тегу и платформе')
@@ -437,19 +439,19 @@ def smoke_binary(source, tag):
         licenses = scenario.run('doctor', '--licenses')
         require(all(licenses.get(name) for name in ('LICENSE', 'THIRD_PARTY_NOTICES.md', '.licenses/runtime/manifest.json')),
                 'Бинарник не содержит лицензионные уведомления')
-        lua = check_native_lua(scenario)
+        lua = check_native_lua(scenario, require_bytecode)
         return report_metadata(dict(schema=3, version=scenario.run('--version'), commit=doctor.get('commit', ''), doctor=doctor, lua=lua),
                                source, tag, 'binary_sha256')
 
 
-def check_native_lua(scenario):
+def check_native_lua(scenario, require_bytecode=False):
     from smoke_catalog import check_full_catalog
     from smoke_multigroup import Matrix, check_multigroup
     from smoke_upgrade import check_upgrade
     fixtures = Path(__file__).resolve().parents[1]
     lock = json.loads((fixtures / 'testdata/reference/sources.lock.json').read_text('utf-8'))['pob']
     results = check_lua_install(scenario, fixtures, lock)
-    verify_lua_offline(scenario, fixtures, lock)
+    verify_lua_offline(scenario, fixtures, lock, require_bytecode)
     diagnostics = check_lua_diagnostics(scenario, fixtures, lock)
     doctor = scenario.run('doctor')
     require(doctor['pob']['installed_version'] == lock['tag'], 'Doctor: неожиданная версия установленного PoB')
@@ -487,7 +489,7 @@ def check_native_lua(scenario):
                 upgrade004=upgrade004, upgrade005=upgrade005, upgrade006=upgrade006,
                 multigroup=multigroup, catalog=catalog, tree=tree, weapon_tree=weapon_tree,
                 item_skill_group=item_skill_group, workbench=workbench, timings=timings,
-                parallel_first_start=True, reused_cache_offline=True)
+                parallel_first_start=True, reused_cache_offline=True, bytecode_verified=require_bytecode)
 
 
 def check_same_lua_revision(previous, updated, lock):
@@ -758,17 +760,20 @@ def check_lua_install(scenario, fixtures, lock):
             for spell, result in zip(SPELLS, results, strict=True)}
 
 
-def calculate_lua_file(scenario, fixtures, spell, environment=None):
+def calculate_lua_file(scenario, fixtures, spell, environment=None, stderr_line=None):
     return scenario.run('calculate', '--file', fixtures / spell['file'], '--timeout', '40s', timeout=355,
-                        environment=environment)
+                        environment=environment, stderr_line=stderr_line)
 
 
-def verify_lua_offline(scenario, fixtures, lock):
+def verify_lua_offline(scenario, fixtures, lock, require_bytecode=False):
     environment = {key: value for key, value in scenario.environment.items()
                    if key.upper() not in {'HTTP_PROXY', 'HTTPS_PROXY', 'NO_PROXY'}}
     environment.update(HTTP_PROXY='http://127.0.0.1:0', HTTPS_PROXY='http://127.0.0.1:0')
+    if require_bytecode:
+        environment['POB2_ENGINE_TRACE_LUA'] = '1'
     spell = SPELLS[0]
-    calculated = calculate_lua_file(scenario, fixtures, spell, environment)
+    stderr_line = 'pob2-lua: bytecode' if require_bytecode else None
+    calculated = calculate_lua_file(scenario, fixtures, spell, environment, stderr_line)
     assert_lua_result(calculated, spell['name'], spell['dps'], lock)
     checked = scenario.run('doctor', environment=environment)['pob']
     require(checked['status'] == 'unavailable' and checked['installed_version'] == lock['tag'],
@@ -819,10 +824,13 @@ def main():
     parser.add_argument('--tag', required=True)
     parser.add_argument('--report', required=True, type=Path)
     parser.add_argument('--checksums', type=Path, help='SHA256SUMS скачанного выпуска')
+    parser.add_argument('--require-bytecode', action='store_true', help='проверить запуск Lua-моста из байткода')
     args = parser.parse_args()
+    if args.require_bytecode and not args.binary:
+        parser.error('--require-bytecode требует --binary')
     if args.checksums:
         verify_checksum(args.binary or args.archive, args.checksums)
-    report = smoke_binary(args.binary, args.tag) if args.binary else smoke(args.archive, args.tag)
+    report = smoke_binary(args.binary, args.tag, args.require_bytecode) if args.binary else smoke(args.archive, args.tag)
     report['published_checksum_verified'] = args.checksums is not None
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')

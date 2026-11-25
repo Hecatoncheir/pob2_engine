@@ -44,6 +44,9 @@ func (d *Document) WithResolvedSkillChoice(edit SkillChoiceEdit, change SkillCho
 
 func (d *Document) applySkillChoice(edit SkillChoiceEdit, change SkillChoiceChange) error {
 	if edit.Control == "groups" {
+		if change.Group != edit.OptionID {
+			return fmt.Errorf("PoB не подтвердил выбранную группу")
+		}
 		info, err := d.root.child("Build")
 		if err != nil || info == nil {
 			return fmt.Errorf("в XML нет раздела Build")

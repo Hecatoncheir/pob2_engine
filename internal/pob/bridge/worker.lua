@@ -28,6 +28,9 @@ end
 
 local json = require("dkjson")
 dofile(directory .. "/lua/headless_bootstrap.lua")
+if POB2_GO_PATH_CALLBACK and common.classes then
+	dofile(directory .. "/tree_paths.lua")(common.classes.PassiveSpec, POB2_GO_PATH_CALLBACK)
+end
 local catalog = dofile(directory .. "/catalog.lua")
 local diagnostics = dofile(directory .. "/diagnostics.lua")
 local editTree = dofile(directory .. "/tree_edit.lua")
@@ -38,7 +41,8 @@ local readBuildReport = dofile(directory .. "/build_report.lua")
 local selectSkillChoice = dofile(directory .. "/skill_choice.lua")
 local editSkillGroup = dofile(directory .. "/skill_group.lua")
 local readTreePower = dofile(directory .. "/tree_power.lua")
-local drawTreeScene = dofile(directory .. "/tree_scene.lua")
+local treeScene = dofile(directory .. "/tree_scene.lua")
+local drawTreeScene, packTreeScene = treeScene.draw, treeScene.pack
 local readEquipmentDetails = dofile(directory .. "/equipment_details.lua")
 
 local function clean(text)
@@ -161,12 +165,37 @@ local function hoverTreeScene(xml, nodeID)
 	return scene
 end
 
+local function buildReport(request, equipmentXML)
+	local xml, name = assert(request.xml), request.build_name
+	-- При автоуровне повторный кадр может начать расчёт с другого уровня, чем загрузка XML.
+	if request.reuse_tree_report and not build.characterLevelAutoMode then
+		build.buildName = name or "PoB2Engine"
+		build.buildFlag = true
+		runCallback("OnFrame")
+		assert(not launch.promptMsg, tostring(launch.promptMsg))
+	elseif xml ~= equipmentXML or name == "~~temp~~" then
+		loadDocument(xml, name)
+		name = nil
+	end
+	local report = readBuildReport(build, clean)
+	if name then report.snapshot.buildInfo.name = name end
+	return { build_report = report }
+end
+
+-- Успешная проверка слота оставляет рассчитанную сборку из итогового XML.
+local equipmentXML
 reply({ ready = true })
 for line in io.lines() do
+	local loadedEquipmentXML = equipmentXML
+	equipmentXML = nil
 	local ok, result = pcall(function()
 		local request = assert(json.decode(line))
 		if request.operation == "catalog" then return { catalog = catalog.read() } end
-		if request.operation == "validate_equipment" then return validateEquipment(request) end
+		if request.operation == "validate_equipment" then
+			local checked = validateEquipment(request)
+			if checked.equipment_valid then equipmentXML = request.xml end
+			return checked
+		end
 		if request.operation == "select_tree_spec" then return selectTreeSpec(request) end
 		if request.operation == "edit_tree" then
 			loadDocument(assert(request.xml))
@@ -179,7 +208,7 @@ for line in io.lines() do
 		if request.operation == "tree_geometry" then
 			loadDocument(assert(request.xml))
 			local geometry = readTreeGeometry(build.spec)
-			if request.include_scene then geometry.scene = drawTreeScene(build, false) end
+			if request.include_scene then geometry.scene = packTreeScene(drawTreeScene(build, false)) end
 			return { tree_geometry = geometry }
 		end
 		if request.operation == "tree_node_tooltip" then
@@ -189,8 +218,7 @@ for line in io.lines() do
 			return { tree_tooltip = tooltip or json.null }
 		end
 		if request.operation == "build_report" then
-			loadDocument(assert(request.xml), request.build_name)
-			return { build_report = readBuildReport(build, clean) }
+			return buildReport(request, loadedEquipmentXML)
 		end
 		if request.operation == "skill_choice" then
 			loadDocument(assert(request.xml))

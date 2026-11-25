@@ -51,6 +51,10 @@ import (
 )
 
 func runLua(library, program string) error {
+	return runLuaProgram(library, treePathProgram(program, treePathCallback))
+}
+
+func runLuaProgram(library, program string) error {
 	path, code := C.CString(library), C.CString(program)
 	defer C.free(unsafe.Pointer(path))
 	defer C.free(unsafe.Pointer(code))

@@ -122,7 +122,8 @@ pob2-engine build edit --profile main --session build-1 --revision 3 --request-i
 
 Штатные подсказки предмета, совместимые слоты и строки сравнения Lua можно
 прочитать по ID из сборки или тексту из `--file`. Для `--compare` нужен
-слот активного комплекта оружия.
+слот активного комплекта оружия. `details.comparison.warnings` содержит
+предупреждения PoB о требованиях к характеристикам после замены предмета.
 
 ```shell
 pob2-engine equipment-details --profile main --session build-1 --revision 3 --slot 'Weapon 1' --item-id 1 --compare

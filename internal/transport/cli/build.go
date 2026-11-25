@@ -155,97 +155,163 @@ func (r runner) build(ctx context.Context, args []string) error {
 	if len(args) == 0 {
 		return &UsageError{Err: fmt.Errorf("нужна операция build import|edit|export|compare")}
 	}
-	operation := args[0]
-	if operation != "import" && operation != "edit" && operation != "export" && operation != "compare" {
-		return &UsageError{Err: fmt.Errorf("неизвестная операция build %q", operation)}
+	switch args[0] {
+	case "import", "edit":
+		return r.applyBuild(ctx, args[0], args[1:])
+	case "compare":
+		return r.compareBuild(ctx, args[1:])
+	case "export":
+		return r.exportBuild(ctx, args[1:])
+	default:
+		return &UsageError{Err: fmt.Errorf("неизвестная операция build %q", args[0])}
 	}
+}
+
+func (r runner) applyBuild(ctx context.Context, operation string, args []string) error {
 	fs := r.flags("build " + operation)
 	connection := connectFlagsWithTimeout(fs, buildTimeout)
-	id := fs.String("session", "", "явно выбранный session_id")
-	file := fs.String("file", "", "XML или JSON-файл правки; - для stdin")
-	revision := fs.Uint64("revision", 0, "ожидаемая ревизия")
-	request := fs.String("request-id", "", "ID правки для безопасного повтора")
-	asEdit := fs.Bool("edit", false, "при compare входной файл содержит JSON правки")
-	raw := fs.Bool("raw", false, "при export вывести только XML")
-	output := fs.String("output", "", "при export сохранить XML в новый файл UTF-8")
-	if err := parse(fs, args[1:]); err != nil {
+	asEdit := operation == "edit"
+	fileDescription := "XML-файл сборки; - для stdin"
+	if asEdit {
+		fileDescription = "JSON-файл правки; - для stdin"
+	}
+	file := fs.String("file", "", fileDescription)
+	var command application.ApplyBuild
+	fs.StringVar(&command.SessionID, "session", "", "явно выбранный session_id")
+	fs.Uint64Var(&command.ExpectedRevision, "revision", 0, "ожидаемая ревизия")
+	fs.StringVar(&command.RequestID, "request-id", "", "ID правки для безопасного повтора")
+	if err := parse(fs, args); err != nil {
 		return err
 	}
-	if *id == "" {
-		return &UsageError{Err: fmt.Errorf("нужна --session")}
+	if command.RequestID == "" {
+		return &UsageError{Err: fmt.Errorf("нужен --request-id")}
 	}
-	if *output != "" && (operation != "export" || *raw) {
-		return &UsageError{Err: fmt.Errorf("--output предназначен для export и не сочетается с --raw")}
+	if err := validateBuildInput(connection, command.SessionID, command.ExpectedRevision, *file); err != nil {
+		return err
 	}
 	ctx, cancel := context.WithTimeout(ctx, connection.timeout)
 	defer cancel()
-	var xml string
-	var edit *build.Edit
-	if operation != "export" {
-		data, err := r.readInput(ctx, *file)
-		if err != nil {
-			return err
-		}
-		if operation == "edit" || operation == "compare" && *asEdit {
-			edit, err = parseEdit(data)
-			if err != nil {
-				return err
-			}
-		} else {
-			xml = string(data)
-		}
+	xml, edit, err := r.readBuildInput(ctx, *file, asEdit)
+	if err != nil {
+		return err
 	}
-	if *raw && operation != "export" || *asEdit && operation != "compare" {
-		return &UsageError{Err: fmt.Errorf("--raw предназначен для export, --edit для compare")}
-	}
+	command.XML, command.Edit = xml, edit
 	client, err := connection.dial(ctx)
 	if err != nil {
 		return err
 	}
 	defer client.Close()
-	switch operation {
-	case "import", "edit":
-		value, err := client.Apply(ctx, application.ApplyBuild{SessionID: *id, ExpectedRevision: *revision, RequestID: *request, XML: xml, Edit: edit})
-		if err != nil {
-			return err
-		}
-		return r.write(value)
-	case "compare":
-		value, err := client.Compare(ctx, application.CompareBuild{SessionID: *id, ExpectedRevision: *revision, XML: xml, Edit: edit})
-		if err != nil {
-			return err
-		}
-		if err := r.write(value); err != nil {
-			return err
-		}
-		if value.Comparison.Before.Status == "unsupported" || value.Comparison.After.Status == "unsupported" {
-			return resultStatus("unsupported")
-		}
-		if err := resultStatus(value.Comparison.Before.Status); err != nil {
-			return err
-		}
-		return resultStatus(value.Comparison.After.Status)
-	case "export":
-		if *file != "" || *request != "" || *revision != 0 {
-			return &UsageError{Err: fmt.Errorf("export не принимает --file, --revision и --request-id")}
-		}
-		value, err := client.Export(ctx, *id)
-		if err != nil {
-			return err
-		}
-		if *raw {
-			_, err = io.WriteString(r.out, value.XML)
-			return err
-		}
-		if *output != "" {
-			if err := saveXML(*output, value.XML); err != nil {
-				return err
-			}
-			return r.write(map[string]any{"path": *output, "input_sha256": value.InputSHA256, "revision": value.Revision})
-		}
+	value, err := client.Apply(ctx, command)
+	if err != nil {
+		return err
+	}
+	return r.write(value)
+}
+
+func validateBuildInput(connection *connection, id string, revision uint64, file string) error {
+	switch {
+	case id == "":
+		return &UsageError{Err: fmt.Errorf("нужна --session")}
+	case revision == 0:
+		return &UsageError{Err: fmt.Errorf("нужна положительная --revision")}
+	case file == "":
+		return &UsageError{Err: fmt.Errorf("нужен --file; используйте - для stdin")}
+	}
+	return connection.validateFlags()
+}
+
+func (r runner) readBuildInput(ctx context.Context, file string, asEdit bool) (string, *build.Edit, error) {
+	data, err := r.readInput(ctx, file)
+	if err != nil {
+		return "", nil, err
+	}
+	if !asEdit {
+		return string(data), nil, nil
+	}
+	edit, err := parseEdit(data)
+	return "", edit, err
+}
+
+func (r runner) compareBuild(ctx context.Context, args []string) error {
+	fs := r.flags("build compare")
+	connection := connectFlagsWithTimeout(fs, buildTimeout)
+	file := fs.String("file", "", "XML-файл варианта или JSON-файл правки; - для stdin")
+	asEdit := fs.Bool("edit", false, "входной файл содержит JSON правки")
+	var command application.CompareBuild
+	fs.StringVar(&command.SessionID, "session", "", "явно выбранный session_id")
+	fs.Uint64Var(&command.ExpectedRevision, "revision", 0, "ожидаемая ревизия")
+	if err := parse(fs, args); err != nil {
+		return err
+	}
+	if err := validateBuildInput(connection, command.SessionID, command.ExpectedRevision, *file); err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(ctx, connection.timeout)
+	defer cancel()
+	xml, edit, err := r.readBuildInput(ctx, *file, *asEdit)
+	if err != nil {
+		return err
+	}
+	command.XML, command.Edit = xml, edit
+	client, err := connection.dial(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	value, err := client.Compare(ctx, command)
+	if err != nil {
+		return err
+	}
+	if err := r.write(value); err != nil {
+		return err
+	}
+	before, after := value.Comparison.Before.Status, value.Comparison.After.Status
+	if before == "unsupported" || after == "unsupported" {
+		return resultStatus("unsupported")
+	}
+	if err := resultStatus(before); err != nil {
+		return err
+	}
+	return resultStatus(after)
+}
+
+func (r runner) exportBuild(ctx context.Context, args []string) error {
+	fs := r.flags("build export")
+	connection := connectFlagsWithTimeout(fs, buildTimeout)
+	id := fs.String("session", "", "явно выбранный session_id")
+	raw := fs.Bool("raw", false, "вывести только XML")
+	output := fs.String("output", "", "сохранить XML в новый файл UTF-8")
+	if err := parse(fs, args); err != nil {
+		return err
+	}
+	if *id == "" {
+		return &UsageError{Err: fmt.Errorf("нужна --session")}
+	}
+	if *raw && *output != "" {
+		return &UsageError{Err: fmt.Errorf("--output не сочетается с --raw")}
+	}
+	ctx, cancel := context.WithTimeout(ctx, connection.timeout)
+	defer cancel()
+	client, err := connection.dial(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	value, err := client.Export(ctx, *id)
+	if err != nil {
+		return err
+	}
+	if *raw {
+		_, err := io.WriteString(r.out, value.XML)
+		return err
+	}
+	if *output == "" {
 		return r.write(value)
 	}
-	return nil
+	if err := saveXML(*output, value.XML); err != nil {
+		return err
+	}
+	return r.write(map[string]any{"path": *output, "input_sha256": value.InputSHA256, "revision": value.Revision})
 }
 
 func saveXML(path, xml string) error {

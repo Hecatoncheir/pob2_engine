@@ -37,6 +37,7 @@ func TestLuaEmptySocketAcrossProcesses(t *testing.T) {
 	applied := applyTreeNodeCLI(t, s, application.ApplyBuild{
 		SessionID: "main", ExpectedRevision: s.revision, RequestID: "socket-allocate", Edit: edit,
 	}, preview)
+	checkFirstReportAfterEdit(t, s, before, applied)
 	refundEmptySocket(t, s, applied)
 	checkOccupiedSocket(t, s, applied.Build.XML)
 }

@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -40,21 +41,65 @@ func TestLuaWorkbenchAcrossGRPCAndMCP(t *testing.T) {
 	}
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_import_xml", map[string]any{"xml": string(xml)})
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_check_build", nil)
-	before := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
-	arguments := map[string]any{
-		"groupId": 1, "targetIndex": 1, "supportId": "Metadata/Items/Gems/SkillGemControlledDestructionSupport",
-		"gems": []map[string]any{{"id": "Metadata/Items/Gems/SkillGemFireball", "sourceIndex": 1}},
-	}
-	preview := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
-	repeated := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
-	after := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
-	checkWorkbenchSupportPreview(t, before, preview, after)
-	checkWorkbenchSupportPreview(t, before, repeated, after)
-	if !bytes.Equal(preview.GetResultJson(), repeated.GetResultJson()) {
-		t.Fatal("повторный предпросмотр использовал состояние предыдущего запроса")
-	}
+	checkWorkbenchSupportCache(t, ctx, workbench, mcpClient, string(xml))
 	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_render_image", map[string]any{"view": "overview", "width": 880, "height": 640})
 	closeWorker()
+}
+
+func checkWorkbenchSupportCache(t *testing.T, ctx context.Context, workbench pb.WorkbenchServiceClient, mcpClient *mcp.ClientSession, xml string) {
+	t.Helper()
+	before := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
+	const skill = "Metadata/Items/Gems/SkillGemFireball"
+	const support = "Metadata/Items/Gems/SkillGemControlledDestructionSupport"
+	gems := []map[string]any{{"id": skill, "sourceIndex": 1}}
+	arguments := map[string]any{
+		"groupId": 1, "targetIndex": 1, "supportId": support, "gems": gems,
+	}
+	supportArgs := map[string]any{"groupId": 1, "gems": gems}
+	compatible := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_gem_supports", supportArgs)
+	preview := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
+	arguments["supportId"] = "Metadata/Items/Gems/SkillGemElementalFocusSupport"
+	alternative := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
+	arguments["supportId"] = support
+	repeated := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
+	rechecked := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_gem_supports", supportArgs)
+	after := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_export_xml", nil)
+	checkWorkbenchSupportPreview(t, before, preview, after)
+	checkWorkbenchSupportPreview(t, before, alternative, after)
+	checkWorkbenchSupportPreview(t, before, repeated, after)
+	if !bytes.Equal(preview.GetResultJson(), repeated.GetResultJson()) || !bytes.Equal(compatible.GetResultJson(), rechecked.GetResultJson()) {
+		t.Fatal("повторный предпросмотр использовал состояние предыдущего запроса")
+	}
+	arguments["gems"] = []map[string]any{{"id": skill, "sourceIndex": 1, "level": 8}}
+	changed := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
+	checkWorkbenchSupportPreview(t, before, changed, after)
+	if bytes.Equal(changed.GetResultJson(), preview.GetResultJson()) {
+		t.Fatal("предпросмотр проигнорировал изменённый уровень камня")
+	}
+	checkWorkbenchSupportRevision(t, ctx, workbench, mcpClient, xml, arguments)
+}
+
+func checkWorkbenchSupportRevision(t *testing.T, ctx context.Context, workbench pb.WorkbenchServiceClient, mcpClient *mcp.ClientSession, xml string, arguments map[string]any) {
+	t.Helper()
+	disabled := strings.Replace(xml, `mainActiveSkill="1" enabled="true"`, `mainActiveSkill="1" enabled="false"`, 1)
+	if disabled == xml {
+		t.Fatal("не найдена активная группа эталона")
+	}
+	compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_import_xml", map[string]any{"xml": disabled})
+	input, err := json.Marshal(arguments)
+	if err != nil {
+		t.Fatal(err)
+	}
+	reply, err := workbench.CallWorkbenchTool(ctx, &pb.CallWorkbenchToolRequest{Name: "pob_preview_support", ArgumentsJson: input})
+	if err != nil || reply.GetError().GetCode() != "INVALID_REQUEST" {
+		t.Fatalf("предпросмотр не отклонил выключенную группу новой ревизии: %v / %v", err, reply.GetError())
+	}
+	call(t, ctx, mcpClient, "pob_preview_support", arguments, true)
+	imported := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_import_xml", map[string]any{"xml": xml})
+	restarted := compareWorkbenchCall(t, ctx, workbench, mcpClient, "pob_preview_support", arguments)
+	if restarted.GetRevision() != imported.GetRevision() {
+		t.Fatal("после ошибки предпросмотр использовал старую ревизию")
+	}
 }
 
 func startWorkbenchGRPC(t *testing.T, ctx context.Context) (pb.WorkbenchServiceClient, string, func()) {

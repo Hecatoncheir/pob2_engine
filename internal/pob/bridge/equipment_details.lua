@@ -64,6 +64,18 @@ local function comparisonRows(build, stats, actor, before, after, prefix)
 	end
 	return rows
 end
+local attributeRequirements = { ReqStr = true, ReqDex = true, ReqInt = true }
+local function requirementWarnings(stats, output)
+	local warnings = {}
+	for _, stat in ipairs(stats) do
+		local value = output[stat.stat]
+		if attributeRequirements[stat.stat] and stat.warnFunc and value and
+			(not stat.condFunc or stat.condFunc(value, output)) then
+			warnings[#warnings + 1] = stat.warnFunc(value, output)
+		end
+	end
+	return warnings
+end
 local function compareItem(build, item, slot, result)
 	local activeSet = build.itemsTab.activeItemSet.useSecondWeaponSet and 2 or 1
 	if slot.weaponSet and slot.weaponSet ~= activeSet then
@@ -76,7 +88,7 @@ local function compareItem(build, item, slot, result)
 	if before.Minion and after.Minion and build.calcsTab.mainEnv.minion then
 		for _, row in ipairs(comparisonRows(build, build.minionDisplayStats, build.calcsTab.mainEnv.minion, before.Minion, after.Minion, "minion")) do rows[#rows + 1] = row end
 	end
-	result.comparison = { rows = rows }
+	result.comparison = { rows = rows, warnings = requirementWarnings(build.displayStats, after) }
 	return result
 end
 

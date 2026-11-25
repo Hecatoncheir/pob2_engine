@@ -85,17 +85,22 @@ jobs:
         run: go run ./tool/reference
       - name: Проверить лицензии поставляемых зависимостей
         run: python3 tool/notices.py
-      - name: Собрать LuaJIT и установить закреплённый оригинальный PoB
+      - name: Подготовить LuaJIT, закреплённый PoB и байткод моста
         env:
           POB2_ENGINE_POB_GITHUB_TOKEN: ${{ github.token }}
         run: |
           python3 tool/build_native_runtime.py
           go run ./cmd/pob2-engine pob-data ensure > pob-installation.json
+          python3 tool/compile_pob_bytecode.py --installation pob-installation.json
           jq -r '"POB2_ENGINE_POB_DIR=" + .current.directory,
                  "POB2_ENGINE_POB_NATIVE_DIR=" + .current.nativeDirectory' pob-installation.json >> "$GITHUB_ENV"
       - name: Выполнить тесты
+        env:
+          GOFLAGS: -tags=pob_bytecode
         run: go test ./...
       - name: Проверить гонки
+        env:
+          GOFLAGS: -tags=pob_bytecode
         run: go test -race ./...
       - name: Измерить LuaJIT и сохранить состав среды
         shell: bash

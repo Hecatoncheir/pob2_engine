@@ -5,3 +5,4 @@
 **/__pycache__/
 **/.dart_tool/
 /internal/pob/runtime/*.zip
+/internal/pob/bytecode/

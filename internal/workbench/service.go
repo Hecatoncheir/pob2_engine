@@ -12,6 +12,8 @@ import (
 	"github.com/google/jsonschema-go/jsonschema"
 )
 
+const LostCode = "WORKBENCH_LOST"
+
 var workbenchMethods = map[string]string{
 	"pob_catalog":            "getCatalog",
 	"pob_create_build":       "createBuild",
@@ -55,7 +57,7 @@ type Response struct {
 
 type Service struct {
 	session      *pob.Workbench
-	preview      *pob.Workbench
+	preview      *preparedPreview
 	installation pob.Installation
 	assets       *workbenchAssets
 	gate         chan struct{}
@@ -130,7 +132,7 @@ func (s *Service) Close() {
 
 func (s *Service) discardPreview() {
 	if s.preview != nil {
-		s.preview.Close()
+		s.preview.worker.Close()
 		s.preview = nil
 	}
 }
@@ -167,7 +169,17 @@ func (s *Service) Invoke(ctx context.Context, name string, raw json.RawMessage) 
 	case <-ctx.Done():
 		return Response{}, failure("TIMEOUT", ctx.Err())
 	}
-	return s.run(ctx, name, arguments)
+	if err := ctx.Err(); err != nil {
+		return Response{}, failure("TIMEOUT", err)
+	}
+	response, err := s.run(ctx, name, arguments)
+	if s.session != nil && s.session.Closed() {
+		return Response{}, &pob.WorkbenchError{Code: LostCode, Message: "Рабочая копия PoB потеряна. Перезапустите мастерскую и откройте сборку заново."}
+	}
+	if err != nil && ctx.Err() != nil {
+		return Response{}, failure("TIMEOUT", ctx.Err())
+	}
+	return response, err
 }
 
 func (s *Service) run(ctx context.Context, name string, args map[string]any) (Response, error) {
@@ -273,60 +285,6 @@ func meetsTarget(actual any, target map[string]any) bool {
 	}
 	maximum, limited := target["max"].(float64)
 	return !limited || value <= maximum
-}
-
-func (s *Service) compatibleSupports(ctx context.Context, arguments map[string]any) (_ pob.WorkbenchResult, err error) {
-	defer s.finishPreview(&err)
-	preview, revision, err := s.openPreview(ctx)
-	if err != nil {
-		return pob.WorkbenchResult{}, err
-	}
-	group, err := applyPreviewGroup(ctx, preview, arguments)
-	if err != nil {
-		return pob.WorkbenchResult{}, err
-	}
-	supports, err := preview.Call(ctx, "getCompatibleSupports", map[string]any{"groupId": group})
-	supports.Revision = revision
-	return supports, err
-}
-
-func (s *Service) openPreview(ctx context.Context) (*pob.Workbench, int, error) {
-	export, err := s.session.Call(ctx, "exportBuild", nil)
-	if err != nil {
-		return nil, 0, err
-	}
-	var document struct {
-		XML string `json:"xml"`
-	}
-	if err := json.Unmarshal(export.Result, &document); err != nil {
-		return nil, 0, err
-	}
-	if s.preview == nil {
-		s.preview, err = pob.NewWorkbench(ctx, s.installation)
-		if err != nil {
-			return nil, 0, err
-		}
-	}
-	if _, err := s.preview.Call(ctx, "loadBuild", map[string]any{"xml": document.XML}); err != nil {
-		return nil, 0, err
-	}
-	return s.preview, export.Revision, nil
-}
-
-func applyPreviewGroup(ctx context.Context, preview *pob.Workbench, arguments map[string]any) (int, error) {
-	operation := "addSkillGroup"
-	if arguments["groupId"] != nil {
-		operation = "updateSkillGroup"
-	}
-	edited, err := preview.Call(ctx, operation, arguments)
-	if err != nil {
-		return 0, err
-	}
-	var group struct {
-		ID int `json:"groupId"`
-	}
-	err = json.Unmarshal(edited.Result, &group)
-	return group.ID, err
 }
 
 func workbenchResult(revision int, value any) (pob.WorkbenchResult, error) {

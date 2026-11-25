@@ -14,6 +14,45 @@ local function jsonVector(values, count)
     return setmetatable(values, numberArray)
 end
 
+local function stringIndex(value, strings, indices)
+    local index = indices[value]
+    if index then return index end
+    index = #strings + 1
+    strings[index], indices[value] = value, index
+    return index
+end
+
+local function appendNumbers(target, values)
+    for i = 1, #values do target[#target + 1] = values[i] end
+end
+
+local function canPack(command)
+    return getmetatable(command.positions) == numberArray
+        and getmetatable(command.uv) == numberArray and getmetatable(command.color) == numberArray
+        and type(command.blend) == "string" and type(command.index) == "number"
+        and command.index >= 0 and command.index <= 4294967295 and command.index % 1 == 0
+end
+
+local function packTreeScene(scene)
+    if not decimalPoint then return scene end
+    local strings, indices, values = {}, {}, {}
+    for _, command in ipairs(scene.commands) do
+        if not canPack(command) then return scene end
+        -- Порядок полей должен совпадать с treeDrawCommand в Go.
+        values[#values + 1] = stringIndex(command.file, strings, indices)
+        values[#values + 1] = stringIndex(command.blend, strings, indices)
+        values[#values + 1] = command.index
+        values[#values + 1] = command.clamp and 1 or 0
+        appendNumbers(values, command.positions)
+        appendNumbers(values, command.uv)
+        appendNumbers(values, command.color)
+    end
+    scene.commands = nil
+    scene.command_strings = strings
+    scene.command_values = setmetatable(values, numberArray)
+    return scene
+end
+
 local function texturePath(handle)
     if not handle then return "" end
     local file = assert(handle.sourcePath, "Путь текстуры не записан")
@@ -36,7 +75,7 @@ local function bounds(spec)
 end
 
 -- Записывает штатную отрисовку без нативного окна PoB.
-return function(build, power, hoverID)
+local function drawTreeScene(build, power, hoverID)
     local width, height = 1800, 1800
     local tree, spec = build.spec.tree, build.spec
     local minX, maxX, minY, maxY = bounds(spec)
@@ -117,3 +156,5 @@ return function(build, power, hoverID)
     return {width = width, height = height, scale = scale, offsetX = viewer.zoomX + width / 2,
         offsetY = viewer.zoomY + height / 2, commands = commands}
 end
+
+return { draw = drawTreeScene, pack = packTreeScene }

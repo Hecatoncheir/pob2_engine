@@ -66,7 +66,12 @@ func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, e
 	if err != nil {
 		return build.PassiveChange{}, err
 	}
-	answer, err := c.run(ctx, &request{Operation: "edit_tree", XML: pobXML.Replace(string(xml)),
+	release, err := c.acquire(ctx)
+	if err != nil {
+		return build.PassiveChange{}, err
+	}
+	defer release()
+	answer, err := c.execute(ctx, &request{Operation: "edit_tree", XML: pobXML.Replace(string(xml)),
 		NodeID: edit.NodeID, Action: edit.Action, Attribute: edit.Attribute, AllocationMode: edit.AllocationMode,
 		TreeSpec: model.ActiveSets.Tree, TreeVersion: model.TreeVersion})
 	if err != nil {
@@ -78,7 +83,22 @@ func (c *Calculator) ResolveTreeEdit(ctx context.Context, doc *build.Document, e
 	if answer.TreeEdit == nil || !confirmsTreeEdit(*answer.TreeEdit, edit) {
 		return build.PassiveChange{}, fmt.Errorf("PoB не подтвердил правку дерева")
 	}
+	if edit.Action == "allocate" || edit.Action == "refund" {
+		c.rememberTreeReportXML(doc, *answer.TreeEdit)
+	}
 	return *answer.TreeEdit, nil
+}
+
+func (c *Calculator) rememberTreeReportXML(doc *build.Document, change build.PassiveChange) {
+	// Сервис сохраняет XML через то же преобразование подтверждённой правки.
+	updated, err := doc.WithResolvedTreeEdit(change)
+	if err != nil {
+		return
+	}
+	xml, err := updated.ExportWithoutProgression()
+	if err == nil {
+		c.treeReportXML = pobXML.Replace(string(xml))
+	}
 }
 
 func confirmsTreeEdit(change build.PassiveChange, edit build.TreeNodeEdit) bool {

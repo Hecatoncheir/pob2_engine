@@ -3,12 +3,23 @@ package pob
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"golang.org/x/sys/windows"
 )
 
+var treePathCallback = sync.OnceValue(func() uintptr {
+	return windows.NewCallback(func(input *uint32, inputSize uint32, output *uint32, outputSize uint32) uintptr {
+		return uintptr(solvePathWords(input, inputSize, output, outputSize))
+	})
+})
+
 func runLua(library, program string) error {
+	return runLuaProgram(library, treePathProgram(program, treePathCallback))
+}
+
+func runLuaProgram(library, program string) error {
 	handle, err := windows.LoadLibraryEx(library, 0, windows.LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|windows.LOAD_LIBRARY_SEARCH_DEFAULT_DIRS)
 	if err != nil {
 		return err

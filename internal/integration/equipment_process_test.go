@@ -36,14 +36,51 @@ func TestLuaEquipmentAcrossProcesses(t *testing.T) {
 	checkRejectedEquipment(t, s)
 	edit := &build.Edit{Equipment: &build.EquipmentEdit{Slot: "Body Armour", Raw: armourText}}
 	preview := compareEquipment(t, s, edit)
+	checkEquipmentPreviewDetails(t, s, preview.Comparison)
 	if current := supportSnapshot(t, s); !reflect.DeepEqual(current, before) {
 		t.Fatal("примерка либо отказ изменили XML, ревизию или сохранённый расчёт")
 	}
 	command := application.ApplyBuild{SessionID: "main", ExpectedRevision: s.revision, RequestID: "armour", Edit: edit}
 	applied := applyPreviewedEquipment(t, s, command, before, preview)
+	checkFirstReportAfterEdit(t, s, before, applied)
 	removed := removeEquipment(t, s, applied)
 	restored := reapplyExistingEquipment(t, s, applied, removed)
 	checkBuildEditRestart(t, s, command, applied, restored)
+}
+
+func checkEquipmentPreviewDetails(t *testing.T, s *groupScenario, comparison calculation.Comparison) {
+	t.Helper()
+	query := build.EquipmentDetailsQuery{Slot: "Body Armour", Raw: armourText, Compare: true}
+	view, err := s.client.EquipmentDetails(s.ctx, "main", s.revision, query)
+	if err != nil || view.Revision != s.revision {
+		t.Fatal("примерка не вернула текущую ревизию", err)
+	}
+	var details struct {
+		Compatible bool
+		Comparison struct {
+			Rows []struct {
+				ID, Actor     string
+				Before, After float64
+			}
+			Warnings []string
+		}
+	}
+	if err := json.Unmarshal(view.Details, &details); err != nil || !details.Compatible {
+		t.Fatal("не получено описание совместимого предмета", err)
+	}
+	rows := make(map[string][2]float64)
+	for _, row := range details.Comparison.Rows {
+		rows[row.Actor+"/"+row.ID] = [2]float64{row.Before, row.After}
+	}
+	for _, name := range []string{"Life", "Armour", "FireResist"} {
+		want := [2]float64{comparison.Before.Stats[name], comparison.After.Stats[name]}
+		if got := rows["player/"+name]; got != want {
+			t.Fatalf("%s в описании предмета: %v, ожидалось %v", name, got, want)
+		}
+	}
+	if want := []string{comparison.After.Issues[0].Message}; !slices.Equal(details.Comparison.Warnings, want) {
+		t.Fatalf("предупреждения примерки: %v, ожидалось %v", details.Comparison.Warnings, want)
+	}
 }
 
 func reapplyExistingEquipment(t *testing.T, s *groupScenario, applied, removed application.SnapshotView) application.SnapshotView {

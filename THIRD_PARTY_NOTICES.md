@@ -41,6 +41,11 @@ python tool/notices.py --archive .reference/licenses.zip
 и macOS собираются из [закреплённых исходников](tool/native-runtime.lock.json)
 и встраиваются в бинарник вместе с лицензиями.
 
+Поиск путей и его Lua-мост основаны на
+[PassiveSpec.lua из PoB v0.23.1](https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/blob/7d6f530cbdab20389ff8bc6ba97a37ac27f74e41/src/Classes/PassiveSpec.lua).
+Уведомление David Gowor и лицензия MIT сохранены
+в [internal/pob/bridge/LICENSE](internal/pob/bridge/LICENSE).
+
 Совместимые сценарии мастерской и Lua-мост оригинального окна используют
 файлы [pob-poe2-mcp v0.23.0, commit 1b3f61dc00016fe3bc86d889d6f4992302231d75](https://github.com/Hecatoncheir/pob-poe2-mcp/tree/1b3f61dc00016fe3bc86d889d6f4992302231d75/pob_poe2_mcp).
 Исходные Lua-модули, описания инструментов и таблицы ресурсов сохранены

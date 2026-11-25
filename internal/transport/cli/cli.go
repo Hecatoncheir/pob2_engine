@@ -206,19 +206,29 @@ func connectFlagsWithTimeout(fs *flag.FlagSet, timeout time.Duration) *connectio
 }
 
 func (c *connection) dial(ctx context.Context) (*grpcapi.Client, error) {
+	if err := c.validateFlags(); err != nil {
+		return nil, err
+	}
+	if c.profile != "" {
+		return host.Connect(ctx, host.ConnectOptions{BaseDir: c.baseDir, DataDir: c.dataDir, Profile: c.profile, StartServer: c.startServer, Kind: c.kind, IdleTimeout: c.idleTimeout, LeaseTimeout: c.leaseTimeout, AllowMemory: c.allowMemory})
+	}
+	return grpcapi.DialKind(ctx, c.address, c.token, c.kind)
+}
+
+func (c *connection) validateFlags() error {
 	if c.timeout <= 0 {
-		return nil, &UsageError{Err: fmt.Errorf("таймаут должен быть положительным")}
+		return &UsageError{Err: fmt.Errorf("таймаут должен быть положительным")}
 	}
 	if c.profile != "" {
 		if c.address != "" {
-			return nil, &UsageError{Err: fmt.Errorf("выберите --profile или --address")}
+			return &UsageError{Err: fmt.Errorf("выберите --profile или --address")}
 		}
-		return host.Connect(ctx, host.ConnectOptions{BaseDir: c.baseDir, DataDir: c.dataDir, Profile: c.profile, StartServer: c.startServer, Kind: c.kind, IdleTimeout: c.idleTimeout, LeaseTimeout: c.leaseTimeout, AllowMemory: c.allowMemory})
+		return nil
 	}
 	if c.startServer || c.baseDir != "" || c.dataDir != "" {
-		return nil, &UsageError{Err: fmt.Errorf("для обнаружения и запуска нужен --profile")}
+		return &UsageError{Err: fmt.Errorf("для обнаружения и запуска нужен --profile")}
 	}
-	return grpcapi.DialKind(ctx, c.address, c.token, c.kind)
+	return grpcapi.ValidateTarget(c.address, c.token)
 }
 
 type runningServer interface {

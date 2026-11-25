@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Hecatoncheir/pob2_engine/internal/application"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -14,6 +15,31 @@ import (
 type workshopReport struct {
 	Revision uint64         `json:"revision"`
 	Report   map[string]any `json:"report"`
+}
+
+func checkFirstReportAfterEdit(t *testing.T, s *groupScenario, before, applied application.SnapshotView) {
+	t.Helper()
+	prepared := reportJSON(t, s, "main", applied.Revision)
+	other, err := s.client.Create(s.ctx, application.CreateSession{
+		SessionID: "report-before-edit", BuildName: before.BuildName,
+		RequestID: "report-before-edit", XML: before.Build.XML,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	reportJSON(t, s, other.SessionID, other.Revision)
+	if reloaded := reportJSON(t, s, "main", applied.Revision); !reflect.DeepEqual(prepared, reloaded) {
+		t.Fatal("подготовленный отчёт отличается от отчёта после повторной загрузки XML")
+	}
+}
+
+func reportJSON(t *testing.T, s *groupScenario, id string, revision uint64) map[string]any {
+	t.Helper()
+	view, err := s.client.BuildReport(s.ctx, id, revision)
+	if err != nil || view.Revision != revision {
+		t.Fatal("не получен отчёт нужной ревизии", err)
+	}
+	return decodeCatalogJSON[map[string]any](t, view.Report)
 }
 
 func TestLuaBuildReportAcrossProcesses(t *testing.T) {
@@ -30,6 +56,31 @@ func TestLuaBuildReportAcrossProcesses(t *testing.T) {
 	}
 	if !reflect.DeepEqual(supportSnapshot(t, s), before) {
 		t.Fatal("чтение отчёта изменило состояние сборки")
+	}
+	checkReportAfterRename(t, s, before)
+}
+
+func checkReportAfterRename(t *testing.T, s *groupScenario, before application.SnapshotView) {
+	t.Helper()
+	const name = "Новое имя для прежнего XML"
+	renamed, err := s.client.Rename(s.ctx, application.RenameBuild{
+		SessionID: "main", BuildName: name, ExpectedRevision: s.revision, RequestID: "report-rename",
+	})
+	if err != nil || renamed.BuildXML != before.Build.XML {
+		t.Fatal("переименование изменило XML или завершилось ошибкой", err)
+	}
+	view, err := s.client.BuildReport(s.ctx, "main", renamed.Revision)
+	if err != nil || view.Revision != renamed.Revision {
+		t.Fatal("не получен отчёт новой ревизии", err)
+	}
+	type reportName struct {
+		Snapshot struct {
+			BuildInfo struct{ Name string }
+		}
+	}
+	report := decodeCatalogJSON[reportName](t, view.Report)
+	if got := report.Snapshot.BuildInfo.Name; got != name {
+		t.Fatalf("в отчёте имя %q, ожидалось %q", got, name)
 	}
 }
 

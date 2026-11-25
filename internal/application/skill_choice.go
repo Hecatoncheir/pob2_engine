@@ -34,6 +34,10 @@ func (s *Service) editSkillChoice(ctx context.Context, doc *build.Document, edit
 	if err != nil {
 		return nil, err
 	}
+	if choice.Control == "groups" {
+		// PoB уже подтвердил выбор после кадра, а XML хранит номер группы напрямую.
+		return updated, nil
+	}
 	if err := editor.ValidateSkillChoice(ctx, updated, choice); err != nil {
 		return nil, err
 	}

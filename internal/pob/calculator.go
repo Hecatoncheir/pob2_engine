@@ -24,14 +24,16 @@ type Layout struct {
 }
 
 type Calculator struct {
-	installation Installation
-	layout       Layout
-	gate         chan struct{}
-	powerGate    chan struct{}
-	treeTextures treeTextureCache
-	treeScene    treeSceneCache
-	worker       *worker
-	data         *gamedata.Dataset
+	installation  Installation
+	layout        Layout
+	gate          chan struct{}
+	powerGate     chan struct{}
+	treeTextures  treeTextureCache
+	treeScene     treeSceneCache
+	worker        *worker
+	data          *gamedata.Dataset
+	lastReport    buildReportCache
+	treeReportXML string
 }
 
 // Парсер XML в PoB распознаёт именованные сущности, а Go кодирует эти символы числами.
@@ -176,6 +178,7 @@ func (c *Calculator) execute(ctx context.Context, value *request) (response, err
 	if err := ctx.Err(); err != nil {
 		return response{}, err
 	}
+	c.treeReportXML = ""
 	if c.worker == nil {
 		if err := c.start(ctx); err != nil {
 			return response{}, err
@@ -240,6 +243,8 @@ func (c *Calculator) exchange(ctx context.Context, value *request) (response, er
 }
 
 func (c *Calculator) stop() {
+	c.lastReport = buildReportCache{}
+	c.treeReportXML = ""
 	if c.worker != nil {
 		c.worker.close()
 		c.worker = nil
@@ -260,7 +265,7 @@ type response struct {
 	TreeEdit          *build.PassiveChange     `json:"tree_edit,omitempty"`
 	TreeIdentity      *build.TreeIdentity      `json:"tree_identity,omitempty"`
 	TreeClass         *build.TreeClassChange   `json:"tree_class,omitempty"`
-	TreeGeometry      *build.TreeGeometry      `json:"tree_geometry,omitempty"`
+	TreeGeometry      *treeGeometryReply       `json:"tree_geometry,omitempty"`
 	TreeTooltip       *build.TreeNodeTooltip   `json:"tree_tooltip,omitempty"`
 	BuildReport       json.RawMessage          `json:"build_report,omitempty"`
 	SkillChoice       *build.SkillChoiceChange `json:"skill_choice,omitempty"`
@@ -273,6 +278,7 @@ type response struct {
 type request struct {
 	XML              string                       `json:"xml,omitempty"`
 	BuildName        string                       `json:"build_name,omitempty"`
+	ReuseTreeReport  bool                         `json:"reuse_tree_report,omitempty"`
 	Operation        string                       `json:"operation,omitempty"`
 	Slot             string                       `json:"slot,omitempty"`
 	ItemID           int                          `json:"item_id,omitempty"`
@@ -324,6 +330,7 @@ func startLuaProcess(layout Layout, command string, unpack func(string) (string,
 		os.RemoveAll(work)
 		return nil, err
 	}
+	stageBytecode(layout, bridgeDir, command)
 	cmd := exec.Command(executable, command, layout.Runtime, layout.Native, bridgeDir)
 	cmd.Dir, cmd.Stderr = layout.Source, os.Stderr
 	cmd.Env = append(cmd.Environ(), "LUA_PATH=", "LUA_CPATH=", "HOME="+work, "USERPROFILE="+work, "APPDATA="+work,

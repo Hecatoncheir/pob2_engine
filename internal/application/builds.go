@@ -3,6 +3,7 @@ package application
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/Hecatoncheir/pob2_engine/internal/build"
@@ -140,14 +141,8 @@ func (s *Service) commitBuild(ctx context.Context, value *session, requestID, fp
 }
 
 func (s *Service) Apply(ctx context.Context, cmd ApplyBuild) (domain.Snapshot, error) {
-	if err := ctx.Err(); err != nil {
+	if err := validateApply(ctx, cmd); err != nil {
 		return domain.Snapshot{}, err
-	}
-	if err := validate(cmd.SessionID, "build", cmd.RequestID); err != nil {
-		return domain.Snapshot{}, err
-	}
-	if (cmd.XML == "") == (cmd.Edit == nil) {
-		return domain.Snapshot{}, failure(InvalidArgument, "нужен XML либо одна правка")
 	}
 	fp, err := fingerprint("apply", cmd)
 	if err != nil {
@@ -158,52 +153,101 @@ func (s *Service) Apply(ctx context.Context, cmd ApplyBuild) (domain.Snapshot, e
 		return domain.Snapshot{}, err
 	}
 	value.mu.Lock()
+	before, replay, err := applySnapshot(ctx, value, cmd, fp)
+	value.mu.Unlock()
+	if replay || err != nil {
+		return before, err
+	}
+	result, fields, prepareErr := s.prepareApply(ctx, cmd, before)
+	value.mu.Lock()
 	defer value.mu.Unlock()
-	if previous, ok, err := requestResult(value, cmd.RequestID, fp); ok || err != nil {
+	// Другая попытка могла подтвердить этот запрос, пока готовилась правка.
+	if previous, replay, err := applySnapshot(ctx, value, cmd, fp); replay || err != nil {
 		return previous, err
 	}
-	if _, ok := value.pending[cmd.RequestID]; ok {
-		return domain.Snapshot{}, failure(RequestConflict, "request_id занят расчётом")
-	}
-	if err := checkRevision(ctx, value, cmd.ExpectedRevision); err != nil {
-		return domain.Snapshot{}, err
-	}
-	if err := s.loadData(); err != nil {
-		return domain.Snapshot{}, err
-	}
-	return s.applyNewBuild(ctx, value, cmd, fp)
-}
-
-func (s *Service) applyNewBuild(ctx context.Context, value *session, cmd ApplyBuild, fp string) (domain.Snapshot, error) {
-	xml := cmd.XML
-	if cmd.Edit != nil {
-		xml = value.snapshot.BuildXML
-	}
-	doc, err := build.Parse([]byte(xml))
-	if err != nil {
-		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
-	}
-	if cmd.Edit != nil {
-		doc, _, err = s.editDocument(ctx, doc, *cmd.Edit)
-		if err != nil {
-			return domain.Snapshot{}, failure(InvalidArgument, err.Error())
-		}
-	}
-	result := value.snapshot
-	result.Revision++
-	result, err = withBuildDocument(result, doc)
-	if err != nil {
-		return domain.Snapshot{}, err
+	if prepareErr != nil {
+		return domain.Snapshot{}, prepareErr
 	}
 	change := Change{Apply: &cmd, Result: result}
-	fields, err := changedBuildFields(value.snapshot.BuildXML, doc)
-	if err != nil {
-		return domain.Snapshot{}, failure(InvalidArgument, err.Error())
-	}
 	if err := s.commitBuild(ctx, value, cmd.RequestID, fp, "build_changed", fields, change, int64(len(fp)+len(result.BuildXML)+1024)); err != nil {
 		return domain.Snapshot{}, err
 	}
 	return result, nil
+}
+
+func validateApply(ctx context.Context, cmd ApplyBuild) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if err := validate(cmd.SessionID, "build", cmd.RequestID); err != nil {
+		return err
+	}
+	if (cmd.XML == "") == (cmd.Edit == nil) {
+		return failure(InvalidArgument, "нужен XML либо одна правка")
+	}
+	return nil
+}
+
+// applySnapshot проверяет команду и читает снимок под уже взятой блокировкой сессии.
+func applySnapshot(ctx context.Context, value *session, cmd ApplyBuild, fp string) (domain.Snapshot, bool, error) {
+	if err := ctx.Err(); err != nil {
+		return domain.Snapshot{}, false, err
+	}
+	if previous, replay, err := requestResult(value, cmd.RequestID, fp); replay || err != nil {
+		return previous, replay, err
+	}
+	if _, ok := value.pending[cmd.RequestID]; ok {
+		return domain.Snapshot{}, false, failure(RequestConflict, "request_id занят расчётом")
+	}
+	if err := checkRevision(ctx, value, cmd.ExpectedRevision); err != nil {
+		return domain.Snapshot{}, false, err
+	}
+	return value.snapshot, false, nil
+}
+
+func (s *Service) prepareApply(ctx context.Context, cmd ApplyBuild, before domain.Snapshot) (domain.Snapshot, string, error) {
+	if err := s.loadData(); err != nil {
+		return domain.Snapshot{}, "", err
+	}
+	doc, err := s.applyDocument(ctx, cmd, before.BuildXML)
+	if err != nil {
+		return domain.Snapshot{}, "", err
+	}
+	result := before
+	result.Revision++
+	result, err = withBuildDocument(result, doc)
+	if err != nil {
+		return domain.Snapshot{}, "", err
+	}
+	fields, err := changedBuildFields(before.BuildXML, doc)
+	if err != nil {
+		return domain.Snapshot{}, "", failure(InvalidArgument, err.Error())
+	}
+	return result, fields, nil
+}
+
+func (s *Service) applyDocument(ctx context.Context, cmd ApplyBuild, previousXML string) (*build.Document, error) {
+	xml := cmd.XML
+	if cmd.Edit != nil {
+		xml = previousXML
+	}
+	doc, err := build.Parse([]byte(xml))
+	if err != nil {
+		return nil, failure(InvalidArgument, err.Error())
+	}
+	if cmd.Edit == nil {
+		return doc, nil
+	}
+	doc, _, err = s.editDocument(ctx, doc, *cmd.Edit)
+	var app *Error
+	switch {
+	case err == nil:
+		return doc, nil
+	case errors.Is(err, context.Canceled), errors.Is(err, context.DeadlineExceeded), errors.As(err, &app):
+		return nil, err
+	default:
+		return nil, failure(InvalidArgument, err.Error())
+	}
 }
 
 func withBuildDocument(snapshot domain.Snapshot, doc *build.Document) (domain.Snapshot, error) {

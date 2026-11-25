@@ -41,6 +41,10 @@ func (c *Calculator) calculateTreeGeometry(ctx context.Context, xml []byte, scen
 	if answer.TreeGeometry == nil || len(answer.TreeGeometry.Nodes) == 0 {
 		return build.TreeGeometry{}, fmt.Errorf("PoB не вернул геометрию дерева")
 	}
-	c.markTreeAssets(answer.TreeGeometry.Scene)
-	return *answer.TreeGeometry, nil
+	geometry, err := answer.TreeGeometry.unpack()
+	if err != nil {
+		return build.TreeGeometry{}, err
+	}
+	c.markTreeAssets(geometry.Scene)
+	return geometry, nil
 }
