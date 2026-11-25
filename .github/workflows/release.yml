@@ -1,25 +1,45 @@
-name: Выпустить по тегу
+name: Выпустить движок
 
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: 'Опубликованный кандидат vX.Y.Z-rc.N'
+        required: true
+        type: string
+      app_run:
+        description: 'Номер прогона полной приёмки PoB II'
+        required: true
+        type: string
+      verify_only:
+        description: 'Проверить условия публикации'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ github.event_name == 'push' && contains(github.ref_name, '-') && github.ref_name || 'stable' }}
   cancel-in-progress: false
 
 jobs:
   validate:
     name: Проверить проект
+    if: inputs.verify_only != true
     uses: ./.github/workflows/ci.yml
 
   version:
     name: Проверить тег и changelog
     runs-on: ubuntu-latest
+    timeout-minutes: 100
+    permissions:
+      actions: read
+      contents: read
     outputs:
+      tag: ${{ steps.notes.outputs.tag }}
       prerelease: ${{ steps.notes.outputs.prerelease }}
     steps:
       - uses: actions/checkout@v7.0.1
@@ -27,10 +47,21 @@ jobs:
           fetch-depth: 0
       - name: Проверить принадлежность основной ветке
         run: git merge-base --is-ancestor HEAD origin/main
+      - name: Дождаться полной приёмки кандидата в PoB II
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          CANDIDATE: ${{ inputs.candidate }}
+          APP_RUN: ${{ inputs.app_run }}
+        run: |
+          [[ "$GITHUB_REF" == refs/heads/main ]]
+          python3 tool/check_release_candidate.py "$CANDIDATE" "$APP_RUN"
       - name: Подготовить примечания версии
         id: notes
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          PUSH_TAG: ${{ github.event_name == 'push' && github.ref_name || '' }}
+          CANDIDATE: ${{ inputs.candidate }}
         run: |
           python3 - <<'PY'
           from datetime import date
@@ -38,7 +69,7 @@ jobs:
           import os
           import re
 
-          tag = os.environ['RELEASE_TAG']
+          tag = os.environ['PUSH_TAG'] or os.environ['CANDIDATE'].rsplit('-rc.', 1)[0]
           pattern = r'v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*))?'
           match = re.fullmatch(pattern, tag)
           if not match:
@@ -55,6 +86,7 @@ jobs:
           note = f'# pob2_engine {version}\n\n{section.group(2).strip()}\n'
           Path('release-notes.md').write_text(note, encoding='utf-8')
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write(f'tag={tag}\n')
               output.write(f'prerelease={str(match.group(4) is not None).lower()}\n')
           PY
       - uses: actions/upload-artifact@v7.0.2
@@ -102,7 +134,7 @@ jobs:
           CGO_ENABLED: ${{ matrix.cgo }}
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.version.outputs.tag }}
           EXTENSION: ${{ matrix.extension }}
         run: |
           mkdir -p dist
@@ -112,7 +144,7 @@ jobs:
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: native-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: dist/pob2_engine_${{ github.ref_name }}_${{ matrix.goos }}_${{ matrix.goarch }}${{ matrix.extension }}
+          path: dist/pob2_engine_${{ needs.version.outputs.tag }}_${{ matrix.goos }}_${{ matrix.goarch }}${{ matrix.extension }}
           if-no-files-found: error
 
   smoke:
@@ -149,7 +181,7 @@ jobs:
         shell: bash
         env:
           POB2_ENGINE_POB_GITHUB_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.version.outputs.tag }}
           TARGET_OS: ${{ matrix.goos }}
           TARGET_ARCH: ${{ matrix.goarch }}
           EXTENSION: ${{ matrix.extension }}
@@ -186,7 +218,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.version.outputs.tag }}
           PRERELEASE: ${{ needs.version.outputs.prerelease }}
         run: |
           cd dist
@@ -195,6 +227,15 @@ jobs:
                  "pob2_engine_${RELEASE_TAG}_windows_amd64.exe")
           sha256sum "${files[@]}" > SHA256SUMS
           sha256sum --check SHA256SUMS
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            existing=$(git ls-remote --tags "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git" "refs/tags/$RELEASE_TAG")
+            if [[ -z "$existing" ]]; then
+              gh api "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$RELEASE_TAG" -f "sha=$GITHUB_SHA" --silent
+            elif [[ "$existing" != "$GITHUB_SHA"$'\t'"refs/tags/$RELEASE_TAG" ]]; then
+              echo "Тег $RELEASE_TAG указывает на другой коммит"
+              exit 1
+            fi
+          fi
           args=(--verify-tag --title "pob2_engine ${RELEASE_TAG}" --notes-file ../notes/release-notes.md)
           if [ "$PRERELEASE" = true ]; then
             args+=(--prerelease)
@@ -203,7 +244,7 @@ jobs:
 
   verify-published:
     name: Проверить скачанный выпуск / ${{ matrix.goos }} / ${{ matrix.goarch }}
-    needs: publish
+    needs: [publish, version]
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -227,7 +268,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           POB2_ENGINE_POB_GITHUB_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.version.outputs.tag }}
           TARGET_OS: ${{ matrix.goos }}
           TARGET_ARCH: ${{ matrix.goarch }}
           EXTENSION: ${{ matrix.extension }}
