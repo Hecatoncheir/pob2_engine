@@ -1,4 +1,19 @@
 -- Источник pob-poe2-mcp, 312b337fa4a24f5ef55ebd38c8fd7bd46c7de78a, MIT.
+local decimalPoint = tostring(0.5) == "0.5"
+local numberArray = { __tojson = function(values)
+    return "[" .. table.concat(values, ",") .. "]"
+end }
+
+-- Для полных числовых векторов достаточно того же tostring, что использует dkjson.
+local function jsonVector(values, count)
+    if not decimalPoint or #values ~= count then return values end
+    for i = 1, count do
+        local value = values[i]
+        if type(value) ~= "number" or value ~= value or math.abs(value) == math.huge then return values end
+    end
+    return setmetatable(values, numberArray)
+end
+
 local function texturePath(handle)
     if not handle then return "" end
     local file = assert(handle.sourcePath, "Путь текстуры не записан")
@@ -45,7 +60,8 @@ return function(build, power, hoverID)
         local clamp = false
         for _, flag in ipairs(handle and handle.sourceFlags or {}) do if flag == "CLAMP" then clamp = true end end
         commands[#commands + 1] = { file = texturePath(handle), clamp = clamp,
-            positions = positions, uv = uv, index = index or 1, mask = mask, color = {unpack(color)},
+            positions = jsonVector(positions, 8), uv = jsonVector(uv, 8),
+            index = index or 1, mask = mask, color = jsonVector({unpack(color)}, 4),
             layer = layer, subLayer = subLayer, order = #commands + 1, blend = blend }
     end
     local function textureArgs(extra, coordinateCount, defaults)

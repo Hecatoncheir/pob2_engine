@@ -144,16 +144,14 @@ local function drawCommandKey(command)
 		command.color, command.blend, command.clamp, command.mask, command.layer, command.subLayer})
 end
 
-local function baseTreeScene(xml)
-	local scene = drawTreeScene(build, false)
+local function cacheBaseSceneKeys(xml)
 	local keys = {}
-	for _, command in ipairs(scene.commands) do keys[drawCommandKey(command)] = true end
+	for _, command in ipairs(drawTreeScene(build, false).commands) do keys[drawCommandKey(command)] = true end
 	baseSceneXML, baseSceneKeys = xml, keys
-	return scene
 end
 
 local function hoverTreeScene(xml, nodeID)
-	if baseSceneXML ~= xml then baseTreeScene(xml) end
+	if baseSceneXML ~= xml then cacheBaseSceneKeys(xml) end
 	local scene = drawTreeScene(build, false, nodeID)
 	local overlay = {}
 	for _, command in ipairs(scene.commands) do
@@ -181,7 +179,7 @@ for line in io.lines() do
 		if request.operation == "tree_geometry" then
 			loadDocument(assert(request.xml))
 			local geometry = readTreeGeometry(build.spec)
-			if request.include_scene then geometry.scene = baseTreeScene(request.xml) end
+			if request.include_scene then geometry.scene = drawTreeScene(build, false) end
 			return { tree_geometry = geometry }
 		end
 		if request.operation == "tree_node_tooltip" then

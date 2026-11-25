@@ -21,6 +21,10 @@ func TestLuaTreeNodeTooltipAcrossProcesses(t *testing.T) {
 	t.Setenv("POB2_ENGINE_CALCULATOR", "lua")
 	s := newBuildScenario(t, "tree-specs/warrior-witch.xml")
 	before := supportSnapshot(t, s)
+	tree, err := s.client.TreeGeometry(s.ctx, "main", s.revision, true)
+	if err != nil || tree.Scene == nil {
+		t.Fatal("Lua не вернул основную сцену дерева перед запросом подсветки", err)
+	}
 	const node = 13397
 	tip := compareTooltipTransports(t, s, node)
 	if tip.NodeID != node || tip.Revision != s.revision || !hasTooltipText(tip, "+5 to any Attribute") {
